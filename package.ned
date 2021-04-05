@@ -1,0 +1,3 @@
+package mysterio;
+
+@namespace(inet);
