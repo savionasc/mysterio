@@ -1,5 +1,5 @@
 //
-// Generated file, do not edit! Created by nedtool 5.4 from mysterio/samples/modules/msg/MinhaMensagem.msg.
+// Generated file, do not edit! Created by nedtool 5.4 from mysterio/samples/common/msg/MinhaMensagem.msg.
 //
 
 // Disable warnings about unused variables, empty switch stmts, etc:
@@ -27,7 +27,7 @@
 #include <iostream>
 #include <sstream>
 #include <memory>
-#include "../../common/msg/MinhaMensagem_m.h"
+#include "MinhaMensagem_m.h"
 
 namespace omnetpp {
 

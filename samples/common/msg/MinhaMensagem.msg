@@ -1,5 +1,5 @@
 cplusplus {{
-#include "mysterio/samples/communication/msg/Status.h"
+#include "mysterio/samples/common/msg/Status.h"
 #include <string>
 }}
 
