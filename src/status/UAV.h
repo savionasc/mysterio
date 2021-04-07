@@ -1,11 +1,11 @@
-#ifndef MYSTERIO_SRC_AGGREGATOR_SIMPLEUAV_H_
-#define MYSTERIO_SRC_AGGREGATOR_SIMPLEUAV_H_
+#ifndef MYSTERIO_SRC_STATUS_UAV_H_
+#define MYSTERIO_SRC_STATUS_UAV_H_
 
-class SimpleUAV { //Aqui eu pensei que seria um exemplo simples duma instância dum uav, tipo isso
+class UAV { //Aqui eu pensei que seria um exemplo simples duma instância dum uav, tipo isso
     // MOVER PARA UTILS E MUDAR PARA UAV
 public:
-    SimpleUAV();
-    virtual ~SimpleUAV();
+    UAV();
+    virtual ~UAV();
     virtual int getID();
     virtual void setID(int id);
     virtual double getXAxis();
@@ -31,4 +31,4 @@ protected:
     //disponivel
 };
 
-#endif /* MYSTERIO_SRC_AGGREGATOR_SIMPLEUAV_H_ */
+#endif /* MYSTERIO_SRC_STATUS_UAV_H_ */

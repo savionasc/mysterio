@@ -206,15 +206,15 @@ inline std::ostream& operator<<(std::ostream& out, const std::vector<T,A>& vec)
     return out;
 }
 
-class StatusDescriptor : public omnetpp::cClassDescriptor
+class StatusModuleDescriptor : public omnetpp::cClassDescriptor
 {
   private:
     mutable const char **propertynames;
     enum FieldConstants {
     };
   public:
-    StatusDescriptor();
-    virtual ~StatusDescriptor();
+    StatusModuleDescriptor();
+    virtual ~StatusModuleDescriptor();
 
     virtual bool doesSupport(omnetpp::cObject *obj) const override;
     virtual const char **getPropertyNames() const override;
@@ -236,24 +236,24 @@ class StatusDescriptor : public omnetpp::cClassDescriptor
     virtual void *getFieldStructValuePointer(void *object, int field, int i) const override;
 };
 
-Register_ClassDescriptor(StatusDescriptor)
+Register_ClassDescriptor(StatusModuleDescriptor)
 
-StatusDescriptor::StatusDescriptor() : omnetpp::cClassDescriptor(omnetpp::opp_typename(typeid(Status)), "")
+StatusModuleDescriptor::StatusModuleDescriptor() : omnetpp::cClassDescriptor(omnetpp::opp_typename(typeid(StatusModule)), "")
 {
     propertynames = nullptr;
 }
 
-StatusDescriptor::~StatusDescriptor()
+StatusModuleDescriptor::~StatusModuleDescriptor()
 {
     delete[] propertynames;
 }
 
-bool StatusDescriptor::doesSupport(omnetpp::cObject *obj) const
+bool StatusModuleDescriptor::doesSupport(omnetpp::cObject *obj) const
 {
-    return dynamic_cast<Status *>(obj)!=nullptr;
+    return dynamic_cast<StatusModule *>(obj)!=nullptr;
 }
 
-const char **StatusDescriptor::getPropertyNames() const
+const char **StatusModuleDescriptor::getPropertyNames() const
 {
     if (!propertynames) {
         static const char *names[] = { "existingClass",  nullptr };
@@ -264,20 +264,20 @@ const char **StatusDescriptor::getPropertyNames() const
     return propertynames;
 }
 
-const char *StatusDescriptor::getProperty(const char *propertyname) const
+const char *StatusModuleDescriptor::getProperty(const char *propertyname) const
 {
     if (!strcmp(propertyname, "existingClass")) return "";
     omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
     return basedesc ? basedesc->getProperty(propertyname) : nullptr;
 }
 
-int StatusDescriptor::getFieldCount() const
+int StatusModuleDescriptor::getFieldCount() const
 {
     omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
     return basedesc ? 0+basedesc->getFieldCount() : 0;
 }
 
-unsigned int StatusDescriptor::getFieldTypeFlags(int field) const
+unsigned int StatusModuleDescriptor::getFieldTypeFlags(int field) const
 {
     omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
     if (basedesc) {
@@ -288,7 +288,7 @@ unsigned int StatusDescriptor::getFieldTypeFlags(int field) const
     return 0;
 }
 
-const char *StatusDescriptor::getFieldName(int field) const
+const char *StatusModuleDescriptor::getFieldName(int field) const
 {
     omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
     if (basedesc) {
@@ -299,13 +299,13 @@ const char *StatusDescriptor::getFieldName(int field) const
     return nullptr;
 }
 
-int StatusDescriptor::findField(const char *fieldName) const
+int StatusModuleDescriptor::findField(const char *fieldName) const
 {
     omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
     return basedesc ? basedesc->findField(fieldName) : -1;
 }
 
-const char *StatusDescriptor::getFieldTypeString(int field) const
+const char *StatusModuleDescriptor::getFieldTypeString(int field) const
 {
     omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
     if (basedesc) {
@@ -316,7 +316,7 @@ const char *StatusDescriptor::getFieldTypeString(int field) const
     return nullptr;
 }
 
-const char **StatusDescriptor::getFieldPropertyNames(int field) const
+const char **StatusModuleDescriptor::getFieldPropertyNames(int field) const
 {
     omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
     if (basedesc) {
@@ -329,7 +329,7 @@ const char **StatusDescriptor::getFieldPropertyNames(int field) const
     }
 }
 
-const char *StatusDescriptor::getFieldProperty(int field, const char *propertyname) const
+const char *StatusModuleDescriptor::getFieldProperty(int field, const char *propertyname) const
 {
     omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
     if (basedesc) {
@@ -342,7 +342,7 @@ const char *StatusDescriptor::getFieldProperty(int field, const char *propertyna
     }
 }
 
-int StatusDescriptor::getFieldArraySize(void *object, int field) const
+int StatusModuleDescriptor::getFieldArraySize(void *object, int field) const
 {
     omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
     if (basedesc) {
@@ -350,13 +350,13 @@ int StatusDescriptor::getFieldArraySize(void *object, int field) const
             return basedesc->getFieldArraySize(object, field);
         field -= basedesc->getFieldCount();
     }
-    Status *pp = (Status *)object; (void)pp;
+    StatusModule *pp = (StatusModule *)object; (void)pp;
     switch (field) {
         default: return 0;
     }
 }
 
-const char *StatusDescriptor::getFieldDynamicTypeString(void *object, int field, int i) const
+const char *StatusModuleDescriptor::getFieldDynamicTypeString(void *object, int field, int i) const
 {
     omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
     if (basedesc) {
@@ -364,13 +364,13 @@ const char *StatusDescriptor::getFieldDynamicTypeString(void *object, int field,
             return basedesc->getFieldDynamicTypeString(object,field,i);
         field -= basedesc->getFieldCount();
     }
-    Status *pp = (Status *)object; (void)pp;
+    StatusModule *pp = (StatusModule *)object; (void)pp;
     switch (field) {
         default: return nullptr;
     }
 }
 
-std::string StatusDescriptor::getFieldValueAsString(void *object, int field, int i) const
+std::string StatusModuleDescriptor::getFieldValueAsString(void *object, int field, int i) const
 {
     omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
     if (basedesc) {
@@ -378,13 +378,13 @@ std::string StatusDescriptor::getFieldValueAsString(void *object, int field, int
             return basedesc->getFieldValueAsString(object,field,i);
         field -= basedesc->getFieldCount();
     }
-    Status *pp = (Status *)object; (void)pp;
+    StatusModule *pp = (StatusModule *)object; (void)pp;
     switch (field) {
         default: return "";
     }
 }
 
-bool StatusDescriptor::setFieldValueAsString(void *object, int field, int i, const char *value) const
+bool StatusModuleDescriptor::setFieldValueAsString(void *object, int field, int i, const char *value) const
 {
     omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
     if (basedesc) {
@@ -392,13 +392,13 @@ bool StatusDescriptor::setFieldValueAsString(void *object, int field, int i, con
             return basedesc->setFieldValueAsString(object,field,i,value);
         field -= basedesc->getFieldCount();
     }
-    Status *pp = (Status *)object; (void)pp;
+    StatusModule *pp = (StatusModule *)object; (void)pp;
     switch (field) {
         default: return false;
     }
 }
 
-const char *StatusDescriptor::getFieldStructName(int field) const
+const char *StatusModuleDescriptor::getFieldStructName(int field) const
 {
     omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
     if (basedesc) {
@@ -409,7 +409,7 @@ const char *StatusDescriptor::getFieldStructName(int field) const
     return nullptr;
 }
 
-void *StatusDescriptor::getFieldStructValuePointer(void *object, int field, int i) const
+void *StatusModuleDescriptor::getFieldStructValuePointer(void *object, int field, int i) const
 {
     omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
     if (basedesc) {
@@ -417,7 +417,7 @@ void *StatusDescriptor::getFieldStructValuePointer(void *object, int field, int 
             return basedesc->getFieldStructValuePointer(object, field, i);
         field -= basedesc->getFieldCount();
     }
-    Status *pp = (Status *)object; (void)pp;
+    StatusModule *pp = (StatusModule *)object; (void)pp;
     switch (field) {
         default: return nullptr;
     }
@@ -492,12 +492,12 @@ void MinhaMensagem::setDestino(int destino)
     this->destino = destino;
 }
 
-const Status& MinhaMensagem::getStatus() const
+const StatusModule& MinhaMensagem::getStatus() const
 {
     return this->status;
 }
 
-void MinhaMensagem::setStatus(const Status& status)
+void MinhaMensagem::setStatus(const StatusModule& status)
 {
     this->status = status;
 }
@@ -642,7 +642,7 @@ const char *MinhaMensagemDescriptor::getFieldTypeString(int field) const
     static const char *fieldTypeStrings[] = {
         "int",    // FIELD_origem
         "int",    // FIELD_destino
-        "Status",    // FIELD_status
+        "StatusModule",    // FIELD_status
         "string",    // FIELD_titulo
     };
     return (field >= 0 && field < 4) ? fieldTypeStrings[field] : nullptr;
@@ -746,7 +746,7 @@ const char *MinhaMensagemDescriptor::getFieldStructName(int field) const
         field -= basedesc->getFieldCount();
     }
     switch (field) {
-        case FIELD_status: return omnetpp::opp_typename(typeid(Status));
+        case FIELD_status: return omnetpp::opp_typename(typeid(StatusModule));
         default: return nullptr;
     };
 }

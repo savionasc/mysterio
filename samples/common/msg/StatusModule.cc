@@ -1,0 +1,36 @@
+#include "StatusModule.h"
+
+using namespace std;
+StatusModule::StatusModule() {
+}
+
+void StatusModule::setLocation(double locationX, double locationY, double locationZ){
+    this->locationX = locationX;
+    this->locationY = locationY;
+    this->locationZ = locationZ;
+}
+
+double StatusModule::getLocationX(){
+    return locationX;
+}
+
+double StatusModule::getLocationY(){
+    return locationY;
+}
+
+double StatusModule::getLocationZ(){
+    return locationZ;
+}
+
+void StatusModule::setVelocity(double velocity){
+    this->velocity = velocity;
+}
+
+double StatusModule::getVelocity(){
+    return velocity;
+}
+
+StatusModule::~StatusModule() {
+    // TODO Auto-generated destructor stub
+}
+

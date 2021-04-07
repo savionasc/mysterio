@@ -1,16 +1,16 @@
 cplusplus {{
-#include "mysterio/samples/common/msg/Status.h"
+#include "mysterio/samples/common/msg/StatusModule.h"
 #include <string>
 }}
 
-class Status {
+class StatusModule {
     @existingClass;
 }
 
 message MinhaMensagem extends cMessage {
     int origem = -1;
     int destino = -1;
-    Status status;
+    StatusModule status;
     string titulo;
 }
 

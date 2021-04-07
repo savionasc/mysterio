@@ -1,7 +1,6 @@
 #include <mysterio/src/mysterio/Mysterio.h>
 #include <mysterio/src/communication/Communication.h>
 
-#include <mysterio/src/aggregator/Aggregator.h>
 #include <mysterio/src/mysterio/Mysterio.h>
 #include <string.h>
 
@@ -11,6 +10,7 @@
 
 //Ou criar um outra mensagem e Minha mensagem herdar dessa classe, ou mudar as coisas
 #include "../../samples/common/msg/MinhaMensagem_m.h"
+#include "../status/Status.h"
 
 typedef std::map<int, MinhaMensagem> MyMap;
 
@@ -54,17 +54,17 @@ void Communication::markAsReceived(int destination){
     messages.erase(destination);
 }
 
-void Communication::connectANewUAV(int ID, Aggregator *aggregator){
-    SimpleUAV newUAV;
+void Communication::connectANewUAV(int ID, Status *aggregator){
+    UAV newUAV;
     newUAV.setID(ID);
     aggregator->addUAV(newUAV);
 }
 
-void Communication::disconnectUAV(int ID, Aggregator *aggregator){
+void Communication::disconnectUAV(int ID, Status *aggregator){
     aggregator->removeUAV(ID);
 }
 
-void Communication::saveUAVCurrentPosition(int idUAV, double x, double y, double z, Aggregator *aggregator){
+void Communication::saveUAVCurrentPosition(int idUAV, double x, double y, double z, Status *aggregator){
     Coordinate coord;
     coord.x = x;
     coord.y = y;
@@ -72,19 +72,19 @@ void Communication::saveUAVCurrentPosition(int idUAV, double x, double y, double
     aggregator->setUAVLocation(coord, idUAV);
 }
 
-void Communication::saveUAVCurrentPosition(int idUAV, Coordinate coord, Aggregator *aggregator){
+void Communication::saveUAVCurrentPosition(int idUAV, Coordinate coord, Status *aggregator){
     aggregator->setUAVLocation(coord, idUAV);
 }
 
-Coordinate Communication::requestUAVCurrentPosition(int idUAV, Aggregator *aggregator){
+Coordinate Communication::requestUAVCurrentPosition(int idUAV, Status *aggregator){
     return aggregator->getUAVLocation(idUAV);
 }
 
-void Communication::saveUAVCurrentVelocity(int idUAV, double velocity, Aggregator *aggregator){
+void Communication::saveUAVCurrentVelocity(int idUAV, double velocity, Status *aggregator){
     aggregator->setUAVVelocity(velocity, idUAV);
 }
 
-double Communication::requestUAVCurrentVelocity(int idUAV, Aggregator *aggregator){
+double Communication::requestUAVCurrentVelocity(int idUAV, Status *aggregator){
     return aggregator->getUAVVelocity(idUAV);
 }
 

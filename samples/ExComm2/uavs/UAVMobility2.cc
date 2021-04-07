@@ -15,7 +15,7 @@
 #include <iostream>
 
 #include "../../common/msg/MinhaMensagem_m.h"
-#include "../../common/msg/Status.h"
+#include "../../common/msg/StatusModule.h"
 #include "../mysterio/Example2Communication.h"
 
 using namespace omnetpp;

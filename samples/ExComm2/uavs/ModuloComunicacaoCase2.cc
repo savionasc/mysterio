@@ -4,7 +4,7 @@
 
 #include "../mysterio/Example2Communication.h"
 #include "../../common/msg/MinhaMensagem_m.h"
-#include "../../common/msg/Status.h"
+#include "../../common/msg/StatusModule.h"
 #include "UAVMobility2.h"
 #include "../mysterio/Banco.h"
 
@@ -47,7 +47,7 @@ void ModuloComunicacaoCase2::initialize(){
             }
         } while(UAVOrigem2 <= -1);
     }
-    mysterios2.communication.connectANewUAV(selfID, &mysterios2.informationAggregator);
+    mysterios2.communication.connectANewUAV(selfID, &mysterios2.status);
 
     if (selfID == UAVOrigem2) {
         cout << "UAV selecionado [" << selfID << "]" << endl;
@@ -117,7 +117,7 @@ void ModuloComunicacaoCase2::handleMessage(cMessage *msg){
         mMSG->setKind(RESPONDER_LOCALIZACAO);
         mMSG->setDestino(mMSG->getOrigem());
         mMSG->setOrigem(selfID);
-        Status s;
+        StatusModule s;
         s.setLocation(position2[selfID].x, position2[selfID].y, position2[selfID].z);
         mMSG->setStatus(s);
         cout << "[U2C] Passando dados para o communication" << endl;
@@ -134,7 +134,7 @@ void ModuloComunicacaoCase2::handleMessage(cMessage *msg){
         //cout << "[U" << selfID << "] Localização de [" << mMSG->getOrigem() << "]:\n   X: " << cc.x << " Y: " << cc.y << " Z: " << cc.z << endl;
 
     }else if(mMSG->getKind() == RESPONDER_LOCALIZACAO){
-        Status s = mMSG->getStatus();
+        StatusModule s = mMSG->getStatus();
         cout << "[U" << selfID << "] Localização de [" << mMSG->getOrigem() << "]:\n   X: " << s.getLocationX() << " Y: " << s.getLocationY() << " Z: " << s.getLocationZ() << endl;
         Banco b;
         //Coordinate c(s.getLocationX(), s.getLocationY(), s.getLocationZ());
@@ -151,13 +151,13 @@ void ModuloComunicacaoCase2::handleMessage(cMessage *msg){
         mMSG->setKind(RESPONDER_VELOCIDADE);
         mMSG->setDestino(mMSG->getOrigem());
         mMSG->setOrigem(selfID);
-        Status s;
+        StatusModule s;
         s.setVelocity(velocidade2[selfID]);
         mMSG->setStatus(s);
         cout << "[U2C] Passando dados para o communication" << endl;
         mysterios2.communication.sendMessageDroneToDrone(UAVDestino2, UAVOrigem2, mMSG);
     }else if(mMSG->getKind() == RESPONDER_VELOCIDADE){
-        Status s = mMSG->getStatus();
+        StatusModule s = mMSG->getStatus();
         cout << "Velocidade de ["<< mMSG->getOrigem() << "]: " << s.getVelocity() << " m/s" << endl;
         //Status s = mMSG->getStatus();
         //cout << "[U2C] Passando dados para o communication" << endl;
@@ -167,7 +167,7 @@ void ModuloComunicacaoCase2::handleMessage(cMessage *msg){
         //cout << "[U" << selfID << "] Velocidade de ["<< mMSG->getOrigem() << "]: " << velocidade << " m/s" << endl;
     }
 
-    Status s;
+    StatusModule s;
     switch (mMSG->getKind()){
         case SOLICITAR_LOCALIZACAO:
 

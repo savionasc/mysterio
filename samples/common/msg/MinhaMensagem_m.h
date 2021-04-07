@@ -31,7 +31,7 @@
 
 class MinhaMensagem;
 // cplusplus {{
-#include "mysterio/samples/common/msg/Status.h"
+#include "mysterio/samples/common/msg/StatusModule.h"
 #include <string>
 // }}
 
@@ -42,7 +42,7 @@ class MinhaMensagem;
  * {
  *     int origem = -1;
  *     int destino = -1;
- *     Status status;
+ *     StatusModule status;
  *     string titulo;
  * }
  * </pre>
@@ -52,7 +52,7 @@ class INET_API MinhaMensagem : public ::omnetpp::cMessage
   protected:
     int origem = -1;
     int destino = -1;
-    Status status;
+    StatusModule status;
     omnetpp::opp_string titulo;
 
   private:
@@ -76,9 +76,9 @@ class INET_API MinhaMensagem : public ::omnetpp::cMessage
     virtual void setOrigem(int origem);
     virtual int getDestino() const;
     virtual void setDestino(int destino);
-    virtual const Status& getStatus() const;
-    virtual Status& getStatusForUpdate() { return const_cast<Status&>(const_cast<MinhaMensagem*>(this)->getStatus());}
-    virtual void setStatus(const Status& status);
+    virtual const StatusModule& getStatus() const;
+    virtual StatusModule& getStatusForUpdate() { return const_cast<StatusModule&>(const_cast<MinhaMensagem*>(this)->getStatus());}
+    virtual void setStatus(const StatusModule& status);
     virtual const char * getTitulo() const;
     virtual void setTitulo(const char * titulo);
 };

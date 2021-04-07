@@ -3,10 +3,10 @@
 
 #include <omnetpp.h>
 
-class Status {
+class StatusModule {
 public:
-    Status();
-    virtual ~Status();
+    StatusModule();
+    virtual ~StatusModule();
     void setLocation(double locX, double locY, double locZ);
     double getLocationX();
     double getLocationY();

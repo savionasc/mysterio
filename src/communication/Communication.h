@@ -1,11 +1,11 @@
 #ifndef MYSTERIO_BUILDING_F_COMMUNICATION_H_
 #define MYSTERIO_BUILDING_F_COMMUNICATION_H_
-#include <mysterio/src/aggregator/Aggregator.h>
 #include <mysterio/src/utils/Coordinate.h>
 #include <map>
 #include <queue>
 
 #include "../../samples/common/msg/MinhaMensagem_m.h"
+#include "../status/Status.h"
 
 class Communication {
 public:
@@ -15,11 +15,11 @@ public:
     //int requestInformationByAggregator();
 
     //STATUS
-    void saveUAVCurrentPosition(int idUAV, double x, double y, double z, Aggregator *aggregator);
-    void saveUAVCurrentPosition(int idUAV, Coordinate coord, Aggregator *aggregator);
-    Coordinate requestUAVCurrentPosition(int idUAV, Aggregator *aggregator);
-    void saveUAVCurrentVelocity(int idUAV, double velocity, Aggregator *aggregator);
-    double requestUAVCurrentVelocity(int idUAV, Aggregator *aggregator);
+    void saveUAVCurrentPosition(int idUAV, double x, double y, double z, Status *aggregator);
+    void saveUAVCurrentPosition(int idUAV, Coordinate coord, Status *aggregator);
+    Coordinate requestUAVCurrentPosition(int idUAV, Status *aggregator);
+    void saveUAVCurrentVelocity(int idUAV, double velocity, Status *aggregator);
+    double requestUAVCurrentVelocity(int idUAV, Status *aggregator);
     //Ou usar esse?
     //virtual void AtualizarDadosDoAgregador(int idUAV, Status s, Aggregator *aggregator);
 
@@ -31,8 +31,8 @@ public:
 
 
     virtual void markAsReceived(int destination);
-    virtual void connectANewUAV(int ID, Aggregator *aggregator);
-    virtual void disconnectUAV(int ID, Aggregator *aggregator);
+    virtual void connectANewUAV(int ID, Status *aggregator);
+    virtual void disconnectUAV(int ID, Status *aggregator);
     //virtual int getNumNodes(Aggregator* aggregator);
     //virtual void setNumNodes(int nodes, Aggregator* aggregator);
 

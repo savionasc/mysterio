@@ -5,7 +5,7 @@
 #include <queue>
 
 #include "../../common/msg/MinhaMensagem_m.h"
-#include "../../common/msg/Status.h"
+#include "../../common/msg/StatusModule.h"
 #include "../mysterio/Example1Communication.h"
 #include "../uavs/UAVMobility.h"
 
@@ -48,7 +48,7 @@ void ModuloComunicacaoCase1::initialize(){
             }
         } while(UAVLeader1 <= -1);
     }
-    mysterios1.communication.connectANewUAV(selfID, &mysterios1.informationAggregator);
+    mysterios1.communication.connectANewUAV(selfID, &mysterios1.status);
 
     if (selfID == UAVLeader1) {
         cout << "UAV selecionado [" << selfID << "]" << endl;
@@ -126,11 +126,11 @@ void ModuloComunicacaoCase1::handleMessage(cMessage *msg){
                 //sendMSGEvt->setOrigem(selfID);
                 //scheduleAt(simTime().dbl()+1.0, sendMSGEvt);
             }else if(msg->getKind() == RESPONDER_LOCALIZACAO){ //Chegou no leader
-                Status s = mMSG->getStatus();
+                StatusModule s = mMSG->getStatus();
                 cout << "[U2C] Passando dados para o communication" << endl;
-                mysterios1.communication.saveUAVCurrentPosition(mMSG->getOrigem(), s.getLocationX(), s.getLocationY(), s.getLocationZ(), &mysterios1.informationAggregator);
+                mysterios1.communication.saveUAVCurrentPosition(mMSG->getOrigem(), s.getLocationX(), s.getLocationY(), s.getLocationZ(), &mysterios1.status);
                 cout << "[C2U] Recebendo dados do communication" << endl;
-                Coordinate cc = mysterios1.communication.requestUAVCurrentPosition(mMSG->getOrigem(), &mysterios1.informationAggregator);
+                Coordinate cc = mysterios1.communication.requestUAVCurrentPosition(mMSG->getOrigem(), &mysterios1.status);
                 //cout << "COORDENADAS OBTIDAS [" << mMSG->getOrigem() << "]:\nX: " << cc.x << " Y: " << cc.y << " Z: " << cc.z << endl;
                 cout << "[U" << selfID << "] Localização de [" << mMSG->getOrigem() << "]:\n   X: " << cc.x << " Y: " << cc.y << " Z: " << cc.z << endl;
                 //cout << "Localização de [" << mMSG->getOrigem() << "]:\nX: " << s.getLocationX() << " Y: " << s.getLocationY() << " Z: " << s.getLocationZ() << endl;
@@ -142,11 +142,11 @@ void ModuloComunicacaoCase1::handleMessage(cMessage *msg){
                 //scheduleAt(simTime().dbl()+1.0, sendMSGEvt);
                 enviarMensagem(1.0, selfID, mMSG->getOrigem(), "Enviando velocidade", RESPONDER_VELOCIDADE);
             }else if(mMSG->getKind() == RESPONDER_VELOCIDADE){
-                Status s = mMSG->getStatus();
+                StatusModule s = mMSG->getStatus();
                 cout << "[U2C] Passando dados para o communication" << endl;
-                mysterios1.communication.saveUAVCurrentVelocity(mMSG->getOrigem(), s.getVelocity(), &mysterios1.informationAggregator);
+                mysterios1.communication.saveUAVCurrentVelocity(mMSG->getOrigem(), s.getVelocity(), &mysterios1.status);
                 cout << "[C2U] Recebendo dados do communication" << endl;
-                double velocidade = mysterios1.communication.requestUAVCurrentVelocity(mMSG->getOrigem(), &mysterios1.informationAggregator);
+                double velocidade = mysterios1.communication.requestUAVCurrentVelocity(mMSG->getOrigem(), &mysterios1.status);
                 cout << "[U" << selfID << "] Velocidade de ["<< mMSG->getOrigem() << "]: " << velocidade << " m/s" << endl;
             }
         } else {
@@ -166,7 +166,7 @@ void ModuloComunicacaoCase1::handleMessage(cMessage *msg){
                 filaDeMensagens = mysterios1.communication.messagesToSend();
             }
 
-            Status s;
+            StatusModule s;
             switch (msg->getKind()){
                 case RESPONDER_LOCALIZACAO:
                     s.setLocation(position1[selfID].x, position1[selfID].y, position1[selfID].z);
