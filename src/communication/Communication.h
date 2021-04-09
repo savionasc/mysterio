@@ -6,13 +6,17 @@
 
 #include "../../samples/common/msg/MinhaMensagem_m.h"
 #include "../status/Status.h"
+#include "Communicable.h"
 
+// componente de comunicação do framework com os drones
 class Communication {
 public:
     Communication();
     virtual ~Communication();
-    //void saveInformationOnAggregator(int numero);
-    //int requestInformationByAggregator();
+    //Definir um tipo message
+    virtual void sendMessage(Communicable source, Communicable dest, char *mensagem); //return void or bool
+
+    //save or request?
 
     //STATUS
     void saveUAVCurrentPosition(int idUAV, double x, double y, double z, Status *aggregator);
