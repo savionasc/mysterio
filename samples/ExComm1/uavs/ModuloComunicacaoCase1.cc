@@ -76,6 +76,9 @@ void ModuloComunicacaoCase1::initialize(){
         } while(continuar <= 0);
         sendMSGEvt->setOrigem(UAVLeader1);
         //cout << "Tipo: " << sendMSGEvt->getKind() << " | " << sendMSGEvt->getName() << endl;
+
+        //Colocar um tempo aleatório em vez de 3
+        //Um tempo em que conte um numero random entre 1 e 1+(k/6), onde K = hora
         scheduleAt(simTime()+3.0, sendMSGEvt);
     }
 }
