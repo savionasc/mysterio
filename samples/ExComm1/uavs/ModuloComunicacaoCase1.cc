@@ -48,7 +48,7 @@ void ModuloComunicacaoCase1::initialize(){
             }
         } while(UAVLeader1 <= -1);
     }
-    mysterios1.communication.connectANewUAV(selfID, &mysterios1.status);
+    mysterios1.conn.connectANewUAV(selfID, &mysterios1.status);
 
     if (selfID == UAVLeader1) {
         cout << "UAV selecionado [" << selfID << "]" << endl;
@@ -100,8 +100,8 @@ void ModuloComunicacaoCase1::handleMessage(cMessage *msg){
             int msgUAV = filaDeMensagens.front();
             filaDeMensagens.pop();
 
-            if(mysterios1.communication.hasMessageToDrone(msgUAV)){
-                MinhaMensagem m = mysterios1.communication.receiveMessage(msgUAV);
+            if(mysterios1.conn.hasMessageToDrone(msgUAV)){
+                MinhaMensagem m = mysterios1.conn.receiveMessage(msgUAV);
                 cout << "[C2U] Mensagem recebida de " << m.getOrigem();
                 cout << " para " << m.getDestino() << endl;
                 cout << "[C2U] Kind: " << m.getKind();
@@ -131,9 +131,9 @@ void ModuloComunicacaoCase1::handleMessage(cMessage *msg){
             }else if(msg->getKind() == RESPONDER_LOCALIZACAO){ //Chegou no leader
                 StatusModule s = mMSG->getStatus();
                 cout << "[U2C] Passando dados para o communication" << endl;
-                mysterios1.communication.saveUAVCurrentPosition(mMSG->getOrigem(), s.getLocationX(), s.getLocationY(), s.getLocationZ(), &mysterios1.status);
+                mysterios1.conn.saveUAVCurrentPosition(mMSG->getOrigem(), s.getLocationX(), s.getLocationY(), s.getLocationZ(), &mysterios1.status);
                 cout << "[C2U] Recebendo dados do communication" << endl;
-                Coordinate cc = mysterios1.communication.requestUAVCurrentPosition(mMSG->getOrigem(), &mysterios1.status);
+                Coordinate cc = mysterios1.conn.requestUAVCurrentPosition(mMSG->getOrigem(), &mysterios1.status);
                 //cout << "COORDENADAS OBTIDAS [" << mMSG->getOrigem() << "]:\nX: " << cc.x << " Y: " << cc.y << " Z: " << cc.z << endl;
                 cout << "[U" << selfID << "] Localização de [" << mMSG->getOrigem() << "]:\n   X: " << cc.x << " Y: " << cc.y << " Z: " << cc.z << endl;
                 //cout << "Localização de [" << mMSG->getOrigem() << "]:\nX: " << s.getLocationX() << " Y: " << s.getLocationY() << " Z: " << s.getLocationZ() << endl;
@@ -147,9 +147,9 @@ void ModuloComunicacaoCase1::handleMessage(cMessage *msg){
             }else if(mMSG->getKind() == RESPONDER_VELOCIDADE){
                 StatusModule s = mMSG->getStatus();
                 cout << "[U2C] Passando dados para o communication" << endl;
-                mysterios1.communication.saveUAVCurrentVelocity(mMSG->getOrigem(), s.getVelocity(), &mysterios1.status);
+                mysterios1.conn.saveUAVCurrentVelocity(mMSG->getOrigem(), s.getVelocity(), &mysterios1.status);
                 cout << "[C2U] Recebendo dados do communication" << endl;
-                double velocidade = mysterios1.communication.requestUAVCurrentVelocity(mMSG->getOrigem(), &mysterios1.status);
+                double velocidade = mysterios1.conn.requestUAVCurrentVelocity(mMSG->getOrigem(), &mysterios1.status);
                 cout << "[U" << selfID << "] Velocidade de ["<< mMSG->getOrigem() << "]: " << velocidade << " m/s" << endl;
             }
         } else {
@@ -164,9 +164,9 @@ void ModuloComunicacaoCase1::handleMessage(cMessage *msg){
                 mMSG->setDestino(UAVDestino1);
                 cout << "[U2C] Enviou para o communication: " << UAVDestino1 << " | " << mMSG->getFullName() << endl;
                 mMSG->setTitulo(mMSG->getFullName());
-                mysterios1.communication.sendMessageDroneToDrone(UAVLeader1, UAVDestino1, mMSG);
+                mysterios1.conn.sendMessageDroneToDrone(UAVLeader1, UAVDestino1, mMSG);
                 cout << "[C2U] Recebendo dados do communication" << endl;
-                filaDeMensagens = mysterios1.communication.messagesToSend();
+                filaDeMensagens = mysterios1.conn.messagesToSend();
             }
 
             StatusModule s;

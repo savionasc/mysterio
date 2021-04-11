@@ -1,6 +1,6 @@
-#include <mysterio/src/mysterio/Mysterio.h>
-#include <mysterio/src/communication/Communication.h>
+#include "Comm.h"
 
+#include <mysterio/src/mysterio/Mysterio.h>
 #include <mysterio/src/mysterio/Mysterio.h>
 #include <string.h>
 
@@ -9,28 +9,28 @@
 //Mostrar opções sincronas e assincronas / Alguma forma de Enviar mensagens
 
 //Ou criar um outra mensagem e Minha mensagem herdar dessa classe, ou mudar as coisas
-#include "../../samples/common/msg/MinhaMensagem_m.h"
-#include "../status/Status.h"
+#include "../../common/msg/MinhaMensagem_m.h"
+#include <mysterio/src/status/Status.h>
 
 typedef std::map<int, MinhaMensagem> MyMap;
 
-void Communication::sendMessage(Communicable source, Communicable dest, char *mensagem){
+void Comm::sendMessage(Communicable source, Communicable dest, char *mensagem){
 
 }
 
-Communication::Communication() {
+Comm::Comm() {
     // TODO Auto-generated constructor stub
 }
 
-Communication::~Communication() {
+Comm::~Comm() {
     // TODO Auto-generated destructor stub
 }
 
-void Communication::sendMessageDroneToDrone(int idSource, int idDestination, MinhaMensagem *msg){
+void Comm::sendMessageDroneToDrone(int idSource, int idDestination, MinhaMensagem *msg){
     messages[idDestination] = *msg;
 }
 
-bool Communication::hasMessageToDrone(int destination){
+bool Comm::hasMessageToDrone(int destination){
     std::map<int,MinhaMensagem>::iterator it = messages.find(destination);
     //if(it->first == destination)
     if(it != messages.end())
@@ -39,36 +39,36 @@ bool Communication::hasMessageToDrone(int destination){
         return false;
 }
 
-int Communication::hasMessages(){
+int Comm::hasMessages(){
     return messages.size();
 }
 
-std::queue<int> Communication::messagesToSend(){
+std::queue<int> Comm::messagesToSend(){
     std::queue<int> fila;
     for (std::map<int, MinhaMensagem>::iterator it=messages.begin(); it!=messages.end(); ++it)
         fila.push(it->first);
     return fila;
 }
 
-MinhaMensagem Communication::receiveMessage(int destination){
+MinhaMensagem Comm::receiveMessage(int destination){
     return messages[destination];
 }
 
-void Communication::markAsReceived(int destination){
+void Comm::markAsReceived(int destination){
     messages.erase(destination);
 }
 
-void Communication::connectANewUAV(int ID, Status *aggregator){
+void Comm::connectANewUAV(int ID, Status *aggregator){
     UAV newUAV;
     newUAV.setID(ID);
     aggregator->addUAV(newUAV);
 }
 
-void Communication::disconnectUAV(int ID, Status *aggregator){
+void Comm::disconnectUAV(int ID, Status *aggregator){
     aggregator->removeUAV(ID);
 }
 
-void Communication::saveUAVCurrentPosition(int idUAV, double x, double y, double z, Status *aggregator){
+void Comm::saveUAVCurrentPosition(int idUAV, double x, double y, double z, Status *aggregator){
     Coordinate coord;
     coord.x = x;
     coord.y = y;
@@ -76,19 +76,19 @@ void Communication::saveUAVCurrentPosition(int idUAV, double x, double y, double
     aggregator->setUAVLocation(coord, idUAV);
 }
 
-void Communication::saveUAVCurrentPosition(int idUAV, Coordinate coord, Status *aggregator){
+void Comm::saveUAVCurrentPosition(int idUAV, Coordinate coord, Status *aggregator){
     aggregator->setUAVLocation(coord, idUAV);
 }
 
-Coordinate Communication::requestUAVCurrentPosition(int idUAV, Status *aggregator){
+Coordinate Comm::requestUAVCurrentPosition(int idUAV, Status *aggregator){
     return aggregator->getUAVLocation(idUAV);
 }
 
-void Communication::saveUAVCurrentVelocity(int idUAV, double velocity, Status *aggregator){
+void Comm::saveUAVCurrentVelocity(int idUAV, double velocity, Status *aggregator){
     aggregator->setUAVVelocity(velocity, idUAV);
 }
 
-double Communication::requestUAVCurrentVelocity(int idUAV, Status *aggregator){
+double Comm::requestUAVCurrentVelocity(int idUAV, Status *aggregator){
     return aggregator->getUAVVelocity(idUAV);
 }
 
