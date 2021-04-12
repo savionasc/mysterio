@@ -16,7 +16,8 @@ public:
     virtual ~Comm();
     //Definir um tipo message
 
-    void sendMessage(Communicable source, Communicable dest, char *mensagem); //return void or bool
+    void sendMessage(Communicable *source, Communicable *dest, int msg); //return void or bool
+    //void onMessageReceive();
     //save or request?
 
     //STATUS

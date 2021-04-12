@@ -14,7 +14,7 @@
 typedef std::map<int, MinhaMensagem> MyMap;
 
 //Isso é certo?!
-void Comm2::sendMessage(Communicable source, Communicable dest, char *mensagem){
+void Comm2::sendMessage(Communicable *source, Communicable *dest, int msg){
 
 }
 /*void Communicable::onMessageReceive(){

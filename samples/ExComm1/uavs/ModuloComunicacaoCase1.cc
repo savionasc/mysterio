@@ -8,6 +8,7 @@
 #include "../../common/msg/StatusModule.h"
 #include "../mysterio/Example1Communication.h"
 #include "../uavs/UAVMobility.h"
+#include "../communication/Loko.h"
 
 using namespace omnetpp;
 using namespace std;
@@ -33,6 +34,9 @@ queue<int> filaDeMensagens;
 //Aqui usa só getIndex();
 //Decidir se usa selfID ou a variável indice
 void ModuloComunicacaoCase1::initialize(){
+    Loko l;
+    mysterios1.conn.sendMessage(&l, &l, 0);
+
     selfID = getIndex();
 
     if (selfID == 0) {

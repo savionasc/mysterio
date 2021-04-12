@@ -15,7 +15,7 @@ public:
     Comm2();
     virtual ~Comm2();
     //Definir um tipo message
-    void sendMessage(Communicable source, Communicable dest, char *mensagem); //return void or bool
+    void sendMessage(Communicable *source, Communicable *dest, int msg); //return void or bool
         //save or request?
     //save or request?
 

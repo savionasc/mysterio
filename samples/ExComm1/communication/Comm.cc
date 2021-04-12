@@ -10,15 +10,22 @@
 //Ou criar um outra mensagem e Minha mensagem herdar dessa classe, ou mudar as coisas
 #include "../../common/msg/MinhaMensagem_m.h"
 #include <mysterio/src/status/Status.h>
+#include "Loko.h"
 
 typedef std::map<int, MinhaMensagem> MyMap;
 
 //Isso é certo?!
 /*void Communicable::onMessageReceive(){
 }*/
+//void Comm::onMessageReceive(){
+//}
 
-void Comm::sendMessage(Communicable source, Communicable dest, char *mensagem){
-
+void Comm::sendMessage(Communicable *source, Communicable *dest, int msg){
+    if(msg == 0){
+        dest->onMessageReceive(msg);
+        //Loko* lok = dynamic_cast<Loko*>(dest);
+        //lok->onMessageReceive(msg);
+    }
 }
 
 Comm::Comm() {
