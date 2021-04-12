@@ -1,5 +1,5 @@
-#ifndef MYSTERIO_SAMPLES_EXCOMM1_COMMUNICATION_COMM_H_
-#define MYSTERIO_SAMPLES_EXCOMM1_COMMUNICATION_COMM_H_
+#ifndef MYSTERIO_SAMPLES_EXCOMM2_COMMUNICATION_COMM2_H_
+#define MYSTERIO_SAMPLES_EXCOMM2_COMMUNICATION_COMM2_H_
 #include <mysterio/src/utils/Coordinate.h>
 #include <map>
 #include <queue>
@@ -7,16 +7,16 @@
 #include "../../common/msg/MinhaMensagem_m.h"
 #include <mysterio/src/status/Status.h>
 #include <mysterio/src/communication/Communication.h>
-//#include <mysterio/src/communication/CommunicableImpl.h>
+#include <mysterio/src/communication/Communicable.h>
 
 // componente de comunicação do framework com os drones
-class Comm : public Communication {
+class Comm2 : public Communication {
 public:
-    Comm();
-    virtual ~Comm();
+    Comm2();
+    virtual ~Comm2();
     //Definir um tipo message
-
     void sendMessage(Communicable source, Communicable dest, char *mensagem); //return void or bool
+        //save or request?
     //save or request?
 
     //STATUS

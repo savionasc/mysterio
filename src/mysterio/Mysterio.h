@@ -1,4 +1,4 @@
-#ifndef MYSTERIO_SRC_MYSTERIO_MYSTERIO_H_
+/*#ifndef MYSTERIO_SRC_MYSTERIO_MYSTERIO_H_
 #define MYSTERIO_SRC_MYSTERIO_MYSTERIO_H_
 
 #include <mysterio/src/communication/Communication.h>
@@ -21,3 +21,4 @@ public:
     Status status; //MUDAR PARA STATUS
 };
 #endif
+*/

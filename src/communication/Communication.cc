@@ -1,4 +1,4 @@
-#include <mysterio/src/mysterio/Mysterio.h>
+/*#include <mysterio/src/mysterio/Mysterio.h>
 #include <mysterio/src/communication/Communication.h>
 
 #include <mysterio/src/mysterio/Mysterio.h>
@@ -91,7 +91,7 @@ void Communication::saveUAVCurrentVelocity(int idUAV, double velocity, Status *a
 double Communication::requestUAVCurrentVelocity(int idUAV, Status *aggregator){
     return aggregator->getUAVVelocity(idUAV);
 }
-
+*/
 /*void Communication::setNumNodes(int nodes, Aggregator* aggregator){
     aggregator->numNodes = nodes;
 }

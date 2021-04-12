@@ -1,4 +1,4 @@
-#include "Comm.h"
+#include "Comm2.h"
 
 #include <mysterio/src/mysterio/Mysterio.h>
 #include <string.h>
@@ -14,26 +14,25 @@
 typedef std::map<int, MinhaMensagem> MyMap;
 
 //Isso é certo?!
+void Comm2::sendMessage(Communicable source, Communicable dest, char *mensagem){
+
+}
 /*void Communicable::onMessageReceive(){
 }*/
 
-void Comm::sendMessage(Communicable source, Communicable dest, char *mensagem){
-
-}
-
-Comm::Comm() {
+Comm2::Comm2() {
     // TODO Auto-generated constructor stub
 }
 
-Comm::~Comm() {
+Comm2::~Comm2() {
     // TODO Auto-generated destructor stub
 }
 
-void Comm::sendMessageDroneToDrone(int idSource, int idDestination, MinhaMensagem *msg){
+void Comm2::sendMessageDroneToDrone(int idSource, int idDestination, MinhaMensagem *msg){
     messages[idDestination] = *msg;
 }
 
-bool Comm::hasMessageToDrone(int destination){
+bool Comm2::hasMessageToDrone(int destination){
     std::map<int,MinhaMensagem>::iterator it = messages.find(destination);
     //if(it->first == destination)
     if(it != messages.end())
@@ -42,36 +41,36 @@ bool Comm::hasMessageToDrone(int destination){
         return false;
 }
 
-int Comm::hasMessages(){
+int Comm2::hasMessages(){
     return messages.size();
 }
 
-std::queue<int> Comm::messagesToSend(){
+std::queue<int> Comm2::messagesToSend(){
     std::queue<int> fila;
     for (std::map<int, MinhaMensagem>::iterator it=messages.begin(); it!=messages.end(); ++it)
         fila.push(it->first);
     return fila;
 }
 
-MinhaMensagem Comm::receiveMessage(int destination){
+MinhaMensagem Comm2::receiveMessage(int destination){
     return messages[destination];
 }
 
-void Comm::markAsReceived(int destination){
+void Comm2::markAsReceived(int destination){
     messages.erase(destination);
 }
 
-void Comm::connectANewUAV(int ID, Status *aggregator){
+void Comm2::connectANewUAV(int ID, Status *aggregator){
     UAV newUAV;
     newUAV.setID(ID);
     aggregator->addUAV(newUAV);
 }
 
-void Comm::disconnectUAV(int ID, Status *aggregator){
+void Comm2::disconnectUAV(int ID, Status *aggregator){
     aggregator->removeUAV(ID);
 }
 
-void Comm::saveUAVCurrentPosition(int idUAV, double x, double y, double z, Status *aggregator){
+void Comm2::saveUAVCurrentPosition(int idUAV, double x, double y, double z, Status *aggregator){
     Coordinate coord;
     coord.x = x;
     coord.y = y;
@@ -79,19 +78,19 @@ void Comm::saveUAVCurrentPosition(int idUAV, double x, double y, double z, Statu
     aggregator->setUAVLocation(coord, idUAV);
 }
 
-void Comm::saveUAVCurrentPosition(int idUAV, Coordinate coord, Status *aggregator){
+void Comm2::saveUAVCurrentPosition(int idUAV, Coordinate coord, Status *aggregator){
     aggregator->setUAVLocation(coord, idUAV);
 }
 
-Coordinate Comm::requestUAVCurrentPosition(int idUAV, Status *aggregator){
+Coordinate Comm2::requestUAVCurrentPosition(int idUAV, Status *aggregator){
     return aggregator->getUAVLocation(idUAV);
 }
 
-void Comm::saveUAVCurrentVelocity(int idUAV, double velocity, Status *aggregator){
+void Comm2::saveUAVCurrentVelocity(int idUAV, double velocity, Status *aggregator){
     aggregator->setUAVVelocity(velocity, idUAV);
 }
 
-double Comm::requestUAVCurrentVelocity(int idUAV, Status *aggregator){
+double Comm2::requestUAVCurrentVelocity(int idUAV, Status *aggregator){
     return aggregator->getUAVVelocity(idUAV);
 }
 
