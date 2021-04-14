@@ -4,7 +4,7 @@
 #include <map>
 #include <queue>
 
-#include "../../samples/common/msg/MinhaMensagem_m.h"
+#include "../../omnet/common/msg/MinhaMensagem_m.h"
 #include "../status/Status.h"
 #include "Communicable.h"
 #include "CommunicableImpl.h"
@@ -43,7 +43,7 @@ public:
 
     //Mudar isso, é do Omnet++
     //MinhaMensagem receiveMessage(int destination); //IMPLEMENTATION
-private:
+//private:
     //std::map<int,MinhaMensagem> messages;
 };
 
