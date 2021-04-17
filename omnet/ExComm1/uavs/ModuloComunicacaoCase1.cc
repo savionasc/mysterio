@@ -105,7 +105,8 @@ void ModuloComunicacaoCase1::handleMessage(cMessage *msg){
             filaDeMensagens.pop();
 
             if(mysterios1.conn.hasMessageToDrone(msgUAV)){
-                MinhaMensagem m = mysterios1.conn.receiveMessage(msgUAV);
+                //MinhaMensagem m = mysterios1.conn.receiveMessage(msgUAV);
+                MinhaMensagem m;
                 cout << "[C2U] Mensagem recebida de " << m.getOrigem();
                 cout << " para " << m.getDestino() << endl;
                 cout << "[C2U] Kind: " << m.getKind();
@@ -168,7 +169,7 @@ void ModuloComunicacaoCase1::handleMessage(cMessage *msg){
                 mMSG->setDestino(UAVDestino1);
                 cout << "[U2C] Enviou para o communication: " << UAVDestino1 << " | " << mMSG->getFullName() << endl;
                 mMSG->setTitulo(mMSG->getFullName());
-                mysterios1.conn.sendMessageDroneToDrone(UAVLeader1, UAVDestino1, mMSG);
+                //mysterios1.conn.sendMessageDroneToDrone(UAVLeader1, UAVDestino1, mMSG);
                 cout << "[C2U] Recebendo dados do communication" << endl;
                 filaDeMensagens = mysterios1.conn.messagesToSend();
             }

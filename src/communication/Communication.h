@@ -1,10 +1,10 @@
 #ifndef MYSTERIO_BUILDING_F_COMMUNICATION_H_
 #define MYSTERIO_BUILDING_F_COMMUNICATION_H_
-#include <mysterio/src/utils/Coordinate.h>
+#include "../utils/Coordinate.h"
 #include <map>
 #include <queue>
 
-#include "../../omnet/common/msg/MinhaMensagem_m.h"
+//#include "../../omnet/common/msg/MinhaMensagem_m.h"
 #include "../status/Status.h"
 #include "Communicable.h"
 #include "CommunicableImpl.h"
@@ -16,7 +16,7 @@ public:
     //virtual ~Communication();
     //Definir um tipo message
     virtual void sendMessage(Communicable *source, Communicable *dest, int msg) = 0;//char *mensagem //return void or bool
-
+    virtual void testeMessage() = 0;
     //save or request?
 
     //STATUS

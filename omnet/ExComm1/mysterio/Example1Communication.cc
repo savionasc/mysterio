@@ -1,4 +1,5 @@
 #include "Example1Communication.h"
+#include <iostream>
 
 namespace mysterio {
 

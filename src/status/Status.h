@@ -1,61 +1,21 @@
 #ifndef MYSTERIO_SRC_STATUS_STATUS_H_
 #define MYSTERIO_SRC_STATUS_STATUS_H_
-#include <mysterio/src/utils/Coordinate.h>
+#include "../utils/Coordinate.h"
 #include <map>
 
 #include "../utils/UAV.h"
 
 class Status {
 public:
-    Status();
-    virtual ~Status();
-    virtual void addUAV(UAV uav){
-        this->uavs[uav.getID()] = uav;
-    }
-    virtual void removeUAV(int iD){
-        uavs.erase(iD);
-    }
-    virtual int getNumUAVs(){
-        return this->uavs.size();
-    }
-    virtual Coordinate getUAVLocation(int idUAV){
-        UAV s = pegarUAV(idUAV);
-        Coordinate c;
-        c.x = s.getXAxis();
-        c.y = s.getYAxis();
-        c.z = s.getZAxis();
-        return c;
-    }
-    virtual void setUAVLocation(Coordinate coord, int idUAV){
-        //Não usar aqui Essa responsabilidade é para que tipo de classe? /ok
-        UAV s = pegarUAV(idUAV);
-        s.setXAxis(coord.x);
-        s.setYAxis(coord.y);
-        s.setZAxis(coord.z);
-        this->uavs[idUAV] = s;
-    }
-    virtual double getUAVVelocity(int idUAV){
-        UAV s = pegarUAV(idUAV);
-        return s.getVelocidade();
-    }
-    virtual void setUAVVelocity(double velocity, int idUAV){
-        UAV s = pegarUAV(idUAV);
-        s.setVelocidade(velocity);
-        this->uavs[idUAV] = s;
-    }
-
-protected: //Variáveis que fui criando e melhorando ainda
-    std::map<int,UAV> uavs;
-    int tempoDeFuncionamento; //do sistema
-    UAV pegarUAV(int idUAV){
-        UAV r;
-        r.setID(-1);
-        for (std::map<int, UAV>::iterator it=uavs.begin(); it!=uavs.end(); ++it)
-            if(it->first == idUAV)
-                return it->second;
-        return r;
-    }
-    int numNodes;
+    //Status();
+    //virtual ~Status();
+    virtual void addUAV(UAV uav) = 0;
+    virtual void removeUAV(int iD) = 0;
+    virtual int getNumUAVs() = 0;
+    virtual Coordinate getUAVLocation(int idUAV) = 0;
+    virtual void setUAVLocation(Coordinate coord, int idUAV) = 0;
+    virtual double getUAVVelocity(int idUAV) = 0;
+    virtual void setUAVVelocity(double velocity, int idUAV) = 0;
 };
 
-#endif /* MYSTERIO_SRC_STATUS_STATUS_H_ */
+#endif
