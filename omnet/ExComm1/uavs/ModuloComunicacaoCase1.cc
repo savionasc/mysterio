@@ -1,6 +1,6 @@
 #include "ModuloComunicacaoCase1.h"
 
-#include <mysterio/src/mysterio/Mysterio.h>
+#include "mysterio/src/mysterio/Mysterio.h"
 #include <iostream>
 #include <queue>
 

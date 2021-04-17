@@ -1,6 +1,7 @@
-#ifndef MYSTERIO_SRC_STATUS_UAV_H_
-#define MYSTERIO_SRC_STATUS_UAV_H_
+#ifndef MYSTERIO_SRC_UTILS_UAV_H_
+#define MYSTERIO_SRC_UTILS_UAV_H_
 
+//Talvez extender/implementar communicable
 class UAV { //Aqui eu pensei que seria um exemplo simples duma instância dum uav, tipo isso
     // MOVER PARA UTILS E MUDAR PARA UAV
 public:
@@ -31,4 +32,4 @@ protected:
     //disponivel
 };
 
-#endif /* MYSTERIO_SRC_STATUS_UAV_H_ */
+#endif /* MYSTERIO_SRC_UTILS_UAV_H_ */

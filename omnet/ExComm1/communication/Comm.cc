@@ -1,6 +1,6 @@
 #include "Comm.h"
 
-#include <mysterio/src/mysterio/Mysterio.h>
+#include "../../../src/mysterio/Mysterio.h"
 #include <string.h>
 
 //Enviar mensagens Unicast, Broadcast e Multicast
@@ -8,7 +8,7 @@
 //Mostrar opções sincronas e assincronas / Alguma forma de Enviar mensagens
 
 //Ou criar um outra mensagem e Minha mensagem herdar dessa classe, ou mudar as coisas
-#include <mysterio/src/status/Status.h>
+#include "../../../src/status/Status.h"
 #include "../../common/msg/MinhaMensagem_m.h"
 #include "../../ExComm1/communication/Loko.h"
 

@@ -14,5 +14,4 @@ void Loko::onMessageReceive(int a){
     }else{
         printf("Diferente de zero!\n");
     }
-
 }
