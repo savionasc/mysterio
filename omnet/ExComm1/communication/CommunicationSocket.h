@@ -17,6 +17,8 @@ public:
     //Definir um tipo message //Colocar origem e destino (ambos communicable) na mensagem?
     void sendMessage(Communicable *source, Communicable *dest, int msg); //return void or bool
     void testeMessage();
+    void listening();
+    void envMensagem();
     //void onMessageReceive();
     //save or request?
 
@@ -44,8 +46,13 @@ public:
 
     //Mudar isso, é do Omnet++
     //Ver MinhaMensagem receiveMessage(int destination); //IMPLEMENTATION
-private:
+    int configurar(int port);
+    bool conectarNovoClient(int serverSd);
+    bool enviarResposta(int newSd);
+    bool esperarMensagem(int newSd);
+protected:
     //Ver std::map<int,MinhaMensagem> messages;
+
 };
 
 #endif

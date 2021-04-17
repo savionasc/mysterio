@@ -4,9 +4,11 @@
 using namespace std;
 
 int main(int argc, char const *argv[]){
-	std::cout << "Digite um valor" << std::endl;
 	CommunicationSocket comm;
-	while(1){
+	comm.listening();
+	std::cout << "AAAA" << std::endl;
+	/*while(1){
+	    std::cout << "Digite um valor" << std::endl;
 		int a;
 		cin >> a;
 		//comm.onMessageReceive(a);
@@ -14,6 +16,6 @@ int main(int argc, char const *argv[]){
 			cout << "Saindo!" << endl;
 			break;
 		}
-	}
+	}*/
 	return 0;
 }

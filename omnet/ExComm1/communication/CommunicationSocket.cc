@@ -9,15 +9,190 @@
 
 //Ou criar um outra mensagem e Minha mensagem herdar dessa classe, ou mudar as coisas
 //#include "../../common/msg/MinhaMensagem_m.h"
-#include "../../ExComm1/communication/Loko.h"
 
 //typedef std::map<int, MinhaMensagem> MyMap;
 
-//Isso é certo?!
-/*void Communicable::onMessageReceive(){
-}*/
-//void Comm::onMessageReceive(){
-//}
+//Sockets
+#include <iostream>
+#include <thread>
+#include <string>
+#include <string.h>
+#include <sys/socket.h>
+#include <netinet/in.h>
+
+
+using namespace std;
+
+int conexoes[5], ct = -1;
+
+//bool conectarNovoClient(int);
+//bool esperarMensagem(int);
+//bool enviarResposta(int);
+
+
+class socket_conectar {
+public:
+    void operator()(int param)
+    {
+        CommunicationSocket cs;
+        while(cs.conectarNovoClient(param)){ }
+    }
+};
+
+class socket_receber {
+public:
+    void operator()(int param)
+    {
+        CommunicationSocket cs;
+        while(cs.esperarMensagem(param)){ }
+    }
+};
+
+class socket_enviar {
+public:
+    void operator()(int param)
+    {
+        CommunicationSocket cs;
+        while(cs.enviarResposta(param)){ }
+    }
+};
+
+bool CommunicationSocket::esperarMensagem(int newSd){
+    //buffer to send and receive messages with
+    char msg[1500];
+    //receive a message from the client (listen)
+
+    //cout << "Awaiting client response..." << std::endl;
+    memset(&msg, 0, sizeof(msg));//clear the buffer
+    recv(newSd, (char*)&msg, sizeof(msg), 0);
+    if(!strcmp(msg, "exit")){
+        std::cout << "Client has quit the session" << std::endl;
+        return false;
+    }else if(!strcmp(msg, "status")){
+        StatusC1 status;
+        status.onMessageReceive(1);
+    }
+    std::cout << "Client: " << msg << std::endl;
+    return true;
+}
+
+bool CommunicationSocket::enviarResposta(int newSd){
+    char msg[1500];
+    std::cout << ">";
+    std::string data;
+    cin >> data; //Dessa forma só não aceita espaços
+    //cin.getline(msg,sizeof(msg));
+    //getline(cin, data);
+    memset(&msg, 0, sizeof(msg)); //clear the buffer
+    strcpy(msg, data.c_str());
+    if(data == "exit"){
+        //send to the client that server has closed the connection
+        send(newSd, (char*)&msg, strlen(msg), 0);
+        return false;
+        //break;
+    }
+    //send the message to client
+    send(newSd, (char*)&msg, strlen(msg), 0);
+    return false; //true; //False só pra parar
+}
+
+bool CommunicationSocket::conectarNovoClient(int serverSd){
+    sockaddr_in newSockAddr;
+    socklen_t newSockAddrSize = sizeof(newSockAddr);
+    //accept, create a new socket descriptor to
+    //handle the new connection with client
+    int newSd = accept(serverSd, (sockaddr *)&newSockAddr, &newSockAddrSize);
+    if(newSd < 0){
+        cerr << "Error accepting request from client!" << std::endl;
+        exit(1);
+        return false;
+    }
+    std::cout << "Connected with client!" << std::endl;
+    ct++;
+    conexoes[ct] = newSd;
+    thread conectar(socket_conectar(), serverSd);
+    thread receber(socket_receber(), conexoes[ct]);
+    receber.join();
+    return true;
+}
+
+int CommunicationSocket::configurar(int port){
+    if(port < 1000){
+        cerr << "Usage: port" << std::endl;
+        exit(0);
+    }
+
+    //int port = atoi(argv[1]);
+    char msg[1500];
+
+    sockaddr_in servAddr;
+    bzero((char*)&servAddr, sizeof(servAddr));
+    servAddr.sin_family = AF_INET;
+    servAddr.sin_addr.s_addr = htonl(INADDR_ANY);
+    servAddr.sin_port = htons(port);
+
+    //open stream oriented socket with internet address
+    //also keep track of the socket descriptor
+    int serverSd = socket(AF_INET, SOCK_STREAM, 0);
+    if(serverSd < 0){
+        cerr << "Error establishing the server socket" << std::endl;
+        exit(0);
+    }
+    //bind the socket to its local address
+    int bindStatus = bind(serverSd, (struct sockaddr*) &servAddr,
+        sizeof(servAddr));
+    if(bindStatus < 0){
+        cerr << "Error binding socket to local address" << std::endl;
+        exit(0);
+    }
+    std::cout << "Waiting for a client to connect..." << std::endl;
+    //listen for up to 5 requests at a time
+    listen(serverSd, 5);
+    return serverSd;
+}
+
+void CommunicationSocket::envMensagem(){
+    std::cout << "Digite um numero para escolher quem vai receber" << std::endl;
+    while(true){
+        int id;
+        cin >> id;
+        //scanf("%d", &id);
+        if(id == -1){ //Broadcast
+            for (int i = 0; i <= ct; i++){
+                thread enviar(socket_enviar(), conexoes[i]);
+                enviar.join();
+            }
+        }else{ //unicast
+            thread enviar(socket_enviar(), conexoes[id]);
+            enviar.join();
+        }
+        //enviar.joinable();
+        //cout << "Digite o que você quer enviar" << std::endl;
+    }
+}
+
+void CommunicationSocket::listening(){
+
+    int serverSd = configurar(1111);
+    thread conectar(socket_conectar(), serverSd);
+    while(ct == -1){
+
+    }
+    cout << "Passando por Socket Communication" << endl;
+    int antigo = 0;
+    if(antigo == 0){
+        while(1){
+            thread enviar(socket_enviar(), conexoes[0]);
+            enviar.join();
+        }
+    }else{
+        envMensagem();
+    }
+
+    conectar.join();
+}
+//Fim sockets
+
 
 void CommunicationSocket::sendMessage(Communicable *source, Communicable *dest, int msg){
     if(msg == 0){

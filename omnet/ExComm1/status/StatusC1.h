@@ -1,11 +1,24 @@
 #ifndef MYSTERIO_OMNET_EXCOMM1_STATUS_STATUSC1_H_
 #define MYSTERIO_OMNET_EXCOMM1_STATUS_STATUSC1_H_
 #include "../../../src/status/Status.h"
+#include "../../../src/communication/Communicable.h"
 
-class StatusC1 : public Status {
+class StatusC1 : public Status, Communicable{
 public:
     StatusC1();
     virtual ~StatusC1();
+    //Communicable
+    virtual void onMessageReceive(int a){ //message);
+        if(a == 1){
+            enviarResposta(22);
+        }
+        //printf("Communicable %d\n", a);
+    }
+
+    virtual void enviarResposta(int resp);
+
+    //Status
+
     virtual void addUAV(UAV uav){
         this->uavs[uav.getID()] = uav;
     }

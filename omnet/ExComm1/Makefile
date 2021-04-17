@@ -1,12 +1,12 @@
-all: Example1Communication.o StatusC1.o Comm.o UAV.o Coordinate.o main.o
-	g++ -o main main.o Example1Communication.o StatusC1.o Comm.o UAV.o Coordinate.o
+all: Example1Communication.o StatusC1.o CommunicationSocket.o UAV.o Coordinate.o main.o
+	g++ -pthread -o main main.o Example1Communication.o StatusC1.o CommunicationSocket.o UAV.o Coordinate.o
 
-main.o: main.cc communication/Comm.h
-	g++ -c main.cc communication/Comm.h
-Comm.o: communication/Comm.cc communication/Comm.h
-	g++ -c communication/Comm.cc communication/Comm.h
-Example1Communication.o: mysterio/Example1Communication.cc communication/Comm.h status/StatusC1.h
-	g++ -c mysterio/Example1Communication.cc communication/Comm.h communication/Comm.cc status/StatusC1.h 
+main.o: main.cc communication/CommunicationSocket.h
+	g++ -c main.cc communication/CommunicationSocket.h
+CommunicationSocket.o: communication/CommunicationSocket.cc communication/CommunicationSocket.h
+	g++ -c communication/CommunicationSocket.cc communication/CommunicationSocket.h
+Example1Communication.o: mysterio/Example1Communication.cc communication/CommunicationSocket.h status/StatusC1.h
+	g++ -c mysterio/Example1Communication.cc communication/CommunicationSocket.h communication/CommunicationSocket.cc status/StatusC1.h 
 StatusC1.o:	status/StatusC1.cc status/StatusC1.h ../../src/status/Status.h
 	g++ -c status/StatusC1.cc status/StatusC1.h ../../src/status/Status.h
 UAV.o: ../../src/utils/UAV.h
