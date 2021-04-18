@@ -9,4 +9,4 @@ public:
     virtual void onMessageReceive(int a);
 };
 
-#endif /* MYSTERIO_OMNET_EXCOMM1_COMMUNICATION_LOKO_H_ */
+#endif

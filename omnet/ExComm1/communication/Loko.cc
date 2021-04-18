@@ -1,5 +1,4 @@
 #include "Loko.h"
-
 #include <stdio.h>
 
 Loko::Loko() { }

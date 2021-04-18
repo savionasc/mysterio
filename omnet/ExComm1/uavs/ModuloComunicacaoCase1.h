@@ -29,6 +29,6 @@ class ModuloComunicacaoCase1 : public cSimpleModule {
     MinhaMensagem* sendMSGEvt;
     void rememberCheckMessage(double seconds);
 };
-}/* namespace inet */
+}
 
-#endif /* MYSTERIO_SRC_MODULOCOMUNICACAOCASE1_H_ */
+#endif

@@ -1,18 +1,10 @@
 #include "CommunicationSocket.h"
-
 #include "../../../src/mysterio/Mysterio.h"
 #include <string.h>
 
 //Enviar mensagens Unicast, Broadcast e Multicast
+//Ou criar uma classe mensagem
 
-//Mostrar opções sincronas e assincronas / Alguma forma de Enviar mensagens
-
-//Ou criar um outra mensagem e Minha mensagem herdar dessa classe, ou mudar as coisas
-//#include "../../common/msg/MinhaMensagem_m.h"
-
-//typedef std::map<int, MinhaMensagem> MyMap;
-
-//Sockets
 #include <iostream>
 #include <thread>
 #include <string>
@@ -20,29 +12,20 @@
 #include <sys/socket.h>
 #include <netinet/in.h>
 
-
 using namespace std;
-
 int conexoes[5], ct = -1;
-
-//bool conectarNovoClient(int);
-//bool esperarMensagem(int);
-//bool enviarResposta(int);
-
 
 class socket_conectar {
 public:
-    void operator()(int param)
-    {
+    void operator()(int param){
         CommunicationSocket cs;
-        while(cs.conectarNovoClient(param)){ }
+        while(cs.conectarNovoUAV(param)){ }
     }
 };
 
 class socket_receber {
 public:
-    void operator()(int param)
-    {
+    void operator()(int param){
         CommunicationSocket cs;
         while(cs.esperarMensagem(param)){ }
     }
@@ -50,29 +33,24 @@ public:
 
 class socket_enviar {
 public:
-    void operator()(int param)
-    {
+    void operator()(int param){
         CommunicationSocket cs;
         while(cs.enviarResposta(param)){ }
     }
 };
 
 bool CommunicationSocket::esperarMensagem(int newSd){
-    //buffer to send and receive messages with
     char msg[1500];
-    //receive a message from the client (listen)
-
-    //cout << "Awaiting client response..." << std::endl;
-    memset(&msg, 0, sizeof(msg));//clear the buffer
+    memset(&msg, 0, sizeof(msg));
     recv(newSd, (char*)&msg, sizeof(msg), 0);
     if(!strcmp(msg, "exit")){
-        std::cout << "Client has quit the session" << std::endl;
+        std::cout << "UAV has quit the session" << std::endl;
         return false;
     }else if(!strcmp(msg, "status")){
         StatusC1 status;
         status.onMessageReceive(1);
     }
-    std::cout << "Client: " << msg << std::endl;
+    std::cout << "UAV Message: " << msg << std::endl;
     return true;
 }
 
@@ -80,34 +58,27 @@ bool CommunicationSocket::enviarResposta(int newSd){
     char msg[1500];
     std::cout << ">";
     std::string data;
-    cin >> data; //Dessa forma só não aceita espaços
-    //cin.getline(msg,sizeof(msg));
-    //getline(cin, data);
-    memset(&msg, 0, sizeof(msg)); //clear the buffer
+    cin >> data;
+    memset(&msg, 0, sizeof(msg));
     strcpy(msg, data.c_str());
     if(data == "exit"){
-        //send to the client that server has closed the connection
         send(newSd, (char*)&msg, strlen(msg), 0);
         return false;
-        //break;
     }
-    //send the message to client
     send(newSd, (char*)&msg, strlen(msg), 0);
-    return false; //true; //False só pra parar
+    return false;
 }
 
-bool CommunicationSocket::conectarNovoClient(int serverSd){
+bool CommunicationSocket::conectarNovoUAV(int serverSd){
     sockaddr_in newSockAddr;
     socklen_t newSockAddrSize = sizeof(newSockAddr);
-    //accept, create a new socket descriptor to
-    //handle the new connection with client
     int newSd = accept(serverSd, (sockaddr *)&newSockAddr, &newSockAddrSize);
     if(newSd < 0){
-        cerr << "Error accepting request from client!" << std::endl;
+        cerr << "Error accepting request from UAV!" << std::endl;
         exit(1);
         return false;
     }
-    std::cout << "Connected with client!" << std::endl;
+    std::cout << "Connected with UAV!" << std::endl;
     ct++;
     conexoes[ct] = newSd;
     thread conectar(socket_conectar(), serverSd);
@@ -122,7 +93,6 @@ int CommunicationSocket::configurar(int port){
         exit(0);
     }
 
-    //int port = atoi(argv[1]);
     char msg[1500];
 
     sockaddr_in servAddr;
@@ -131,22 +101,19 @@ int CommunicationSocket::configurar(int port){
     servAddr.sin_addr.s_addr = htonl(INADDR_ANY);
     servAddr.sin_port = htons(port);
 
-    //open stream oriented socket with internet address
-    //also keep track of the socket descriptor
     int serverSd = socket(AF_INET, SOCK_STREAM, 0);
     if(serverSd < 0){
         cerr << "Error establishing the server socket" << std::endl;
         exit(0);
     }
-    //bind the socket to its local address
+
     int bindStatus = bind(serverSd, (struct sockaddr*) &servAddr,
         sizeof(servAddr));
     if(bindStatus < 0){
         cerr << "Error binding socket to local address" << std::endl;
         exit(0);
     }
-    std::cout << "Waiting for a client to connect..." << std::endl;
-    //listen for up to 5 requests at a time
+    std::cout << "Waiting for a UAV to connect..." << std::endl;
     listen(serverSd, 5);
     return serverSd;
 }
@@ -156,7 +123,6 @@ void CommunicationSocket::envMensagem(){
     while(true){
         int id;
         cin >> id;
-        //scanf("%d", &id);
         if(id == -1){ //Broadcast
             for (int i = 0; i <= ct; i++){
                 thread enviar(socket_enviar(), conexoes[i]);
@@ -167,7 +133,6 @@ void CommunicationSocket::envMensagem(){
             enviar.join();
         }
         //enviar.joinable();
-        //cout << "Digite o que você quer enviar" << std::endl;
     }
 }
 
@@ -191,8 +156,6 @@ void CommunicationSocket::listening(){
 
     conectar.join();
 }
-//Fim sockets
-
 
 void CommunicationSocket::sendMessage(Communicable *source, Communicable *dest, int msg){
     if(msg == 0){
@@ -210,14 +173,7 @@ CommunicationSocket::CommunicationSocket() { }
 
 CommunicationSocket::~CommunicationSocket() { }
 
-/*void Comm::sendMessageDroneToDrone(int idSource, int idDestination, MinhaMensagem *msg){
-    messages[idDestination] = *msg;
-}*/
-
 bool CommunicationSocket::hasMessageToDrone(int destination){
-    //std::map<int,MinhaMensagem>::iterator it = messages.find(destination);
-    //if(it->first == destination)
-    //if(it != messages.end())
     if(1)
         return true;
     else
@@ -276,11 +232,3 @@ void CommunicationSocket::saveUAVCurrentVelocity(int idUAV, double velocity, Sta
 double CommunicationSocket::requestUAVCurrentVelocity(int idUAV, StatusC1 *aggregator){
     return aggregator->getUAVVelocity(idUAV);
 }
-
-/*void Communication::setNumNodes(int nodes, Aggregator* aggregator){
-    aggregator->numNodes = nodes;
-}
-
-int Communication::getNumNodes(Aggregator* aggregator){
-    return aggregator->numNodes;
-}*/

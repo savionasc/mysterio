@@ -7,9 +7,8 @@
 //#include "../../omnet/common/msg/MinhaMensagem_m.h"
 #include "../status/Status.h"
 #include "Communicable.h"
-#include "CommunicableImpl.h"
 
-// componente de comunicação do framework com os drones
+// Componente de comunicação do framework com Classes do tipo Communicable
 class Communication { //Interface
 public:
     //Communication();
@@ -47,4 +46,4 @@ public:
     //std::map<int,MinhaMensagem> messages;
 };
 
-#endif /* MYSTERIO_BUILDING_F_COMMUNICATION_H_ */
+#endif

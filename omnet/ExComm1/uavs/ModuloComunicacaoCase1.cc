@@ -95,7 +95,6 @@ void ModuloComunicacaoCase1::rememberCheckMessage(double seconds){
 void ModuloComunicacaoCase1::handleMessage(cMessage *msg){
 
     if(selfID == UAVLeader1 && msg->getKind() == LEMBRAR){
-        //cout << "!Tamanho da fila antes do front: " << filaDeMensagens.size() << endl;
         if(filaDeMensagens.size() > 0){
             cout << "[U" << selfID << "] Há ";
             cout << filaDeMensagens.front();
@@ -182,11 +181,10 @@ void ModuloComunicacaoCase1::handleMessage(cMessage *msg){
                 case RESPONDER_VELOCIDADE:
                     s.setVelocity(velocidade1[selfID]);
                     break;
-                default: /*if(msg) cout << "Nao identificou o tipo da mensagem" << msg->getKind() << endl;*/
+                default: /*Nao identificou o tipo da mensagem*/
                     break;
             }
             mMSG->setStatus(s);
-
             forwardMessage(mMSG);
         }
 
@@ -213,7 +211,6 @@ void ModuloComunicacaoCase1::forwardMessage(MinhaMensagem *msg){
 }
 
 void ModuloComunicacaoCase1::enviarMensagem(double tempo, int origem, int destino, char const *name, int kind){
-    //MinhaMensagem msg;
     sendMSGEvt = new MinhaMensagem(name, kind);
     sendMSGEvt->setDestino(destino);
     sendMSGEvt->setOrigem(origem);
@@ -221,9 +218,8 @@ void ModuloComunicacaoCase1::enviarMensagem(double tempo, int origem, int destin
 }
 
 MinhaMensagem *ModuloComunicacaoCase1::generateMessage(){
-    // Produce source and destination addresses.
-    int src = getIndex();  // our module index
-    int n = getVectorSize();  // module vector size
+    int src = getIndex();
+    int n = getVectorSize();
     int dest = intuniform(0, n-2);
     if (dest >= src)
         dest++;

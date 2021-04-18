@@ -8,11 +8,10 @@ public:
     StatusC1();
     virtual ~StatusC1();
     //Communicable
-    virtual void onMessageReceive(int a){ //message);
-        if(a == 1){
+    virtual void onMessageReceive(int msg){ //message);
+        if(msg == 1){
             enviarResposta(22);
         }
-        //printf("Communicable %d\n", a);
     }
 
     virtual void enviarResposta(int resp);

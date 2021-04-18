@@ -32,7 +32,6 @@ int UAVLeader1 = -1;
 int UAVDestino1 = -1;
 
 using namespace mysterio;
-//Mysterio mysterios;
 Example1Communication mysterios1;
 
 namespace inet {
@@ -45,23 +44,6 @@ UAVMobility::UAVMobility(){
 //Aqui usa só getParentModule()->getIndex();
 void UAVMobility::initialize(int stage){
     selfID = getParentModule()->getIndex();
-    //if(stage == 0 && selfID == 0)
-        //mysterios = new Example1Communication();
-    /*if(stage == 0 && selfID == 0){
-        cout << "Iniciando Mysterio!" << endl;
-        //mysterio.Mysterio();
-        cout << "Passando o numero 2 para mysterio!" << endl;
-        mysterios.communication.saveInformationOnAggregator(2);
-        cout << "Recuperando informação de mysterio!" << endl;
-        cout << "Informação obtida: " << mysterios.communication.requestInformationByAggregator() << endl;
-    }*/
-
-    /*if(stage == 0){
-        numeroDrones = par("numeroDrones").operator int();
-        cout << "Numero de drones: " << numeroDrones << endl;
-    }*/
-
-    //cout <<"Indice: " << indice << " ID: " << getId() << endl;
 
     LineSegmentsMobilityBase::initialize(stage);
     EV_TRACE << "initializing MysterioMobility stage " << stage << endl;
@@ -125,4 +107,4 @@ double UAVMobility::getMaxSpeed() const {
     return speedParameter->isExpression() ? NaN : speedParameter->doubleValue();
 }
 
-} // namespace inet
+}

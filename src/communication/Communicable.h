@@ -3,15 +3,13 @@
 
 #include <stdio.h>
 
-// deve ser implementado em todos os objetos comunicaveis (componentes, uav, etc)
+// deve ser implementado em todos os objetos comunicaveis (Componentes ou UAVs)
 //This interface is importante to create Communicables classes
-class Communicable { //Classe Abstrata
+class Communicable { //Abstract Class?
 public:
-    //Communicable();
-    //virtual ~Communicable();
     //definir o tipo message
-    virtual void onMessageReceive(int a){ //message);
-        printf("Communicable %d\n", a);
+    virtual void onMessageReceive(int msg){
+        printf("Communicable %d\n", msg);
     }
 };
 
