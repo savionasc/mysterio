@@ -13,6 +13,7 @@ public:
     int conexao();
     void connectBase();
     int getSocketCode();
+    void disconnectBase();
 
 //private:
     bool connected = false;

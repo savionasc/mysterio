@@ -71,5 +71,9 @@ int UAVCommunicationSocket::getSocketCode(){
     return this->socketCode;
 }
 
+void UAVCommunicationSocket::disconnectBase(){
+    close(getSocketCode());
+}
+
 }
 
