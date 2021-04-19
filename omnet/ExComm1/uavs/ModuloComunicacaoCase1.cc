@@ -1,12 +1,14 @@
 #include "ModuloComunicacaoCase1.h"
 
-#include "mysterio/src/mysterio/Mysterio.h"
 #include <iostream>
 #include <queue>
+
+#include "mysterio/src/mysterio/Mysterio.h"
 
 #include "../../common/msg/MinhaMensagem_m.h"
 #include "../../common/msg/StatusModule.h"
 #include "../../ExComm1/mysterio/Example1Communication.h"
+#include "../../ExComm1/communication/UAVCommunicationSocket.h"
 #include "../../ExComm1/uavs/UAVMobility.h"
 
 using namespace omnetpp;
@@ -30,10 +32,14 @@ using namespace mysterio;
 extern Example1Communication mysterios1;
 queue<int> filaDeMensagens;
 
+UAVCommunicationSocket uavs[10];
 //Aqui usa só getIndex();
 //Decidir se usa selfID ou a variável indice
 void ModuloComunicacaoCase1::initialize(){
+    cout << "Inicialize!!" << endl;
     selfID = getIndex();
+    uavs[selfID].connectBase();
+    uavs[selfID].dispatchMessage("Opa");
 
     if (selfID == 0) {
         rememberCheckMessage(2);

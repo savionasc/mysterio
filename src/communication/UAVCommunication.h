@@ -3,7 +3,8 @@
 
 class UAVCommunication {
 public:
-    virtual void dispatch(int msg) = 0;
+    virtual void connectBase() = 0;
+    virtual void dispatchMessage(const char *msg) = 0;
 };
 
 #endif

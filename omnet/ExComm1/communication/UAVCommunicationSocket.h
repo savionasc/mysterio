@@ -9,7 +9,14 @@ class UAVCommunicationSocket : public UAVCommunication {
 public:
     UAVCommunicationSocket(); //Aqqui ele cria a conexão com o Communication
     virtual ~UAVCommunicationSocket();
-    void dispatch(int msg);   //Aqui ele envia mensagem pro Communication
+    void dispatchMessage(const char *msg);   //Aqui ele envia mensagem pro Communication
+    int conexao();
+    void connectBase();
+    int getSocketCode();
+
+//private:
+    bool connected = false;
+    int socketCode = -1;
 };
 
 }
