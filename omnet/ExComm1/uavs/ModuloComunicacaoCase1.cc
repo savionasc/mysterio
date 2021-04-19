@@ -6,7 +6,6 @@
 
 #include "../../common/msg/MinhaMensagem_m.h"
 #include "../../common/msg/StatusModule.h"
-#include "../../ExComm1/communication/Loko.h"
 #include "../../ExComm1/mysterio/Example1Communication.h"
 #include "../../ExComm1/uavs/UAVMobility.h"
 
@@ -34,9 +33,6 @@ queue<int> filaDeMensagens;
 //Aqui usa só getIndex();
 //Decidir se usa selfID ou a variável indice
 void ModuloComunicacaoCase1::initialize(){
-    Loko l;
-    mysterios1.conn.sendMessage(&l, &l, 0);
-
     selfID = getIndex();
 
     if (selfID == 0) {
