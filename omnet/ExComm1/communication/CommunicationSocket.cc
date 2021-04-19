@@ -157,7 +157,12 @@ void CommunicationSocket::listening(){
     conectar.join();
 }
 
+void CommunicationSocket::getActiveConnections(){
+
+}
+
 void CommunicationSocket::sendMessage(Communicable *source, Communicable *dest, int msg){
+    getActiveConnections();
     if(msg == 0){
         dest->onMessageReceive(msg);
         //Loko* lok = dynamic_cast<Loko*>(dest);

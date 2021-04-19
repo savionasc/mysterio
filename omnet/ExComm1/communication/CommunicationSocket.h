@@ -8,8 +8,15 @@
 // componente de comunicação do framework com os drones
 class CommunicationSocket : public Communication {
 public:
+
+    //Aqui vai extender de Communicable para ter o onMessageReceive()
+    //Daí o UAV vai usar UAVCommunicationSocket.sendMessage(MSG, Communicable destCommunication);
+    //No sendMessage ele vai enviar via Socket
+
     CommunicationSocket();
     virtual ~CommunicationSocket();
+
+    void getActiveConnections(); //Criar uma classe Conexões para guardar o ID do UAV e o Socket
 
     //Definir um tipo message //Colocar origem e destino (ambos communicable) na mensagem?
     void sendMessage(Communicable *source, Communicable *dest, int msg); //return void or bool
