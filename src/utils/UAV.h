@@ -20,7 +20,6 @@ public:
     virtual double getVelocidade();
     virtual void setVelocidade(double velocidade);
 
-
 protected:
     int iD;
     int tempoDeVoo;

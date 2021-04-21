@@ -51,3 +51,10 @@ double UAV::getVelocidade(){
 void UAV::setVelocidade(double velocidade){
     this->velocidade = velocidade;
 }
+
+/*bool UAV::operator()(UAV const &u1, UAV const &u2){
+    if(u1.getID() == u2.getID())
+        return true;
+    else
+        return false;
+}*/
