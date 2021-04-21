@@ -2,6 +2,7 @@
 #define MYSTERIO_OMNET_EXCOMM1_COMMUNICATION_UAVCOMMUNICATIONSOCKET_H_
 
 #include "../../../src/communication/UAVCommunication.h"
+#include "../../../src/utils/Message.h"
 
 namespace mysterio {
 
@@ -9,7 +10,7 @@ class UAVCommunicationSocket : public UAVCommunication {
 public:
     UAVCommunicationSocket(); //Aqqui ele cria a conexão com o Communication
     virtual ~UAVCommunicationSocket();
-    void dispatchMessage(const char *msg);   //Aqui ele envia mensagem pro Communication
+    void dispatchMessage(Message msg);   //Aqui ele envia mensagem pro Communication
     int conexao();
     void connectBase();
     int getSocketCode();

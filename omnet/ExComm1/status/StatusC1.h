@@ -30,17 +30,17 @@ public:
     virtual Coordinate getUAVLocation(int idUAV){
         UAV s = pegarUAV(idUAV);
         Coordinate c;
-        c.x = s.getXAxis();
-        c.y = s.getYAxis();
-        c.z = s.getZAxis();
+        c.setX(s.getXAxis());
+        c.setY(s.getYAxis());
+        c.setZ(s.getZAxis());
         return c;
     }
     virtual void setUAVLocation(Coordinate coord, int idUAV){
         //Não usar aqui Essa responsabilidade é para que tipo de classe? /ok
         UAV s = pegarUAV(idUAV);
-        s.setXAxis(coord.x);
-        s.setYAxis(coord.y);
-        s.setZAxis(coord.z);
+        s.setXAxis(coord.getX());
+        s.setYAxis(coord.getY());
+        s.setZAxis(coord.getZ());
         this->uavs[idUAV] = s;
     }
     virtual double getUAVVelocity(int idUAV){

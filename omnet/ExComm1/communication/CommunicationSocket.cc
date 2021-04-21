@@ -216,9 +216,10 @@ void CommunicationSocket::disconnectUAV(int ID, StatusC1 *aggregator){
 
 void CommunicationSocket::saveUAVCurrentPosition(int idUAV, double x, double y, double z, StatusC1 *aggregator){
     Coordinate coord;
-    coord.x = x;
-    coord.y = y;
-    coord.z = z;
+
+    coord.setX(x);
+    coord.setY(y);
+    coord.setZ(z);
     aggregator->setUAVLocation(coord, idUAV);
 }
 

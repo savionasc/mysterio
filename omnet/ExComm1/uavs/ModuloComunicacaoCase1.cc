@@ -141,7 +141,7 @@ void ModuloComunicacaoCase1::handleMessage(cMessage *msg){
                 cout << "[C2U] Recebendo dados do communication" << endl;
                 Coordinate cc = mysterios1.conn.requestUAVCurrentPosition(mMSG->getOrigem(), &mysterios1.status);
                 //cout << "COORDENADAS OBTIDAS [" << mMSG->getOrigem() << "]:\nX: " << cc.x << " Y: " << cc.y << " Z: " << cc.z << endl;
-                cout << "[U" << selfID << "] Localização de [" << mMSG->getOrigem() << "]:\n   X: " << cc.x << " Y: " << cc.y << " Z: " << cc.z << endl;
+                cout << "[U" << selfID << "] Localização de [" << mMSG->getOrigem() << "]:\n   X: " << cc.getX() << " Y: " << cc.getY() << " Z: " << cc.getZ() << endl;
                 //cout << "Localização de [" << mMSG->getOrigem() << "]:\nX: " << s.getLocationX() << " Y: " << s.getLocationY() << " Z: " << s.getLocationZ() << endl;
             }else if(msg->getKind() == SOLICITAR_VELOCIDADE){
                 cout << "[U2U] Enviando status(velocidade) de " << selfID << " para " << mMSG->getOrigem() << endl;

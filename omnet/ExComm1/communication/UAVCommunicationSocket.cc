@@ -12,9 +12,9 @@ UAVCommunicationSocket::UAVCommunicationSocket() { }
 
 UAVCommunicationSocket::~UAVCommunicationSocket() { }
 
-void UAVCommunicationSocket::dispatchMessage(const char *msg){
+void UAVCommunicationSocket::dispatchMessage(Message msg){
     //Aqui envia mensagem via socket pro Communication
-    send(this->getSocketCode(), msg, strlen(msg), 0);
+    send(this->getSocketCode(), msg.getMsg(), strlen(msg.getMsg()), 0);
 }
 
 void UAVCommunicationSocket::connectBase(){
