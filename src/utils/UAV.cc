@@ -1,12 +1,8 @@
 #include "../utils/UAV.h"
 
-UAV::UAV() {
-    // TODO Auto-generated constructor stub
-}
+UAV::UAV() { }
 
-UAV::~UAV() {
-    // TODO Auto-generated destructor stub
-}
+UAV::~UAV() { }
 
 int UAV::getID(){
     return this->iD;
