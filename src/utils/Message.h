@@ -5,7 +5,10 @@ class Message {
 public:
     Message(){ }
 
-    Message(char *msg){ this->msg = msg; }
+    Message(char *msg, short int code){
+        this->msg = msg;
+        this->code = code;
+    }
 
     virtual ~Message(){ }
 
@@ -13,8 +16,13 @@ public:
 
     void setMsg(char* msg) { this->msg = msg; }
 
+    short int getCode() const { return code; }
+
+    void setCode(short int code) { this->code = code; }
+
 private:
     char* msg;
+    short int code; //This variable must identify the request type of the message
 };
 
 #endif
