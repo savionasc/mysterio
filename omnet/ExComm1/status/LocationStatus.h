@@ -12,12 +12,12 @@ public:
     virtual ~LocationStatus();
     void subscribe(UAV *uav);
     void requestStatusOnSubscribers();
-    void stopSubscriber(UAV *uav);
     void onMessageReceive(int msg){
         printf("O Status de localização recebido foi: %d\n", msg);
     }
+    std::list<UAV*> getListSubscribers();
+    void stopSubscriber(UAV *uav);
 private:
-    void addSubscriber(UAV uav);
     //UAV subscribers[10];
     std::list<UAV*> subscribers;
     //int numUAVs = 0;

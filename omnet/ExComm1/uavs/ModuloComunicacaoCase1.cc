@@ -39,7 +39,8 @@ void ModuloComunicacaoCase1::initialize(){
     cout << "Inicialize!!" << endl;
     selfID = getIndex();
     uavs[selfID].connectBase();
-    uavs[selfID].dispatchMessage("Opa");
+    Message m("Opa", 0);
+    uavs[selfID].dispatchMessage(m);
 
     if (selfID == 0) {
         rememberCheckMessage(2);

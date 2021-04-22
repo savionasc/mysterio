@@ -11,7 +11,7 @@ void LocationStatus::subscribe(UAV *uav){
 
 void LocationStatus::requestStatusOnSubscribers(){
     CommunicationSocket cs;
-    for (UAV *u : this->subscribers) {
+    for (UAV *u : this->getListSubscribers()) {
         std::cout << u->getID() << std::endl;
         //               this    uav   msg
         //cs.sendMessage(source, dest, msg);
@@ -20,4 +20,8 @@ void LocationStatus::requestStatusOnSubscribers(){
 
 void LocationStatus::stopSubscriber(UAV *uav){
     this->subscribers.remove(uav);
+}
+
+std::list<UAV*> LocationStatus::getListSubscribers(){
+    return this->subscribers;
 }
