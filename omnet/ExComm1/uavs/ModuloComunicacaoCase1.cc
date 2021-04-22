@@ -3,8 +3,6 @@
 #include <iostream>
 #include <queue>
 
-#include "mysterio/src/mysterio/Mysterio.h"
-
 #include "../../common/msg/MinhaMensagem_m.h"
 #include "../../common/msg/StatusModule.h"
 #include "../../ExComm1/mysterio/Example1Communication.h"

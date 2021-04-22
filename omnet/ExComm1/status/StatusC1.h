@@ -2,14 +2,15 @@
 #define MYSTERIO_OMNET_EXCOMM1_STATUS_STATUSC1_H_
 #include "../../../src/status/Status.h"
 #include "../../../src/communication/Communicable.h"
+#include "../../../src/utils/Message.h"
 
 class StatusC1 : public Status, Communicable{
 public:
     StatusC1();
     virtual ~StatusC1();
     //Communicable
-    virtual void onMessageReceive(int msg){ //message);
-        if(msg == 1){
+    virtual void onMessageReceive(Message msg){ //message);
+        if(msg.getCode() == 1){
             enviarResposta(22);
         }
     }

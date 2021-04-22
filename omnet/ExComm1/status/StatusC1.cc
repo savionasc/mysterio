@@ -14,8 +14,8 @@ void StatusC1::enviarResposta(int resp){
     Communicable dest; //UAV
     //dest. //dest.setID();
     cout << "Passando por status" << endl;
-    //MSG
-    cs.sendMessage(&src, &dest, 0);
+    Message m;
+    cs.sendMessage(&src, &dest, m);
 }
 
 /*void enviarResposta(char *resp){

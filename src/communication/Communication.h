@@ -1,12 +1,13 @@
 #ifndef MYSTERIO_BUILDING_F_COMMUNICATION_H_
 #define MYSTERIO_BUILDING_F_COMMUNICATION_H_
+#include "Communicable.h"
+#include "../status/Status.h"
+#include "../utils/Message.h"
 #include "../utils/Coordinate.h"
 #include <map>
 #include <queue>
 
 //#include "../../omnet/common/msg/MinhaMensagem_m.h"
-#include "../status/Status.h"
-#include "Communicable.h"
 
 // Componente de comunicação do framework com Classes do tipo Communicable
 class Communication { //Interface
@@ -14,7 +15,7 @@ public:
     //Communication();
     //virtual ~Communication();
     //Definir um tipo message
-    virtual void sendMessage(Communicable *source, Communicable *dest, int msg) = 0;//char *mensagem //return void or bool
+    virtual void sendMessage(Communicable *source, Communicable *dest, Message msg) = 0;//char *mensagem //return void or bool
     virtual void testeMessage() = 0;
     //save or request?
 

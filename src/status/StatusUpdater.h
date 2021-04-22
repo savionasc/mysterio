@@ -6,8 +6,8 @@
 
 class StatusUpdater {
 public:
-    StatusUpdater(){ }
-    virtual ~StatusUpdater(){ }
+    //StatusUpdater(){ }
+    //virtual ~StatusUpdater(){ }
     virtual void subscribe(UAV *uav) = 0;
     virtual void requestStatusOnSubscribers() = 0;
     virtual std::list<UAV*> getListSubscribers() = 0;

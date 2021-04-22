@@ -4,12 +4,15 @@
 #include <queue>
 #include "../status/StatusC1.h"
 #include "../../../src/communication/Communication.h"
+#include "../../../src/communication/Communicable.h"
+#include "../../../src/utils/Message.h"
 
 // componente de comunicação do framework com os drones
-class CommunicationSocket : public Communication {
+class CommunicationSocket : public Communication, Communicable {
 public:
 
     //Aqui vai extender de Communicable para ter o onMessageReceive()
+    void onMessageReceive(Message msg); //Communicable
     //Daí o UAV vai usar UAVCommunicationSocket.sendMessage(MSG, Communicable destCommunication);
     //No sendMessage ele vai enviar via Socket
 
@@ -19,7 +22,7 @@ public:
     void getActiveConnections(); //Criar uma classe Conexões para guardar o ID do UAV e o Socket
 
     //Definir um tipo message //Colocar origem e destino (ambos communicable) na mensagem?
-    void sendMessage(Communicable *source, Communicable *dest, int msg); //return void or bool
+    void sendMessage(Communicable *source, Communicable *dest, Message msg); //return void or bool
     void testeMessage();
     void listening();
     void envMensagem();

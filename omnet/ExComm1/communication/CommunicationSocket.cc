@@ -1,9 +1,7 @@
 #include "CommunicationSocket.h"
-#include "../../../src/mysterio/Mysterio.h"
 #include <string.h>
 
 //Enviar mensagens Unicast, Broadcast e Multicast
-//Ou criar uma classe mensagem
 
 #include <iostream>
 #include <thread>
@@ -40,15 +38,17 @@ public:
 };
 
 bool CommunicationSocket::esperarMensagem(int newSd){
+    //Aqui deve converter toda e qualquer mensagem e repassar pra this.OnMessageReceve
     char msg[1500];
     memset(&msg, 0, sizeof(msg));
     recv(newSd, (char*)&msg, sizeof(msg), 0);
     if(!strcmp(msg, "exit")){
         std::cout << "UAV has quit the session" << std::endl;
         return false;
-    }else if(!strcmp(msg, "status")){
+    }else if(!strcmp(msg, "status")){ //Mudar isso aqui e chamar o OnMessageReceve
         StatusC1 status;
-        status.onMessageReceive(1);
+        Message m;
+        status.onMessageReceive(m);
     }
     std::cout << "UAV Message: " << msg << std::endl;
     return true;
@@ -161,9 +161,13 @@ void CommunicationSocket::getActiveConnections(){
 
 }
 
-void CommunicationSocket::sendMessage(Communicable *source, Communicable *dest, int msg){
+void CommunicationSocket::onMessageReceive(Message msg){
+
+}
+
+void CommunicationSocket::sendMessage(Communicable *source, Communicable *dest, Message msg){
     getActiveConnections();
-    if(msg == 0){
+    if(msg.getCode() == 0){
         dest->onMessageReceive(msg);
         //Loko* lok = dynamic_cast<Loko*>(dest);
         //lok->onMessageReceive(msg);

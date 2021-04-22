@@ -1,7 +1,5 @@
 #include "../../ExComm1/uavs/UAVMobility.h"
 
-#include <mysterio/src/mysterio/Mysterio.h>
-
 #include "inet/common/INETMath.h"
 #include "inet/common/ModuleAccess.h"
 #include "inet/common/StringFormat.h"
