@@ -1,7 +1,7 @@
 package mysterio.omnet.scenarios;
 
 import inet.node.inet.StandardHost;
-import mysterio.omnet.ExComm1.uavs.ModuloComunicacaoCase1;
+import mysterio.omnet.uavs.ModuloComunicacaoCase1;
 import inet.visualizer.integrated.IntegratedVisualizer;
 import inet.node.base.ApplicationLayerNodeBase;
 

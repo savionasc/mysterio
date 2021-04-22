@@ -1,8 +1,10 @@
 #ifndef MYSTERIO_SRC_UTILS_UAV_H_
 #define MYSTERIO_SRC_UTILS_UAV_H_
 
+#include "../communication/Communicable.h"
+
 //Talvez extender/implementar communicable
-class UAV { //Aqui eu pensei que seria um exemplo simples duma instância dum uav, tipo isso
+class UAV : public Communicable { //Aqui eu pensei que seria um exemplo simples duma instância dum uav, tipo isso
     // MOVER PARA UTILS E MUDAR PARA UAV
 public:
     UAV();
@@ -19,6 +21,9 @@ public:
     virtual void setTempoDeVoo(int tempodevoo);
     virtual double getVelocidade();
     virtual void setVelocidade(double velocidade);
+
+    //Communicable
+    void onMessageReceive(Message msg);
 
 protected:
     int iD;

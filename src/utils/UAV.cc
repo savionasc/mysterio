@@ -58,3 +58,7 @@ void UAV::setVelocidade(double velocidade){
     else
         return false;
 }*/
+
+void UAV::onMessageReceive(Message msg){
+
+}

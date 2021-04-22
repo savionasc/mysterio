@@ -12,12 +12,8 @@
 // Componente de comunicação do framework com Classes do tipo Communicable
 class Communication { //Interface
 public:
-    //Communication();
-    //virtual ~Communication();
-    //Definir um tipo message
+
     virtual void sendMessage(Communicable *source, Communicable *dest, Message msg) = 0;//char *mensagem //return void or bool
-    virtual void testeMessage() = 0;
-    //save or request?
 
     //STATUS
     //void saveUAVCurrentPosition(int idUAV, double x, double y, double z, Status *aggregator);

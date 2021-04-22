@@ -7,7 +7,7 @@
 //This interface is importante to create Communicables classes
 class Communicable { //Abstract Class?
 public:
-    //definir o tipo message
+    //especificar o destino?
     virtual void onMessageReceive(Message msg){ }
 };
 
