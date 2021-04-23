@@ -36,7 +36,7 @@ void UAVCommunicationSocket::connectBase(){
             this->connected = true;
             this->socketCode = clientSd;
 
-            thread receber(socket_receber(), this->socketCode, this->selfID);
+            thread receber(socket_receber(), this->socketCode, this->selfID, this->socketCode);
             receber.detach();
             //receber.join();
         }

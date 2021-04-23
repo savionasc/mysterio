@@ -21,45 +21,6 @@ extern Coord position1[10];
 
 namespace mysterio {
 
-class socket_receber {
-    public:
-        void operator()(int param, int param2){
-            this->idUAV = param2;
-            while(esperarMensagem(param)){ }
-        }
-
-        bool esperarMensagem(int newSd){
-            //Aqui deve converter toda e qualquer mensagem e repassar pra this.OnMessageReceve
-            char msg[1500];
-            memset(&msg, 0, sizeof(msg));
-            recv(newSd, (char*)&msg, sizeof(msg), 0);
-            if(!strcmp(msg, "exit")){
-                std::cout << "UAV has quit the session" << std::endl;
-                return false;
-            }else if(!strcmp(msg, "location")){ //Mudar isso aqui e chamar o OnMessageReceve
-                std::cout << " status " << std::endl;
-                Coord coor = position1[idUAV];
-
-                //Substituir isso por dispatchMessage
-
-                CommunicationSocket cs;
-                char snd[150];
-                std::string txt = "MSG: x: " + to_string(coor.x);
-                txt += " y: " + to_string(coor.y);
-                txt += " z: " + to_string(coor.z);
-                strcpy(snd, txt.c_str());
-                StatusC1 status;
-                Message m(snd, 11);
-                //status.onMessageReceive(m);
-                cs.sendMessage(&cs, &status, m);
-            }
-            std::cout << "Message to UAV[" << this->idUAV << "]: " << msg << std::endl;
-            return true;
-        }
-    private:
-        int idUAV;
-    };
-
 class UAVCommunicationSocket : public UAVCommunication {
 public:
 
@@ -84,6 +45,48 @@ private:
     bool connected = false;
     int socketCode = -1;
     int selfID = -1;
+};
+
+class socket_receber {
+    public:
+        void operator()(int param, int param2, int param3){
+            this->idUAV = param2;
+            this->sock = param3;
+            while(esperarMensagem(param)){ }
+        }
+
+        bool esperarMensagem(int newSd){
+            //Aqui deve converter toda e qualquer mensagem e repassar pra this.OnMessageReceve
+            char msg[1500];
+            memset(&msg, 0, sizeof(msg));
+            recv(newSd, (char*)&msg, sizeof(msg), 0);
+            if(!strcmp(msg, "exit")){
+                std::cout << "UAV has quit the session" << std::endl;
+                return false;
+            }else if(!strcmp(msg, "location")){ //Mudar isso aqui e chamar o OnMessageReceve
+                std::cout << " status " << std::endl;
+                Coord coor = position1[idUAV];
+
+                UAVCommunicationSocket u;
+                u.setSocketCode(this->sock);
+                u.setSelfID(this->idUAV);
+
+                //Substituir isso por dispatchMessage
+
+                char snd[150];
+                std::string txt = "MSG: x: " + to_string(coor.x);
+                txt += " y: " + to_string(coor.y);
+                txt += " z: " + to_string(coor.z);
+                strcpy(snd, txt.c_str());
+                Message m(snd, 11);
+                u.dispatchMessage(m);
+            }
+            std::cout << "Message to UAV[" << this->idUAV << "]: " << msg << std::endl;
+            return true;
+        }
+    private:
+        int idUAV;
+        int sock;
 };
 
 }
