@@ -20,7 +20,6 @@ using namespace omnetpp;
 using namespace std;
 using namespace inet;
 
-static int indice1 = -1;
 static int numeroDrones1;
 
 Coord position1[10];
@@ -73,7 +72,12 @@ void UAVMobility::setTargetPosition(){
     simtime_t nextChangeInterval = *changeIntervalParameter;
     EV_DEBUG << "interval: " << nextChangeInterval << endl;
     sourcePosition = lastPosition;
-    targetPosition = lastPosition + direction * (*speedParameter) * nextChangeInterval.dbl();
+
+    //if(targetPositionCommand != nullptr)
+        //targetPosition = targetPositionCommand;
+    //else
+        targetPosition = lastPosition + direction * (*speedParameter) * nextChangeInterval.dbl();
+
     previousChange = simTime();
     nextChange = previousChange + nextChangeInterval;
 }
@@ -83,7 +87,6 @@ void UAVMobility::move(){
     rad dummyAngle;
     if (now == nextChange) {
         lastPosition = targetPosition;
-        indice1 = selfID;
         position1[selfID] = lastPosition;
         handleIfOutside(REFLECT, targetPosition, lastVelocity, dummyAngle, dummyAngle, quaternion);
         EV_INFO << "reached current target position = " << lastPosition << endl;

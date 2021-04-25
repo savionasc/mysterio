@@ -58,6 +58,22 @@ public:
         s.setVelocidade(velocity);
         this->uavs[idUAV] = s;
     }
+
+    void subscribe(UAV *uav){
+
+    }
+
+    void requestStatus(){
+
+    }
+
+    std::list<UAV*> getPublishersList(){
+
+    }
+
+    void unsubscribe(UAV *uav){
+
+    }
 protected: //Variáveis que fui criando e melhorando ainda
     std::map<int,UAV> uavs;
     int tempoDeFuncionamento; //do sistema

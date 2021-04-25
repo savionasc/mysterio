@@ -1,12 +1,12 @@
 #ifndef MYSTERIO_OMNET_EXCOMM1_STATUS_LOCATIONSTATUS_H_
 #define MYSTERIO_OMNET_EXCOMM1_STATUS_LOCATIONSTATUS_H_
 #include "../communication/CommunicationSocket.h"
-#include "../../src/status/StatusUpdater.h"
 #include "../../src/utils/UAV.h"
 #include <iostream>
 #include <list>
+#include "../../src/status/Status.h"
 
-class LocationStatus : public StatusUpdater, Communicable {
+class LocationStatus : public Status, public Communicable {
 public:
     LocationStatus();
     virtual ~LocationStatus();
@@ -18,9 +18,7 @@ public:
     std::list<UAV*> getListSubscribers();
     void stopSubscriber(UAV *uav);
 private:
-    //UAV subscribers[10];
     std::list<UAV*> subscribers;
-    //int numUAVs = 0;
 };
 
 #endif

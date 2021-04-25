@@ -19,6 +19,7 @@ class INET_API UAVMobility : public LineSegmentsMobilityBase
     Quaternion quaternion;
     simtime_t previousChange;
     Coord sourcePosition;
+    Coord targetPositionCommand;
 
   protected:
     virtual int numInitStages() const override { return NUM_INIT_STAGES; }
