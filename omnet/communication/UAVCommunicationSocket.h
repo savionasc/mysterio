@@ -22,6 +22,7 @@ extern Coord position1[10];
 namespace mysterio {
 
 class UAVCommunicationSocket : public UAVCommunication {
+    friend class socket_receber;
 public:
 
     UAVCommunicationSocket();
@@ -60,8 +61,10 @@ class socket_receber {
             char msg[1500];
             memset(&msg, 0, sizeof(msg));
             recv(newSd, (char*)&msg, sizeof(msg), 0);
-            if(!strcmp(msg, "exit")){
+            if(!strcmp(msg, "exit") || !strcmp(msg, "quit")){
                 std::cout << "UAV has quit the session" << std::endl;
+                //UAVCommunication u; u.disconnectBase();
+                close(newSd); //closesocket
                 return false;
             }else if(!strcmp(msg, "location")){ //Mudar isso aqui e chamar o OnMessageReceve
                 std::cout << " status " << std::endl;

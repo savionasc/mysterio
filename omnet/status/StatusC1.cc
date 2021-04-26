@@ -1,8 +1,5 @@
 #include "StatusC1.h"
 #include "../communication/CommunicationSocket.h"
-#include <iostream>
-
-using namespace std;
 
 StatusC1::StatusC1() { }
 

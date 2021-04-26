@@ -4,6 +4,7 @@
 #include "../../src/communication/Communicable.h"
 #include "../../src/utils/Message.h"
 #include <iostream>
+#include <map>
 
 using namespace std;
 

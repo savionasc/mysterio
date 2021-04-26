@@ -37,10 +37,8 @@ void UAVCommunicationSocket::connectBase(){
             this->socketCode = clientSd;
 
             thread receber(socket_receber(), this->socketCode, this->selfID, this->socketCode);
-            receber.detach();
-            //receber.join();
+            receber.detach(); //join
         }
-
 
         /*while(1){
             std::cout << ">";
