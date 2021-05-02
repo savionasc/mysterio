@@ -1,14 +1,12 @@
 #ifndef MYSTERIO_SRC_STATUS_STATUS_H_
 #define MYSTERIO_SRC_STATUS_STATUS_H_
 #include "../utils/Coordinate.h"
-#include <map>
-
 #include "../utils/UAV.h"
+#include <list>
+#include <iostream>
 
 class Status {
 public:
-    //Status();
-    //virtual ~Status();
     virtual void addUAV(UAV uav) = 0;   //Remover
     virtual void removeUAV(int iD) = 0; //Remover
     virtual int getNumUAVs() = 0;       //Remover
