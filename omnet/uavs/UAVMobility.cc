@@ -35,9 +35,45 @@ namespace inet {
 
 Define_Module(UAVMobility);
 
-UAVMobility::UAVMobility(){ }
+UAVMobility::UAVMobility(){ nextMoveIsWait = false; }
 
-void UAVMobility::initialize(int stage){
+void UAVMobility::initialize(int stage) {
+    LineSegmentsMobilityBase::initialize(stage);
+    selfID = getParentModule()->getIndex();
+
+    if (stage == INITSTAGE_LOCAL) {
+        waitTimeParameter = &par("waitTime");
+        hasWaitTime = waitTimeParameter->isExpression() || waitTimeParameter->doubleValue() != 0;
+        speedParameter = &par("speed");
+        stationary = !speedParameter->isExpression() && speedParameter->doubleValue() == 0;
+    }
+    //velocidade1[selfID] = par("speed").operator double();
+}
+
+void UAVMobility::setTargetPosition() {
+    if (nextMoveIsWait) {
+        simtime_t waitTime = waitTimeParameter->doubleValue();
+        nextChange = simTime() + waitTime;
+        nextMoveIsWait = false;
+    } else {
+        targetPosition = getRandomPosition();
+        //position1[selfID] = lastPosition; //Aqui
+        double speed = speedParameter->doubleValue();
+        double distance = lastPosition.distance(targetPosition);
+        simtime_t travelTime = distance / speed;
+        nextChange = simTime() + travelTime;
+        nextMoveIsWait = hasWaitTime;
+    }
+}
+
+void UAVMobility::move() {
+    LineSegmentsMobilityBase::move();
+    raiseErrorIfOutside();
+}
+
+//
+
+/*void UAVMobility::initialize(int stage){
     selfID = getParentModule()->getIndex();
 
     LineSegmentsMobilityBase::initialize(stage);
@@ -54,14 +90,14 @@ void UAVMobility::initialize(int stage){
         quaternion = Quaternion(EulerAngles(heading, -elevation, rad(0)));
         WATCH(quaternion);
     }
-}
+}*/
 
-void UAVMobility::orient(){
+/*void UAVMobility::orient(){
     if (faceForward)
         lastOrientation = quaternion;
-}
+}*/
 
-void UAVMobility::setTargetPosition(){
+/*void UAVMobility::setTargetPosition(){
     rad angleDelta = deg(angleDeltaParameter->doubleValue());
     rad rotationAxisAngle = deg(rotationAxisAngleParameter->doubleValue());
     Quaternion dQ = Quaternion(Coord::X_AXIS, rotationAxisAngle.get()) * Quaternion(Coord::Z_AXIS, angleDelta.get());
@@ -80,9 +116,9 @@ void UAVMobility::setTargetPosition(){
 
     previousChange = simTime();
     nextChange = previousChange + nextChangeInterval;
-}
+}*/
 
-void UAVMobility::move(){
+/*void UAVMobility::move(){
     simtime_t now = simTime();
     rad dummyAngle;
     if (now == nextChange) {
@@ -100,7 +136,7 @@ void UAVMobility::move(){
         lastPosition = sourcePosition * (1 - alpha) + targetPosition * alpha;
         handleIfOutside(REFLECT, targetPosition, lastVelocity, dummyAngle, dummyAngle, quaternion);
     }
-}
+}*/
 
 double UAVMobility::getMaxSpeed() const {
     return speedParameter->isExpression() ? NaN : speedParameter->doubleValue();
