@@ -7,6 +7,7 @@
 #include "../mysterio/Example1Communication.h"
 #include "../communication/UAVCommunicationSocket.h"
 #include "../uavs/UAVMobility.h"
+#include "../database/RepositoryMySQL.h"
 
 using namespace omnetpp;
 using namespace std;
@@ -33,6 +34,7 @@ UAVCommunicationSocket uavs[20];
 //Aqui usa só getIndex();
 //Decidir se usa selfID ou a variável indice
 void ModuloComunicacaoCase1::initialize(){
+    RepositoryMySQL r;
     //Atribuindo id ao UAV
     selfID = getIndex();
     uavs[selfID].setSelfID(selfID);
