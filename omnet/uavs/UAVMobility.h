@@ -58,6 +58,6 @@ class INET_API UAVMobility : public LineSegmentsMobilityBase
     virtual double getMaxSpeed() const override;
 };
 
-} // namespace inet
+}
 
-#endif // ifndef __INET_MYSTERIOMOBILITY_H
+#endif

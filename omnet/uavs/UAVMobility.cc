@@ -1,19 +1,4 @@
 #include "../uavs/UAVMobility.h"
-
-#include "inet/common/INETMath.h"
-#include "inet/common/ModuleAccess.h"
-#include "inet/common/StringFormat.h"
-#include "inet/common/geometry/common/CanvasProjection.h"
-#include "inet/common/geometry/common/Coord.h"
-#include "inet/common/geometry/common/Quaternion.h"
-#include "inet/mobility/contract/IMobility.h"
-#include <stdio.h>
-#include <string.h>
-#include <omnetpp.h>
-#include <iostream>
-
-#include "../common/msg/MinhaMensagem_m.h"
-#include "../common/msg/StatusModule.h"
 #include "../mysterio/Example1Communication.h"
 
 using namespace omnetpp;
@@ -45,9 +30,10 @@ void UAVMobility::initialize(int stage) {
         waitTimeParameter = &par("waitTime");
         hasWaitTime = waitTimeParameter->isExpression() || waitTimeParameter->doubleValue() != 0;
         speedParameter = &par("speed");
+        velocidade1[selfID] = par("speed").operator double();
+        //velocidade1[selfID] = speedParameter;
         stationary = !speedParameter->isExpression() && speedParameter->doubleValue() == 0;
     }
-    //velocidade1[selfID] = par("speed").operator double();
 }
 
 void UAVMobility::setTargetPosition() {
@@ -57,9 +43,9 @@ void UAVMobility::setTargetPosition() {
         nextMoveIsWait = false;
     } else {
         targetPosition = getRandomPosition();
-        //position1[selfID] = lastPosition; //Aqui
         double speed = speedParameter->doubleValue();
         double distance = lastPosition.distance(targetPosition);
+        position1[selfID] = lastPosition;
         simtime_t travelTime = distance / speed;
         nextChange = simTime() + travelTime;
         nextMoveIsWait = hasWaitTime;
@@ -70,73 +56,6 @@ void UAVMobility::move() {
     LineSegmentsMobilityBase::move();
     raiseErrorIfOutside();
 }
-
-//
-
-/*void UAVMobility::initialize(int stage){
-    selfID = getParentModule()->getIndex();
-
-    LineSegmentsMobilityBase::initialize(stage);
-    EV_TRACE << "initializing MysterioMobility stage " << stage << endl;
-    if (stage == INITSTAGE_LOCAL) {
-        rad heading = deg(par("initialMovementHeading"));
-        rad elevation = deg(par("initialMovementElevation"));
-        changeIntervalParameter = &par("changeInterval");
-        angleDeltaParameter = &par("angleDelta");
-        rotationAxisAngleParameter = &par("rotationAxisAngle");
-        speedParameter = &par("speed");
-        velocidade1[selfID] = par("speed").operator double();
-
-        quaternion = Quaternion(EulerAngles(heading, -elevation, rad(0)));
-        WATCH(quaternion);
-    }
-}*/
-
-/*void UAVMobility::orient(){
-    if (faceForward)
-        lastOrientation = quaternion;
-}*/
-
-/*void UAVMobility::setTargetPosition(){
-    rad angleDelta = deg(angleDeltaParameter->doubleValue());
-    rad rotationAxisAngle = deg(rotationAxisAngleParameter->doubleValue());
-    Quaternion dQ = Quaternion(Coord::X_AXIS, rotationAxisAngle.get()) * Quaternion(Coord::Z_AXIS, angleDelta.get());
-    quaternion = quaternion * dQ;
-    quaternion.normalize();
-    Coord direction = quaternion.rotate(Coord::X_AXIS);
-
-    simtime_t nextChangeInterval = *changeIntervalParameter;
-    EV_DEBUG << "interval: " << nextChangeInterval << endl;
-    sourcePosition = lastPosition;
-
-    //if(targetPositionCommand != nullptr)
-        //targetPosition = targetPositionCommand;
-    //else
-        targetPosition = lastPosition + direction * (*speedParameter) * nextChangeInterval.dbl();
-
-    previousChange = simTime();
-    nextChange = previousChange + nextChangeInterval;
-}*/
-
-/*void UAVMobility::move(){
-    simtime_t now = simTime();
-    rad dummyAngle;
-    if (now == nextChange) {
-        lastPosition = targetPosition;
-        position1[selfID] = lastPosition;
-        handleIfOutside(REFLECT, targetPosition, lastVelocity, dummyAngle, dummyAngle, quaternion);
-        EV_INFO << "reached current target position = " << lastPosition << endl;
-        setTargetPosition();
-        EV_INFO << "new target position = " << targetPosition << ", next change = " << nextChange << endl;
-        lastVelocity = (targetPosition - lastPosition) / (nextChange - simTime()).dbl();
-        handleIfOutside(REFLECT, targetPosition, lastVelocity, dummyAngle, dummyAngle, quaternion);
-    }else if (now > lastUpdate) {
-        ASSERT(nextChange == -1 || now < nextChange);
-        double alpha = (now - previousChange) / (nextChange - previousChange);
-        lastPosition = sourcePosition * (1 - alpha) + targetPosition * alpha;
-        handleIfOutside(REFLECT, targetPosition, lastVelocity, dummyAngle, dummyAngle, quaternion);
-    }
-}*/
 
 double UAVMobility::getMaxSpeed() const {
     return speedParameter->isExpression() ? NaN : speedParameter->doubleValue();
