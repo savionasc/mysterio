@@ -7,9 +7,6 @@
 
 class Status {
 public:
-    virtual void addUAV(UAV uav) = 0;   //Remover
-    virtual void removeUAV(int iD) = 0; //Remover
-    virtual int getNumUAVs() = 0;       //Remover
     virtual Coordinate getUAVLocation(int idUAV) = 0;
     virtual void setUAVLocation(Coordinate coord, int idUAV) = 0; //Remover
     virtual double getUAVVelocity(int idUAV) = 0;
