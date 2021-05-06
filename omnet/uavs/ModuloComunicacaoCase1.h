@@ -10,11 +10,8 @@ namespace inet {
 
 class ModuloComunicacaoCase1 : public cSimpleModule {
   public:
-    ModuloComunicacaoCase1();
-    virtual ~ModuloComunicacaoCase1();
     enum TipoMensagem {
-        LEMBRAR = 10,
-        SOLICITAR_LOCALIZACAO,
+        SOLICITAR_LOCALIZACAO = 10,
         RESPONDER_LOCALIZACAO,
         SOLICITAR_VELOCIDADE,
         RESPONDER_VELOCIDADE

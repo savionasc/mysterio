@@ -2,10 +2,6 @@
 
 namespace mysterio {
 
-UAVCommunicationSocket::UAVCommunicationSocket() { }
-
-UAVCommunicationSocket::~UAVCommunicationSocket() { }
-
 void UAVCommunicationSocket::dispatchMessage(Message msg){
     //Aqui envia mensagem via socket pro Communication
     send(this->getSocketCode(), msg.getMsg(), strlen(msg.getMsg()), 0);
@@ -39,6 +35,13 @@ void UAVCommunicationSocket::connectBase(){
             thread receber(socket_receber(), this->socketCode, this->selfID, this->socketCode);
             receber.detach(); //join
         }
+
+        //TUDO ISSO AÍ EM CIMA DEVERIA SER SÓ ISSO AQUI: NÃO?
+        //void CommunicationSocket::connectANewUAV(int ID, StatusC1 *aggregator){
+        //    UAV newUAV;
+        //    newUAV.setID(ID);
+        //    aggregator->addUAV(newUAV);
+        //}
 
         /*while(1){
             std::cout << ">";

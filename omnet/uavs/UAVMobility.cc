@@ -14,7 +14,6 @@ int UAVLeader1 = -1;
 int UAVDestino1 = -1;
 
 using namespace mysterio;
-Example1Communication mysterios1;
 
 namespace inet {
 

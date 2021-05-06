@@ -25,9 +25,6 @@ class UAVCommunicationSocket : public UAVCommunication {
     friend class socket_receber;
 public:
 
-    UAVCommunicationSocket();
-    virtual ~UAVCommunicationSocket();
-
     //UAVCommunication
     void connectBase();
     void dispatchMessage(Message msg); //Aqui ele deve enviar mensagem pro Communication

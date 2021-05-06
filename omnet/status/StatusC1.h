@@ -75,6 +75,12 @@ public:
     void unsubscribe(UAV *uav){
 
     }
+
+    void saveUAVCurrentPosition(int idUAV, double x, double y, double z, StatusC1 *aggregator);
+    void saveUAVCurrentPosition(int idUAV, Coordinate coord, StatusC1 *aggregator);
+    Coordinate requestUAVCurrentPosition(int idUAV, StatusC1 *aggregator);
+    void saveUAVCurrentVelocity(int idUAV, double velocity, StatusC1 *aggregator);
+    double requestUAVCurrentVelocity(int idUAV, StatusC1 *aggregator);
 protected: //Variáveis que fui criando e melhorando ainda
     std::map<int,UAV> uavs;
     int tempoDeFuncionamento; //do sistema

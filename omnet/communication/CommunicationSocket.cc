@@ -177,32 +177,6 @@ void CommunicationSocket::sendMessage(Communicable *source, Communicable *dest, 
     }
 }
 
-CommunicationSocket::CommunicationSocket() { }
-
-CommunicationSocket::~CommunicationSocket() { }
-
-bool CommunicationSocket::hasMessageToDrone(int destination){
-    if(1)
-        return true;
-    else
-        return false;
-}
-
-int CommunicationSocket::hasMessages(){
-    return 1;//messages.size();
-}
-
-std::queue<int> CommunicationSocket::messagesToSend(){
-    std::queue<int> fila;
-    //for (std::map<int, MinhaMensagem>::iterator it=messages.begin(); it!=messages.end(); ++it)
-        //fila.push(it->first);
-    return fila;
-}
-
-void CommunicationSocket::markAsReceived(int destination){
-    //messages.erase(destination);
-}
-
 void CommunicationSocket::connectANewUAV(int ID, StatusC1 *aggregator){
     UAV newUAV;
     newUAV.setID(ID);
@@ -211,29 +185,4 @@ void CommunicationSocket::connectANewUAV(int ID, StatusC1 *aggregator){
 
 void CommunicationSocket::disconnectUAV(int ID, StatusC1 *aggregator){
     aggregator->removeUAV(ID);
-}
-
-void CommunicationSocket::saveUAVCurrentPosition(int idUAV, double x, double y, double z, StatusC1 *aggregator){
-    Coordinate coord;
-
-    coord.setX(x);
-    coord.setY(y);
-    coord.setZ(z);
-    aggregator->setUAVLocation(coord, idUAV);
-}
-
-void CommunicationSocket::saveUAVCurrentPosition(int idUAV, Coordinate coord, StatusC1 *aggregator){
-    aggregator->setUAVLocation(coord, idUAV);
-}
-
-Coordinate CommunicationSocket::requestUAVCurrentPosition(int idUAV, StatusC1 *aggregator){
-    return aggregator->getUAVLocation(idUAV);
-}
-
-void CommunicationSocket::saveUAVCurrentVelocity(int idUAV, double velocity, StatusC1 *aggregator){
-    aggregator->setUAVVelocity(velocity, idUAV);
-}
-
-double CommunicationSocket::requestUAVCurrentVelocity(int idUAV, StatusC1 *aggregator){
-    return aggregator->getUAVVelocity(idUAV);
 }

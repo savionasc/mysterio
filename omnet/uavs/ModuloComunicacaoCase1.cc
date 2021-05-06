@@ -1,23 +1,14 @@
 #include "ModuloComunicacaoCase1.h"
-
-#include <iostream>
-#include <queue>
-
 #include "../common/msg/StatusModule.h"
-#include "../mysterio/Example1Communication.h"
 #include "../communication/UAVCommunicationSocket.h"
 #include "../uavs/UAVMobility.h"
-#include "../database/RepositoryMySQL.h"
+#include <iostream>
 
 using namespace omnetpp;
 using namespace std;
 using namespace inet;
 
 Define_Module(ModuloComunicacaoCase1);
-
-ModuloComunicacaoCase1::ModuloComunicacaoCase1() { }
-
-ModuloComunicacaoCase1::~ModuloComunicacaoCase1() { }
 
 extern Coord position1[10];
 extern double velocidade1[10];
@@ -26,21 +17,14 @@ extern int UAVDestino1;
 extern int UAVLeader1;
 
 using namespace mysterio;
-//extern Mysterio mysterios;
-extern Example1Communication mysterios1;
-queue<int> filaDeMensagens;
 UAVCommunicationSocket uavs[20];
 
 //Aqui usa só getIndex();
-//Decidir se usa selfID ou a variável indice
 void ModuloComunicacaoCase1::initialize(){
-    RepositoryMySQL r;
-    //Atribuindo id ao UAV
     selfID = getIndex();
     uavs[selfID].setSelfID(selfID);
 
     if(!uavs[selfID].isConnected()){
-        mysterios1.conn.connectANewUAV(selfID, &mysterios1.status);
         uavs[selfID].connectBase(); //Implementar o listen... para ficar ouvindo o canal
     }
 
@@ -48,101 +32,61 @@ void ModuloComunicacaoCase1::initialize(){
 }
 
 void ModuloComunicacaoCase1::handleMessage(cMessage *msg){
-    //if message is to remember
-    if(selfID == UAVLeader1 && msg->getKind() == LEMBRAR){
-        if(filaDeMensagens.size() > 0){
-            cout << "[U" << selfID << "] Há ";
-            cout << filaDeMensagens.front();
-            cout << ((filaDeMensagens.front() > 1) ? " mensagens." : " mensagem.") << endl;
+    MinhaMensagem *mMSG = check_and_cast<MinhaMensagem*>(msg);
 
-            int msgUAV = filaDeMensagens.front();
-            filaDeMensagens.pop();
+    cout << "[U2U] Executando ação: " << msg->getFullName() << endl;
 
-            if(mysterios1.conn.hasMessageToDrone(msgUAV)){
-                //MinhaMensagem m = mysterios1.conn.receiveMessage(msgUAV);
-                MinhaMensagem m;
-                cout << "[C2U] Mensagem recebida de " << m.getOrigem();
-                cout << " para " << m.getDestino() << endl;
-                cout << "[C2U] Kind: " << m.getKind();
-                cout << " | titulo: " << m.getTitulo() << endl;
-                //mysterios.communication.markAsReceived(msgUAV);
-            }else{
-                cout << "[C2U] Não há mensagens pro UAV[" << msgUAV << "]" << endl;
-            }
-        }else{
-            cout << "[U" << selfID << "] Não há mensagens." << endl;
+    if(selfID == mMSG->getDestino()){
+        cout << "[U2U] Chegou no destino" << endl;
+        if(msg->getKind() == SOLICITAR_LOCALIZACAO){
+            cout << "[U2U] Enviando status(localizacao) de " << selfID << " para " << mMSG->getOrigem() << endl;
+            enviarMensagem(1.0, selfID, mMSG->getOrigem(), "Enviando localizacao", RESPONDER_LOCALIZACAO);
+            //sendMSGEvt = new MinhaMensagem("Enviando localizacao", RESPONDER_LOCALIZACAO);
+            //sendMSGEvt->setDestino(mMSG->getOrigem());
+            //sendMSGEvt->setOrigem(selfID);
+            //scheduleAt(simTime().dbl()+1.0, sendMSGEvt);
+        }else if(msg->getKind() == RESPONDER_LOCALIZACAO){ //Chegou no leader
+            StatusModule s = mMSG->getStatus();
+            cout << "[U" << selfID << "] Localização de [" << mMSG->getOrigem() << "]:\n   X: " << s.getLocationX() << " Y: " << s.getLocationX() << " Z: " << s.getLocationX() << endl;
+        }else if(msg->getKind() == SOLICITAR_VELOCIDADE){
+            //cout << "[U2U] Enviando status(velocidade) de " << selfID << " para " << mMSG->getOrigem() << endl;
+            //sendMSGEvt = new MinhaMensagem("Enviando velocidade", RESPONDER_VELOCIDADE);
+            //sendMSGEvt->setDestino(mMSG->getOrigem());
+            //sendMSGEvt->setOrigem(selfID);
+            //scheduleAt(simTime().dbl()+1.0, sendMSGEvt);
+            enviarMensagem(1.0, selfID, mMSG->getOrigem(), "Enviando velocidade", RESPONDER_VELOCIDADE);
+        }else if(mMSG->getKind() == RESPONDER_VELOCIDADE){
+            StatusModule s = mMSG->getStatus();
+            cout << "[U" << selfID << "] Velocidade de ["<< mMSG->getOrigem() << "]: " << s.getVelocity() << " m/s" << endl;
         }
-        rememberCheckMessage(2);
-    }else{
-        MinhaMensagem *mMSG = check_and_cast<MinhaMensagem*>(msg);
-
-        cout << "[U2U] Executando ação: " << msg->getFullName() << endl;
-
-        if(selfID == mMSG->getDestino()){
-            cout << "[U2U] Chegou no destino" << endl;
-            if(msg->getKind() == SOLICITAR_LOCALIZACAO){
-                cout << "[U2U] Enviando status(localizacao) de " << selfID << " para " << mMSG->getOrigem() << endl;
-                enviarMensagem(1.0, selfID, mMSG->getOrigem(), "Enviando localizacao", RESPONDER_LOCALIZACAO);
-                //sendMSGEvt = new MinhaMensagem("Enviando localizacao", RESPONDER_LOCALIZACAO);
-                //sendMSGEvt->setDestino(mMSG->getOrigem());
-                //sendMSGEvt->setOrigem(selfID);
-                //scheduleAt(simTime().dbl()+1.0, sendMSGEvt);
-            }else if(msg->getKind() == RESPONDER_LOCALIZACAO){ //Chegou no leader
-                StatusModule s = mMSG->getStatus();
-                cout << "[U2C] Passando dados para o communication" << endl;
-                mysterios1.conn.saveUAVCurrentPosition(mMSG->getOrigem(), s.getLocationX(), s.getLocationY(), s.getLocationZ(), &mysterios1.status);
-                cout << "[C2U] Recebendo dados do communication" << endl;
-                Coordinate cc = mysterios1.conn.requestUAVCurrentPosition(mMSG->getOrigem(), &mysterios1.status);
-                //cout << "COORDENADAS OBTIDAS [" << mMSG->getOrigem() << "]:\nX: " << cc.x << " Y: " << cc.y << " Z: " << cc.z << endl;
-                cout << "[U" << selfID << "] Localização de [" << mMSG->getOrigem() << "]:\n   X: " << cc.getX() << " Y: " << cc.getY() << " Z: " << cc.getZ() << endl;
-                //cout << "Localização de [" << mMSG->getOrigem() << "]:\nX: " << s.getLocationX() << " Y: " << s.getLocationY() << " Z: " << s.getLocationZ() << endl;
-            }else if(msg->getKind() == SOLICITAR_VELOCIDADE){
-                cout << "[U2U] Enviando status(velocidade) de " << selfID << " para " << mMSG->getOrigem() << endl;
-                //sendMSGEvt = new MinhaMensagem("Enviando velocidade", RESPONDER_VELOCIDADE);
-                //sendMSGEvt->setDestino(mMSG->getOrigem());
-                //sendMSGEvt->setOrigem(selfID);
-                //scheduleAt(simTime().dbl()+1.0, sendMSGEvt);
-                enviarMensagem(1.0, selfID, mMSG->getOrigem(), "Enviando velocidade", RESPONDER_VELOCIDADE);
-            }else if(mMSG->getKind() == RESPONDER_VELOCIDADE){
-                StatusModule s = mMSG->getStatus();
-                cout << "[U2C] Passando dados para o communication" << endl;
-                mysterios1.conn.saveUAVCurrentVelocity(mMSG->getOrigem(), s.getVelocity(), &mysterios1.status);
-                cout << "[C2U] Recebendo dados do communication" << endl;
-                double velocidade = mysterios1.conn.requestUAVCurrentVelocity(mMSG->getOrigem(), &mysterios1.status);
-                cout << "[U" << selfID << "] Velocidade de ["<< mMSG->getOrigem() << "]: " << velocidade << " m/s" << endl;
-            }
-        } else {
-            if(UAVDestino1 == -1 && selfID == UAVLeader1){
-                do{
-                    cout << "Selecione o UAV de destino." << endl;
-                    if(scanf("%d", &UAVDestino1) != 1){
-                        cout << "Execute o programa novamente e digite uma opção valida!" << endl;
-                        exit(0);
-                    }
-                } while(UAVDestino1 <= -1);
-                mMSG->setDestino(UAVDestino1);
-                cout << "[U2C] Enviou para o communication: " << UAVDestino1 << " | " << mMSG->getFullName() << endl;
-                mMSG->setTitulo(mMSG->getFullName());
-                //mysterios1.conn.sendMessageDroneToDrone(UAVLeader1, UAVDestino1, mMSG);
-                cout << "[C2U] Recebendo dados do communication" << endl;
-                filaDeMensagens = mysterios1.conn.messagesToSend();
-            }
-
-            StatusModule s;
-            switch (msg->getKind()){
-                case RESPONDER_LOCALIZACAO:
-                    s.setLocation(position1[selfID].x, position1[selfID].y, position1[selfID].z);
-                    break;
-                case RESPONDER_VELOCIDADE:
-                    s.setVelocity(velocidade1[selfID]);
-                    break;
-                default: /*Nao identificou o tipo da mensagem*/
-                    break;
-            }
-            mMSG->setStatus(s);
-            forwardMessage(mMSG);
+    } else {
+        if(UAVDestino1 == -1 && selfID == UAVLeader1){
+            do{
+                cout << "Selecione o UAV de destino." << endl;
+                if(scanf("%d", &UAVDestino1) != 1){
+                    cout << "Execute o programa novamente e digite uma opção valida!" << endl;
+                    exit(0);
+                }
+            } while(UAVDestino1 <= -1);
+            mMSG->setDestino(UAVDestino1);
+            cout << "[U2C] Enviou para o communication: " << UAVDestino1 << " | " << mMSG->getFullName() << endl;
+            mMSG->setTitulo(mMSG->getFullName());
+            cout << "[C2U] Recebendo dados do communication" << endl;
         }
 
+        StatusModule s;
+        switch (msg->getKind()){
+            case RESPONDER_LOCALIZACAO:
+                s.setLocation(position1[selfID].x, position1[selfID].y, position1[selfID].z);
+                break;
+            case RESPONDER_VELOCIDADE:
+                s.setVelocity(velocidade1[selfID]);
+                break;
+            default: /*Nao identificou o tipo da mensagem*/
+                break;
+        }
+        mMSG->setStatus(s);
+        forwardMessage(mMSG);
     }
 
 }
@@ -185,16 +129,10 @@ void ModuloComunicacaoCase1::enviarMensagem(double tempo, int origem, int destin
     scheduleAt(simTime()+tempo, sendMSGEvt);
 }
 
-void ModuloComunicacaoCase1::rememberCheckMessage(double seconds){
-    MinhaMensagem *m = new MinhaMensagem("mandar msg", LEMBRAR);
-    scheduleAt(simTime()+seconds, m);
-}
-
 void ModuloComunicacaoCase1::solicitarStatusDoUAVVizinho(){
 
-    //Call for the First UAV
+    //Call in the first moments of the application to select a UAV
     if (selfID == 0) {
-        rememberCheckMessage(2);
         do{
             cout << "Communication Module - Case 1." << endl;
             cout << "Por favor, selecione o UAV leader." << endl;
@@ -217,7 +155,7 @@ void ModuloComunicacaoCase1::solicitarStatusDoUAVVizinho(){
             cout << "2. Velocidade" << std::endl;
 
             if (scanf("%d", &continuar) == 1) {
-                switch(continuar){
+                switch(continuar){ //Creating Message to communication between UAVs without our framework
                     case 1:
                         sendMSGEvt = new MinhaMensagem("Solicitando localizacao", SOLICITAR_LOCALIZACAO);
                         break;
@@ -233,7 +171,7 @@ void ModuloComunicacaoCase1::solicitarStatusDoUAVVizinho(){
 
         } while(continuar <= 0);
 
-        //This message is used only for communication between uavs
+        //This message is used only for communication between uavs using just Omnet++
         sendMSGEvt->setOrigem(UAVLeader1);
         //Dica para deixar a aplicação aleatória
         //Colocar um tempo aleatório em vez de 3
