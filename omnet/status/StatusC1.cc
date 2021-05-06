@@ -29,10 +29,6 @@ double StatusC1::requestUAVCurrentVelocity(int idUAV, StatusC1 *aggregator){
 }
 //Fim
 
-StatusC1::StatusC1() { }
-
-StatusC1::~StatusC1() { }
-
 void StatusC1::enviarResposta(int resp){
     CommunicationSocket cs;
     Communicable src;

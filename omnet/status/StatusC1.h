@@ -10,10 +10,8 @@ using namespace std;
 
 class StatusC1 : public Status, public Communicable{
 public:
-    StatusC1();
-    virtual ~StatusC1();
     //Communicable
-    virtual void onMessageReceive(Message msg){ //message);
+    virtual void onMessageReceive(Message msg){
         if(msg.getCode() == 11){
             cout << "Chegou no Status!" << endl;
             cout << msg.getMsg() << endl;
@@ -61,19 +59,24 @@ public:
     }
 
     void subscribe(UAV *uav){
-
+        //this->subscribers.push_back(uav);
     }
 
     void requestStatus(){
+        //    CommunicationSocket cs;
+        //for (UAV *u : this->getListSubscribers())
+            //std::cout << u->getID() << std::endl;
+            //               this    uav   msg
+            //cs.sendMessage(source, dest, msg);
 
     }
 
-    std::list<UAV*> getPublishersList(){
-
+        std::list<UAV*> getPublishersList(){
+        //return this->publishers;
     }
 
     void unsubscribe(UAV *uav){
-
+        //this->subscribers.remove(uav);
     }
 
     void saveUAVCurrentPosition(int idUAV, double x, double y, double z, StatusC1 *aggregator);
