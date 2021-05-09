@@ -13,8 +13,7 @@
 using namespace std;
 int conexoes[MAXUAVS], ct = -1;
 
-
-
+//Há problema se deixar aqui?
 class socket_receber {
 public:
     void operator()(int param){
