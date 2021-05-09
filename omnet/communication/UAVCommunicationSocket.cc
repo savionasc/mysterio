@@ -4,7 +4,8 @@ namespace mysterio {
 
 void UAVCommunicationSocket::dispatchMessage(Message msg){
     //Aqui envia mensagem via socket pro Communication
-    send(this->getSocketCode(), msg.getMsg(), strlen(msg.getMsg()), 0);
+    //send(this->getSocketCode(), msg.getMsg(), strlen(msg.getMsg()), 0);
+    send(this->getSocketCode(), (Message*)&msg, sizeof(msg), 0);
 }
 
 void UAVCommunicationSocket::connectBase(){

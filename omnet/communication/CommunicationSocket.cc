@@ -85,7 +85,14 @@ void CommunicationSocket::envMensagem(){
             char m[1500];
             std::cin >> m;
             for (int i = 0; i <= ct; i++){
-                thread enviar(SocketEnviar(), conexoes[i], m);
+                Message msg;
+                //Message *msg = new Message(m, 10, -1, i);
+                msg.setCode(10);
+                msg.setMsg(m);
+                msg.setDestination(i);
+                msg.setSource(-1);
+                //Message msg(m, 10, -1, i);
+                thread enviar(SocketEnviar(), conexoes[i], msg);
                 enviar.detach(); //Tava Join
             }
         }else{ //unicast
