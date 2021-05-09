@@ -7,8 +7,6 @@
 #include "../../src/communication/Communicable.h"
 #include "../../src/utils/Message.h"
 
-#define MAXUAVS 20
-
 // componente de comunicação do framework com os drones
 class CommunicationSocket : public Communication, public Communicable {
 public:

@@ -3,8 +3,10 @@ all: Example1Communication.o StatusC1.o CommunicationSocket.o main.o UAV.o
 
 main.o: main.cc communication/CommunicationSocket.h
 	g++ -c main.cc communication/CommunicationSocket.h
-CommunicationSocket.o: communication/CommunicationSocket.cc communication/CommunicationSocket.h
-	g++ -c communication/CommunicationSocket.cc communication/CommunicationSocket.h
+CommunicationSocket.o: communication/CommunicationSocket.cc communication/CommunicationSocket.h communication/SocketConnect.cc
+	g++ -c communication/CommunicationSocket.cc communication/CommunicationSocket.h communication/SocketConnect.cc
+SocketConnect.o: communication/SocketConnect.cc
+	g++ -c communication/SocketConnect.cc
 Example1Communication.o: mysterio/Example1Communication.cc communication/CommunicationSocket.h status/StatusC1.h
 	g++ -c mysterio/Example1Communication.cc communication/CommunicationSocket.h communication/CommunicationSocket.cc status/StatusC1.h 
 StatusC1.o:	status/StatusC1.cc status/StatusC1.h ../src/status/Status.h

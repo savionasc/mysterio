@@ -1,67 +1,25 @@
 #include "CommunicationSocket.h"
-#include <string.h>
+#include "SocketConnect.cc"
+#include "../../src/utils/Codes.h"
+
+#include <thread>
+
+//#include <string.h>
+//#include <thread>
+//#include <string>
+//#include <string.h>
+//#include <sys/socket.h>
+//#include <netinet/in.h>
 
 //Enviar mensagens Unicast, Broadcast e Multicast
 
-#include <iostream>
-#include <thread>
-#include <string>
-#include <string.h>
-#include <sys/socket.h>
-#include <netinet/in.h>
-
-using namespace std;
+//#include <iostream>
+//using namespace std;
 int conexoes[MAXUAVS], ct = -1;
 
 //Há problema se deixar aqui?
-class socket_receber {
-public:
-    void operator()(int param){
-        while(esperarMensagem(param)){ }
-    }
 
-    bool esperarMensagem(int newSd){
-        //Aqui deve converter toda e qualquer mensagem e repassar pra this.OnMessageReceve
-        char msg[1500];
-        memset(&msg, 0, sizeof(msg));
-        recv(newSd, (char*)&msg, sizeof(msg), 0);
-        if(!strcmp(msg, "exit")){
-            std::cout << "UAV has quit the session" << std::endl;
-            return false;
-        }else if(!strcmp(msg, "status")){ //Mudar isso aqui e chamar o OnMessageReceve
-            StatusC1 status;
-            Message m;
-            status.onMessageReceive(m);
-        }
-        std::cout << "UAV Message: " << msg << std::endl;
-        return true;
-    }
-};
-
-class socket_enviar {
-public:
-    void operator()(int param){
-        enviarResposta(param);
-        //while(enviarResposta(param)){ }
-    }
-
-    void operator()(int param, char *param2){
-        send(param, (char*)param2, strlen(param2), 0);
-    }
-
-    bool enviarResposta(int newSd){
-        char msg[1500];
-        std::cout << ">";
-        std::string data;
-        cin >> data;
-        memset(&msg, 0, sizeof(msg));
-        strcpy(msg, data.c_str());
-        //if(data == "exit")
-        send(newSd, (char*)&msg, strlen(msg), 0);
-    }
-};
-
-class socket_conectar {
+/*class socket_conectar {
 public:
     void operator()(int param){
         while(conectarNovoUAV(param)){ }
@@ -80,11 +38,11 @@ public:
         ct++;
         conexoes[ct] = newSd;
         thread conectar(socket_conectar(), serverSd);
-        thread receber(socket_receber(), conexoes[ct]);
+        thread receber(SocketReceber(), conexoes[ct]);
         receber.join();
         return true;
     }
-};
+};*/
 
 int CommunicationSocket::configurar(int port){
     if(port < 1000){
@@ -127,11 +85,11 @@ void CommunicationSocket::envMensagem(){
             char m[1500];
             std::cin >> m;
             for (int i = 0; i <= ct; i++){
-                thread enviar(socket_enviar(), conexoes[i], m);
+                thread enviar(SocketEnviar(), conexoes[i], m);
                 enviar.detach(); //Tava Join
             }
         }else{ //unicast
-            thread enviar(socket_enviar(), conexoes[id]);
+            thread enviar(SocketEnviar(), conexoes[id]);
             enviar.join();
         }
         //enviar.joinable();
@@ -141,7 +99,7 @@ void CommunicationSocket::envMensagem(){
 void CommunicationSocket::listening(){
 
     int serverSd = configurar(1111);
-    thread conectar(socket_conectar(), serverSd);
+    thread conectar(SocketConnect(), serverSd);
     while(ct == -1){
 
     }
@@ -149,7 +107,7 @@ void CommunicationSocket::listening(){
     int antigo = 1;
     if(antigo == 0){
         while(1){
-            thread enviar(socket_enviar(), conexoes[0]);
+            thread enviar(SocketEnviar(), conexoes[0]);
             enviar.join();
         }
     }else{
