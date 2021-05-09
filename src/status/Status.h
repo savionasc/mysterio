@@ -12,6 +12,8 @@ public:
     virtual double getUAVVelocity(int idUAV) = 0;
     virtual void setUAVVelocity(double velocity, int idUAV) = 0;  //Remover
 
+    //Battery
+    //Get Tempo de VOO
     //Get UAVsCount or PublishersCount?
 
     virtual void subscribe(UAV *uav) = 0;
