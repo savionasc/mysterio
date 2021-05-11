@@ -55,22 +55,15 @@ class socket_receber {
 
         bool esperarMensagem(int newSd){
             //Aqui deve converter toda e qualquer mensagem e repassar pra this.OnMessageReceve
-            //char msg[1500];
-            //memset(&msg, 0, sizeof(msg));
-            //recv(newSd, (char*)&msg, sizeof(msg), 0);
             Message msg;
             memset(&msg, 0, sizeof(msg));
-            std::cout << "Recebi!" << std::endl;
             recv(newSd, (Message*)&msg, sizeof(msg), 0);
-            std::cout << "Eita!" << std::endl;
             if(!strcmp(msg.getMsg(), "exit") || !strcmp(msg.getMsg(), "quit")){
-                std::cout << "A!" << std::endl;
                 std::cout << "UAV has quit the session" << std::endl;
                 //UAVCommunication u; u.disconnectBase();
                 close(newSd);
                 return false;
             }else if(!strcmp(msg.getMsg(), "location")){ //Mudar isso aqui e chamar o OnMessageReceve
-                std::cout << "B!" << std::endl;
                 std::cout << " status " << std::endl;
                 Coord coor = position1[idUAV];
 
@@ -89,12 +82,8 @@ class socket_receber {
                 Message m(snd, 11, this->idUAV, -1);
                 u.dispatchMessage(m);
             }else{
-                std::cout << "C!" << std::endl;
+                std::cout << "Mensagem recebida em ["<< this->idUAV <<"]: " << msg.getMsg() << std::endl;
             }
-            std::cout << "Message to UAV - [" << this->idUAV << "]: " << msg.getMsg() << std::endl;
-            std::cout << " x " << msg.getCode() << std::endl;
-            std::cout << " y " << msg.getDestination() << std::endl;
-            std::cout << " z " << msg.getSource() << std::endl;
             return true;
         }
     private:

@@ -17,7 +17,7 @@ public:
     sts_meu y;
 };
 
-class SocketEnviar {
+class SendSocket {
 public:
     void operator()(int param){
         enviarResposta(param);

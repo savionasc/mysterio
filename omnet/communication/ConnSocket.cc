@@ -3,8 +3,8 @@
 #include <netinet/in.h>
 #include <thread>
 
-#include "SocketReceber.cc"
-#include "SocketEnviar.cc"
+#include "ReceiveSocket.cc"
+#include "SendSocket.cc"
 
 
 using namespace std;
@@ -12,7 +12,7 @@ extern int conexoes[];
 extern int ct;
 
 ///*
-class SocketConnect{
+class ConnSocket{
 public:
     void operator()(int param){
         while(conectarNovoUAV(param)){ }
@@ -30,8 +30,8 @@ public:
         std::cout << "Connected with UAV!" << std::endl;
         ct++;
         conexoes[ct] = newSd;
-        thread conectar(SocketConnect(), serverSd);
-        thread receber(SocketReceber(), conexoes[ct]);
+        thread conectar(ConnSocket(), serverSd);
+        thread receber(ReceiveSocket(), conexoes[ct]);
         receber.join();
         return true;
     }

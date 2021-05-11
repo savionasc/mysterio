@@ -51,6 +51,8 @@ class INET_API UAVMobility : public LineSegmentsMobilityBase
     /** @brief Overridden from LineSegmentsMobilityBase.*/
     virtual void move() override;
 
+    void setData();
+
     int selfID;
 
   public:

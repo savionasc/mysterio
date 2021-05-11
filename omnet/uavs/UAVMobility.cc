@@ -33,6 +33,7 @@ void UAVMobility::initialize(int stage) {
         //velocidade1[selfID] = speedParameter;
         stationary = !speedParameter->isExpression() && speedParameter->doubleValue() == 0;
     }
+    this->setData();
 }
 
 void UAVMobility::setTargetPosition() {
@@ -44,16 +45,22 @@ void UAVMobility::setTargetPosition() {
         targetPosition = getRandomPosition();
         double speed = speedParameter->doubleValue();
         double distance = lastPosition.distance(targetPosition);
-        position1[selfID] = lastPosition;
         simtime_t travelTime = distance / speed;
         nextChange = simTime() + travelTime;
         nextMoveIsWait = hasWaitTime;
     }
+    this->setData();
 }
 
 void UAVMobility::move() {
     LineSegmentsMobilityBase::move();
     raiseErrorIfOutside();
+    this->setData();
+}
+
+void UAVMobility::setData(){
+    position1[selfID] = lastPosition;
+    velocidade1[selfID] = speedParameter->doubleValue();
 }
 
 double UAVMobility::getMaxSpeed() const {

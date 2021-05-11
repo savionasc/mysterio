@@ -79,12 +79,12 @@ public:
         //this->subscribers.remove(uav);
     }
 
-    void saveUAVCurrentPosition(int idUAV, double x, double y, double z, StatusC1 *aggregator);
-    void saveUAVCurrentPosition(int idUAV, Coordinate coord, StatusC1 *aggregator);
-    Coordinate requestUAVCurrentPosition(int idUAV, StatusC1 *aggregator);
-    void saveUAVCurrentVelocity(int idUAV, double velocity, StatusC1 *aggregator);
-    double requestUAVCurrentVelocity(int idUAV, StatusC1 *aggregator);
-protected: //Variáveis que fui criando e melhorando ainda
+    void saveUAVCurrentPosition(int idUAV, double x, double y, double z, StatusC1 *status);
+    void saveUAVCurrentPosition(int idUAV, Coordinate coord, StatusC1 *status);
+    Coordinate requestUAVCurrentPosition(int idUAV, StatusC1 *status);
+    void saveUAVCurrentVelocity(int idUAV, double velocity, StatusC1 *status);
+    double requestUAVCurrentVelocity(int idUAV, StatusC1 *status);
+protected:
     std::map<int,UAV> uavs;
     int tempoDeFuncionamento; //do sistema
     UAV pegarUAV(int idUAV){

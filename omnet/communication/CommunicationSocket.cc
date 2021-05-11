@@ -1,8 +1,9 @@
 #include "CommunicationSocket.h"
-#include "SocketConnect.cc"
 #include "../../src/utils/Codes.h"
 
 #include <thread>
+
+#include "ConnSocket.cc"
 
 //#include <string.h>
 //#include <thread>
@@ -13,8 +14,6 @@
 
 //Enviar mensagens Unicast, Broadcast e Multicast
 
-//#include <iostream>
-//using namespace std;
 int conexoes[MAXUAVS], ct = -1;
 
 //Há problema se deixar aqui?
@@ -86,27 +85,24 @@ void CommunicationSocket::envMensagem(){
             std::cin >> m;
             for (int i = 0; i <= ct; i++){
                 Message msg;
-                //Message *msg = new Message(m, 10, -1, i);
                 msg.setCode(10);
                 msg.setMsg(m);
                 msg.setDestination(i);
                 msg.setSource(-1);
-                //Message msg(m, 10, -1, i);
-                thread enviar(SocketEnviar(), conexoes[i], msg);
-                enviar.detach(); //Tava Join
+                thread enviar(SendSocket(), conexoes[i], msg);
+                enviar.detach();
             }
         }else{ //unicast
-            thread enviar(SocketEnviar(), conexoes[id]);
+            thread enviar(SendSocket(), conexoes[id]);
             enviar.join();
         }
-        //enviar.joinable();
     }
 }
 
 void CommunicationSocket::listening(){
 
     int serverSd = configurar(1111);
-    thread conectar(SocketConnect(), serverSd);
+    thread conectar(ConnSocket(), serverSd);
     while(ct == -1){
 
     }
@@ -114,7 +110,7 @@ void CommunicationSocket::listening(){
     int antigo = 1;
     if(antigo == 0){
         while(1){
-            thread enviar(SocketEnviar(), conexoes[0]);
+            thread enviar(SendSocket(), conexoes[0]);
             enviar.join();
         }
     }else{

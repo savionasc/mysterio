@@ -5,7 +5,6 @@
 #include <iostream>
 
 using namespace omnetpp;
-using namespace std;
 using namespace inet;
 
 Define_Module(ModuloComunicacaoCase1);
@@ -41,19 +40,11 @@ void ModuloComunicacaoCase1::handleMessage(cMessage *msg){
         if(msg->getKind() == SOLICITAR_LOCALIZACAO){
             cout << "[U2U] Enviando status(localizacao) de " << selfID << " para " << mMSG->getOrigem() << endl;
             enviarMensagem(1.0, selfID, mMSG->getOrigem(), "Enviando localizacao", RESPONDER_LOCALIZACAO);
-            //sendMSGEvt = new MinhaMensagem("Enviando localizacao", RESPONDER_LOCALIZACAO);
-            //sendMSGEvt->setDestino(mMSG->getOrigem());
-            //sendMSGEvt->setOrigem(selfID);
-            //scheduleAt(simTime().dbl()+1.0, sendMSGEvt);
         }else if(msg->getKind() == RESPONDER_LOCALIZACAO){ //Chegou no leader
             StatusModule s = mMSG->getStatus();
             cout << "[U" << selfID << "] Localização de [" << mMSG->getOrigem() << "]:\n   X: " << s.getLocationX() << " Y: " << s.getLocationX() << " Z: " << s.getLocationX() << endl;
         }else if(msg->getKind() == SOLICITAR_VELOCIDADE){
-            //cout << "[U2U] Enviando status(velocidade) de " << selfID << " para " << mMSG->getOrigem() << endl;
-            //sendMSGEvt = new MinhaMensagem("Enviando velocidade", RESPONDER_VELOCIDADE);
-            //sendMSGEvt->setDestino(mMSG->getOrigem());
-            //sendMSGEvt->setOrigem(selfID);
-            //scheduleAt(simTime().dbl()+1.0, sendMSGEvt);
+            cout << "[U2U] Enviando status(velocidade) de " << selfID << " para " << mMSG->getOrigem() << endl;
             enviarMensagem(1.0, selfID, mMSG->getOrigem(), "Enviando velocidade", RESPONDER_VELOCIDADE);
         }else if(mMSG->getKind() == RESPONDER_VELOCIDADE){
             StatusModule s = mMSG->getStatus();
@@ -69,9 +60,7 @@ void ModuloComunicacaoCase1::handleMessage(cMessage *msg){
                 }
             } while(UAVDestino1 <= -1);
             mMSG->setDestino(UAVDestino1);
-            cout << "[U2C] Enviou para o communication: " << UAVDestino1 << " | " << mMSG->getFullName() << endl;
             mMSG->setTitulo(mMSG->getFullName());
-            cout << "[C2U] Recebendo dados do communication" << endl;
         }
 
         StatusModule s;
@@ -120,6 +109,9 @@ MinhaMensagem *ModuloComunicacaoCase1::generateMessage(){
 
     return msg;
 }
+
+
+//Para usar com a mensagem //sprintf(msgname, "msg-%d-para-%d", src, dest);
 
 //Auxiliary functions
 void ModuloComunicacaoCase1::enviarMensagem(double tempo, int origem, int destino, char const *name, int kind){
