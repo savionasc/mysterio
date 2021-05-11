@@ -1,6 +1,7 @@
 #include "ModuloComunicacaoCase1.h"
 #include "../common/msg/StatusModule.h"
 #include "../communication/UAVCommunicationSocket.h"
+#include "../mission/GoToTask.h"
 #include "../uavs/UAVMobility.h"
 #include <iostream>
 
@@ -18,6 +19,7 @@ extern int UAVLeader1;
 using namespace mysterio;
 UAVCommunicationSocket uavs[20];
 
+static GoToTask irNaEsquina;
 //Aqui usa só getIndex();
 void ModuloComunicacaoCase1::initialize(){
     selfID = getIndex();
@@ -61,6 +63,9 @@ void ModuloComunicacaoCase1::handleMessage(cMessage *msg){
             } while(UAVDestino1 <= -1);
             mMSG->setDestino(UAVDestino1);
             mMSG->setTitulo(mMSG->getFullName());
+            Coordinate currentPosition(100.0, 100.0, 100.0);
+            cout << "Resultado da tarefa pro drone [" << selfID << "]: " << irNaEsquina.isComplete(currentPosition) << endl;
+
         }
 
         StatusModule s;
@@ -125,6 +130,9 @@ void ModuloComunicacaoCase1::solicitarStatusDoUAVVizinho(){
 
     //Call in the first moments of the application to select a UAV
     if (selfID == 0) {
+        cout << "Atribuindo tarefa ao drone [" << selfID << "]" << endl;
+        Coordinate c(100.0, 100.0, 100.0);
+        irNaEsquina.setTask(c);
         do{
             cout << "Communication Module - Case 1." << endl;
             cout << "Por favor, selecione o UAV leader." << endl;
