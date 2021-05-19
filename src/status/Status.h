@@ -16,6 +16,11 @@ public:
     //Get Tempo de VOO
     //Get UAVsCount or PublishersCount?
 
+    /*ReadStatusFromDB(int idUAV){
+     * Repository r;
+     * return r.getStatusLocation(idUAV);
+     *}*/
+
     virtual void subscribe(UAV *uav) = 0;
     virtual void requestStatus() = 0;
     virtual std::list<UAV*> getPublishersList() = 0;

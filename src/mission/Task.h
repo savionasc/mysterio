@@ -2,12 +2,14 @@
 #define MYSTERIO_SRC_MISSION_TASK_H_
 #include "../utils/Coordinate.h"
 
-class Task {
+class Task { //Goto, CineBackBaseStation
+
 public:
     //Função de Avaliação
     virtual bool isComplete(){ } //For GoTo Task, Current Coordinate is a parameter necessary to check this
     virtual void setTask(){ }
 
+    //Add int Priority
     char objetivo[150]; //Definir um tipo Objetivo
     Coordinate target;
     Coordinate initialPosition;
