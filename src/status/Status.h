@@ -8,13 +8,12 @@
 class Status {
 public:
     virtual Coordinate getUAVLocation(int idUAV) = 0;
-    virtual void setUAVLocation(Coordinate coord, int idUAV) = 0; //Remover
+    virtual void updateUAVLocation(Coordinate coord, int idUAV) = 0; //UPDATE or SAVE...
     virtual double getUAVVelocity(int idUAV) = 0;
-    virtual void setUAVVelocity(double velocity, int idUAV) = 0;  //Remover
-
-    //Battery
-    //Get Tempo de VOO
-    //Get UAVsCount or PublishersCount?
+    virtual void updateUAVVelocity(double velocity, int idUAV) = 0;
+    virtual int getFlightTime() = 0;
+    virtual int CountActiveUAVs() = 0;
+    virtual float getBattery() = 0;
 
     /*ReadStatusFromDB(int idUAV){
      * Repository r;

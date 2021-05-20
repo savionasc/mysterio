@@ -9,11 +9,11 @@ void StatusC1::saveUAVCurrentPosition(int idUAV, double x, double y, double z, S
     coord.setX(x);
     coord.setY(y);
     coord.setZ(z);
-    status->setUAVLocation(coord, idUAV);
+    status->updateUAVLocation(coord, idUAV);
 }
 
 void StatusC1::saveUAVCurrentPosition(int idUAV, Coordinate coord, StatusC1 *status){
-    status->setUAVLocation(coord, idUAV);
+    status->updateUAVLocation(coord, idUAV);
 }
 
 Coordinate StatusC1::requestUAVCurrentPosition(int idUAV, StatusC1 *status){
@@ -21,7 +21,7 @@ Coordinate StatusC1::requestUAVCurrentPosition(int idUAV, StatusC1 *status){
 }
 
 void StatusC1::saveUAVCurrentVelocity(int idUAV, double velocity, StatusC1 *status){
-    status->setUAVVelocity(velocity, idUAV);
+    status->updateUAVVelocity(velocity, idUAV);
 }
 
 double StatusC1::requestUAVCurrentVelocity(int idUAV, StatusC1 *status){

@@ -23,6 +23,14 @@ public:
 
     //Status
 
+
+    //Para contar o tempo, talvez adicionar no subscribe ou no próprio uav
+    //clock_t t;
+    //t = clock();
+    //t = clock() - t;
+    //cout << ((double)t)/((CLOCKS_PER_SEC/1000)) << endl;
+
+
     virtual void addUAV(UAV uav){
         this->uavs[uav.getID()] = uav;
     }
@@ -40,7 +48,7 @@ public:
         c.setZ(s.getZAxis());
         return c;
     }
-    virtual void setUAVLocation(Coordinate coord, int idUAV){
+    virtual void updateUAVLocation(Coordinate coord, int idUAV){
         //Não usar aqui Essa responsabilidade é para que tipo de classe? /ok
         UAV s = pegarUAV(idUAV);
         s.setXAxis(coord.getX());
@@ -52,13 +60,25 @@ public:
         UAV s = pegarUAV(idUAV);
         return s.getVelocidade();
     }
-    virtual void setUAVVelocity(double velocity, int idUAV){
+    virtual void updateUAVVelocity(double velocity, int idUAV){
         UAV s = pegarUAV(idUAV);
         s.setVelocidade(velocity);
         this->uavs[idUAV] = s;
     }
 
-    void subscribe(UAV *uav){
+    virtual int getFlightTime(){
+
+    }
+
+    virtual int CountActiveUAVs(){
+
+    }
+
+    virtual float getBattery(){
+
+    }
+
+    void subscribe(UAV *uav){ //Comparar com o Add
         //this->subscribers.push_back(uav);
     }
 
@@ -68,7 +88,6 @@ public:
             //std::cout << u->getID() << std::endl;
             //               this    uav   msg
             //cs.sendMessage(source, dest, msg);
-
     }
 
         std::list<UAV*> getPublishersList(){
