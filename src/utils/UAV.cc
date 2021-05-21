@@ -52,6 +52,21 @@ void UAV::setVelocidade(double velocidade){
     this->velocidade = velocidade;
 }
 
+float UAV::getBattery() {
+    return battery;
+}
+void UAV::setBattery(float battery) {
+    this->battery = battery;
+}
+
+int UAV::getFlightTime() {
+    return flightTime;
+}
+
+void UAV::setFlightTime(int flightTime) {
+    this->flightTime = flightTime;
+}
+
 /*bool UAV::operator()(UAV const &u1, UAV const &u2){
     if(u1.getID() == u2.getID())
         return true;

@@ -11,9 +11,9 @@ public:
     virtual void updateUAVLocation(Coordinate coord, int idUAV) = 0; //UPDATE or SAVE...
     virtual double getUAVVelocity(int idUAV) = 0;
     virtual void updateUAVVelocity(double velocity, int idUAV) = 0;
-    virtual int getFlightTime() = 0;
+    virtual int getFlightTime(int idUAV) = 0;
     virtual int CountActiveUAVs() = 0;
-    virtual float getBattery() = 0;
+    virtual float getBattery(int idUAV) = 0;
 
     /*ReadStatusFromDB(int idUAV){
      * Repository r;

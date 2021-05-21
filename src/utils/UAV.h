@@ -25,6 +25,11 @@ public:
     //Communicable
     void onMessageReceive(Message msg);
 
+    virtual float getBattery();
+    virtual void setBattery(float battery);
+    virtual int getFlightTime();
+    virtual void setFlightTime(int flightTime);
+
 protected:
     int iD;
     int tempoDeVoo;
@@ -32,6 +37,8 @@ protected:
     double yAxis;
     double zAxis;
     double velocidade;
+    float battery;
+    int flightTime;
     //bateria
     //disponivel
 };
