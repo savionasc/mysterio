@@ -45,6 +45,8 @@ void ModuloComunicacaoCase1::handleMessage(cMessage *msg){
         }else if(msg->getKind() == RESPONDER_LOCALIZACAO){ //Chegou no leader
             StatusModule s = mMSG->getStatus();
             cout << "[U" << selfID << "] Localização de [" << mMSG->getOrigem() << "]:\n   X: " << s.getLocationX() << " Y: " << s.getLocationX() << " Z: " << s.getLocationX() << endl;
+            cout << "[U" << selfID << "] Bateria de [" << mMSG->getOrigem() << "]: " << s.getBattery() << endl;
+            cout << "[U" << selfID << "] Tempo de Voo de [" << mMSG->getOrigem() << "]:" << s.getFlightTime() << endl;
         }else if(msg->getKind() == SOLICITAR_VELOCIDADE){
             cout << "[U2U] Enviando status(velocidade) de " << selfID << " para " << mMSG->getOrigem() << endl;
             enviarMensagem(1.0, selfID, mMSG->getOrigem(), "Enviando velocidade", RESPONDER_VELOCIDADE);
@@ -72,6 +74,8 @@ void ModuloComunicacaoCase1::handleMessage(cMessage *msg){
         switch (msg->getKind()){
             case RESPONDER_LOCALIZACAO:
                 s.setLocation(position1[selfID].x, position1[selfID].y, position1[selfID].z);
+                s.setBattery(78.67f);
+                s.setFlightTime(1500);
                 break;
             case RESPONDER_VELOCIDADE:
                 s.setVelocity(velocidade1[selfID]);

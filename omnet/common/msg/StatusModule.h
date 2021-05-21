@@ -13,11 +13,18 @@ public:
     double getLocationZ();
     void setVelocity(double velocity);
     double getVelocity();
+    float getBattery();
+    void setBattery(float battery);
+    int getFlightTime();
+    void setFlightTime(int flightTime);
+
 protected:
     double locationX;
     double locationY;
     double locationZ;
     double velocity;
+    float battery;
+    int flightTime;
 };
 
 #endif

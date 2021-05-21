@@ -30,6 +30,22 @@ double StatusModule::getVelocity(){
     return velocity;
 }
 
+float StatusModule::getBattery() {
+    return battery;
+}
+
+void StatusModule::setBattery(float battery) {
+    this->battery = battery;
+}
+
+int StatusModule::getFlightTime() {
+    return flightTime;
+}
+
+void StatusModule::setFlightTime(int flightTime) {
+    this->flightTime = flightTime;
+}
+
 StatusModule::~StatusModule() {
     // TODO Auto-generated destructor stub
 }

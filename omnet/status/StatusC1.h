@@ -32,14 +32,15 @@ public:
 
 
     virtual void addUAV(UAV uav){
-        this->uavs[uav.getID()] = uav;
+        this->uavs[uav.getID()] = uav; //Substituir
     }
     virtual void removeUAV(int iD){
-        uavs.erase(iD);
+        uavs.erase(iD); //Substituir
     }
     virtual int getNumUAVs(){
-        return this->uavs.size();
+        return this->uavs.size(); //Substituir
     }
+
     virtual Coordinate getUAVLocation(int idUAV){
         UAV s = pegarUAV(idUAV);
         Coordinate c;
@@ -48,37 +49,59 @@ public:
         c.setZ(s.getZAxis());
         return c;
     }
+
     virtual void updateUAVLocation(Coordinate coord, int idUAV){
         //Não usar aqui Essa responsabilidade é para que tipo de classe? /ok
         UAV s = pegarUAV(idUAV);
         s.setXAxis(coord.getX());
         s.setYAxis(coord.getY());
         s.setZAxis(coord.getZ());
-        this->uavs[idUAV] = s;
+        this->uavs[idUAV] = s; //Substituir
     }
+
     virtual double getUAVVelocity(int idUAV){
         UAV s = pegarUAV(idUAV);
         return s.getVelocidade();
     }
+
     virtual void updateUAVVelocity(double velocity, int idUAV){
         UAV s = pegarUAV(idUAV);
         s.setVelocidade(velocity);
-        this->uavs[idUAV] = s;
+        this->uavs[idUAV] = s; //Substituir
     }
 
-    virtual int getFlightTime(){
+    virtual int getFlightTime(int idUAV){
+        UAV s = pegarUAV(idUAV);
+        return s.getFlightTime();
+    }
 
+    virtual void updateFlightTime(int time, int idUAV){
+        //Não usar aqui Essa responsabilidade é para que tipo de classe? /ok
+        UAV s = pegarUAV(idUAV);
+        s.setFlightTime(time);
+        this->uavs[idUAV] = s; //Substituir
+    }
+
+    virtual float getBattery(int idUAV){
+        UAV s = pegarUAV(idUAV);
+        return s.getBattery();
+    }
+
+    virtual void updateBattery(float level, int idUAV){
+        //Não usar aqui Essa responsabilidade é para que tipo de classe? /ok
+        UAV s = pegarUAV(idUAV);
+        s.setBattery(level);
+        this->uavs[idUAV] = s; //Substituir
     }
 
     virtual int CountActiveUAVs(){
-
+        return numNodes;
     }
 
-    virtual float getBattery(){
-
-    }
-
-    void subscribe(UAV *uav){ //Comparar com o Add
+    void subscribe(UAV *uav){
+        //Criar 2 Repositories
+        //Repository -> Que faz só consultas SQL geral e para consultas específicas que retorna UAV
+        //Repository.addUAV
         //this->subscribers.push_back(uav);
     }
 
