@@ -11,13 +11,13 @@ bool RepositoryMySQL::createConnection(){
     char query[]="SELECT * FROM uav_history;";
     int conta; //Contador comum
 
-    mysql_init(&conexao);
-    if (mysql_real_connect(&conexao,HOSTNAME,USERNAME,PASSWORD,DATABASE,0,NULL,0)){
+    mysql_init(&connection);
+    if (mysql_real_connect(&connection,HOSTNAME,USERNAME,PASSWORD,DATABASE,0,NULL,0)){
         printf("Conectado com Sucesso!\n");
-        if (mysql_query(&conexao,query))
-            printf("Erro: %s\n",mysql_error(&conexao));
+        if (mysql_query(&connection,query))
+            printf("Erro: %s\n",mysql_error(&connection));
         else{
-            resp = mysql_store_result(&conexao);//recebe a consulta
+            resp = mysql_store_result(&connection);//recebe a consulta
             if (resp) { //se houver consulta
                 //passa os dados dos campos para a variável campos
                 //escreve na tela os nomes dos campos dando
@@ -41,11 +41,11 @@ bool RepositoryMySQL::createConnection(){
             }
             mysql_free_result(resp);//limpa a variável do resultado: resp
         }
-        mysql_close(&conexao);
+        mysql_close(&connection);
     }else{
-        printf("Conexao Falhou\n");
-        if (mysql_errno(&conexao))
-            printf("Erro %d : %s\n", mysql_errno(&conexao), mysql_error(&conexao));
+        printf("Falha na conexão!\n");
+        if (mysql_errno(&connection))
+            printf("Erro %d : %s\n", mysql_errno(&connection), mysql_error(&connection));
     }
 }
 

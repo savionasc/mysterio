@@ -19,6 +19,12 @@ namespace inet {
 
 Define_Module(UAVMobility);
 
+    //Para contar o tempo, talvez adicionar no subscribe ou aqui no próprio uav
+    //clock_t t;
+    //t = clock();
+    //t = clock() - t;
+    //cout << ((double)t)/((CLOCKS_PER_SEC/1000)) << endl;
+
 UAVMobility::UAVMobility(){ nextMoveIsWait = false; }
 
 void UAVMobility::initialize(int stage) {

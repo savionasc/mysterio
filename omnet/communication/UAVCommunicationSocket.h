@@ -2,7 +2,6 @@
 #define MYSTERIO_OMNET_EXCOMM1_COMMUNICATION_UAVCOMMUNICATIONSOCKET_H_
 
 #include "../../src/communication/UAVCommunication.h"
-#include "../../src/utils/Message.h"
 #include "CommunicationSocket.h"
 #include <thread>
 #include <iostream>
@@ -79,7 +78,7 @@ class socket_receber {
                 txt += " z: " + to_string(coor.z);
                 strcpy(snd, txt.c_str());
                 //Message m(snd, 11);
-                Message m(snd, 11, this->idUAV, -1);
+                Message m(snd, LOCATION_STATUS_RESPONSE, this->idUAV, -1);
                 u.dispatchMessage(m);
             }else{
                 std::cout << "Mensagem recebida em ["<< this->idUAV <<"]: " << msg.getMsg() << std::endl;

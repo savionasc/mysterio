@@ -11,8 +11,8 @@ public:
     virtual void saveStatusInformation(int params);
     virtual int requestStatusInformation();
     virtual void destroyConnection();
-private:
-    MYSQL conexao;
+protected:
+    MYSQL connection;
 };
 
 #endif

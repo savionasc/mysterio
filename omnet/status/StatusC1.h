@@ -2,6 +2,7 @@
 #define MYSTERIO_OMNET_EXCOMM1_STATUS_STATUSC1_H_
 #include "../../src/status/Status.h"
 #include "../../src/communication/Communicable.h"
+#include "../../src/utils/Codes.h"
 #include "../../src/utils/Message.h"
 #include "../database/RepositoryMySQL.h"
 #include <iostream>
@@ -11,30 +12,9 @@ using namespace std;
 
 class StatusC1 : public Status, public Communicable{
 public:
-    StatusC1(){
-        this->r.createConnection();
-    }
-
+    StatusC1();
     //Communicable
-    virtual void onMessageReceive(Message msg){
-        if(msg.getCode() == 11){
-            cout << "Chegou no Status!" << endl;
-            cout << msg.getMsg() << endl;
-            enviarResposta(22);
-        }
-    }
-
-    virtual void enviarResposta(int resp);
-
-    //Status
-
-
-    //Para contar o tempo, talvez adicionar no subscribe ou no próprio uav
-    //clock_t t;
-    //t = clock();
-    //t = clock() - t;
-    //cout << ((double)t)/((CLOCKS_PER_SEC/1000)) << endl;
-
+    virtual void onMessageReceive(Message msg);
 
     virtual void addUAV(UAV uav){
         this->uavs[uav.getID()] = uav; //Substituir
@@ -46,62 +26,16 @@ public:
         return this->uavs.size(); //Substituir
     }
 
-    virtual Coordinate getUAVLocation(int idUAV){
-        UAV s = pegarUAV(idUAV);
-        Coordinate c;
-        c.setX(s.getXAxis());
-        c.setY(s.getYAxis());
-        c.setZ(s.getZAxis());
-        return c;
-    }
+    virtual int CountActiveUAVs();
 
-    virtual void updateUAVLocation(Coordinate coord, int idUAV){
-        //Não usar aqui Essa responsabilidade é para que tipo de classe? /ok
-        UAV s = pegarUAV(idUAV);
-        s.setXAxis(coord.getX());
-        s.setYAxis(coord.getY());
-        s.setZAxis(coord.getZ());
-        this->uavs[idUAV] = s; //Substituir
-    }
-
-    virtual double getUAVVelocity(int idUAV){
-        UAV s = pegarUAV(idUAV);
-        return s.getVelocidade();
-    }
-
-    virtual void updateUAVVelocity(double velocity, int idUAV){
-        UAV s = pegarUAV(idUAV);
-        s.setVelocidade(velocity);
-        this->uavs[idUAV] = s; //Substituir
-    }
-
-    virtual int getFlightTime(int idUAV){
-        UAV s = pegarUAV(idUAV);
-        return s.getFlightTime();
-    }
-
-    virtual void updateFlightTime(int time, int idUAV){
-        //Não usar aqui Essa responsabilidade é para que tipo de classe? /ok
-        UAV s = pegarUAV(idUAV);
-        s.setFlightTime(time);
-        this->uavs[idUAV] = s; //Substituir
-    }
-
-    virtual float getBattery(int idUAV){
-        UAV s = pegarUAV(idUAV);
-        return s.getBattery();
-    }
-
-    virtual void updateBattery(float level, int idUAV){
-        //Não usar aqui Essa responsabilidade é para que tipo de classe? /ok
-        UAV s = pegarUAV(idUAV);
-        s.setBattery(level);
-        this->uavs[idUAV] = s; //Substituir
-    }
-
-    virtual int CountActiveUAVs(){
-        return numNodes;
-    }
+    virtual Coordinate getUAVLocation(int idUAV);  //rescues from the repository
+    virtual void updateUAVLocation(Coordinate coord, int idUAV); //send to repository
+    virtual double getUAVVelocity(int idUAV);      //rescues from the repository
+    virtual void updateUAVVelocity(double velocity, int idUAV);  //send to repository
+    virtual int getFlightTime(int idUAV);          //rescues from the repository
+    virtual void updateFlightTime(int time, int idUAV);          //send to repository
+    virtual float getBattery(int idUAV);           //rescues from the repository
+    virtual void updateBattery(float level, int idUAV);          //send to repository
 
     void subscribe(UAV *uav){
         //Criar 2 Repositories
@@ -110,7 +44,7 @@ public:
         //this->subscribers.push_back(uav);
     }
 
-    void requestStatus(){
+    void requestStatus(){   //cobra os UAVs por Status
         //    CommunicationSocket cs;
         //for (UAV *u : this->getListSubscribers())
             //std::cout << u->getID() << std::endl;
@@ -118,7 +52,7 @@ public:
             //cs.sendMessage(source, dest, msg);
     }
 
-        std::list<UAV*> getPublishersList(){
+    std::list<UAV*> getPublishersList(){
         //return this->publishers;
     }
 

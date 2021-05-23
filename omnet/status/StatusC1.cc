@@ -1,14 +1,8 @@
 #include "StatusC1.h"
 #include "../communication/CommunicationSocket.h"
 
-//Adicionar isso?
-//Inicio
 void StatusC1::saveUAVCurrentPosition(int idUAV, double x, double y, double z, StatusC1 *status){
-    Coordinate coord;
-
-    coord.setX(x);
-    coord.setY(y);
-    coord.setZ(z);
+    Coordinate coord(x, y, z);
     status->updateUAVLocation(coord, idUAV);
 }
 
@@ -27,18 +21,84 @@ void StatusC1::saveUAVCurrentVelocity(int idUAV, double velocity, StatusC1 *stat
 double StatusC1::requestUAVCurrentVelocity(int idUAV, StatusC1 *status){
     return status->getUAVVelocity(idUAV);
 }
-//Fim
 
-void StatusC1::enviarResposta(int resp){ //Ou reformula essa função ou apaga //Ela não envia pra ninguém
-    if(resp > 15 || resp == 1){
+/*  CommunicationSocket cs; //Enviando Reposta
+    Message m(resp, 15);
+    cs.sendMessage(&src, &dest, m);  */
 
+StatusC1::StatusC1(){
+    this->r.createConnection();
+}
+
+void StatusC1::onMessageReceive(Message msg) {
+    switch (msg.getCode()) {
+        case LOCATION_STATUS_RESPONSE: {
+            cout << "Resposta recebida no Status!" << endl;
+            cout << msg.getMsg() << endl;
+            break;
+        }
+        case VELOCITY_STATUS_RESPONSE:
+            break;
+        case BATTERY_STATUS_RESPONSE:
+            break;
+        case FLIGHTTIME_STATUS_RESPONSE:
+            break;
+        default:
+            break;
     }
+}
 
-    CommunicationSocket cs;
-    Communicable src;
-    Communicable dest; //UAV
-    //dest. //dest.setID();
-    cout << "Passando por status" << endl;
-    Message m("Resposta", 15);
-    cs.sendMessage(&src, &dest, m);
+int StatusC1::CountActiveUAVs(){
+    return numNodes;
+}
+
+//Getters and updaters
+Coordinate StatusC1::getUAVLocation(int idUAV){
+    UAV s = pegarUAV(idUAV);
+    Coordinate c(s.getXAxis(), s.getYAxis(), s.getZAxis());
+    return c;
+}
+
+void StatusC1::updateUAVLocation(Coordinate coord, int idUAV){
+    //Não usar aqui Essa responsabilidade é para que tipo de classe? /ok
+    UAV s = pegarUAV(idUAV);
+    s.setXAxis(coord.getX());
+    s.setYAxis(coord.getY());
+    s.setZAxis(coord.getZ());
+    this->uavs[idUAV] = s; //Substituir
+}
+
+double StatusC1::getUAVVelocity(int idUAV){
+    UAV s = pegarUAV(idUAV);
+    return s.getVelocidade();
+}
+
+void StatusC1::updateUAVVelocity(double velocity, int idUAV){
+    UAV s = pegarUAV(idUAV);
+    s.setVelocidade(velocity);
+    this->uavs[idUAV] = s; //Substituir
+}
+
+int StatusC1::getFlightTime(int idUAV){
+    UAV s = pegarUAV(idUAV);
+    return s.getFlightTime();
+}
+
+void StatusC1::updateFlightTime(int time, int idUAV){
+    //Não usar aqui Essa responsabilidade é para que tipo de classe? /ok
+    UAV s = pegarUAV(idUAV);
+    s.setFlightTime(time);
+    this->uavs[idUAV] = s; //Substituir
+}
+
+float StatusC1::getBattery(int idUAV){
+    UAV s = pegarUAV(idUAV);
+    return s.getBattery();
+}
+
+void StatusC1::updateBattery(float level, int idUAV){
+    //Não usar aqui Essa responsabilidade é para que tipo de classe? /ok
+    UAV s = pegarUAV(idUAV);
+    s.setBattery(level);
+    this->uavs[idUAV] = s; //Substituir
 }

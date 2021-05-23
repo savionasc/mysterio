@@ -8,7 +8,7 @@
 class Status {
 public:
     virtual Coordinate getUAVLocation(int idUAV) = 0;
-    virtual void updateUAVLocation(Coordinate coord, int idUAV) = 0; //UPDATE or SAVE...
+    virtual void updateUAVLocation(Coordinate coord, int idUAV) = 0;
     virtual double getUAVVelocity(int idUAV) = 0;
     virtual void updateUAVVelocity(double velocity, int idUAV) = 0;
     virtual int getFlightTime(int idUAV) = 0;
