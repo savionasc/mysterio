@@ -1,5 +1,5 @@
-all: Example1Communication.o StatusC1.o CommunicationSocket.o main.o UAV.o
-	g++ -pthread -o main main.o Example1Communication.o StatusC1.o CommunicationSocket.o UAV.o
+all: Example1Communication.o StatusC1.o RepositoryMySQL.o CommunicationSocket.o main.o UAV.o
+	g++ -pthread -o main main.o Example1Communication.o StatusC1.o RepositoryMySQL.o CommunicationSocket.o UAV.o -lmysqlclient
 
 main.o: main.cc communication/CommunicationSocket.h
 	g++ -c main.cc communication/CommunicationSocket.h
@@ -11,6 +11,8 @@ Example1Communication.o: mysterio/Example1Communication.cc communication/Communi
 	g++ -c mysterio/Example1Communication.cc communication/CommunicationSocket.h communication/CommunicationSocket.cc status/StatusC1.h 
 StatusC1.o:	status/StatusC1.cc status/StatusC1.h ../src/status/Status.h
 	g++ -c status/StatusC1.cc status/StatusC1.h ../src/status/Status.h
+RepositoryMySQL.o: database/RepositoryMySQL.cc database/RepositoryMySQL.h
+	g++ -c database/RepositoryMySQL.cc database/RepositoryMySQL.h
 UAV.o: ../src/utils/UAV.h ../src/utils/UAV.cc
 	g++ -c ../src/utils/UAV.h ../src/utils/UAV.cc
 Coordinate.o:  ../src/utils/Coordinate.h

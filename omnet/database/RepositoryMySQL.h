@@ -1,8 +1,7 @@
 #ifndef MYSTERIO_OMNET_DATABASE_REPOSITORYMYSQL_H_
 #define MYSTERIO_OMNET_DATABASE_REPOSITORYMYSQL_H_
+#include <mysql/mysql.h>
 #include "../../src/database/Repository.h"
-
-namespace mysterio {
 
 class RepositoryMySQL : public Repository {
 public:
@@ -12,8 +11,8 @@ public:
     virtual void saveStatusInformation(int params);
     virtual int requestStatusInformation();
     virtual void destroyConnection();
+private:
+    MYSQL conexao;
 };
-
-}
 
 #endif

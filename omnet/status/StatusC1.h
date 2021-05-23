@@ -3,6 +3,7 @@
 #include "../../src/status/Status.h"
 #include "../../src/communication/Communicable.h"
 #include "../../src/utils/Message.h"
+#include "../database/RepositoryMySQL.h"
 #include <iostream>
 #include <map>
 
@@ -10,6 +11,10 @@ using namespace std;
 
 class StatusC1 : public Status, public Communicable{
 public:
+    StatusC1(){
+        this->r.createConnection();
+    }
+
     //Communicable
     virtual void onMessageReceive(Message msg){
         if(msg.getCode() == 11){
@@ -138,6 +143,8 @@ protected:
         return r;
     }
     int numNodes;
+
+    RepositoryMySQL r;
 };
 
 #endif

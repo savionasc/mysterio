@@ -131,10 +131,11 @@ void CommunicationSocket::onMessageReceive(Message msg){
 void CommunicationSocket::sendMessage(Communicable *source, Communicable *dest, Message msg){
     getActiveConnections();
     if(msg.getCode() == 11){
+
         dest->onMessageReceive(msg);
-        //Loko* lok = dynamic_cast<Loko*>(dest);
-        //lok->onMessageReceive(msg);
     }
+
+    //SpecificClass* s = dynamic_cast<SpecificClass*>(dest);
 }
 
 void CommunicationSocket::connectANewUAV(int ID, StatusC1 *aggregator){

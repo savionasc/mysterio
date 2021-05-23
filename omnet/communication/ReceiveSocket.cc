@@ -25,9 +25,11 @@ public:
             return false;
         }//else if(!strcmp(msg.msg, "status")){ //Mudar isso aqui e chamar o OnMessageReceve
         else if(msg.code > 10 && msg.code < 21){
+            cout << "Criando Status!" << endl;
             StatusC1 status;
             status.onMessageReceive(msg);
         }else {
+            cout << "Criando Status!" << endl;
             StatusC1 status;
             status.onMessageReceive(msg);
         }
