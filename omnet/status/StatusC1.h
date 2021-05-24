@@ -37,7 +37,7 @@ public:
     virtual float getBattery(int idUAV);           //rescues from the repository
     virtual void updateBattery(float level, int idUAV);          //send to repository
 
-    void subscribe(UAV *uav){
+    void subscribe(UAV uav){
         //Criar 2 Repositories
         //Repository -> Que faz só consultas SQL geral e para consultas específicas que retorna UAV
         //Repository.addUAV
@@ -56,7 +56,7 @@ public:
         //return this->publishers;
     }
 
-    void unsubscribe(UAV *uav){
+    void unsubscribe(UAV uav){
         //this->subscribers.remove(uav);
     }
 

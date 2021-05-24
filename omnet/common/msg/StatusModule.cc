@@ -1,6 +1,5 @@
 #include "StatusModule.h"
 
-using namespace std;
 StatusModule::StatusModule() {
 }
 
@@ -49,4 +48,3 @@ void StatusModule::setFlightTime(int flightTime) {
 StatusModule::~StatusModule() {
     // TODO Auto-generated destructor stub
 }
-

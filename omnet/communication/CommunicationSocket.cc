@@ -5,43 +5,9 @@
 
 #include "ConnSocket.cc"
 
-//#include <string.h>
-//#include <thread>
-//#include <string>
-//#include <string.h>
-//#include <sys/socket.h>
-//#include <netinet/in.h>
-
 //Enviar mensagens Unicast, Broadcast e Multicast
 
 int conexoes[MAXUAVS], ct = -1;
-
-//Há problema se deixar aqui?
-
-/*class socket_conectar {
-public:
-    void operator()(int param){
-        while(conectarNovoUAV(param)){ }
-    }
-
-    bool conectarNovoUAV(int serverSd){
-        sockaddr_in newSockAddr;
-        socklen_t newSockAddrSize = sizeof(newSockAddr);
-        int newSd = accept(serverSd, (sockaddr *)&newSockAddr, &newSockAddrSize);
-        if(newSd < 0){
-            cerr << "Error accepting request from UAV!" << std::endl;
-            exit(1);
-            return false;
-        }
-        std::cout << "Connected with UAV!" << std::endl;
-        ct++;
-        conexoes[ct] = newSd;
-        thread conectar(socket_conectar(), serverSd);
-        thread receber(SocketReceber(), conexoes[ct]);
-        receber.join();
-        return true;
-    }
-};*/
 
 int CommunicationSocket::configurar(int port){
     if(port < 1000){
@@ -99,6 +65,7 @@ void CommunicationSocket::envMensagem(){
     }
 }
 
+//status->subscribe(newUAV);?
 void CommunicationSocket::listening(){
 
     int serverSd = configurar(1111);
@@ -120,30 +87,14 @@ void CommunicationSocket::listening(){
     conectar.join();
 }
 
-void CommunicationSocket::getActiveConnections(){
+void CommunicationSocket::getActiveConnections(){ }
 
-}
-
-void CommunicationSocket::onMessageReceive(Message msg){
-
-}
+void CommunicationSocket::onMessageReceive(Message msg){ }
 
 void CommunicationSocket::sendMessage(Communicable *source, Communicable *dest, Message msg){
     getActiveConnections();
-    if(msg.getCode() == 11){
-
+    if(msg.getCode() == 11)
         dest->onMessageReceive(msg);
-    }
 
     //SpecificClass* s = dynamic_cast<SpecificClass*>(dest);
-}
-
-void CommunicationSocket::connectANewUAV(int ID, StatusC1 *aggregator){
-    UAV newUAV;
-    newUAV.setID(ID);
-    aggregator->addUAV(newUAV);
-}
-
-void CommunicationSocket::disconnectUAV(int ID, StatusC1 *aggregator){
-    aggregator->removeUAV(ID);
 }

@@ -23,10 +23,6 @@ public:
     void envMensagem();
 
     int configurar(int port);
-
-    //Descartar??
-    virtual void connectANewUAV(int ID, StatusC1 *status);
-    virtual void disconnectUAV(int ID, StatusC1 *status);
 };
 
 #endif

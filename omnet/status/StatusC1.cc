@@ -31,6 +31,11 @@ StatusC1::StatusC1(){
 }
 
 void StatusC1::onMessageReceive(Message msg) {
+
+    this->r.requestStatusInformation();
+    this->r.destroyConnection();
+
+
     switch (msg.getCode()) {
         case LOCATION_STATUS_RESPONSE: {
             cout << "Resposta recebida no Status!" << endl;

@@ -4,9 +4,8 @@
 #include "../utils/Message.h"
 
 // Componente de comunicação do framework com Classes do tipo Communicable
-class Communication { //Interface
+class Communication {
 public:
-    //return void or bool
     virtual void sendMessage(Communicable *source, Communicable *dest, Message msg) = 0;
 };
 
