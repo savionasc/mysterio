@@ -16,16 +16,7 @@ public:
     //Communicable
     virtual void onMessageReceive(Message msg);
 
-    virtual void addUAV(UAV uav){
-        this->uavs[uav.getID()] = uav; //Substituir
-    }
-    virtual void removeUAV(int iD){
-        uavs.erase(iD); //Substituir
-    }
-    virtual int getNumUAVs(){
-        return this->uavs.size(); //Substituir
-    }
-
+    //Status
     virtual int CountActiveUAVs();
 
     virtual Coordinate getUAVLocation(int idUAV);  //rescues from the repository
@@ -59,12 +50,6 @@ public:
     void unsubscribe(UAV uav){
         //this->subscribers.remove(uav);
     }
-
-    void saveUAVCurrentPosition(int idUAV, double x, double y, double z, StatusC1 *status);
-    void saveUAVCurrentPosition(int idUAV, Coordinate coord, StatusC1 *status);
-    Coordinate requestUAVCurrentPosition(int idUAV, StatusC1 *status);
-    void saveUAVCurrentVelocity(int idUAV, double velocity, StatusC1 *status);
-    double requestUAVCurrentVelocity(int idUAV, StatusC1 *status);
 protected:
     std::map<int,UAV> uavs;
     int tempoDeFuncionamento; //do sistema

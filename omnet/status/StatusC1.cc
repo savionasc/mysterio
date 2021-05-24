@@ -1,27 +1,6 @@
 #include "StatusC1.h"
 #include "../communication/CommunicationSocket.h"
 
-void StatusC1::saveUAVCurrentPosition(int idUAV, double x, double y, double z, StatusC1 *status){
-    Coordinate coord(x, y, z);
-    status->updateUAVLocation(coord, idUAV);
-}
-
-void StatusC1::saveUAVCurrentPosition(int idUAV, Coordinate coord, StatusC1 *status){
-    status->updateUAVLocation(coord, idUAV);
-}
-
-Coordinate StatusC1::requestUAVCurrentPosition(int idUAV, StatusC1 *status){
-    return status->getUAVLocation(idUAV);
-}
-
-void StatusC1::saveUAVCurrentVelocity(int idUAV, double velocity, StatusC1 *status){
-    status->updateUAVVelocity(velocity, idUAV);
-}
-
-double StatusC1::requestUAVCurrentVelocity(int idUAV, StatusC1 *status){
-    return status->getUAVVelocity(idUAV);
-}
-
 /*  CommunicationSocket cs; //Enviando Reposta
     Message m(resp, 15);
     cs.sendMessage(&src, &dest, m);  */
@@ -32,14 +11,13 @@ StatusC1::StatusC1(){
 
 void StatusC1::onMessageReceive(Message msg) {
 
-    this->r.requestStatusInformation();
-    this->r.destroyConnection();
-
-
     switch (msg.getCode()) {
         case LOCATION_STATUS_RESPONSE: {
             cout << "Resposta recebida no Status!" << endl;
             cout << msg.getMsg() << endl;
+            Coordinate c(10, 11, 12);
+            this->updateUAVLocation(c, 1);
+            this->getUAVLocation(1);
             break;
         }
         case VELOCITY_STATUS_RESPONSE:
@@ -58,19 +36,24 @@ int StatusC1::CountActiveUAVs(){
 }
 
 //Getters and updaters
-Coordinate StatusC1::getUAVLocation(int idUAV){
+Coordinate StatusC1::getUAVLocation(int idUAV){ //Request?
     UAV s = pegarUAV(idUAV);
     Coordinate c(s.getXAxis(), s.getYAxis(), s.getZAxis());
+
+    cout << "Pegando localização do Banco de Dados!" << endl;
+    this->r.getUAVLocation(1);
     return c;
 }
 
-void StatusC1::updateUAVLocation(Coordinate coord, int idUAV){
+void StatusC1::updateUAVLocation(Coordinate coord, int idUAV){ //saveUAVCurrentPosition?
     //Não usar aqui Essa responsabilidade é para que tipo de classe? /ok
     UAV s = pegarUAV(idUAV);
     s.setXAxis(coord.getX());
     s.setYAxis(coord.getY());
     s.setZAxis(coord.getZ());
     this->uavs[idUAV] = s; //Substituir
+    cout << "Passando localização pro Banco de Dados!" << endl;
+    this->r.setUAVLocation(1, coord);
 }
 
 double StatusC1::getUAVVelocity(int idUAV){

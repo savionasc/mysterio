@@ -14,7 +14,6 @@ public:
     //Communicable
     void onMessageReceive(Message msg);
 
-    //Colocar origem e destino (ambos communicable) na mensagem?
     //Communication
     void sendMessage(Communicable *source, Communicable *dest, Message msg);
 
