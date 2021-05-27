@@ -1,5 +1,5 @@
-all: Example1Communication.o StatusC1.o RepositoryMySQL.o CommunicationSocket.o main.o UAV.o
-	g++ -pthread -o main main.o Example1Communication.o StatusC1.o RepositoryMySQL.o CommunicationSocket.o UAV.o -lmysqlclient
+all: Example1Communication.o StatusC1.o RepositoryMySQL.o CommunicationSocket.o main.o UAV.o StatusModule.o
+	g++ -pthread -o main main.o Example1Communication.o StatusC1.o RepositoryMySQL.o CommunicationSocket.o UAV.o StatusModule.o -lmysqlclient
 
 main.o: main.cc communication/CommunicationSocket.h
 	g++ -c main.cc communication/CommunicationSocket.h
@@ -17,7 +17,8 @@ UAV.o: ../src/utils/UAV.h ../src/utils/UAV.cc
 	g++ -c ../src/utils/UAV.h ../src/utils/UAV.cc
 Coordinate.o:  ../src/utils/Coordinate.h
 	g++ -c ../src/utils/Coordinate.h
-
+StatusModule.o: common/StatusModule.h common/StatusModule.cc
+	g++ -c common/StatusModule.h common/StatusModule.cc
 clean:
 	rm -rf *.o
 

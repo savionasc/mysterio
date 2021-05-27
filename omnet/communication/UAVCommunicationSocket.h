@@ -1,8 +1,5 @@
 #ifndef MYSTERIO_OMNET_EXCOMM1_COMMUNICATION_UAVCOMMUNICATIONSOCKET_H_
 #define MYSTERIO_OMNET_EXCOMM1_COMMUNICATION_UAVCOMMUNICATIONSOCKET_H_
-
-#include "../../src/communication/UAVCommunication.h"
-#include "CommunicationSocket.h"
 #include <thread>
 #include <iostream>
 #include <string>
@@ -10,7 +7,9 @@
 #include <netdb.h>
 #include <arpa/inet.h>
 #include <netinet/in.h>
-
+#include "../../src/communication/UAVCommunication.h"
+#include "CommunicationSocket.h"
+//#include "../common/uMessage.h"
 #include "inet/common/geometry/common/Coord.h"
 
 using namespace inet;
@@ -79,6 +78,7 @@ class socket_receber {
                 strcpy(snd, txt.c_str());
                 //Message m(snd, 11);
                 Message m(snd, LOCATION_STATUS_RESPONSE, this->idUAV, -1);
+                m.status.setLocation(coor.x, coor.y, coor.z);
                 u.dispatchMessage(m);
             }else{
                 std::cout << "Mensagem recebida em ["<< this->idUAV <<"]: " << msg.getMsg() << std::endl;

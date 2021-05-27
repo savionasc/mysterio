@@ -31,7 +31,7 @@
 
 class MinhaMensagem;
 // cplusplus {{
-#include "mysterio/omnet/common/msg/StatusModule.h"
+#include "StatusModule.h"
 #include <string>
 // }}
 

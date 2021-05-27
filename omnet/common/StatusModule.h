@@ -1,8 +1,6 @@
 #ifndef MYSTERIO_SRC_COMMUNICATION_STATUS_H_
 #define MYSTERIO_SRC_COMMUNICATION_STATUS_H_
 
-#include <omnetpp.h>
-
 class StatusModule {
 public:
     StatusModule();

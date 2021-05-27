@@ -1,5 +1,5 @@
 #include "ModuloComunicacaoCase1.h"
-#include "../common/msg/StatusModule.h"
+#include "../common/StatusModule.h"
 #include "../communication/UAVCommunicationSocket.h"
 #include "../mission/GoToTask.h"
 #include "../uavs/UAVMobility.h"

@@ -1,7 +1,7 @@
 #ifndef MYSTERIO_OMNET_EXCOMM1_UAVS_MODULOCOMUNICACAOCASE1_H_
 #define MYSTERIO_OMNET_EXCOMM1_UAVS_MODULOCOMUNICACAOCASE1_H_
 
-#include "../common/msg/MinhaMensagem_m.h"
+#include "../common/MinhaMensagem_m.h"
 
 using namespace omnetpp;
 using namespace std;

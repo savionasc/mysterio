@@ -5,18 +5,6 @@
 
 using namespace std;
 
-class sts_meu{
-public:
-    int a;
-    int b;
-};
-
-class teste{
-public:
-    int x;
-    sts_meu y;
-};
-
 class SendSocket {
 public:
     void operator()(int param){
@@ -27,7 +15,6 @@ public:
     void operator()(int param, Message param2){
     //void operator()(int param, char *param2){
         //send(param, (char*)param2, strlen(param2), 0);
-        //send(param, (teste*)&luta, sizeof(luta), 0);
         send(param, (Message*)&param2, sizeof(param2), 0);
     }
 

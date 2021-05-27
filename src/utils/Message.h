@@ -1,6 +1,6 @@
 #ifndef MYSTERIO_SRC_UTILS_MESSAGE_H_
 #define MYSTERIO_SRC_UTILS_MESSAGE_H_
-
+#include "../../omnet/common/StatusModule.h"
 #include <string.h>
 
 class Message {
@@ -44,6 +44,7 @@ public:
     short int code; //This variable must identify the request type of the message
     short int source;
     short int destination;
+    StatusModule status;
 };
 
 #endif
