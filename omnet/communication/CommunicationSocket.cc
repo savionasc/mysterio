@@ -11,17 +11,17 @@ int conexoes[MAXUAVS], ct = -1;
 
 int CommunicationSocket::configurar(int port){
     if(port < 1000){
-        cerr << "Usage: port" << std::endl;
+        std::cerr << "Inaccessible ports" << std::endl;
         exit(0);
     }
 
     char msg[1500];
 
-    sockaddr_in servAddr;
-    bzero((char*)&servAddr, sizeof(servAddr));
-    servAddr.sin_family = AF_INET;
-    servAddr.sin_addr.s_addr = htonl(INADDR_ANY);
-    servAddr.sin_port = htons(port);
+    sockaddr_in serverAddress;
+    bzero((char*)&serverAddress, sizeof(serverAddress));
+    serverAddress.sin_family = AF_INET;
+    serverAddress.sin_addr.s_addr = htonl(INADDR_ANY);
+    serverAddress.sin_port = htons(port);
 
     int serverSd = socket(AF_INET, SOCK_STREAM, 0);
     if(serverSd < 0){
@@ -29,10 +29,10 @@ int CommunicationSocket::configurar(int port){
         exit(0);
     }
 
-    int bindStatus = bind(serverSd, (struct sockaddr*) &servAddr,
-        sizeof(servAddr));
+    int bindStatus = bind(serverSd, (struct sockaddr*) &serverAddress,
+        sizeof(serverAddress));
     if(bindStatus < 0){
-        cerr << "Error binding socket to local address" << std::endl;
+        std::cerr << "Error binding socket to local address" << std::endl;
         exit(0);
     }
     std::cout << "Waiting for a UAV to connect..." << std::endl;

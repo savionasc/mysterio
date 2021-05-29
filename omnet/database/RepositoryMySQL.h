@@ -15,6 +15,12 @@ public:
 
     Coordinate getUAVLocation(int idUAV);
     void setUAVLocation(int idUAV, Coordinate coord);
+    double getVelocity(int idUAV);
+    void setVelocity(int idUAV, double velocity);
+    float getBattery(int idUAV);
+    void setBattery(int idUAV, float battery);
+    int getFlightTime(int idUAV);
+    void setFlightTime(int idUAV, int flightTime);
 
 protected:
     MYSQL connection;
