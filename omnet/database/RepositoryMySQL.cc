@@ -28,7 +28,8 @@ int RepositoryMySQL::requestStatusInformation(){
     MYSQL_RES *resp;
     MYSQL_ROW linhas;
     MYSQL_FIELD *campos;
-    char query[]="SELECT * FROM uav_history;";
+    //char query[]="SELECT * FROM uav_history;";
+    char query[]="SELECT * FROM uav_location;";
     int conta; //Contador comum
     if (mysql_query(&connection,query))
         printf("Erro: %s\n",mysql_error(&connection));
@@ -68,11 +69,11 @@ Coordinate RepositoryMySQL::getUAVLocation(int idUAV){
     MYSQL_RES *resp;
     MYSQL_ROW linhas;
     MYSQL_FIELD *campos;
-    char query[]="";
-    std::string txt = "SELECT * FROM uav_location where id_uav = '" + std::to_string(idUAV)+"';";
+    char query[180];
+    std::string txt = "SELECT * FROM uav_location where id_uav = '" + std::to_string(idUAV)+"' ORDER BY id desc LIMIT 1;";
     strcpy(query, txt.c_str());
-
     int conta;
+    Coordinate c;
     if (mysql_query(&connection,query))
         printf("Erro: %s\n",mysql_error(&connection));
     else{
@@ -86,6 +87,9 @@ Coordinate RepositoryMySQL::getUAVLocation(int idUAV){
             }
             printf("\n");
             while ((linhas=mysql_fetch_row(resp)) != NULL){
+                c.setX(std::stof(linhas[0]));
+                c.setY(std::stof(linhas[1]));
+                c.setZ(std::stof(linhas[2]));
                 for (conta=0;conta<mysql_num_fields(resp);conta++)
                     printf("%s\t",linhas[conta]);
                 printf("\n");
@@ -94,7 +98,6 @@ Coordinate RepositoryMySQL::getUAVLocation(int idUAV){
         mysql_free_result(resp);
     }
 
-    Coordinate c;
     return c;
 }
 
@@ -121,8 +124,11 @@ double RepositoryMySQL::getVelocity(int idUAV){
     MYSQL_RES *resp;
     MYSQL_ROW linhas;
     MYSQL_FIELD *campos;
-    char query[]="SELECT * FROM uav_velocity where id_uav = '1';";
+    char query[180];
+    std::string txt = "SELECT * FROM uav_velocity where id_uav = '" + std::to_string(idUAV)+"' ORDER BY id desc LIMIT 1;";
+    strcpy(query, txt.c_str());
     int conta;
+    double velocity;
     if (mysql_query(&connection,query))
         printf("Erro: %s\n",mysql_error(&connection));
     else{
@@ -136,16 +142,16 @@ double RepositoryMySQL::getVelocity(int idUAV){
             }
             printf("\n");
             while ((linhas=mysql_fetch_row(resp)) != NULL){
+                velocity = std::stod(linhas[0]);
                 for (conta=0;conta<mysql_num_fields(resp);conta++)
-                    printf("%s\t",linhas[conta]);
+                    printf("%lf\t",std::stod(linhas[conta]));
                 printf("\n");
             }
         }
         mysql_free_result(resp);
     }
 
-    double c;
-    return c;
+    return velocity;
 }
 
 void RepositoryMySQL::setVelocity(int idUAV, double velocity){
@@ -168,8 +174,11 @@ float RepositoryMySQL::getBattery(int idUAV){
     MYSQL_RES *resp;
     MYSQL_ROW linhas;
     MYSQL_FIELD *campos;
-    char query[]="SELECT * FROM uav_battery where id_uav = '1';";
+    char query[180];
+    std::string txt = "SELECT * FROM uav_battery where id_uav = '" + std::to_string(idUAV)+"' ORDER BY id desc LIMIT 1;";
+    strcpy(query, txt.c_str());
     int conta;
+    float battery;
     if (mysql_query(&connection,query))
         printf("Erro: %s\n",mysql_error(&connection));
     else{
@@ -183,6 +192,7 @@ float RepositoryMySQL::getBattery(int idUAV){
             }
             printf("\n");
             while ((linhas=mysql_fetch_row(resp)) != NULL){
+                battery = std::stof(linhas[0]);
                 for (conta=0;conta<mysql_num_fields(resp);conta++)
                     printf("%s\t",linhas[conta]);
                 printf("\n");
@@ -191,8 +201,7 @@ float RepositoryMySQL::getBattery(int idUAV){
         mysql_free_result(resp);
     }
 
-    float c;
-    return c;
+    return battery;
 }
 
 void RepositoryMySQL::setBattery(int idUAV, float battery){
@@ -215,8 +224,11 @@ int RepositoryMySQL::getFlightTime(int idUAV){
     MYSQL_RES *resp;
     MYSQL_ROW linhas;
     MYSQL_FIELD *campos;
-    char query[]="SELECT * FROM uav_flight_time where id_uav = '1';";
+    char query[180];
+    std::string txt = "SELECT * FROM uav_flight_time where id_uav = '" + std::to_string(idUAV)+"' ORDER BY id desc LIMIT 1;";
+    strcpy(query, txt.c_str());
     int conta;
+    int flightTime;
     if (mysql_query(&connection,query))
         printf("Erro: %s\n",mysql_error(&connection));
     else{
@@ -230,6 +242,7 @@ int RepositoryMySQL::getFlightTime(int idUAV){
             }
             printf("\n");
             while ((linhas=mysql_fetch_row(resp)) != NULL){
+                flightTime = std::stoi(linhas[0]);
                 for (conta=0;conta<mysql_num_fields(resp);conta++)
                     printf("%s\t",linhas[conta]);
                 printf("\n");
@@ -238,8 +251,7 @@ int RepositoryMySQL::getFlightTime(int idUAV){
         mysql_free_result(resp);
     }
 
-    int c;
-    return c;
+    return flightTime;
 }
 
 void RepositoryMySQL::setFlightTime(int idUAV, int flightTime){
@@ -258,4 +270,4 @@ void RepositoryMySQL::setFlightTime(int idUAV, int flightTime){
         printf("Erro na inserção %d : %s\n", mysql_errno(&connection), mysql_error(&connection));
 }
 
-RepositoryMySQL::~RepositoryMySQL() { }
+RepositoryMySQL::~RepositoryMySQL() {this->destroyConnection();}

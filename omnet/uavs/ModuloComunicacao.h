@@ -1,5 +1,5 @@
-#ifndef MYSTERIO_OMNET_EXCOMM1_UAVS_MODULOCOMUNICACAOCASE1_H_
-#define MYSTERIO_OMNET_EXCOMM1_UAVS_MODULOCOMUNICACAOCASE1_H_
+#ifndef MYSTERIO_OMNET_UAVS_MODULOCOMUNICACAO_H_
+#define MYSTERIO_OMNET_UAVS_MODULOCOMUNICACAO_H_
 
 #include "../common/MinhaMensagem_m.h"
 
@@ -8,7 +8,7 @@ using namespace std;
 
 namespace inet {
 
-class ModuloComunicacaoCase1 : public cSimpleModule {
+class ModuloComunicacao : public cSimpleModule {
   public:
     enum TipoMensagem {
         SOLICITAR_LOCALIZACAO = 10,

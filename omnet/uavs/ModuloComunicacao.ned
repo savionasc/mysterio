@@ -3,9 +3,9 @@ package mysterio.omnet.uavs;
 import inet.node.inet.StandardHost;
 
 //simple MysterioMobility extends MovingMobilityBase
-module ModuloComunicacaoCase1 extends StandardHost {
+module ModuloComunicacao extends StandardHost {
     parameters:
-        @class(ModuloComunicacaoCase1);
+        @class(ModuloComunicacao);
 //    gates:
 //        input in[];
 //        output out[];

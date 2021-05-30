@@ -1,11 +1,11 @@
 package mysterio.omnet.scenarios;
 
 import inet.node.inet.StandardHost;
-import mysterio.omnet.uavs.ModuloComunicacaoCase1;
+import mysterio.omnet.uavs.ModuloComunicacao;
 import inet.visualizer.integrated.IntegratedVisualizer;
 import inet.node.base.ApplicationLayerNodeBase;
 
-network MysterioCommunicationCase1 {
+network MysterioCommunication {
     parameters:
         int numHosts;
         @display("bgb=1000,1000");
@@ -13,7 +13,7 @@ network MysterioCommunicationCase1 {
         visualizer: IntegratedVisualizer {
             @display("p=100,50");
         }
-        host[numHosts]: ModuloComunicacaoCase1 {
+        host[numHosts]: ModuloComunicacao {
             @display("i=misc/node_vs");
         }
     connections:

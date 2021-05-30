@@ -1,4 +1,5 @@
-#include "ModuloComunicacaoCase1.h"
+#include "ModuloComunicacao.h"
+
 #include "../common/StatusModule.h"
 #include "../communication/UAVCommunicationSocket.h"
 #include "../mission/GoToTask.h"
@@ -8,7 +9,7 @@
 using namespace omnetpp;
 using namespace inet;
 
-Define_Module(ModuloComunicacaoCase1);
+Define_Module(ModuloComunicacao);
 
 extern Coord position1[10];
 extern double velocidade1[10];
@@ -21,7 +22,7 @@ UAVCommunicationSocket uavs[20];
 
 static GoToTask irNaEsquina;
 //Aqui usa só getIndex();
-void ModuloComunicacaoCase1::initialize(){
+void ModuloComunicacao::initialize(){
     selfID = getIndex();
     uavs[selfID].setSelfID(selfID);
 
@@ -32,7 +33,7 @@ void ModuloComunicacaoCase1::initialize(){
     solicitarStatusDoUAVVizinho();
 }
 
-void ModuloComunicacaoCase1::handleMessage(cMessage *msg){
+void ModuloComunicacao::handleMessage(cMessage *msg){
     MinhaMensagem *mMSG = check_and_cast<MinhaMensagem*>(msg);
 
     cout << "[U2U] Executando ação: " << msg->getFullName() << endl;
@@ -93,7 +94,7 @@ void ModuloComunicacaoCase1::handleMessage(cMessage *msg){
 //Acho que sprintf(msgname, "msg-%d-para-%d", src, dest); mostra na tela um texto na mensagem
 //Depois usar bubble("CHEGOU, gostei do recebido!"); que ele mostra na interface gráfica que chegou a mensagem!
 
-void ModuloComunicacaoCase1::forwardMessage(MinhaMensagem *msg){
+void ModuloComunicacao::forwardMessage(MinhaMensagem *msg){
     //Depois enviar mensagens para todos os vizinhos
     int n = gateSize("out");
     int k = intuniform(0, (n-1));
@@ -102,7 +103,7 @@ void ModuloComunicacaoCase1::forwardMessage(MinhaMensagem *msg){
     send(msg, "out", k);
 }
 
-MinhaMensagem *ModuloComunicacaoCase1::generateMessage(){
+MinhaMensagem *ModuloComunicacao::generateMessage(){
     int src = getIndex();
     int n = getVectorSize();
     int dest = intuniform(0, n-2);
@@ -123,14 +124,14 @@ MinhaMensagem *ModuloComunicacaoCase1::generateMessage(){
 //Para usar com a mensagem //sprintf(msgname, "msg-%d-para-%d", src, dest);
 
 //Auxiliary functions
-void ModuloComunicacaoCase1::enviarMensagem(double tempo, int origem, int destino, char const *name, int kind){
+void ModuloComunicacao::enviarMensagem(double tempo, int origem, int destino, char const *name, int kind){
     sendMSGEvt = new MinhaMensagem(name, kind);
     sendMSGEvt->setDestino(destino);
     sendMSGEvt->setOrigem(origem);
     scheduleAt(simTime()+tempo, sendMSGEvt);
 }
 
-void ModuloComunicacaoCase1::solicitarStatusDoUAVVizinho(){
+void ModuloComunicacao::solicitarStatusDoUAVVizinho(){
 
     //Call in the first moments of the application to select a UAV
     if (selfID == 0) {

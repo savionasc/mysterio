@@ -17,7 +17,15 @@ void StatusC1::onMessageReceive(Message msg) {
             cout << msg.getMsg() << endl;
             Coordinate c(10, 11, 12);
             this->updateUAVLocation(c, 1);
-            this->getUAVLocation(1);
+            this->updateBattery(100, 1);
+            this->updateFlightTime(120, 1);
+            this->updateUAVVelocity(140, 1);
+            cout << "Bateria recuperada pelo banco: " << this->getBattery(1) << endl;
+            cout << "Tempo de voo recuperado pelo banco: " << this->getFlightTime(1) << endl;
+            cout << "Velocidade recuperada pelo banco: " << this->getUAVVelocity(1) << endl;
+            Coordinate cc = this->getUAVLocation(1);
+            cout << "Posicao Geografica recuperada pelo banco." << endl;
+            cout << "X: " << cc.getX() << " Y: " << cc.getY() << " Z: " << cc.getZ() << endl;
             break;
         }
         case VELOCITY_STATUS_RESPONSE:
@@ -41,7 +49,9 @@ Coordinate StatusC1::getUAVLocation(int idUAV){ //Request?
     Coordinate c(s.getXAxis(), s.getYAxis(), s.getZAxis());
 
     cout << "Pegando localização do Banco de Dados!" << endl;
-    this->r.getUAVLocation(1);
+
+    //this->r.requestStatusInformation();
+    this->r.getUAVLocation(idUAV);
     return c;
 }
 
@@ -58,6 +68,7 @@ void StatusC1::updateUAVLocation(Coordinate coord, int idUAV){ //saveUAVCurrentP
 
 double StatusC1::getUAVVelocity(int idUAV){
     UAV s = pegarUAV(idUAV);
+    this->r.getVelocity(idUAV);
     return s.getVelocidade();
 }
 
@@ -65,10 +76,12 @@ void StatusC1::updateUAVVelocity(double velocity, int idUAV){
     UAV s = pegarUAV(idUAV);
     s.setVelocidade(velocity);
     this->uavs[idUAV] = s; //Substituir
+    this->r.setVelocity(idUAV, velocity);
 }
 
 int StatusC1::getFlightTime(int idUAV){
     UAV s = pegarUAV(idUAV);
+    this->r.getFlightTime(idUAV);
     return s.getFlightTime();
 }
 
@@ -77,10 +90,12 @@ void StatusC1::updateFlightTime(int time, int idUAV){
     UAV s = pegarUAV(idUAV);
     s.setFlightTime(time);
     this->uavs[idUAV] = s; //Substituir
+    this->r.setFlightTime(idUAV, time);
 }
 
 float StatusC1::getBattery(int idUAV){
     UAV s = pegarUAV(idUAV);
+    this->r.getBattery(idUAV);
     return s.getBattery();
 }
 
@@ -89,4 +104,5 @@ void StatusC1::updateBattery(float level, int idUAV){
     UAV s = pegarUAV(idUAV);
     s.setBattery(level);
     this->uavs[idUAV] = s; //Substituir
+    this->r.setBattery(1, level);
 }
