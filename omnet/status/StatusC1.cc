@@ -9,31 +9,47 @@ StatusC1::StatusC1(){
     this->r.createConnection();
 }
 
-void StatusC1::onMessageReceive(Message msg) {
-
+void StatusC1::onMessageReceive(Message msg){
+    cout << "Resposta recebida no Status!" << endl;
+    cout << msg.getMsg() << endl;
     switch (msg.getCode()) {
-        case LOCATION_STATUS_RESPONSE: {
-            cout << "Resposta recebida no Status!" << endl;
-            cout << msg.getMsg() << endl;
-            Coordinate c(10, 11, 12);
-            this->updateUAVLocation(c, 1);
-            this->updateBattery(100, 1);
-            this->updateFlightTime(120, 1);
-            this->updateUAVVelocity(140, 1);
-            cout << "Bateria recuperada pelo banco: " << this->getBattery(1) << endl;
-            cout << "Tempo de voo recuperado pelo banco: " << this->getFlightTime(1) << endl;
-            cout << "Velocidade recuperada pelo banco: " << this->getUAVVelocity(1) << endl;
+        case LOCATION_STATUS_REQUEST:{
             Coordinate cc = this->getUAVLocation(1);
             cout << "Posicao Geografica recuperada pelo banco." << endl;
             cout << "X: " << cc.getX() << " Y: " << cc.getY() << " Z: " << cc.getZ() << endl;
+
+            //Aqui eu devo enviar para alguém...
             break;
         }
-        case VELOCITY_STATUS_RESPONSE:
+        case LOCATION_STATUS_RESPONSE:{
+            Coordinate c(10, 11, 12);
+            this->updateUAVLocation(c, 1);
             break;
-        case BATTERY_STATUS_RESPONSE:
+        }
+        case VELOCITY_STATUS_REQUEST:{
+            cout << "Velocidade recuperada pelo banco: " << this->getUAVVelocity(1) << endl;
             break;
-        case FLIGHTTIME_STATUS_RESPONSE:
+        }
+        case VELOCITY_STATUS_RESPONSE:{
+            this->updateUAVVelocity(140, 1);
             break;
+        }
+        case BATTERY_STATUS_REQUEST:{
+            cout << "Bateria recuperada pelo banco: " << this->getBattery(1) << endl;
+            break;
+        }
+        case BATTERY_STATUS_RESPONSE:{
+            this->updateBattery(100, 1);
+            break;
+        }
+        case FLIGHTTIME_STATUS_REQUEST:{
+            cout << "Tempo de voo recuperado pelo banco: " << this->getFlightTime(1) << endl;
+            break;
+        }
+        case FLIGHTTIME_STATUS_RESPONSE:{
+            this->updateFlightTime(120, 1);
+            break;
+        }
         default:
             break;
     }
