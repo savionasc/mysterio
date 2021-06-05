@@ -1,5 +1,5 @@
-#ifndef MYSTERIO_OMNET_EXCOMM1_STATUS_STATUSC1_H_
-#define MYSTERIO_OMNET_EXCOMM1_STATUS_STATUSC1_H_
+#ifndef MYSTERIO_OMNET_STATUS_MYSSTATUS_H_
+#define MYSTERIO_OMNET_STATUS_MYSSTATUS_H_
 #include "../../src/status/Status.h"
 #include "../../src/communication/Communicable.h"
 #include "../../src/utils/Codes.h"
@@ -10,9 +10,9 @@
 
 using namespace std;
 
-class StatusC1 : public Status, public Communicable{
+class MysStatus : public Status, public Communicable{
 public:
-    StatusC1();
+    MysStatus();
     //Communicable
     virtual void onMessageReceive(Message msg);
 

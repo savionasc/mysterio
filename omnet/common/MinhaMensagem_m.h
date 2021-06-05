@@ -1,5 +1,5 @@
 //
-// Generated file, do not edit! Created by nedtool 5.4 from mysterio/omnet/common/msg/MinhaMensagem.msg.
+// Generated file, do not edit! Created by nedtool 5.4 from mysterio/omnet/common/MinhaMensagem.msg.
 //
 
 #if defined(__clang__)
@@ -31,12 +31,12 @@
 
 class MinhaMensagem;
 // cplusplus {{
-#include "StatusModule.h"
+#include "mysterio/omnet/common/StatusModule.h"
 #include <string>
 // }}
 
 /**
- * Class generated from <tt>mysterio/omnet/common/msg/MinhaMensagem.msg:10</tt> by nedtool.
+ * Class generated from <tt>mysterio/omnet/common/MinhaMensagem.msg:10</tt> by nedtool.
  * <pre>
  * message MinhaMensagem extends cMessage
  * {

@@ -1,5 +1,5 @@
 cplusplus {{
-#include "mysterio/omnet/common/msg/StatusModule.h"
+#include "mysterio/omnet/common/StatusModule.h"
 #include <string>
 }}
 

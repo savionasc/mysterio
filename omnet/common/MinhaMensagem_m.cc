@@ -1,5 +1,5 @@
 //
-// Generated file, do not edit! Created by nedtool 5.4 from mysterio/omnet/common/msg/MinhaMensagem.msg.
+// Generated file, do not edit! Created by nedtool 5.4 from mysterio/omnet/common/MinhaMensagem.msg.
 //
 
 // Disable warnings about unused variables, empty switch stmts, etc:

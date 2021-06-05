@@ -2,9 +2,10 @@
 #define MYSTERIO_OMNET_EXCOMM1_COMMUNICATION_COMMUNICATIONSOCKET_H_
 
 #include "../../src/utils/Coordinate.h"
-#include "../status/StatusC1.h"
 #include "../../src/communication/Communication.h"
 #include "../../src/communication/Communicable.h"
+//#include "../common/MysMessage.h"
+#include "../status/MysStatus.h"
 #include "../../src/utils/Message.h"
 
 // componente de comunicação do framework com os drones

@@ -1,26 +1,24 @@
-#ifndef MYSTERIO_SRC_UTILS_MESSAGE_H_
-#define MYSTERIO_SRC_UTILS_MESSAGE_H_
-#include "../../omnet/common/StatusModule.h"
-#include <string.h>
+#ifndef MYSTERIO_OMNET_COMMON_MYSMESSAGE_H_
+#define MYSTERIO_OMNET_COMMON_MYSMESSAGE_H_
+#include "../../src/utils/Message.h"
 
-class Message {
+class MysMessage : public Message {
 public:
-    Message(){ }
+    MysMessage();
+    virtual ~MysMessage();
 
-    Message(char *msg, short int code){
+    MysMessage(char *msg, short int code){
         strcpy(this->msg, msg);
         //this->msg = msg;
         this->code = code;
     }
 
-    Message(char *msg, short int code, short int src, short int dest){
+    MysMessage(char *msg, short int code, short int src, short int dest){
         strcpy(this->msg, msg);
         this->code = code;
         this->source = src;
         this->destination = dest;
     }
-
-    virtual ~Message(){ }
 
     char* getMsg() { return msg; }
 
@@ -37,13 +35,6 @@ public:
     short int getSource() const { return source; }
 
     void setSource(short int source) { this->source = source; }
-
-public:
-    char msg[1500];
-    short int code; //This variable must identify the request type of the message
-    short int source;
-    short int destination;
-    StatusModule status;
 };
 
 #endif

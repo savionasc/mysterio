@@ -3,7 +3,7 @@
 #include <netinet/in.h>
 #include <string.h>
 
-#include "../status/StatusC1.h"
+#include "../status/MysStatus.h"
 //#include "../../src/utils/Message.h"
 
 using namespace std;
@@ -26,11 +26,11 @@ public:
         }//else if(!strcmp(msg.msg, "status")){ //Mudar isso aqui e chamar o OnMessageReceve
         else if(msg.code > 10 && msg.code < 21){
             cout << "Criando Status1!" << endl;
-            StatusC1 status;
+            MysStatus status;
             status.onMessageReceive(msg);
         }else {
             cout << "Criando Status2!" << endl;
-            StatusC1 status;
+            MysStatus status;
             cout << "Olha x: " << msg.status.getLocationX() << endl;
             status.onMessageReceive(msg);
         }
