@@ -70,6 +70,9 @@ void CommunicationSocket::listenSocket(){
 
     int serverSd = configureSocketServer(PORT);
     thread conectar(ConnSocket(), serverSd);
+    while(ct == -1){
+
+    }
     cout << "Passando por Socket Communication" << endl;
     int antigo = 1;
     if(antigo == 0){

@@ -1,8 +1,8 @@
 all: Example1Communication.o MysStatus.o RepositoryMySQL.o CommunicationSocket.o UAV.o StatusModule.o
 	g++ -pthread -o mysterio/main Example1Communication.o MysStatus.o RepositoryMySQL.o CommunicationSocket.o UAV.o StatusModule.o -lmysqlclient
 
-CommunicationSocket.o: communication/CommunicationSocket.cc communication/CommunicationSocket.h communication/ConnSocket.cc
-	g++ -c communication/CommunicationSocket.cc communication/CommunicationSocket.h communication/ConnSocket.cc
+CommunicationSocket.o: communication/CommunicationSocket.cc communication/CommunicationSocket.h communication/ConnServerSocket.cc
+	g++ -c communication/CommunicationSocket.cc communication/CommunicationSocket.h communication/ConnServerSocket.cc
 SocketConnect.o: communication/SocketConnect.cc
 	g++ -c communication/SocketConnect.cc
 Example1Communication.o: mysterio/Example1Communication.cc communication/CommunicationSocket.h status/MysStatus.h
