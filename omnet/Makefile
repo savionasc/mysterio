@@ -1,8 +1,6 @@
-all: Example1Communication.o MysStatus.o RepositoryMySQL.o CommunicationSocket.o main.o UAV.o StatusModule.o
-	g++ -pthread -o main main.o Example1Communication.o MysStatus.o RepositoryMySQL.o CommunicationSocket.o UAV.o StatusModule.o -lmysqlclient
+all: Example1Communication.o MysStatus.o RepositoryMySQL.o CommunicationSocket.o UAV.o StatusModule.o
+	g++ -pthread -o mysterio/main Example1Communication.o MysStatus.o RepositoryMySQL.o CommunicationSocket.o UAV.o StatusModule.o -lmysqlclient
 
-main.o: main.cc communication/CommunicationSocket.h
-	g++ -c main.cc communication/CommunicationSocket.h
 CommunicationSocket.o: communication/CommunicationSocket.cc communication/CommunicationSocket.h communication/ConnSocket.cc
 	g++ -c communication/CommunicationSocket.cc communication/CommunicationSocket.h communication/ConnSocket.cc
 SocketConnect.o: communication/SocketConnect.cc
@@ -23,4 +21,4 @@ clean:
 	rm -rf *.o
 
 vai:
-	./main
+	./mysterio/main
