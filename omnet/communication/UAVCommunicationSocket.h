@@ -9,7 +9,7 @@
 #include <netinet/in.h>
 #include "../../src/communication/UAVCommunication.h"
 #include "CommunicationSocket.h"
-//#include "../common/uMessage.h"
+#include "../common/MysMessage.h"
 #include "inet/common/geometry/common/Coord.h"
 
 using namespace inet;
@@ -53,9 +53,9 @@ class socket_receber {
 
         bool esperarMensagem(int newSd){
             //Aqui deve converter toda e qualquer mensagem e repassar pra this.OnMessageReceve
-            Message msg;
+            MysMessage msg;
             memset(&msg, 0, sizeof(msg));
-            recv(newSd, (Message*)&msg, sizeof(msg), 0);
+            recv(newSd, (MysMessage*)&msg, sizeof(msg), 0);
             if(!strcmp(msg.getMsg(), "exit") || !strcmp(msg.getMsg(), "quit")){
                 std::cout << "UAV has quit the session" << std::endl;
                 //UAVCommunication u; u.disconnectBase();
@@ -77,7 +77,7 @@ class socket_receber {
                 txt += " z: " + to_string(coor.z);
                 strcpy(snd, txt.c_str());
                 //Message m(snd, 11);
-                Message m(snd, LOCATION_STATUS_RESPONSE, this->idUAV, -1);
+                MysMessage m(snd, LOCATION_STATUS_RESPONSE, this->idUAV, -1);
                 m.status.setLocation(coor.x, coor.y, coor.z);
                 u.dispatchMessage(m);
             }else{

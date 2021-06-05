@@ -4,7 +4,7 @@
 #include <string.h>
 
 #include "../status/MysStatus.h"
-//#include "../../src/utils/Message.h"
+#include "../common/MysMessage.h"
 
 using namespace std;
 
@@ -16,9 +16,9 @@ public:
 
     bool esperarMensagem(int newSd){
         //Aqui deve converter toda e qualquer mensagem e repassar pra this.OnMessageReceve
-        Message msg;
+        MysMessage msg;
         memset(&msg, 0, sizeof(msg));
-        recv(newSd, (Message*)&msg, sizeof(msg), 0);
+        recv(newSd, (MysMessage*)&msg, sizeof(msg), 0);
         //uMessage *mMSG = check_and_cast<uMessage*>(&msg);
         if(!strcmp(msg.msg, "exit")){
             std::cout << "UAV has quit the session" << std::endl;

@@ -4,8 +4,7 @@
 
 class MysMessage : public Message {
 public:
-    MysMessage();
-    virtual ~MysMessage();
+    MysMessage(){ }
 
     MysMessage(char *msg, short int code){
         strcpy(this->msg, msg);
@@ -20,21 +19,7 @@ public:
         this->destination = dest;
     }
 
-    char* getMsg() { return msg; }
-
-    void setMsg(char* msg) { strcpy(this->msg, msg); }
-
-    short int getCode() const { return code; }
-
-    void setCode(short int code) { this->code = code; }
-
-    short int getDestination() const { return destination; }
-
-    void setDestination(short int destination) { this->destination = destination; }
-
-    short int getSource() const { return source; }
-
-    void setSource(short int source) { this->source = source; }
+    virtual ~MysMessage(){ }
 };
 
 #endif

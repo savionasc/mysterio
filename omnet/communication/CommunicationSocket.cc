@@ -50,7 +50,7 @@ void CommunicationSocket::envMensagem(){
             char m[1500];
             std::cin >> m;
             for (int i = 0; i <= ct; i++){
-                Message msg;
+                MysMessage msg;
                 msg.setCode(10);
                 msg.setMsg(m);
                 msg.setDestination(i);

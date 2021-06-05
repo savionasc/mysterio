@@ -1,5 +1,5 @@
-all: Example1Communication.o StatusC1.o RepositoryMySQL.o CommunicationSocket.o main.o UAV.o StatusModule.o
-	g++ -pthread -o main main.o Example1Communication.o StatusC1.o RepositoryMySQL.o CommunicationSocket.o UAV.o StatusModule.o -lmysqlclient
+all: Example1Communication.o MysStatus.o RepositoryMySQL.o CommunicationSocket.o main.o UAV.o StatusModule.o
+	g++ -pthread -o main main.o Example1Communication.o MysStatus.o RepositoryMySQL.o CommunicationSocket.o UAV.o StatusModule.o -lmysqlclient
 
 main.o: main.cc communication/CommunicationSocket.h
 	g++ -c main.cc communication/CommunicationSocket.h
@@ -7,10 +7,10 @@ CommunicationSocket.o: communication/CommunicationSocket.cc communication/Commun
 	g++ -c communication/CommunicationSocket.cc communication/CommunicationSocket.h communication/ConnSocket.cc
 SocketConnect.o: communication/SocketConnect.cc
 	g++ -c communication/SocketConnect.cc
-Example1Communication.o: mysterio/Example1Communication.cc communication/CommunicationSocket.h status/StatusC1.h
-	g++ -c mysterio/Example1Communication.cc communication/CommunicationSocket.h communication/CommunicationSocket.cc status/StatusC1.h 
-StatusC1.o:	status/StatusC1.cc status/StatusC1.h ../src/status/Status.h
-	g++ -c status/StatusC1.cc status/StatusC1.h ../src/status/Status.h
+Example1Communication.o: mysterio/Example1Communication.cc communication/CommunicationSocket.h status/MysStatus.h
+	g++ -c mysterio/Example1Communication.cc communication/CommunicationSocket.h communication/CommunicationSocket.cc status/MysStatus.h 
+MysStatus.o:	status/MysStatus.cc status/MysStatus.h ../src/status/Status.h
+	g++ -c status/MysStatus.cc status/MysStatus.h ../src/status/Status.h
 RepositoryMySQL.o: database/RepositoryMySQL.cc database/RepositoryMySQL.h
 	g++ -c database/RepositoryMySQL.cc database/RepositoryMySQL.h
 UAV.o: ../src/utils/UAV.h ../src/utils/UAV.cc
