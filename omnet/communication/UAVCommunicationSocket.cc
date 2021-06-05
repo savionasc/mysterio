@@ -1,4 +1,5 @@
 #include "UAVCommunicationSocket.h"
+#include "../common/Codes.h"
 
 namespace mysterio {
 
@@ -11,16 +12,14 @@ void UAVCommunicationSocket::dispatchMessage(Message msg){
 void UAVCommunicationSocket::connectBase(){
     if(!this->connected){
         this->connected = true;
-        int port = 1111;
-        char serverIp[] = "127.0.0.1";
         char msg[1500];
-        struct hostent* host = gethostbyname(serverIp);
+        struct hostent* host = gethostbyname(HOSTNAME);
         sockaddr_in sendSockAddr;
         bzero((char*)&sendSockAddr, sizeof(sendSockAddr));
         sendSockAddr.sin_family = AF_INET;
         sendSockAddr.sin_addr.s_addr =
             inet_addr(inet_ntoa(*(struct in_addr*)*host->h_addr_list));
-        sendSockAddr.sin_port = htons(port);
+        sendSockAddr.sin_port = htons(PORT);
         int clientSd = socket(AF_INET, SOCK_STREAM, 0);
 
         int status = connect(clientSd,

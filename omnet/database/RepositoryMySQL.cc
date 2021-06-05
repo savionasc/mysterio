@@ -1,9 +1,9 @@
 #include "RepositoryMySQL.h"
-#include "../../src/utils/Codes.h"
 #include "../../src/utils/Coordinate.h"
 #include <stdio.h>
 #include <string>
 #include <string.h>
+#include "../common/Codes.h"
 
 RepositoryMySQL::RepositoryMySQL() {
     this->createConnection();

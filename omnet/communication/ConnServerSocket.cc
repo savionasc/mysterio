@@ -3,15 +3,14 @@
 #include <netinet/in.h>
 #include <thread>
 
-#include "ReceiveSocket.cc"
-#include "SendSocket.cc"
+#include "ReceiveServerSocket.cc"
+#include "SendServerSocket.cc"
 
 
 using namespace std;
 extern int conexoes[];
 extern int ct;
 
-///*
 class ConnSocket{
 public:
     void operator()(int param){

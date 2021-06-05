@@ -1,5 +1,5 @@
-#ifndef MYSTERIO_SRC_UTILS_CODES_H_
-#define MYSTERIO_SRC_UTILS_CODES_H_
+#ifndef MYSTERIO_OMNET_COMMON_CODES_H_
+#define MYSTERIO_OMNET_COMMON_CODES_H_
 
 #define MAXUAVS 20
 
@@ -8,6 +8,7 @@
 #define USERNAME   "root"
 #define PASSWORD   "root"
 #define DATABASE   "mestrado"
+#define PORT       1111
 
 enum CodeMessage {
     //STATUS

@@ -1,15 +1,15 @@
 #include "CommunicationSocket.h"
-#include "../../src/utils/Codes.h"
+#include "../common/Codes.h"
 
 #include <thread>
 
-#include "ConnSocket.cc"
+#include "ConnServerSocket.cc"
 
 //Enviar mensagens Unicast, Broadcast e Multicast
 
 int conexoes[MAXUAVS], ct = -1;
 
-int CommunicationSocket::configurar(int port){
+int CommunicationSocket::configureSocketServer(int port){
     if(port < 1000){
         std::cerr << "Inaccessible ports" << std::endl;
         exit(0);
@@ -40,7 +40,7 @@ int CommunicationSocket::configurar(int port){
     return serverSd;
 }
 
-void CommunicationSocket::envMensagem(){
+void CommunicationSocket::sendMessageSocket(){
     std::cout << "Digite um UAV para receber" << std::endl;
     while(true){
         int id;
@@ -66,13 +66,10 @@ void CommunicationSocket::envMensagem(){
 }
 
 //status->subscribe(newUAV);?
-void CommunicationSocket::listening(){
+void CommunicationSocket::listenSocket(){
 
-    int serverSd = configurar(1111);
+    int serverSd = configureSocketServer(PORT);
     thread conectar(ConnSocket(), serverSd);
-    while(ct == -1){
-
-    }
     cout << "Passando por Socket Communication" << endl;
     int antigo = 1;
     if(antigo == 0){
@@ -81,13 +78,15 @@ void CommunicationSocket::listening(){
             enviar.join();
         }
     }else{
-        envMensagem();
+        sendMessageSocket();
     }
 
     conectar.join();
 }
 
-void CommunicationSocket::getActiveConnections(){ }
+int* CommunicationSocket::getActiveConnections(){
+    return conexoes;
+}
 
 void CommunicationSocket::onMessageReceive(Message msg){ }
 

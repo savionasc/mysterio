@@ -17,11 +17,11 @@ public:
     //Communication
     void sendMessage(Communicable *source, Communicable *dest, Message msg);
 
-    void getActiveConnections(); //Criar uma classe Conexões para guardar o ID do UAV e o Socket
-    void listening();
-    void envMensagem();
+    int* getActiveConnections(); //Criar uma classe Conexões para guardar o ID do UAV e o Socket
+    void listenSocket();
+    void sendMessageSocket();
 
-    int configurar(int port);
+    int configureSocketServer(int port);
 };
 
 #endif
