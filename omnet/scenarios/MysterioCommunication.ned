@@ -3,6 +3,7 @@ package mysterio.omnet.scenarios;
 import inet.node.inet.StandardHost;
 import mysterio.omnet.uavs.ModuloComunicacao;
 import inet.visualizer.integrated.IntegratedVisualizer;
+import inet.visualizer.integrated.IntegratedCanvasVisualizer;
 import inet.node.base.ApplicationLayerNodeBase;
 
 network MysterioCommunication {
@@ -11,6 +12,9 @@ network MysterioCommunication {
         @display("bgb=1000,1000");
     submodules:
         visualizer: IntegratedVisualizer {
+            @display("p=100,50");
+        }
+        canvasVisualizer: IntegratedCanvasVisualizer {
             @display("p=100,50");
         }
         host[numHosts]: ModuloComunicacao {
