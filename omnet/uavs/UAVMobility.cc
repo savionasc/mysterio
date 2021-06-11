@@ -5,13 +5,11 @@ using namespace omnetpp;
 using namespace std;
 using namespace inet;
 
-static int numeroDrones1;
+Coord position[10];
+double velocidade[10];
 
-Coord position1[10];
-double velocidade1[10];
-
-int UAVLeader1 = -1;
-int UAVDestino1 = -1;
+int UAVLeader = -1;
+int UAVDestino = -1;
 
 using namespace mysterio;
 
@@ -35,7 +33,7 @@ void UAVMobility::initialize(int stage) {
         waitTimeParameter = &par("waitTime");
         hasWaitTime = waitTimeParameter->isExpression() || waitTimeParameter->doubleValue() != 0;
         speedParameter = &par("speed");
-        velocidade1[selfID] = par("speed").operator double();
+        velocidade[selfID] = par("speed").operator double();
         //velocidade1[selfID] = speedParameter;
         stationary = !speedParameter->isExpression() && speedParameter->doubleValue() == 0;
     }
@@ -65,8 +63,8 @@ void UAVMobility::move() {
 }
 
 void UAVMobility::setData(){
-    position1[selfID] = lastPosition;
-    velocidade1[selfID] = speedParameter->doubleValue();
+    position[selfID] = lastPosition;
+    velocidade[selfID] = speedParameter->doubleValue();
 }
 
 double UAVMobility::getMaxSpeed() const {

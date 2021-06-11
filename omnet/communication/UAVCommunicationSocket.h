@@ -11,11 +11,14 @@
 #include "CommunicationSocket.h"
 #include "../common/MysMessage.h"
 #include "inet/common/geometry/common/Coord.h"
+#include "inet/power/base/EpEnergyStorageBase.h"
+#include "inet/power/storage/SimpleEpEnergyStorage.h"
 
 using namespace inet;
 using namespace std;
 
-extern Coord position1[10];
+extern Coord position[10];
+extern float bateria[10];
 
 namespace mysterio {
 
@@ -63,7 +66,7 @@ class socket_receber {
                 return false;
             }else if(!strcmp(msg.getMsg(), "location")){ //Mudar isso aqui e chamar o OnMessageReceve
                 std::cout << " status " << std::endl;
-                Coord coor = position1[idUAV];
+                Coord coor = position[idUAV];
 
                 UAVCommunicationSocket u;
                 u.setSocketCode(this->sock);
@@ -79,6 +82,21 @@ class socket_receber {
                 //Message m(snd, 11);
                 MysMessage m(snd, LOCATION_STATUS_RESPONSE, this->idUAV, -1);
                 m.status.setLocation(coor.x, coor.y, coor.z);
+                u.dispatchMessage(m);
+            }else if(!strcmp(msg.getMsg(), "battery")){ //Mudar isso aqui e chamar o OnMessageReceve
+                std::cout << " Battery status " << std::endl;
+
+                UAVCommunicationSocket u;
+                u.setSocketCode(this->sock);
+                u.setSelfID(this->idUAV);
+
+                //Substituir isso por dispatchMessage
+
+                char snd[150];
+                std::string txt = "MSG bateria[" + to_string(this->idUAV) + "]: " + to_string(bateria[this->idUAV]);
+                strcpy(snd, txt.c_str());
+                MysMessage m(snd, BATTERY_STATUS_RESPONSE, this->idUAV, -1);
+                m.status.setBattery(bateria[this->idUAV]);
                 u.dispatchMessage(m);
             }else{
                 std::cout << "Mensagem recebida em ["<< this->idUAV <<"]: " << msg.getMsg() << std::endl;

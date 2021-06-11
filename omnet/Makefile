@@ -1,5 +1,5 @@
-all: Example1Communication.o MysStatus.o RepositoryMySQL.o CommunicationSocket.o UAV.o StatusModule.o
-	g++ -pthread -o mysterio/main Example1Communication.o MysStatus.o RepositoryMySQL.o CommunicationSocket.o UAV.o StatusModule.o -lmysqlclient
+all: Example1Communication.o MysStatus.o RepositoryMySQL.o CommunicationSocket.o UAV.o DroneStatus.o
+	g++ -pthread -o mysterio/main Example1Communication.o MysStatus.o RepositoryMySQL.o CommunicationSocket.o UAV.o DroneStatus.o -lmysqlclient
 
 CommunicationSocket.o: communication/CommunicationSocket.cc communication/CommunicationSocket.h communication/ConnServerSocket.cc
 	g++ -c communication/CommunicationSocket.cc communication/CommunicationSocket.h communication/ConnServerSocket.cc
@@ -15,10 +15,10 @@ UAV.o: ../src/utils/UAV.h ../src/utils/UAV.cc
 	g++ -c ../src/utils/UAV.h ../src/utils/UAV.cc
 Coordinate.o:  ../src/utils/Coordinate.h
 	g++ -c ../src/utils/Coordinate.h
-StatusModule.o: common/StatusModule.h common/StatusModule.cc
-	g++ -c common/StatusModule.h common/StatusModule.cc
+DroneStatus.o: common/DroneStatus.h common/DroneStatus.cc
+	g++ -c common/DroneStatus.h common/DroneStatus.cc
 clean:
-	rm -rf *.o
+	rm -rf *.o mysterio/main
 
 vai:
 	./mysterio/main

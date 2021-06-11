@@ -1,7 +1,7 @@
 #ifndef MYSTERIO_SRC_UTILS_MESSAGE_H_
 #define MYSTERIO_SRC_UTILS_MESSAGE_H_
-#include "../../omnet/common/StatusModule.h"
 #include <string.h>
+#include "../../omnet/common/DroneStatus.h"
 
 class Message {
 public:
@@ -43,7 +43,7 @@ public:
     short int code; //This variable must identify the request type of the message
     short int source;
     short int destination;
-    StatusModule status;
+    DroneStatus status;
 };
 
 #endif

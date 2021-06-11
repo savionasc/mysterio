@@ -1,12 +1,15 @@
 #ifndef MYSTERIO_OMNET_UAVS_MODULOCOMUNICACAO_H_
 #define MYSTERIO_OMNET_UAVS_MODULOCOMUNICACAO_H_
 
-#include "../common/MinhaMensagem_m.h"
+#include "../common/DroneMessage_m.h"
+#include "inet/power/base/EpEnergyStorageBase.h"
 
 using namespace omnetpp;
 using namespace std;
 
+
 namespace inet {
+using namespace power;
 
 class ModuloComunicacao : public cSimpleModule {
   public:
@@ -14,11 +17,13 @@ class ModuloComunicacao : public cSimpleModule {
         SOLICITAR_LOCALIZACAO = 10,
         RESPONDER_LOCALIZACAO,
         SOLICITAR_VELOCIDADE,
-        RESPONDER_VELOCIDADE
+        RESPONDER_VELOCIDADE,
+        SOLICITAR_BATERIA,
+        RESPONDER_BATERIA
     };
   protected:
-    virtual MinhaMensagem *generateMessage();
-    virtual void forwardMessage(MinhaMensagem *msg);
+    virtual DroneMessage *generateMessage();
+    virtual void forwardMessage(DroneMessage *msg);
     virtual void initialize() override;
     virtual void handleMessage(cMessage *msg) override;
 
@@ -26,9 +31,11 @@ class ModuloComunicacao : public cSimpleModule {
     void enviarMensagem(double tempo, int origem, int destino, char const *name, int kind);
     void rememberCheckMessage(double seconds);
     void solicitarStatusDoUAVVizinho();
+    J pegarBateria(int idUAV);
+    void atualizarDados();
 
     int selfID = -2;
-    MinhaMensagem* sendMSGEvt;
+    DroneMessage* sendMSGEvt;
 };
 }
 

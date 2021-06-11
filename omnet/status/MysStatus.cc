@@ -23,32 +23,32 @@ void MysStatus::onMessageReceive(Message msg){
             break;
         }
         case LOCATION_STATUS_RESPONSE:{
-            Coordinate c(10, 11, 12);
-            this->updateUAVLocation(c, 1);
+            Coordinate c(msg.status.getLocationX(), msg.status.getLocationY(), msg.status.getLocationZ());
+            this->updateUAVLocation(c, msg.source);
             break;
         }
         case VELOCITY_STATUS_REQUEST:{
-            cout << "Velocidade recuperada pelo banco: " << this->getUAVVelocity(1) << endl;
+            cout << "Velocidade recuperada pelo banco: " << this->getUAVVelocity(msg.source) << endl;
             break;
         }
         case VELOCITY_STATUS_RESPONSE:{
-            this->updateUAVVelocity(140, 1);
+            this->updateUAVVelocity(msg.status.getVelocity(), msg.source);
             break;
         }
         case BATTERY_STATUS_REQUEST:{
-            cout << "Bateria recuperada pelo banco: " << this->getBattery(1) << endl;
+            cout << "Bateria recuperada pelo banco: " << this->getBattery(msg.source) << endl;
             break;
         }
         case BATTERY_STATUS_RESPONSE:{
-            this->updateBattery(100, 1);
+            this->updateBattery(msg.status.getBattery(), msg.source);
             break;
         }
         case FLIGHTTIME_STATUS_REQUEST:{
-            cout << "Tempo de voo recuperado pelo banco: " << this->getFlightTime(1) << endl;
+            cout << "Tempo de voo recuperado pelo banco: " << this->getFlightTime(msg.source) << endl;
             break;
         }
         case FLIGHTTIME_STATUS_RESPONSE:{
-            this->updateFlightTime(120, 1);
+            this->updateFlightTime(msg.status.getFlightTime(), msg.source);
             break;
         }
         default:

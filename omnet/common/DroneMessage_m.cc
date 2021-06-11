@@ -1,5 +1,5 @@
 //
-// Generated file, do not edit! Created by nedtool 5.4 from mysterio/omnet/common/MinhaMensagem.msg.
+// Generated file, do not edit! Created by nedtool 5.4 from mysterio/omnet/common/DroneMessage.msg.
 //
 
 // Disable warnings about unused variables, empty switch stmts, etc:
@@ -27,7 +27,7 @@
 #include <iostream>
 #include <sstream>
 #include <memory>
-#include "MinhaMensagem_m.h"
+#include "DroneMessage_m.h"
 
 namespace omnetpp {
 
@@ -206,15 +206,15 @@ inline std::ostream& operator<<(std::ostream& out, const std::vector<T,A>& vec)
     return out;
 }
 
-class StatusModuleDescriptor : public omnetpp::cClassDescriptor
+class DroneStatusDescriptor : public omnetpp::cClassDescriptor
 {
   private:
     mutable const char **propertynames;
     enum FieldConstants {
     };
   public:
-    StatusModuleDescriptor();
-    virtual ~StatusModuleDescriptor();
+    DroneStatusDescriptor();
+    virtual ~DroneStatusDescriptor();
 
     virtual bool doesSupport(omnetpp::cObject *obj) const override;
     virtual const char **getPropertyNames() const override;
@@ -236,24 +236,24 @@ class StatusModuleDescriptor : public omnetpp::cClassDescriptor
     virtual void *getFieldStructValuePointer(void *object, int field, int i) const override;
 };
 
-Register_ClassDescriptor(StatusModuleDescriptor)
+Register_ClassDescriptor(DroneStatusDescriptor)
 
-StatusModuleDescriptor::StatusModuleDescriptor() : omnetpp::cClassDescriptor(omnetpp::opp_typename(typeid(StatusModule)), "")
+DroneStatusDescriptor::DroneStatusDescriptor() : omnetpp::cClassDescriptor(omnetpp::opp_typename(typeid(DroneStatus)), "")
 {
     propertynames = nullptr;
 }
 
-StatusModuleDescriptor::~StatusModuleDescriptor()
+DroneStatusDescriptor::~DroneStatusDescriptor()
 {
     delete[] propertynames;
 }
 
-bool StatusModuleDescriptor::doesSupport(omnetpp::cObject *obj) const
+bool DroneStatusDescriptor::doesSupport(omnetpp::cObject *obj) const
 {
-    return dynamic_cast<StatusModule *>(obj)!=nullptr;
+    return dynamic_cast<DroneStatus *>(obj)!=nullptr;
 }
 
-const char **StatusModuleDescriptor::getPropertyNames() const
+const char **DroneStatusDescriptor::getPropertyNames() const
 {
     if (!propertynames) {
         static const char *names[] = { "existingClass",  nullptr };
@@ -264,20 +264,20 @@ const char **StatusModuleDescriptor::getPropertyNames() const
     return propertynames;
 }
 
-const char *StatusModuleDescriptor::getProperty(const char *propertyname) const
+const char *DroneStatusDescriptor::getProperty(const char *propertyname) const
 {
     if (!strcmp(propertyname, "existingClass")) return "";
     omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
     return basedesc ? basedesc->getProperty(propertyname) : nullptr;
 }
 
-int StatusModuleDescriptor::getFieldCount() const
+int DroneStatusDescriptor::getFieldCount() const
 {
     omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
     return basedesc ? 0+basedesc->getFieldCount() : 0;
 }
 
-unsigned int StatusModuleDescriptor::getFieldTypeFlags(int field) const
+unsigned int DroneStatusDescriptor::getFieldTypeFlags(int field) const
 {
     omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
     if (basedesc) {
@@ -288,7 +288,7 @@ unsigned int StatusModuleDescriptor::getFieldTypeFlags(int field) const
     return 0;
 }
 
-const char *StatusModuleDescriptor::getFieldName(int field) const
+const char *DroneStatusDescriptor::getFieldName(int field) const
 {
     omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
     if (basedesc) {
@@ -299,13 +299,13 @@ const char *StatusModuleDescriptor::getFieldName(int field) const
     return nullptr;
 }
 
-int StatusModuleDescriptor::findField(const char *fieldName) const
+int DroneStatusDescriptor::findField(const char *fieldName) const
 {
     omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
     return basedesc ? basedesc->findField(fieldName) : -1;
 }
 
-const char *StatusModuleDescriptor::getFieldTypeString(int field) const
+const char *DroneStatusDescriptor::getFieldTypeString(int field) const
 {
     omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
     if (basedesc) {
@@ -316,7 +316,7 @@ const char *StatusModuleDescriptor::getFieldTypeString(int field) const
     return nullptr;
 }
 
-const char **StatusModuleDescriptor::getFieldPropertyNames(int field) const
+const char **DroneStatusDescriptor::getFieldPropertyNames(int field) const
 {
     omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
     if (basedesc) {
@@ -329,7 +329,7 @@ const char **StatusModuleDescriptor::getFieldPropertyNames(int field) const
     }
 }
 
-const char *StatusModuleDescriptor::getFieldProperty(int field, const char *propertyname) const
+const char *DroneStatusDescriptor::getFieldProperty(int field, const char *propertyname) const
 {
     omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
     if (basedesc) {
@@ -342,7 +342,7 @@ const char *StatusModuleDescriptor::getFieldProperty(int field, const char *prop
     }
 }
 
-int StatusModuleDescriptor::getFieldArraySize(void *object, int field) const
+int DroneStatusDescriptor::getFieldArraySize(void *object, int field) const
 {
     omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
     if (basedesc) {
@@ -350,13 +350,13 @@ int StatusModuleDescriptor::getFieldArraySize(void *object, int field) const
             return basedesc->getFieldArraySize(object, field);
         field -= basedesc->getFieldCount();
     }
-    StatusModule *pp = (StatusModule *)object; (void)pp;
+    DroneStatus *pp = (DroneStatus *)object; (void)pp;
     switch (field) {
         default: return 0;
     }
 }
 
-const char *StatusModuleDescriptor::getFieldDynamicTypeString(void *object, int field, int i) const
+const char *DroneStatusDescriptor::getFieldDynamicTypeString(void *object, int field, int i) const
 {
     omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
     if (basedesc) {
@@ -364,13 +364,13 @@ const char *StatusModuleDescriptor::getFieldDynamicTypeString(void *object, int 
             return basedesc->getFieldDynamicTypeString(object,field,i);
         field -= basedesc->getFieldCount();
     }
-    StatusModule *pp = (StatusModule *)object; (void)pp;
+    DroneStatus *pp = (DroneStatus *)object; (void)pp;
     switch (field) {
         default: return nullptr;
     }
 }
 
-std::string StatusModuleDescriptor::getFieldValueAsString(void *object, int field, int i) const
+std::string DroneStatusDescriptor::getFieldValueAsString(void *object, int field, int i) const
 {
     omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
     if (basedesc) {
@@ -378,13 +378,13 @@ std::string StatusModuleDescriptor::getFieldValueAsString(void *object, int fiel
             return basedesc->getFieldValueAsString(object,field,i);
         field -= basedesc->getFieldCount();
     }
-    StatusModule *pp = (StatusModule *)object; (void)pp;
+    DroneStatus *pp = (DroneStatus *)object; (void)pp;
     switch (field) {
         default: return "";
     }
 }
 
-bool StatusModuleDescriptor::setFieldValueAsString(void *object, int field, int i, const char *value) const
+bool DroneStatusDescriptor::setFieldValueAsString(void *object, int field, int i, const char *value) const
 {
     omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
     if (basedesc) {
@@ -392,13 +392,13 @@ bool StatusModuleDescriptor::setFieldValueAsString(void *object, int field, int 
             return basedesc->setFieldValueAsString(object,field,i,value);
         field -= basedesc->getFieldCount();
     }
-    StatusModule *pp = (StatusModule *)object; (void)pp;
+    DroneStatus *pp = (DroneStatus *)object; (void)pp;
     switch (field) {
         default: return false;
     }
 }
 
-const char *StatusModuleDescriptor::getFieldStructName(int field) const
+const char *DroneStatusDescriptor::getFieldStructName(int field) const
 {
     omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
     if (basedesc) {
@@ -409,7 +409,7 @@ const char *StatusModuleDescriptor::getFieldStructName(int field) const
     return nullptr;
 }
 
-void *StatusModuleDescriptor::getFieldStructValuePointer(void *object, int field, int i) const
+void *DroneStatusDescriptor::getFieldStructValuePointer(void *object, int field, int i) const
 {
     omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
     if (basedesc) {
@@ -417,28 +417,28 @@ void *StatusModuleDescriptor::getFieldStructValuePointer(void *object, int field
             return basedesc->getFieldStructValuePointer(object, field, i);
         field -= basedesc->getFieldCount();
     }
-    StatusModule *pp = (StatusModule *)object; (void)pp;
+    DroneStatus *pp = (DroneStatus *)object; (void)pp;
     switch (field) {
         default: return nullptr;
     }
 }
 
-Register_Class(MinhaMensagem)
+Register_Class(DroneMessage)
 
-MinhaMensagem::MinhaMensagem(const char *name, short kind) : ::omnetpp::cMessage(name, kind)
+DroneMessage::DroneMessage(const char *name, short kind) : ::omnetpp::cMessage(name, kind)
 {
 }
 
-MinhaMensagem::MinhaMensagem(const MinhaMensagem& other) : ::omnetpp::cMessage(other)
+DroneMessage::DroneMessage(const DroneMessage& other) : ::omnetpp::cMessage(other)
 {
     copy(other);
 }
 
-MinhaMensagem::~MinhaMensagem()
+DroneMessage::~DroneMessage()
 {
 }
 
-MinhaMensagem& MinhaMensagem::operator=(const MinhaMensagem& other)
+DroneMessage& DroneMessage::operator=(const DroneMessage& other)
 {
     if (this == &other) return *this;
     ::omnetpp::cMessage::operator=(other);
@@ -446,7 +446,7 @@ MinhaMensagem& MinhaMensagem::operator=(const MinhaMensagem& other)
     return *this;
 }
 
-void MinhaMensagem::copy(const MinhaMensagem& other)
+void DroneMessage::copy(const DroneMessage& other)
 {
     this->origem = other.origem;
     this->destino = other.destino;
@@ -454,7 +454,7 @@ void MinhaMensagem::copy(const MinhaMensagem& other)
     this->titulo = other.titulo;
 }
 
-void MinhaMensagem::parsimPack(omnetpp::cCommBuffer *b) const
+void DroneMessage::parsimPack(omnetpp::cCommBuffer *b) const
 {
     ::omnetpp::cMessage::parsimPack(b);
     doParsimPacking(b,this->origem);
@@ -463,7 +463,7 @@ void MinhaMensagem::parsimPack(omnetpp::cCommBuffer *b) const
     doParsimPacking(b,this->titulo);
 }
 
-void MinhaMensagem::parsimUnpack(omnetpp::cCommBuffer *b)
+void DroneMessage::parsimUnpack(omnetpp::cCommBuffer *b)
 {
     ::omnetpp::cMessage::parsimUnpack(b);
     doParsimUnpacking(b,this->origem);
@@ -472,47 +472,47 @@ void MinhaMensagem::parsimUnpack(omnetpp::cCommBuffer *b)
     doParsimUnpacking(b,this->titulo);
 }
 
-int MinhaMensagem::getOrigem() const
+int DroneMessage::getOrigem() const
 {
     return this->origem;
 }
 
-void MinhaMensagem::setOrigem(int origem)
+void DroneMessage::setOrigem(int origem)
 {
     this->origem = origem;
 }
 
-int MinhaMensagem::getDestino() const
+int DroneMessage::getDestino() const
 {
     return this->destino;
 }
 
-void MinhaMensagem::setDestino(int destino)
+void DroneMessage::setDestino(int destino)
 {
     this->destino = destino;
 }
 
-const StatusModule& MinhaMensagem::getStatus() const
+const DroneStatus& DroneMessage::getStatus() const
 {
     return this->status;
 }
 
-void MinhaMensagem::setStatus(const StatusModule& status)
+void DroneMessage::setStatus(const DroneStatus& status)
 {
     this->status = status;
 }
 
-const char * MinhaMensagem::getTitulo() const
+const char * DroneMessage::getTitulo() const
 {
     return this->titulo.c_str();
 }
 
-void MinhaMensagem::setTitulo(const char * titulo)
+void DroneMessage::setTitulo(const char * titulo)
 {
     this->titulo = titulo;
 }
 
-class MinhaMensagemDescriptor : public omnetpp::cClassDescriptor
+class DroneMessageDescriptor : public omnetpp::cClassDescriptor
 {
   private:
     mutable const char **propertynames;
@@ -523,8 +523,8 @@ class MinhaMensagemDescriptor : public omnetpp::cClassDescriptor
         FIELD_titulo,
     };
   public:
-    MinhaMensagemDescriptor();
-    virtual ~MinhaMensagemDescriptor();
+    DroneMessageDescriptor();
+    virtual ~DroneMessageDescriptor();
 
     virtual bool doesSupport(omnetpp::cObject *obj) const override;
     virtual const char **getPropertyNames() const override;
@@ -546,24 +546,24 @@ class MinhaMensagemDescriptor : public omnetpp::cClassDescriptor
     virtual void *getFieldStructValuePointer(void *object, int field, int i) const override;
 };
 
-Register_ClassDescriptor(MinhaMensagemDescriptor)
+Register_ClassDescriptor(DroneMessageDescriptor)
 
-MinhaMensagemDescriptor::MinhaMensagemDescriptor() : omnetpp::cClassDescriptor(omnetpp::opp_typename(typeid(MinhaMensagem)), "omnetpp::cMessage")
+DroneMessageDescriptor::DroneMessageDescriptor() : omnetpp::cClassDescriptor(omnetpp::opp_typename(typeid(DroneMessage)), "omnetpp::cMessage")
 {
     propertynames = nullptr;
 }
 
-MinhaMensagemDescriptor::~MinhaMensagemDescriptor()
+DroneMessageDescriptor::~DroneMessageDescriptor()
 {
     delete[] propertynames;
 }
 
-bool MinhaMensagemDescriptor::doesSupport(omnetpp::cObject *obj) const
+bool DroneMessageDescriptor::doesSupport(omnetpp::cObject *obj) const
 {
-    return dynamic_cast<MinhaMensagem *>(obj)!=nullptr;
+    return dynamic_cast<DroneMessage *>(obj)!=nullptr;
 }
 
-const char **MinhaMensagemDescriptor::getPropertyNames() const
+const char **DroneMessageDescriptor::getPropertyNames() const
 {
     if (!propertynames) {
         static const char *names[] = {  nullptr };
@@ -574,19 +574,19 @@ const char **MinhaMensagemDescriptor::getPropertyNames() const
     return propertynames;
 }
 
-const char *MinhaMensagemDescriptor::getProperty(const char *propertyname) const
+const char *DroneMessageDescriptor::getProperty(const char *propertyname) const
 {
     omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
     return basedesc ? basedesc->getProperty(propertyname) : nullptr;
 }
 
-int MinhaMensagemDescriptor::getFieldCount() const
+int DroneMessageDescriptor::getFieldCount() const
 {
     omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
     return basedesc ? 4+basedesc->getFieldCount() : 4;
 }
 
-unsigned int MinhaMensagemDescriptor::getFieldTypeFlags(int field) const
+unsigned int DroneMessageDescriptor::getFieldTypeFlags(int field) const
 {
     omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
     if (basedesc) {
@@ -603,7 +603,7 @@ unsigned int MinhaMensagemDescriptor::getFieldTypeFlags(int field) const
     return (field >= 0 && field < 4) ? fieldTypeFlags[field] : 0;
 }
 
-const char *MinhaMensagemDescriptor::getFieldName(int field) const
+const char *DroneMessageDescriptor::getFieldName(int field) const
 {
     omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
     if (basedesc) {
@@ -620,7 +620,7 @@ const char *MinhaMensagemDescriptor::getFieldName(int field) const
     return (field >= 0 && field < 4) ? fieldNames[field] : nullptr;
 }
 
-int MinhaMensagemDescriptor::findField(const char *fieldName) const
+int DroneMessageDescriptor::findField(const char *fieldName) const
 {
     omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
     int base = basedesc ? basedesc->getFieldCount() : 0;
@@ -631,7 +631,7 @@ int MinhaMensagemDescriptor::findField(const char *fieldName) const
     return basedesc ? basedesc->findField(fieldName) : -1;
 }
 
-const char *MinhaMensagemDescriptor::getFieldTypeString(int field) const
+const char *DroneMessageDescriptor::getFieldTypeString(int field) const
 {
     omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
     if (basedesc) {
@@ -642,13 +642,13 @@ const char *MinhaMensagemDescriptor::getFieldTypeString(int field) const
     static const char *fieldTypeStrings[] = {
         "int",    // FIELD_origem
         "int",    // FIELD_destino
-        "StatusModule",    // FIELD_status
+        "DroneStatus",    // FIELD_status
         "string",    // FIELD_titulo
     };
     return (field >= 0 && field < 4) ? fieldTypeStrings[field] : nullptr;
 }
 
-const char **MinhaMensagemDescriptor::getFieldPropertyNames(int field) const
+const char **DroneMessageDescriptor::getFieldPropertyNames(int field) const
 {
     omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
     if (basedesc) {
@@ -661,7 +661,7 @@ const char **MinhaMensagemDescriptor::getFieldPropertyNames(int field) const
     }
 }
 
-const char *MinhaMensagemDescriptor::getFieldProperty(int field, const char *propertyname) const
+const char *DroneMessageDescriptor::getFieldProperty(int field, const char *propertyname) const
 {
     omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
     if (basedesc) {
@@ -674,7 +674,7 @@ const char *MinhaMensagemDescriptor::getFieldProperty(int field, const char *pro
     }
 }
 
-int MinhaMensagemDescriptor::getFieldArraySize(void *object, int field) const
+int DroneMessageDescriptor::getFieldArraySize(void *object, int field) const
 {
     omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
     if (basedesc) {
@@ -682,13 +682,13 @@ int MinhaMensagemDescriptor::getFieldArraySize(void *object, int field) const
             return basedesc->getFieldArraySize(object, field);
         field -= basedesc->getFieldCount();
     }
-    MinhaMensagem *pp = (MinhaMensagem *)object; (void)pp;
+    DroneMessage *pp = (DroneMessage *)object; (void)pp;
     switch (field) {
         default: return 0;
     }
 }
 
-const char *MinhaMensagemDescriptor::getFieldDynamicTypeString(void *object, int field, int i) const
+const char *DroneMessageDescriptor::getFieldDynamicTypeString(void *object, int field, int i) const
 {
     omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
     if (basedesc) {
@@ -696,13 +696,13 @@ const char *MinhaMensagemDescriptor::getFieldDynamicTypeString(void *object, int
             return basedesc->getFieldDynamicTypeString(object,field,i);
         field -= basedesc->getFieldCount();
     }
-    MinhaMensagem *pp = (MinhaMensagem *)object; (void)pp;
+    DroneMessage *pp = (DroneMessage *)object; (void)pp;
     switch (field) {
         default: return nullptr;
     }
 }
 
-std::string MinhaMensagemDescriptor::getFieldValueAsString(void *object, int field, int i) const
+std::string DroneMessageDescriptor::getFieldValueAsString(void *object, int field, int i) const
 {
     omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
     if (basedesc) {
@@ -710,7 +710,7 @@ std::string MinhaMensagemDescriptor::getFieldValueAsString(void *object, int fie
             return basedesc->getFieldValueAsString(object,field,i);
         field -= basedesc->getFieldCount();
     }
-    MinhaMensagem *pp = (MinhaMensagem *)object; (void)pp;
+    DroneMessage *pp = (DroneMessage *)object; (void)pp;
     switch (field) {
         case FIELD_origem: return long2string(pp->getOrigem());
         case FIELD_destino: return long2string(pp->getDestino());
@@ -720,7 +720,7 @@ std::string MinhaMensagemDescriptor::getFieldValueAsString(void *object, int fie
     }
 }
 
-bool MinhaMensagemDescriptor::setFieldValueAsString(void *object, int field, int i, const char *value) const
+bool DroneMessageDescriptor::setFieldValueAsString(void *object, int field, int i, const char *value) const
 {
     omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
     if (basedesc) {
@@ -728,7 +728,7 @@ bool MinhaMensagemDescriptor::setFieldValueAsString(void *object, int field, int
             return basedesc->setFieldValueAsString(object,field,i,value);
         field -= basedesc->getFieldCount();
     }
-    MinhaMensagem *pp = (MinhaMensagem *)object; (void)pp;
+    DroneMessage *pp = (DroneMessage *)object; (void)pp;
     switch (field) {
         case FIELD_origem: pp->setOrigem(string2long(value)); return true;
         case FIELD_destino: pp->setDestino(string2long(value)); return true;
@@ -737,7 +737,7 @@ bool MinhaMensagemDescriptor::setFieldValueAsString(void *object, int field, int
     }
 }
 
-const char *MinhaMensagemDescriptor::getFieldStructName(int field) const
+const char *DroneMessageDescriptor::getFieldStructName(int field) const
 {
     omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
     if (basedesc) {
@@ -746,12 +746,12 @@ const char *MinhaMensagemDescriptor::getFieldStructName(int field) const
         field -= basedesc->getFieldCount();
     }
     switch (field) {
-        case FIELD_status: return omnetpp::opp_typename(typeid(StatusModule));
+        case FIELD_status: return omnetpp::opp_typename(typeid(DroneStatus));
         default: return nullptr;
     };
 }
 
-void *MinhaMensagemDescriptor::getFieldStructValuePointer(void *object, int field, int i) const
+void *DroneMessageDescriptor::getFieldStructValuePointer(void *object, int field, int i) const
 {
     omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
     if (basedesc) {
@@ -759,7 +759,7 @@ void *MinhaMensagemDescriptor::getFieldStructValuePointer(void *object, int fiel
             return basedesc->getFieldStructValuePointer(object, field, i);
         field -= basedesc->getFieldCount();
     }
-    MinhaMensagem *pp = (MinhaMensagem *)object; (void)pp;
+    DroneMessage *pp = (DroneMessage *)object; (void)pp;
     switch (field) {
         case FIELD_status: return toVoidPtr(&pp->getStatus()); break;
         default: return nullptr;

@@ -1,10 +1,10 @@
 #ifndef MYSTERIO_SRC_COMMUNICATION_STATUS_H_
 #define MYSTERIO_SRC_COMMUNICATION_STATUS_H_
 
-class StatusModule {
+class DroneStatus {
 public:
-    StatusModule();
-    virtual ~StatusModule();
+    DroneStatus();
+    virtual ~DroneStatus();
     void setLocation(double locX, double locY, double locZ);
     double getLocationX();
     double getLocationY();
