@@ -15,6 +15,7 @@ Define_Module(ModuloComunicacao);
 extern Coord position[10];
 extern double velocidade[10];
 float bateria[10];
+double tempoVoo[10];
 
 extern int UAVDestino;
 extern int UAVLeader;
@@ -25,7 +26,6 @@ UAVCommunicationSocket uavs[20];
 static GoToTask irNaEsquina;
 void ModuloComunicacao::initialize(){
     selfID = getIndex();
-    cout << "Bateriaaaa: " << bateria[selfID] << "|" << std::stof(pegarBateria(selfID).str());
 
     uavs[selfID].setSelfID(selfID);
 
@@ -65,6 +65,14 @@ void ModuloComunicacao::handleMessage(cMessage *msg){
             DroneStatus s = mMSG->getStatus();
             cout << "[U" << selfID << "] Bateria de ["<< mMSG->getOrigem() << "]: " << s.getBattery() << " J" << endl;
             bateria[selfID] = std::stof(pegarBateria(selfID).str());
+        }else if(msg->getKind() == SOLICITAR_TEMPOVOO){
+            cout << "[U2U] Enviando status(tempo de voo) de " << selfID << " para " << mMSG->getOrigem() << endl;
+            enviarMensagem(1.0, selfID, mMSG->getOrigem(), "Enviando tempo de voo", RESPONDER_BATERIA);
+            bateria[selfID] = std::stof(pegarBateria(selfID).str());
+        }else if(mMSG->getKind() == RESPONDER_TEMPOVOO){
+            DroneStatus s = mMSG->getStatus();
+            cout << "[U" << selfID << "] Bateria de ["<< mMSG->getOrigem() << "]: " << s.getBattery() << " J" << endl;
+            //bateria[selfID] = std::stof(pegarBateria(selfID).str());
         }
     } else {
         if(UAVDestino == -1 && selfID == UAVLeader){
@@ -133,10 +141,17 @@ DroneMessage *ModuloComunicacao::generateMessage(){
     return msg;
 }
 
-J ModuloComunicacao::pegarBateria(int idUAV){
+J ModuloComunicacao::pegarBateria(int idUAV){ //Retirar daqui e passar para o Mobility
     cModule *a = getParentModule()->getSubmodule("host", idUAV)->getSubmodule("energyStorage", 0);
     SimpleEpEnergyStorage *energySto = check_and_cast<SimpleEpEnergyStorage*>(a);
     return energySto->getNominalEnergyCapacity();
+}
+
+void ModuloComunicacao::atualizarDados() {
+    for (int i = 0; i < 10; i++) {
+        bateria[i] = std::stof(pegarBateria(i).str());
+        tempoVoo[i] = simTime().dbl();
+    }
 }
 
 //Para usar com a mensagem //sprintf(msgname, "msg-%d-para-%d", src, dest);
@@ -206,8 +221,4 @@ void ModuloComunicacao::solicitarStatusDoUAVVizinho(){
         scheduleAt(simTime()+3.0, sendMSGEvt);
         bateria[selfID] = std::stof(pegarBateria(selfID).str());
     }
-}
-void ModuloComunicacao::atualizarDados(){
-    for(int i = 0; i < 10; i++)
-        bateria[i] = std::stof(pegarBateria(i).str());
 }

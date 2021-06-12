@@ -36,33 +36,11 @@ void UAVCommunicationSocket::connectBase(){
             receber.detach(); //join
         }
 
-        //TUDO ISSO AÍ EM CIMA DEVERIA SER SÓ ISSO AQUI: NÃO?
         //void CommunicationSocket::connectANewUAV(int ID, StatusC1 *aggregator){
         //    UAV newUAV;
         //    newUAV.setID(ID);
         //    aggregator->addUAV(newUAV);
         //}
-
-        /*while(1){
-            std::cout << ">";
-            std::string data;
-            getline(std::cin, data);
-            memset(&msg, 0, sizeof(msg));//clear the buffer
-            strcpy(msg, data.c_str());
-            if(data == "exit"){
-                send(clientSd, (char*)&msg, strlen(msg), 0);
-                break;
-            }
-            std::cout << "Awaiting server response..." << std::endl;
-            memset(&msg, 0, sizeof(msg));//clear the buffer
-            if(!strcmp(msg, "exit")){
-                std::cout << "Server has quit the session" << std::endl;
-                break;
-            }
-            std::cout << "Server: " << msg << std::endl;
-        }
-        close(clientSd);
-        std::cout << "Connection closed" << std::endl;*/
     }
 }
 

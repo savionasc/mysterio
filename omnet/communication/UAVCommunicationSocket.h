@@ -19,6 +19,7 @@ using namespace std;
 
 extern Coord position[10];
 extern float bateria[10];
+extern double tempoVoo[10];
 
 namespace mysterio {
 
@@ -97,6 +98,21 @@ class socket_receber {
                 strcpy(snd, txt.c_str());
                 MysMessage m(snd, BATTERY_STATUS_RESPONSE, this->idUAV, -1);
                 m.status.setBattery(bateria[this->idUAV]);
+                u.dispatchMessage(m);
+            }else if(!strcmp(msg.getMsg(), "flight-time")){ //Mudar isso aqui e chamar o OnMessageReceve
+                std::cout << " Flight Time Status " << std::endl;
+
+                UAVCommunicationSocket u;
+                u.setSocketCode(this->sock);
+                u.setSelfID(this->idUAV);
+
+                //Substituir isso por dispatchMessage
+
+                char snd[150];
+                std::string txt = "MSG tempo de voo[" + to_string(this->idUAV) + "]: " + to_string(tempoVoo[this->idUAV]);
+                strcpy(snd, txt.c_str());
+                MysMessage m(snd, FLIGHTTIME_STATUS_RESPONSE, this->idUAV, -1);
+                m.status.setFlightTime((int) tempoVoo[this->idUAV]);
                 u.dispatchMessage(m);
             }else{
                 std::cout << "Mensagem recebida em ["<< this->idUAV <<"]: " << msg.getMsg() << std::endl;

@@ -19,7 +19,9 @@ class ModuloComunicacao : public cSimpleModule {
         SOLICITAR_VELOCIDADE,
         RESPONDER_VELOCIDADE,
         SOLICITAR_BATERIA,
-        RESPONDER_BATERIA
+        RESPONDER_BATERIA,
+        SOLICITAR_TEMPOVOO,
+        RESPONDER_TEMPOVOO
     };
   protected:
     virtual DroneMessage *generateMessage();
