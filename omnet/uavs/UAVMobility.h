@@ -21,6 +21,8 @@
 
 #include "inet/common/INETDefs.h"
 #include "inet/mobility/base/LineSegmentsMobilityBase.h"
+#include "inet/power/base/EpEnergyStorageBase.h"
+#include "inet/power/storage/SimpleEpEnergyStorage.h"
 
 namespace inet {
 
@@ -52,6 +54,8 @@ class INET_API UAVMobility : public LineSegmentsMobilityBase
     virtual void move() override;
 
     void setData();
+
+    J pegarBateria(int idUAV);
 
     int selfID;
 

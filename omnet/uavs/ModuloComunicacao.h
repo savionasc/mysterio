@@ -2,14 +2,12 @@
 #define MYSTERIO_OMNET_UAVS_MODULOCOMUNICACAO_H_
 
 #include "../common/DroneMessage_m.h"
-#include "inet/power/base/EpEnergyStorageBase.h"
 
 using namespace omnetpp;
 using namespace std;
 
 
 namespace inet {
-using namespace power;
 
 class ModuloComunicacao : public cSimpleModule {
   public:
@@ -33,8 +31,6 @@ class ModuloComunicacao : public cSimpleModule {
     void enviarMensagem(double tempo, int origem, int destino, char const *name, int kind);
     void rememberCheckMessage(double seconds);
     void solicitarStatusDoUAVVizinho();
-    J pegarBateria(int idUAV);
-    void atualizarDados();
 
     int selfID = -2;
     DroneMessage* sendMSGEvt;

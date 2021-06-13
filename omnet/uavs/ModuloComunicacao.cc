@@ -5,7 +5,6 @@
 #include "../uavs/UAVMobility.h"
 #include <iostream>
 #include "../common/DroneStatus.h"
-#include "inet/power/storage/SimpleEpEnergyStorage.h"
 
 using namespace omnetpp;
 using namespace inet;
@@ -14,8 +13,8 @@ Define_Module(ModuloComunicacao);
 
 extern Coord position[10];
 extern double velocidade[10];
-float bateria[10];
-double tempoVoo[10];
+extern float bateria[10];
+extern double tempoVoo[10];
 
 extern int UAVDestino;
 extern int UAVLeader;
@@ -39,7 +38,6 @@ void ModuloComunicacao::initialize(){
 void ModuloComunicacao::handleMessage(cMessage *msg){
     DroneMessage *mMSG = check_and_cast<DroneMessage*>(msg);
     cout << "[U2U] Executando ação: " << msg->getFullName() << endl;
-    this->atualizarDados();
 
     if(selfID == mMSG->getDestino()){
         cout << "[U2U] Chegou no destino" << endl;
@@ -49,30 +47,28 @@ void ModuloComunicacao::handleMessage(cMessage *msg){
         }else if(msg->getKind() == RESPONDER_LOCALIZACAO){ //Chegou no leader
             DroneStatus s = mMSG->getStatus();
             cout << "[U" << selfID << "] Localização de [" << mMSG->getOrigem() << "]:\n   X: " << s.getLocationX() << " Y: " << s.getLocationX() << " Z: " << s.getLocationX() << endl;
-            cout << "[U" << selfID << "] Tempo de Voo de [" << mMSG->getOrigem() << "]:" << s.getFlightTime() << endl;
+            this->solicitarStatusDoUAVVizinho();
         }else if(msg->getKind() == SOLICITAR_VELOCIDADE){
             cout << "[U2U] Enviando status(velocidade) de " << selfID << " para " << mMSG->getOrigem() << endl;
             enviarMensagem(1.0, selfID, mMSG->getOrigem(), "Enviando velocidade", RESPONDER_VELOCIDADE);
         }else if(mMSG->getKind() == RESPONDER_VELOCIDADE){
             DroneStatus s = mMSG->getStatus();
-            cout << "[U" << selfID << "] Velocidade de ["<< mMSG->getOrigem() << "]: " << s.getVelocity() << " m/s" << endl;
+            cout << "[U" << selfID << "] Velocidade de ["<< mMSG->getOrigem() << "]: " << s.getVelocity() << " m/s" << endl << endl;
+            this->solicitarStatusDoUAVVizinho();
         }else if(msg->getKind() == SOLICITAR_BATERIA){
-            this->atualizarDados();
             cout << "[U2U] Enviando status(bateria) de " << selfID << " para " << mMSG->getOrigem() << endl;
             enviarMensagem(1.0, selfID, mMSG->getOrigem(), "Enviando bateria", RESPONDER_BATERIA);
-            bateria[selfID] = std::stof(pegarBateria(selfID).str());
         }else if(mMSG->getKind() == RESPONDER_BATERIA){
             DroneStatus s = mMSG->getStatus();
-            cout << "[U" << selfID << "] Bateria de ["<< mMSG->getOrigem() << "]: " << s.getBattery() << " J" << endl;
-            bateria[selfID] = std::stof(pegarBateria(selfID).str());
+            cout << "[U" << selfID << "] Bateria de ["<< mMSG->getOrigem() << "]: " << s.getBattery() << " J" << endl << endl;
+            this->solicitarStatusDoUAVVizinho();
         }else if(msg->getKind() == SOLICITAR_TEMPOVOO){
             cout << "[U2U] Enviando status(tempo de voo) de " << selfID << " para " << mMSG->getOrigem() << endl;
-            enviarMensagem(1.0, selfID, mMSG->getOrigem(), "Enviando tempo de voo", RESPONDER_BATERIA);
-            bateria[selfID] = std::stof(pegarBateria(selfID).str());
+            enviarMensagem(1.0, selfID, mMSG->getOrigem(), "Enviando tempo de voo", RESPONDER_TEMPOVOO);
         }else if(mMSG->getKind() == RESPONDER_TEMPOVOO){
             DroneStatus s = mMSG->getStatus();
-            cout << "[U" << selfID << "] Bateria de ["<< mMSG->getOrigem() << "]: " << s.getBattery() << " J" << endl;
-            //bateria[selfID] = std::stof(pegarBateria(selfID).str());
+            cout << "[U" << selfID << "] Tempo de voo de ["<< mMSG->getOrigem() << "]: " << s.getFlightTime() << " s" << endl << endl;
+            this->solicitarStatusDoUAVVizinho();
         }
     } else {
         if(UAVDestino == -1 && selfID == UAVLeader){
@@ -94,13 +90,15 @@ void ModuloComunicacao::handleMessage(cMessage *msg){
         switch (msg->getKind()){
             case RESPONDER_LOCALIZACAO:
                 s.setLocation(position[selfID].x, position[selfID].y, position[selfID].z);
-                s.setFlightTime(1500);
                 break;
             case RESPONDER_VELOCIDADE:
                 s.setVelocity(velocidade[selfID]);
                 break;
             case RESPONDER_BATERIA:
-                s.setBattery(std::stof(pegarBateria(selfID).str()));
+                s.setBattery(bateria[selfID]);
+                break;
+            case RESPONDER_TEMPOVOO:
+                s.setFlightTime(tempoVoo[selfID]);
                 break;
             default: /*Nao identificou o tipo da mensagem*/
                 break;
@@ -141,19 +139,6 @@ DroneMessage *ModuloComunicacao::generateMessage(){
     return msg;
 }
 
-J ModuloComunicacao::pegarBateria(int idUAV){ //Retirar daqui e passar para o Mobility
-    cModule *a = getParentModule()->getSubmodule("host", idUAV)->getSubmodule("energyStorage", 0);
-    SimpleEpEnergyStorage *energySto = check_and_cast<SimpleEpEnergyStorage*>(a);
-    return energySto->getNominalEnergyCapacity();
-}
-
-void ModuloComunicacao::atualizarDados() {
-    for (int i = 0; i < 10; i++) {
-        bateria[i] = std::stof(pegarBateria(i).str());
-        tempoVoo[i] = simTime().dbl();
-    }
-}
-
 //Para usar com a mensagem //sprintf(msgname, "msg-%d-para-%d", src, dest);
 
 //Auxiliary functions
@@ -165,7 +150,7 @@ void ModuloComunicacao::enviarMensagem(double tempo, int origem, int destino, ch
 }
 
 void ModuloComunicacao::solicitarStatusDoUAVVizinho(){
-
+    UAVDestino = -1;
     //Call in the first moments of the application to select a UAV
     if (selfID == 0) {
         cout << "Atribuindo tarefa ao drone [" << selfID << "]" << endl;
@@ -192,6 +177,9 @@ void ModuloComunicacao::solicitarStatusDoUAVVizinho(){
             cout << "1. Localizacao" << std::endl;
             cout << "2. Velocidade" << std::endl;
             cout << "3. Bateria" << std::endl;
+            cout << "4. Tempo de voo" << std::endl;
+            cout << "9. Para adiar" << std::endl;
+
 
             if (scanf("%d", &continuar) == 1) {
                 switch(continuar){ //Creating Message to communication between UAVs without our framework
@@ -204,6 +192,9 @@ void ModuloComunicacao::solicitarStatusDoUAVVizinho(){
                     case 3:
                         sendMSGEvt = new DroneMessage("Solicitando bateria", SOLICITAR_BATERIA);
                         break;
+                    case 4:
+                        sendMSGEvt = new DroneMessage("Solicitando tempo de voo", SOLICITAR_TEMPOVOO);
+                        break;
                     default:
                         printf("Digite uma opção valida!\n");
                 }
@@ -213,12 +204,15 @@ void ModuloComunicacao::solicitarStatusDoUAVVizinho(){
 
         } while(continuar <= 0);
 
-        //This message is used only for communication between uavs using just Omnet++
-        sendMSGEvt->setOrigem(UAVLeader);
-        //Dica para deixar a aplicação aleatória
-        //Colocar um tempo aleatório em vez de 3
-        //Um tempo em que conte um numero random entre 1 e 1+(k/6), onde K = hora
-        scheduleAt(simTime()+3.0, sendMSGEvt);
-        bateria[selfID] = std::stof(pegarBateria(selfID).str());
+        if(continuar != 9){
+            //This message is used only for communication between uavs using just Omnet++
+            sendMSGEvt->setOrigem(UAVLeader);
+            //Dica para deixar a aplicação aleatória
+            //Colocar um tempo aleatório em vez de 3
+            //Um tempo em que conte um numero random entre 1 e 1+(k/6), onde K = hora
+            scheduleAt(simTime()+3.0, sendMSGEvt);
+        }else{
+            //no else escalonar uma mensagem para lembrar de perguntar alguma coisa...
+        }
     }
 }
