@@ -1,15 +1,15 @@
                                                                 
 version 2
-run Mysterio-0-20210613-10:26:20-26061
+run Mysterio-0-20210619-09:20:01-9437
 attr configname Mysterio
-attr datetime 20210613-10:26:20
+attr datetime 20210619-09:20:01
 attr experiment Mysterio
 attr inifile omnetpp.ini
 attr iterationvars ""
 attr iterationvarsf ""
 attr measurement ""
 attr network MysterioCommunication
-attr processid 26061
+attr processid 9437
 attr repetition 0
 attr replication #0
 attr resultdir results

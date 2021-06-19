@@ -210,7 +210,7 @@ void ModuloComunicacao::solicitarStatusDoUAVVizinho(){
             //Dica para deixar a aplicação aleatória
             //Colocar um tempo aleatório em vez de 3
             //Um tempo em que conte um numero random entre 1 e 1+(k/6), onde K = hora
-            scheduleAt(simTime()+3.0, sendMSGEvt);
+            scheduleAt(simTime()+7.0, sendMSGEvt);
         }else{
             //no else escalonar uma mensagem para lembrar de perguntar alguma coisa...
         }

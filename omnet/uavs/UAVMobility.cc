@@ -72,7 +72,7 @@ double UAVMobility::getMaxSpeed() const {
 J UAVMobility::pegarBateria(int idUAV){ //Retirar daqui e passar para o Mobility
     cModule *a = getParentModule()->getParentModule()->getSubmodule("host", idUAV)->getSubmodule("energyStorage", 0);
     SimpleEpEnergyStorage *energySto = check_and_cast<SimpleEpEnergyStorage*>(a);
-    return energySto->getNominalEnergyCapacity();
+    return energySto->getResidualEnergyCapacity();
 }
 
 void UAVMobility::setData(){
