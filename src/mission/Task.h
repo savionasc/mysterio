@@ -2,17 +2,15 @@
 #define MYSTERIO_SRC_MISSION_TASK_H_
 #include "../utils/Coordinate.h"
 
-class Task { //Goto, CineBackBaseStation
+class Task { //Goto, ComeBackBaseStation
 
 public:
     //Função de Avaliação
     virtual bool isComplete(){ } //For GoTo Task, Current Coordinate is a parameter necessary to check this
-    virtual void setTask(){ }
+    virtual void assignTask(){ } //async //Drone, comando, parametros do comando
+    //virtual void setTask(){ }
 
     //Add int Priority
-    char objetivo[150]; //Definir um tipo Objetivo
-    Coordinate target;
-    Coordinate initialPosition;
 
     //Talvez calculemos o progresso num futuro próximo...
     //Se for da missão é saber quantas tarefas foram cumpridas e quantas não foram

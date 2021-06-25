@@ -62,7 +62,7 @@ protected:
     }
     int numNodes;
 
-    RepositoryMySQL r;
+    RepositoryMySQL r; //Deixar de solicitar diretamente pro banco para pedir pro UAV
 };
 
 #endif

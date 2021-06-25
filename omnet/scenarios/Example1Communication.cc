@@ -1,6 +1,7 @@
+#include "../scenarios/Example1Communication.h"
+
 #include <iostream>
 #include "../communication/CommunicationSocket.h"
-#include "Example1Communication.h"
 
 using namespace std;
 

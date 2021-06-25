@@ -23,6 +23,7 @@
 #include "inet/mobility/base/LineSegmentsMobilityBase.h"
 #include "inet/power/base/EpEnergyStorageBase.h"
 #include "inet/power/storage/SimpleEpEnergyStorage.h"
+#include "../../src/utils/Coordinate.h"
 
 namespace inet {
 
@@ -50,10 +51,15 @@ class INET_API UAVMobility : public LineSegmentsMobilityBase
     /** @brief Overridden from LineSegmentsMobilityBase.*/
     virtual void setTargetPosition() override;
 
+    Coord CoordinateToCoord(Coordinate co){
+        Coord coor(co.getX(), co.getY(), co.getZ());
+        return coor;
+    }
+
     /** @brief Overridden from LineSegmentsMobilityBase.*/
     virtual void move() override;
 
-    void setData();
+    void rescueData();
 
     J pegarBateria(int idUAV);
 

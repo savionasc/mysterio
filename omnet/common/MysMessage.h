@@ -2,7 +2,7 @@
 #define MYSTERIO_OMNET_COMMON_MYSMESSAGE_H_
 #include "../../src/utils/Message.h"
 
-class MysMessage : public Message {
+class MysMessage : public Message { //Mover o Message
 public:
     MysMessage(){ }
 

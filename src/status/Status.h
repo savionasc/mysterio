@@ -21,7 +21,6 @@ public:
      *}*/
 
     virtual void subscribe(UAV uav) = 0;
-    virtual void requestStatus() = 0;
     virtual std::list<UAV*> getPublishersList() = 0;
     virtual void unsubscribe(UAV uav) = 0;
 };

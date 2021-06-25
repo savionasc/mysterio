@@ -32,17 +32,19 @@
 class DroneMessage;
 // cplusplus {{
 #include "mysterio/omnet/common/DroneStatus.h"
+#include "../../src/mission/Task.h"
 #include <string>
 // }}
 
 /**
- * Class generated from <tt>mysterio/omnet/common/DroneMessage.msg:10</tt> by nedtool.
+ * Class generated from <tt>mysterio/omnet/common/DroneMessage.msg:15</tt> by nedtool.
  * <pre>
  * message DroneMessage extends cMessage
  * {
  *     int origem = -1;
  *     int destino = -1;
  *     DroneStatus status;
+ *     Task task;
  *     string titulo;
  * }
  * </pre>
@@ -53,6 +55,7 @@ class INET_API DroneMessage : public ::omnetpp::cMessage
     int origem = -1;
     int destino = -1;
     DroneStatus status;
+    Task task;
     omnetpp::opp_string titulo;
 
   private:
@@ -79,6 +82,9 @@ class INET_API DroneMessage : public ::omnetpp::cMessage
     virtual const DroneStatus& getStatus() const;
     virtual DroneStatus& getStatusForUpdate() { return const_cast<DroneStatus&>(const_cast<DroneMessage*>(this)->getStatus());}
     virtual void setStatus(const DroneStatus& status);
+    virtual const Task& getTask() const;
+    virtual Task& getTaskForUpdate() { return const_cast<Task&>(const_cast<DroneMessage*>(this)->getTask());}
+    virtual void setTask(const Task& task);
     virtual const char * getTitulo() const;
     virtual void setTitulo(const char * titulo);
 };

@@ -1,15 +1,21 @@
 #include "../uavs/UAVMobility.h"
-#include "../mysterio/Example1Communication.h"
+#include "../mission/GoToTask.h"
 #include <iostream>
+#include "../scenarios/Example1Communication.h"
+#include "../communication/UAVCommunicationSocket.h"
+#include "../common/Codes.h"
 
 using namespace omnetpp;
 using namespace std;
 using namespace inet;
+using namespace mysterio;
 
-Coord position[10];
-double velocidade[10];
-float bateria[10];
-double tempoVoo[10];
+Coord position[NUMUAVS];
+double velocidade[NUMUAVS];
+float bateria[NUMUAVS];
+double tempoVoo[NUMUAVS];
+GoToTask minhasTarefas[NUMUAVS]; //Task
+UAVCommunicationSocket uavs[NUMUAVS];
 
 int UAVLeader = -1;
 int UAVDestino = -1;
@@ -37,10 +43,9 @@ void UAVMobility::initialize(int stage) {
         hasWaitTime = waitTimeParameter->isExpression() || waitTimeParameter->doubleValue() != 0;
         speedParameter = &par("speed");
         velocidade[selfID] = par("speed").operator double();
-        //velocidade1[selfID] = speedParameter;
         stationary = !speedParameter->isExpression() && speedParameter->doubleValue() == 0;
     }
-    this->setData();
+    this->rescueData();
 }
 
 void UAVMobility::setTargetPosition() {
@@ -49,21 +54,26 @@ void UAVMobility::setTargetPosition() {
         nextChange = simTime() + waitTime;
         nextMoveIsWait = false;
     } else {
-        targetPosition = getRandomPosition();
+        if(minhasTarefas[selfID].started)
+            targetPosition = this->CoordinateToCoord(minhasTarefas[selfID].target);
+        else
+            targetPosition = getRandomPosition();
         double speed = speedParameter->doubleValue();
         double distance = lastPosition.distance(targetPosition);
         simtime_t travelTime = distance / speed;
         nextChange = simTime() + travelTime;
         nextMoveIsWait = hasWaitTime;
     }
-    this->setData();
+    this->rescueData();
 }
 
 void UAVMobility::move() {
     LineSegmentsMobilityBase::move();
     raiseErrorIfOutside();
-    this->setData();
+    this->rescueData();
 }
+
+//CheckTasks
 
 double UAVMobility::getMaxSpeed() const {
     return speedParameter->isExpression() ? NaN : speedParameter->doubleValue();
@@ -75,7 +85,7 @@ J UAVMobility::pegarBateria(int idUAV){ //Retirar daqui e passar para o Mobility
     return energySto->getResidualEnergyCapacity();
 }
 
-void UAVMobility::setData(){
+void UAVMobility::rescueData(){
     position[selfID] = lastPosition;
     velocidade[selfID] = speedParameter->doubleValue();
     bateria[selfID] = std::stof(pegarBateria(selfID).str());

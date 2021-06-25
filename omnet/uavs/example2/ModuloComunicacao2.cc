@@ -1,32 +1,32 @@
-#include "ModuloComunicacao.h"
+#include "ModuloComunicacao2.h"
 
-#include "../communication/UAVCommunicationSocket.h"
-#include "../mission/GoToTask.h"
-#include "../uavs/UAVMobility.h"
-#include "../common/MysMessage.h"
+#include "../../communication/UAVCommunicationSocket.h"
+#include "../../mission/GoToTask.h"
+#include "../UAVMobility.h"
 #include <iostream>
-#include "../common/DroneStatus.h"
+#include "../../common/DroneStatus.h"
+#include "../../common/Codes.h"
 
 using namespace omnetpp;
 using namespace inet;
+using namespace mysterio;
 
-Define_Module(ModuloComunicacao);
+Define_Module(ModuloComunicacao2);
 
 //shared variables
-using namespace mysterio;
-extern UAVCommunicationSocket uavs[NUMUAVS];
 extern Coord position[NUMUAVS];
 extern double velocidade[NUMUAVS];
 extern float bateria[NUMUAVS];
 extern double tempoVoo[NUMUAVS];
 extern GoToTask minhasTarefas[NUMUAVS];
-
+extern UAVCommunicationSocket uavs[NUMUAVS];
 extern int UAVDestino;
 extern int UAVLeader;
 
+
 //static GoToTask irNaEsquina;
 
-void ModuloComunicacao::initialize(){
+void ModuloComunicacao2::initialize(){
     selfID = getIndex();
 
     uavs[selfID].setSelfID(selfID);
@@ -34,12 +34,10 @@ void ModuloComunicacao::initialize(){
     if(!uavs[selfID].isConnected()){
         uavs[selfID].connectBase(); //Implementar o listen... para ficar ouvindo o canal
     }
-
-    solicitarStatusDoUAVVizinho();
 }
 
-void ModuloComunicacao::handleMessage(cMessage *msg){
-    DroneMessage *mMSG = check_and_cast<DroneMessage*>(msg);
+void ModuloComunicacao2::handleMessage(cMessage *msg){
+    /*DroneMessage *mMSG = check_and    _cast<DroneMessage*>(msg);
     cout << "[U2U] Executando ação: " << msg->getFullName() << endl;
 
     if(selfID == mMSG->getDestino()){
@@ -76,7 +74,7 @@ void ModuloComunicacao::handleMessage(cMessage *msg){
             cout << "Atribuindo tarefa ao drone [" << selfID << "]" << endl;
             Coordinate c(100.0, 100.0, 100.0);
             minhasTarefas[selfID].started = true;
-            minhasTarefas[selfID].assignTask(c);
+            minhasTarefas[selfID].setTask(c);
         }else if(mMSG->getKind() == TASKCOMPLETED){
             Coordinate currentPosition(100.0, 100.0, 100.0);
             cout << "Resultado da tarefa pro drone [" << selfID << "]: " << minhasTarefas[selfID].isComplete(currentPosition) << endl;
@@ -108,12 +106,12 @@ void ModuloComunicacao::handleMessage(cMessage *msg){
             case RESPONDER_TEMPOVOO:
                 s.setFlightTime(tempoVoo[selfID]);
                 break;
-            default: /*Nao identificou o tipo da mensagem*/
+            default: //Nao identificou o tipo da mensagem
                 break;
         }
         mMSG->setStatus(s);
         forwardMessage(mMSG);
-    }
+    }*/
 
 }
 
@@ -121,7 +119,7 @@ void ModuloComunicacao::handleMessage(cMessage *msg){
 //Acho que sprintf(msgname, "msg-%d-para-%d", src, dest); mostra na tela um texto na mensagem
 //Depois usar bubble("CHEGOU, gostei do recebido!"); que ele mostra na interface gráfica que chegou a mensagem!
 
-void ModuloComunicacao::forwardMessage(DroneMessage *msg){
+void ModuloComunicacao2::forwardMessage(DroneMessage *msg){
     //Depois enviar mensagens para todos os vizinhos
     int n = gateSize("out");
     int k = intuniform(0, (n-1));
@@ -130,7 +128,7 @@ void ModuloComunicacao::forwardMessage(DroneMessage *msg){
     send(msg, "out", k);
 }
 
-DroneMessage *ModuloComunicacao::generateMessage(){
+DroneMessage *ModuloComunicacao2::generateMessage(){
     int src = getIndex();
     int n = getVectorSize();
     int dest = intuniform(0, n-2);
@@ -150,15 +148,15 @@ DroneMessage *ModuloComunicacao::generateMessage(){
 //Para usar com a mensagem //sprintf(msgname, "msg-%d-para-%d", src, dest);
 
 //Auxiliary functions
-void ModuloComunicacao::enviarMensagem(double tempo, int origem, int destino, char const *name, int kind){
+void ModuloComunicacao2::enviarMensagem(double tempo, int origem, int destino, char const *name, int kind){
     sendMSGEvt = new DroneMessage(name, kind);
     sendMSGEvt->setDestino(destino);
     sendMSGEvt->setOrigem(origem);
     scheduleAt(simTime()+tempo, sendMSGEvt);
 }
 
-void ModuloComunicacao::solicitarStatusDoUAVVizinho(){
-    UAVDestino = -1;
+void ModuloComunicacao2::solicitarStatusDoUAVVizinho(){
+    /*UAVDestino = -1;
     //Call in the first moments of the application to select a UAV
     if (selfID == 0) {
         do{
@@ -227,5 +225,5 @@ void ModuloComunicacao::solicitarStatusDoUAVVizinho(){
         }else{
             //no else escalonar uma mensagem para lembrar de perguntar alguma coisa...
         }
-    }
+    }*/
 }

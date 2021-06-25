@@ -10,6 +10,7 @@
 #include "../../src/communication/UAVCommunication.h"
 #include "CommunicationSocket.h"
 #include "../common/MysMessage.h"
+#include "../common/Codes.h"
 #include "inet/common/geometry/common/Coord.h"
 #include "inet/power/base/EpEnergyStorageBase.h"
 #include "inet/power/storage/SimpleEpEnergyStorage.h"
@@ -17,9 +18,9 @@
 using namespace inet;
 using namespace std;
 
-extern Coord position[10];
-extern float bateria[10];
-extern double tempoVoo[10];
+extern Coord position[NUMUAVS];
+extern float bateria[NUMUAVS];
+extern double tempoVoo[NUMUAVS];
 
 namespace mysterio {
 

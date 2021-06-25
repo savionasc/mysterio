@@ -1,6 +1,12 @@
 #include "GoToTask.h"
 
-GoToTask::GoToTask() { }
+GoToTask::GoToTask() {
+    Coordinate position(-1,-1,-1);
+    this->initialPosition = position;
+}
+GoToTask::GoToTask(Coordinate targetPosition) {
+    this->assignTask(targetPosition);
+}
 
 GoToTask::~GoToTask() { }
 
@@ -11,7 +17,11 @@ bool GoToTask::isComplete(Coordinate currentPosition){
     return false;
 }
 
-void GoToTask::setTask(Coordinate target){
+Coordinate GoToTask::getTask(){
+    return this->target;
+}
+
+void GoToTask::assignTask(Coordinate target){
     this->target = target;
 }
 
@@ -19,6 +29,6 @@ bool GoToTask::isComplete(){
     return false;
 }
 
-void GoToTask::setTask(){
+void GoToTask::assignTask(){
 
 }

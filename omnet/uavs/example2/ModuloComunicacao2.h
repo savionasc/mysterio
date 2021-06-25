@@ -1,7 +1,7 @@
 #ifndef MYSTERIO_OMNET_UAVS_MODULOCOMUNICACAO_H_
 #define MYSTERIO_OMNET_UAVS_MODULOCOMUNICACAO_H_
 
-#include "../common/DroneMessage_m.h"
+#include "../../common/DroneMessage_m.h"
 
 using namespace omnetpp;
 using namespace std;
@@ -9,7 +9,7 @@ using namespace std;
 
 namespace inet {
 
-class ModuloComunicacao : public cSimpleModule {
+class ModuloComunicacao2 : public cSimpleModule {
   public:
     enum TipoMensagem {
         SOLICITAR_LOCALIZACAO = 10,

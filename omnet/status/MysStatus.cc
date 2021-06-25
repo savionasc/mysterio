@@ -68,7 +68,7 @@ Coordinate MysStatus::getUAVLocation(int idUAV){ //Request?
     cout << "Pegando localização do Banco de Dados!" << endl;
 
     //this->r.requestStatusInformation();
-    this->r.getUAVLocation(idUAV);
+    this->r.requestUAVLocation(idUAV);
     return c;
 }
 
@@ -80,7 +80,7 @@ void MysStatus::updateUAVLocation(Coordinate coord, int idUAV){ //saveUAVCurrent
     s.setZAxis(coord.getZ());
     this->uavs[idUAV] = s; //Substituir
     cout << "Passando localização pro Banco de Dados!" << endl;
-    this->r.setUAVLocation(1, coord);
+    this->r.saveUAVLocation(1, coord);
 }
 
 double MysStatus::getUAVVelocity(int idUAV){

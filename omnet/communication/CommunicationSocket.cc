@@ -7,7 +7,7 @@
 
 //Enviar mensagens Unicast, Broadcast e Multicast
 
-int conexoes[MAXUAVS], ct = -1;
+int conexoes[NUMUAVS], ct = -1; //Passar o Array pro Framework
 
 int CommunicationSocket::configureSocketServer(int port){
     if(port < 1000){

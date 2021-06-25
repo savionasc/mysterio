@@ -9,12 +9,10 @@ public:
     RepositoryMySQL();
     virtual ~RepositoryMySQL();
     virtual bool createConnection();
-    virtual void saveStatusInformation(int params);
-    virtual int requestStatusInformation();
     virtual void destroyConnection();
 
-    Coordinate getUAVLocation(int idUAV);
-    void setUAVLocation(int idUAV, Coordinate coord);
+    Coordinate requestUAVLocation(int idUAV);
+    void saveUAVLocation(int idUAV, Coordinate coord);
     double getVelocity(int idUAV);
     void setVelocity(int idUAV, double velocity);
     float getBattery(int idUAV);
