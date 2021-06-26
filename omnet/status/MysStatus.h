@@ -5,7 +5,8 @@
 #include "../database/RepositoryMySQL.h"
 #include <iostream>
 #include <map>
-#include "../common/Codes.h"
+
+#include "../../src/utils/Codes.h"
 
 using namespace std;
 
@@ -27,7 +28,9 @@ public:
     virtual float getBattery(int idUAV);           //rescues from the repository
     virtual void updateBattery(float level, int idUAV);          //send to repository
 
-    void subscribe(UAV uav){
+
+    //Passar isso pro communication...
+    /*void subscribe(UAV uav){
         //Criar 2 Repositories
         //Repository -> Que faz só consultas SQL geral e para consultas específicas que retorna UAV
         //Repository.addUAV
@@ -48,7 +51,8 @@ public:
 
     void unsubscribe(UAV uav){
         //this->subscribers.remove(uav);
-    }
+    }*/
+
 protected:
     std::map<int,UAV> uavs;
     int tempoDeFuncionamento; //do sistema

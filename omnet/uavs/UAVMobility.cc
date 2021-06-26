@@ -3,7 +3,7 @@
 #include <iostream>
 #include "../scenarios/Example1Communication.h"
 #include "../communication/UAVCommunicationSocket.h"
-#include "../common/Codes.h"
+#include "../../src/utils/Codes.h"
 
 using namespace omnetpp;
 using namespace std;
@@ -19,8 +19,6 @@ UAVCommunicationSocket uavs[NUMUAVS];
 
 int UAVLeader = -1;
 int UAVDestino = -1;
-
-using namespace mysterio;
 
 using namespace power;
 
@@ -56,8 +54,10 @@ void UAVMobility::setTargetPosition() {
     } else {
         if(minhasTarefas[selfID].started)
             targetPosition = this->CoordinateToCoord(minhasTarefas[selfID].target);
-        else
+        else{
             targetPosition = getRandomPosition();
+        }
+
         double speed = speedParameter->doubleValue();
         double distance = lastPosition.distance(targetPosition);
         simtime_t travelTime = distance / speed;

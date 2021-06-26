@@ -1,5 +1,5 @@
 #include "CommunicationSocket.h"
-#include "../common/Codes.h"
+#include "../../src/utils/Codes.h"
 
 #include <thread>
 

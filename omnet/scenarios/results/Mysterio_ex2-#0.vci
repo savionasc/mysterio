@@ -1,15 +1,15 @@
-file 87092 1624661784                                           
+file 49997 1624714849                                           
 version 2
-run Mysterio_ex2-0-20210625-19:55:43-2629
+run Mysterio_ex2-0-20210626-10:40:17-6434
 attr configname Mysterio_ex2
-attr datetime 20210625-19:55:43
+attr datetime 20210626-10:40:17
 attr experiment Mysterio_ex2
 attr inifile omnetpp.ini
 attr iterationvars ""
 attr iterationvarsf ""
 attr measurement ""
 attr network MysterioCommunication2
-attr processid 2629
+attr processid 6434
 attr repetition 0
 attr replication #0
 attr resultdir results
@@ -39,6 +39,9 @@ param *.host[*].mobility.angleDelta uniform(-10deg,10deg)
 param *.host[*].mobility.rotationAxisAngle uniform(-10deg,10deg)
 param *.host[*].mobility.speed uniform(10mps,20mps)
 param *.host[*].mobility.faceForward false
+param *.host[*].mobility.initialX 220m
+param *.host[*].mobility.initialY 220m
+param *.host[*].mobility.initialZ 300m
 param **.constraintAreaMinZ 200m
 param *.visualizer.osgVisualizer.typename "\"IntegratedOsgVisualizer\""
 param *.visualizer.osgVisualizer.sceneVisualizer.clearColor "\"skyblue\""
@@ -90,10 +93,10 @@ vector 5 MysterioCommunication2.host[1].energyStorage powerGeneration:vector ETV
 attr interpolationmode sample-hold
 attr source powerGenerationChanged
 attr title "Power generation, vector"
-0	4495 43213 0 754 0 37.604892023 1303 0.0051190981158959 0.05 42.886666448277 1.6218712769469
-1	47708 36 0 520 0 25.953982516597 2 0 0.004 0.004 1.6e-05
-2	47744 39241 0 754 0 37.604892023 1287 0.0032305409446133 0.05 26.997092753577 1.004742790483
-3	86985 35 0 177 0 8.828978478438 2 0 0.004 0.004 1.6e-05
-4	87020 36 0 520 0 25.953982516597 2 0 0.004 0.004 1.6e-05
-5	87056 35 0 177 0 8.828978478438 2 0 0.004 0.004 1.6e-05
+0	4612 17150 0 531 0 26.566608635 815 0.02657205 0.05 39.30932355 1.9177177115077
+1	21762 35 0 461 0 23.08057828677 2 0 0.004 0.004 1.6e-05
+2	21797 28140 0 531 0 26.566608635 849 0.020400992560014 0.05 23.470420466379 0.69141051433156
+3	49937 12 0 0 0 0 1 0.004 0.004 0.004 1.6e-05
+4	49949 35 0 461 0 23.08057828677 2 0 0.004 0.004 1.6e-05
+5	49984 12 0 0 0 0 1 0.004 0.004 0.004 1.6e-05
 
