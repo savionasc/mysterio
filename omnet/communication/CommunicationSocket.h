@@ -8,11 +8,8 @@
 #include "../status/MysStatus.h"
 
 // componente de comunicação do framework com os drones
-class CommunicationSocket : public Communication, public Communicable {
+class CommunicationSocket : public Communication {
 public:
-
-    //Communicable
-    void onMessageReceive(Message msg);
 
     //Communication
     void sendMessage(Communicable *source, Communicable *dest, Message msg);
@@ -22,6 +19,8 @@ public:
     void sendMessageSocket();
 
     int configureSocketServer(int port);
+
+    int conexoes[NUMUAVS];
 };
 
 #endif

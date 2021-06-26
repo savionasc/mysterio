@@ -1,16 +1,21 @@
 #include "CommunicationSocket.h"
 #include "../../src/utils/Codes.h"
+#include "../../src/communication/Communication.h"
 
 #include <thread>
 
 #include "ConnServerSocket.cc"
 
+using namespace std;
+
 //Enviar mensagens Unicast, Broadcast e Multicast
 
-int conexoes[NUMUAVS], ct = -1; //Passar o Array pro Framework
+//int conexoes[NUMUAVS];
+int ct = -1; //Passar o Array pro Framework
 
 int CommunicationSocket::configureSocketServer(int port){
-    if(port < 1000){
+    return Communication::configureSocketServer(port);
+    /*if(port < 1000){
         std::cerr << "Inaccessible ports" << std::endl;
         exit(0);
     }
@@ -37,11 +42,12 @@ int CommunicationSocket::configureSocketServer(int port){
     }
     std::cout << "Waiting for a UAV to connect..." << std::endl;
     listen(serverSd, 5);
-    return serverSd;
+    return serverSd;*/
 }
 
 void CommunicationSocket::sendMessageSocket(){
-    std::cout << "Digite um UAV para receber" << std::endl;
+    Communication::sendMessageSocket();
+    /*std::cout << "Digite um UAV para receber" << std::endl;
     while(true){
         int id;
         std::cin >> id;
@@ -62,13 +68,13 @@ void CommunicationSocket::sendMessageSocket(){
             thread enviar(SendSocket(), conexoes[id]);
             enviar.join();
         }
-    }
+    }*/
 }
 
 //status->subscribe(newUAV);?
 void CommunicationSocket::listenSocket(){
-
-    int serverSd = configureSocketServer(PORT);
+    Communication::listenSocket();
+    /*int serverSd = configureSocketServer(PORT);
     thread conectar(ConnSocket(), serverSd);
     while(ct == -1){
 
@@ -84,14 +90,12 @@ void CommunicationSocket::listenSocket(){
         sendMessageSocket();
     }
 
-    conectar.join();
+    conectar.join();*/
 }
 
 int* CommunicationSocket::getActiveConnections(){
-    return conexoes;
+    return nullptr;//Communication::conexoes; //conexoes;
 }
-
-void CommunicationSocket::onMessageReceive(Message msg){ }
 
 void CommunicationSocket::sendMessage(Communicable *source, Communicable *dest, Message msg){
     getActiveConnections();
