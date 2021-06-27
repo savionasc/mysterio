@@ -9,7 +9,8 @@
 #include <netinet/in.h>
 #include "../../src/communication/UAVCommunication.h"
 #include "CommunicationSocket.h"
-#include "../common/MysMessage.h"
+#include "../communication/MysMessage.h"
+#include "../communication/DroneStatusMessage.h"
 #include "../../src/utils/Codes.h"
 #include "inet/common/geometry/common/Coord.h"
 #include "inet/power/base/EpEnergyStorageBase.h"
@@ -82,7 +83,7 @@ class socket_receber {
                 txt += " z: " + to_string(coor.z);
                 strcpy(snd, txt.c_str());
                 //Message m(snd, 11);
-                MysMessage m(snd, LOCATION_STATUS_RESPONSE, this->idUAV, -1);
+                DroneStatusMessage m(snd, LOCATION_STATUS_RESPONSE, this->idUAV, -1);
                 m.status.setLocation(coor.x, coor.y, coor.z);
                 u.dispatchMessage(m);
             }else if(!strcmp(msg.getMsg(), "battery")){ //Mudar isso aqui e chamar o OnMessageReceve
@@ -97,7 +98,7 @@ class socket_receber {
                 char snd[150];
                 std::string txt = "MSG bateria[" + to_string(this->idUAV) + "]: " + to_string(bateria[this->idUAV]);
                 strcpy(snd, txt.c_str());
-                MysMessage m(snd, BATTERY_STATUS_RESPONSE, this->idUAV, -1);
+                DroneStatusMessage m(snd, BATTERY_STATUS_RESPONSE, this->idUAV, -1);
                 m.status.setBattery(bateria[this->idUAV]);
                 u.dispatchMessage(m);
             }else if(!strcmp(msg.getMsg(), "flight-time")){ //Mudar isso aqui e chamar o OnMessageReceve
@@ -112,7 +113,7 @@ class socket_receber {
                 char snd[150];
                 std::string txt = "MSG tempo de voo[" + to_string(this->idUAV) + "]: " + to_string(tempoVoo[this->idUAV]);
                 strcpy(snd, txt.c_str());
-                MysMessage m(snd, FLIGHTTIME_STATUS_RESPONSE, this->idUAV, -1);
+                DroneStatusMessage m(snd, FLIGHTTIME_STATUS_RESPONSE, this->idUAV, -1);
                 m.status.setFlightTime((int) tempoVoo[this->idUAV]);
                 u.dispatchMessage(m);
             }else{

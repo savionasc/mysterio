@@ -4,7 +4,8 @@
 #include <string.h>
 
 #include "../status/MysStatus.h"
-#include "../common/MysMessage.h"
+#include "MysMessage.h"
+#include "DroneStatusMessage.h"
 
 using namespace std;
 
@@ -16,7 +17,8 @@ public:
 
     bool esperarMensagem(int newSd){
         //Aqui deve converter toda e qualquer mensagem e repassar pra this.OnMessageReceve
-        MysMessage msg;
+        //MysMessage msg;
+        DroneStatusMessage msg;
         memset(&msg, 0, sizeof(msg));
         recv(newSd, (MysMessage*)&msg, sizeof(msg), 0);
         //uMessage *mMSG = check_and_cast<uMessage*>(&msg);

@@ -9,7 +9,6 @@ public:
 
     Message(char *msg, short int code){
         strcpy(this->msg, msg);
-        //this->msg = msg;
         this->code = code;
     }
 

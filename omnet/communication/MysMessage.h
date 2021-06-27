@@ -1,8 +1,8 @@
-#ifndef MYSTERIO_OMNET_COMMON_MYSMESSAGE_H_
-#define MYSTERIO_OMNET_COMMON_MYSMESSAGE_H_
+#ifndef MYSTERIO_OMNET_COMMUNICATION_MYSMESSAGE_H_
+#define MYSTERIO_OMNET_COMMUNICATION_MYSMESSAGE_H_
 #include "../../src/utils/Message.h"
 
-class MysMessage : public Message { //Mover o Message
+class MysMessage : public Message {
 public:
     MysMessage(){ }
 

@@ -2,15 +2,11 @@
 
 #include "../communication/CommunicationSocket.h"
 
-/*  CommunicationSocket cs; //Enviando Reposta
-    Message m(resp, 15);
-    cs.sendMessage(&src, &dest, m);  */
-
 MysStatus::MysStatus(){
     this->r.createConnection();
 }
 
-void MysStatus::onMessageReceive(Message msg){
+void MysStatus::onMessageReceive(Message msg){ //Tratar o que for DroneStatusMessage
     cout << "Resposta recebida no Status!" << endl;
     cout << msg.getMsg() << endl;
     switch (msg.getCode()) {

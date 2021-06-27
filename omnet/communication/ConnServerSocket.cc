@@ -9,7 +9,6 @@
 #include "ReceiveServerSocket.cc"
 #include "SendServerSocket.cc"
 
-
 using namespace std;
 //extern int conexoes[];
 extern int ct;
@@ -37,6 +36,6 @@ public:
         receber.join();
         return true;
     }
-};//*/
+};
 #endif
 

@@ -3,7 +3,7 @@
 #include "../communication/UAVCommunicationSocket.h"
 #include "../mission/GoToTask.h"
 #include "../uavs/UAVMobility.h"
-#include "../common/MysMessage.h"
+#include "../communication/MysMessage.h"
 #include <iostream>
 #include "../common/DroneStatus.h"
 
