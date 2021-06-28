@@ -42,7 +42,8 @@ public:
     short int code; //This variable must identify the request type of the message
     short int source;
     short int destination;
-    DroneStatus status;
+    //DroneStatus status;
+    //SpecificClass* s = dynamic_cast<SpecificClass*>(dest);
 };
 
 #endif

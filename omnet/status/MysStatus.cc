@@ -7,6 +7,53 @@ MysStatus::MysStatus(){
 }
 
 void MysStatus::onMessageReceive(Message msg){ //Tratar o que for DroneStatusMessage
+    DroneStatusMessage* mMSG = dynamic_cast<DroneStatusMessage*>(&msg);
+    cout << "Resposta recebida no Status!" << endl;
+    cout << mMSG->getMsg() << endl;
+    switch (mMSG->getCode()) {
+        case LOCATION_STATUS_REQUEST:{
+            Coordinate cc = this->getUAVLocation(1);
+            cout << "Posicao Geografica recuperada pelo banco." << endl;
+            cout << "X: " << cc.getX() << " Y: " << cc.getY() << " Z: " << cc.getZ() << endl;
+
+            //Aqui eu devo enviar para alguém...
+            break;
+        }
+        case LOCATION_STATUS_RESPONSE:{
+            Coordinate c(mMSG->status.getLocationX(), mMSG->status.getLocationY(), mMSG->status.getLocationZ());
+            this->updateUAVLocation(c, mMSG->source);
+            break;
+        }
+        case VELOCITY_STATUS_REQUEST:{
+            cout << "Velocidade recuperada pelo banco: " << this->getUAVVelocity(mMSG->source) << endl;
+            break;
+        }
+        case VELOCITY_STATUS_RESPONSE:{
+            this->updateUAVVelocity(mMSG->status.getVelocity(), mMSG->source);
+            break;
+        }
+        case BATTERY_STATUS_REQUEST:{
+            cout << "Bateria recuperada pelo banco: " << this->getBattery(mMSG->source) << endl;
+            break;
+        }
+        case BATTERY_STATUS_RESPONSE:{
+            this->updateBattery(mMSG->status.getBattery(), mMSG->source);
+            break;
+        }
+        case FLIGHTTIME_STATUS_REQUEST:{
+            cout << "Tempo de voo recuperado pelo banco: " << this->getFlightTime(mMSG->source) << endl;
+            break;
+        }
+        case FLIGHTTIME_STATUS_RESPONSE:{
+            this->updateFlightTime(mMSG->status.getFlightTime(), mMSG->source);
+            break;
+        }
+        default:
+            break;
+    }
+}
+
+void MysStatus::onDroneStatusMessageReceive(DroneStatusMessage msg){ //Tratar o que for DroneStatusMessage
     cout << "Resposta recebida no Status!" << endl;
     cout << msg.getMsg() << endl;
     switch (msg.getCode()) {

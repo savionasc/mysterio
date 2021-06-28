@@ -4,7 +4,7 @@
 #include <string.h>
 
 #include "../status/MysStatus.h"
-#include "MysMessage.h"
+#include "../../src/utils/Message.h"
 #include "DroneStatusMessage.h"
 
 using namespace std;
@@ -16,12 +16,15 @@ public:
     }
 
     bool esperarMensagem(int newSd){
-        //Aqui deve converter toda e qualquer mensagem e repassar pra this.OnMessageReceve
-        //MysMessage msg;
-        DroneStatusMessage msg;
+        DroneStatusMessage msg; ///MuDAR AQUI?
         memset(&msg, 0, sizeof(msg));
-        recv(newSd, (MysMessage*)&msg, sizeof(msg), 0);
-        //uMessage *mMSG = check_and_cast<uMessage*>(&msg);
+        recv(newSd, (DroneStatusMessage*)&msg, sizeof(msg), 0);
+        //Message msg2;
+        //memset(&msg2, 0, sizeof(msg2));
+        //recv(newSd, (Message*)&msg2, sizeof(msg2), 0);
+        cout << "DroneStatusMessage: " << msg.msg << endl;
+        //cout << "Message: " << msg2.msg << endl;
+        //uMessage *msg = check_and_cast<uMessage*>(&msg);
         if(!strcmp(msg.msg, "exit")){
             std::cout << "UAV has quit the session" << std::endl;
             return false;
@@ -29,14 +32,13 @@ public:
         else if(msg.code > 10 && msg.code < 21){
             cout << "Criando Status1!" << endl;
             MysStatus status;
-            status.onMessageReceive(msg);
+            status.onDroneStatusMessageReceive(msg);
         }else {
             cout << "Criando Status2!" << endl;
             MysStatus status;
-            cout << "Olha x: " << msg.status.getLocationX() << endl;
-            status.onMessageReceive(msg);
+            status.onDroneStatusMessageReceive(msg);
         }
-        std::cout << "UAV Message: " << msg.msg << std::endl;
+        std::cout << "UAV Message: " << msg.status.getLocationX() << msg.status.getLocationY() << msg.status.getLocationZ() << std::endl;
         return true;
     }
 };

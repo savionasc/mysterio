@@ -45,7 +45,7 @@ int CommunicationSocket::configureSocketServer(int port){
     return serverSd;*/
 }
 
-void CommunicationSocket::sendMessageSocket(int id, MysMessage msg){
+void CommunicationSocket::sendMessageSocket(int id, Message msg){
     Communication::sendMessageSocket(id, msg);
     /*std::cout << "Digite um UAV para receber" << std::endl;
     while(true){

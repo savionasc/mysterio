@@ -1,12 +1,28 @@
 #include "UAVCommunicationSocket.h"
 #include "../../src/utils/Codes.h"
+#include "DroneStatusMessage.h"
+#include <iostream>
+using namespace std;
+
 
 namespace mysterio {
+
+void UAVCommunicationSocket::dispatchStatusMessage(DroneStatusMessage msg){ //falta o cast
+    //Aqui envia mensagem via socket pro Communication
+    //send(this->getSocketCode(), msg.getMsg(), strlen(msg.getMsg()), 0);
+
+    //send(this->getSocketCode(), (Message*)&msg, sizeof(msg), 0);
+    //DroneStatusMessage* s = dynamic_cast<DroneStatusMessage*>(&msg);
+    //cout << "C ALT! " << s->status.getLocationX() << endl;
+    send(this->getSocketCode(), (DroneStatusMessage*)&msg, sizeof(msg), 0);
+}
 
 void UAVCommunicationSocket::dispatchMessage(Message msg){
     //Aqui envia mensagem via socket pro Communication
     //send(this->getSocketCode(), msg.getMsg(), strlen(msg.getMsg()), 0);
-    send(this->getSocketCode(), (MysMessage*)&msg, sizeof(msg), 0);
+
+    //send(this->getSocketCode(), (Message*)&msg, sizeof(msg), 0);
+    send(this->getSocketCode(), (Message*)&msg, sizeof(msg), 0);
 }
 
 void UAVCommunicationSocket::connectBase(){

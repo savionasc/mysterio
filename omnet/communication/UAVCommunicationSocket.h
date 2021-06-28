@@ -9,7 +9,8 @@
 #include <netinet/in.h>
 #include "../../src/communication/UAVCommunication.h"
 #include "CommunicationSocket.h"
-#include "../communication/MysMessage.h"
+#include "../../src/utils/Message.h"
+#include "../../omnet/communication/DroneStatusMessage.h"
 #include "../communication/DroneStatusMessage.h"
 #include "../../src/utils/Codes.h"
 #include "inet/common/geometry/common/Coord.h"
@@ -31,6 +32,7 @@ public:
 
     //UAVCommunication
     void connectBase();
+    void dispatchStatusMessage(DroneStatusMessage msg);
     void dispatchMessage(Message msg); //Aqui ele deve enviar mensagem pro Communication
     void disconnectBase();
 
@@ -59,9 +61,9 @@ class socket_receber {
 
         bool esperarMensagem(int newSd){
             //Aqui deve converter toda e qualquer mensagem e repassar pra this.OnMessageReceve
-            MysMessage msg;
+            Message msg;
             memset(&msg, 0, sizeof(msg));
-            recv(newSd, (MysMessage*)&msg, sizeof(msg), 0);
+            recv(newSd, (Message*)&msg, sizeof(msg), 0);
             if(!strcmp(msg.getMsg(), "exit") || !strcmp(msg.getMsg(), "quit")){
                 std::cout << "UAV has quit the session" << std::endl;
                 //UAVCommunication u; u.disconnectBase();
@@ -83,9 +85,11 @@ class socket_receber {
                 txt += " z: " + to_string(coor.z);
                 strcpy(snd, txt.c_str());
                 //Message m(snd, 11);
-                DroneStatusMessage m(snd, LOCATION_STATUS_RESPONSE, this->idUAV, -1);
+                DroneStatusMessage m(snd, LOCATION_STATUS_RESPONSE, this->idUAV, -1);   //MUDAR AQUI???
                 m.status.setLocation(coor.x, coor.y, coor.z);
-                u.dispatchMessage(m);
+                cout << "Coordenadas: " << coor.x << coor.y << coor.z << endl;
+                //u.dispatchMessage(m);
+                u.dispatchStatusMessage(m);
             }else if(!strcmp(msg.getMsg(), "battery")){ //Mudar isso aqui e chamar o OnMessageReceve
                 std::cout << " Battery status " << std::endl;
 

@@ -4,7 +4,7 @@
 #include "../../src/utils/Coordinate.h"
 #include "../../src/communication/Communication.h"
 #include "../../src/communication/Communicable.h"
-#include "../communication/MysMessage.h"
+#include "../../src/utils/Message.h"
 #include "../status/MysStatus.h"
 
 // componente de comunicação do framework com os drones
@@ -16,7 +16,7 @@ public:
 
     int* getActiveConnections(); //Criar uma classe Conexões para guardar o ID do UAV e o Socket
     void listenSocket();
-    void sendMessageSocket(int id, MysMessage msg);
+    void sendMessageSocket(int id, Message msg);
 
     int configureSocketServer(int port);
 

@@ -9,7 +9,6 @@ public:
 
     DroneStatusMessage(char *msg, short int code){
         strcpy(this->msg, msg);
-        //this->msg = msg;
         this->code = code;
     }
 
@@ -22,5 +21,6 @@ public:
 
     virtual ~DroneStatusMessage(){}
     DroneStatus status;
+    char msg[1500];
 };
 #endif

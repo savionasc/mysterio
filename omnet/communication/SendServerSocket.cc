@@ -1,14 +1,15 @@
 #include <sys/socket.h>
 #include <netinet/in.h>
-#include "../communication/MysMessage.h"
+#include "../../src/utils/Message.h"
+#include "../communication/DroneStatusMessage.h"
 
 class SendSocket {
 public:
-    void operator()(int param, MysMessage param2){
+    void operator()(int param, Message param2){
         enviar(param, param2);
     }
 
-    bool enviar(int newSd, MysMessage message){
-        send(newSd, (MysMessage*)&message, sizeof(message), 0);
+    bool enviar(int newSd, Message message){
+        send(newSd, (Message*)&message, sizeof(message), 0);
     }
 };
