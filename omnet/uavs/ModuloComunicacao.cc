@@ -76,7 +76,7 @@ void ModuloComunicacao::handleMessage(cMessage *msg){
             cout << "Atribuindo tarefa ao drone [" << selfID << "]" << endl;
             Coordinate c(100.0, 100.0, 100.0);
             minhasTarefas[selfID].started = true;
-            minhasTarefas[selfID].assignTask(c);
+            minhasTarefas[selfID].assignTask(selfID, c);
         }else if(mMSG->getKind() == TASKCOMPLETED){
             Coordinate currentPosition(100.0, 100.0, 100.0);
             cout << "Resultado da tarefa pro drone [" << selfID << "]: " << minhasTarefas[selfID].isComplete(currentPosition) << endl;

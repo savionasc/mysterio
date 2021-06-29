@@ -4,8 +4,8 @@ GoToTask::GoToTask() {
     Coordinate position(-1,-1,-1);
     this->initialPosition = position;
 }
-GoToTask::GoToTask(Coordinate targetPosition) {
-    this->assignTask(targetPosition);
+GoToTask::GoToTask(int idUAV, Coordinate targetPosition) {
+    this->assignTask(idUAV, targetPosition);
 }
 
 GoToTask::~GoToTask() { }
@@ -21,14 +21,20 @@ Coordinate GoToTask::getTask(){
     return this->target;
 }
 
-void GoToTask::assignTask(Coordinate target){
-    this->target = target;
+void GoToTask::assignTask(){
+
 }
+
+void GoToTask::assignTask(int idUAV, Coordinate target){
+    this->target = target;
+    this->idUAV = idUAV;
+}
+
+void GoToTask::assignTask(int idUAV, Command command, int *args[]){
+
+}
+
 
 bool GoToTask::isComplete(){
     return false;
-}
-
-void GoToTask::assignTask(){
-
 }

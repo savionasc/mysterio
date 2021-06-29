@@ -14,6 +14,8 @@ void UAVCommunicationSocket::dispatchStatusMessage(DroneStatusMessage msg){ //fa
     //send(this->getSocketCode(), (Message*)&msg, sizeof(msg), 0);
     //DroneStatusMessage* s = dynamic_cast<DroneStatusMessage*>(&msg);
     //cout << "C ALT! " << s->status.getLocationX() << endl;
+    int a = -37;
+    send(this->getSocketCode(), (int*)&a, sizeof(a), 0);
     send(this->getSocketCode(), (DroneStatusMessage*)&msg, sizeof(msg), 0);
 }
 
@@ -22,6 +24,8 @@ void UAVCommunicationSocket::dispatchMessage(Message msg){
     //send(this->getSocketCode(), msg.getMsg(), strlen(msg.getMsg()), 0);
 
     //send(this->getSocketCode(), (Message*)&msg, sizeof(msg), 0);
+    int a = -38;
+    send(this->getSocketCode(), (int*)&a, sizeof(a), 0);
     send(this->getSocketCode(), (Message*)&msg, sizeof(msg), 0);
 }
 

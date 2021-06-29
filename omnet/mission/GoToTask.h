@@ -5,13 +5,14 @@
 class GoToTask : public Task {
 public:
     GoToTask();
-    GoToTask(Coordinate currentPosition);
+    GoToTask(int idUAV, Coordinate currentPosition);
     virtual ~GoToTask();
     bool isComplete();
     bool isComplete(Coordinate currentPosition);
     Coordinate getTask();
     void assignTask();
-    void assignTask(Coordinate target);
+    void assignTask(int idUAV, Coordinate target);
+    void assignTask(int idUAV, Command command, int *args[]);
     bool started = false;
 //protected:
     char objetivo[150]; //Definir um tipo Objetivo
