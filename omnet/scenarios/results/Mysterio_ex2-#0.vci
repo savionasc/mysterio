@@ -1,15 +1,15 @@
-file 103763 1624997384                                          
+file 2653626 1625315351                                         
 version 2
-run Mysterio_ex2-0-20210629-17:08:48-6078
+run Mysterio_ex2-0-20210703-09:28:08-4413
 attr configname Mysterio_ex2
-attr datetime 20210629-17:08:48
+attr datetime 20210703-09:28:08
 attr experiment Mysterio_ex2
 attr inifile omnetpp.ini
 attr iterationvars ""
 attr iterationvarsf ""
 attr measurement ""
 attr network MysterioCommunication2
-attr processid 6078
+attr processid 4413
 attr repetition 0
 attr replication #0
 attr resultdir results
@@ -18,6 +18,7 @@ attr seedset 0
 param *.host[*].mobility.numeroDrones 2
 param *.numHosts 2
 param *.host[*].osgModel "\"3d/drone.ive.100.scale.0,0,90.rot\""
+param *.basestation.osgModel "\"3d/car.ive.50.scale.0,0,90.rot\""
 param *.canvasVisualizer.energyStorageVisualizer.displayEnergyStorages true
 param *.host[*].hasStatus true
 param *.host[*].energyStorage.typename "\"SimpleEpEnergyStorage\""
@@ -41,8 +42,7 @@ param *.host[*].mobility.speed uniform(10mps,20mps)
 param *.host[*].mobility.faceForward false
 param *.host[*].mobility.initialX 220m
 param *.host[*].mobility.initialY 220m
-param *.host[*].mobility.initialZ 300m
-param **.constraintAreaMinZ 200m
+param *.host[*].mobility.initialZ 80m
 param *.visualizer.osgVisualizer.typename "\"IntegratedOsgVisualizer\""
 param *.visualizer.osgVisualizer.sceneVisualizer.clearColor "\"skyblue\""
 param *.visualizer.osgVisualizer.sceneVisualizer.sceneImage "\"showcases/desert\""
@@ -93,10 +93,12 @@ vector 5 MysterioCommunication2.host[1].energyStorage powerGeneration:vector ETV
 attr interpolationmode sample-hold
 attr source powerGenerationChanged
 attr title "Power generation, vector"
-0	4612 46161 0 1039 0 51.810015135 1652 0.0005986257591281 0.05 43.959287526167 1.9771728756045
-1	50773 35 0 461 0 23.08057828677 2 0 0.004 0.004 1.6e-05
-2	50808 52847 0 1039 0 51.810015135 1663 0.020551523762234 0.05 57.81964465178 2.1929476045601
-3	103655 36 0 941 0 46.974101355068 2 0 0.004 0.004 1.6e-05
-4	103691 35 0 461 0 23.08057828677 2 0 0.004 0.004 1.6e-05
-5	103726 36 0 941 0 46.974101355068 2 0 0.004 0.004 1.6e-05
+0	4644 1215213 0 62568 0 2807.012481597754 32768 0.00021852384556224 0.05 1119.5298333111 46.298254991636
+2	1219857 1198303 0 63613 0 2848.767214145329 32768 0.00225 0.05 1127.0149419964 46.496083353001
+0	2418160 118159 62569 67779 2807.030970116708 3035.465265699889 3075 0.0036359963216438 0.05 92.693876462977 3.7471011038296
+1	2536319 3463 0 67483 0 3025.965708783526 119 0 0.004 0.24 0.00096
+2	2539782 103314 63615 67779 2848.815542287627 3035.465265699889 2507 0.0038757683794001 0.05 58.90088245365 1.9833882198385
+3	2643096 3533 0 67658 0 3032.080256029819 121 0 0.004 0.244 0.000976
+4	2646629 3463 0 67483 0 3025.965708783526 119 0 0.004 0.24 0.00096
+5	2650092 3533 0 67658 0 3032.080256029819 121 0 0.004 0.244 0.000976
 

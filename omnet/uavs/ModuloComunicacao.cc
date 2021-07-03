@@ -32,7 +32,7 @@ void ModuloComunicacao::initialize(){
     uavs[selfID].setSelfID(selfID);
 
     if(!uavs[selfID].isConnected()){
-        uavs[selfID].connectBase(); //Implementar o listen... para ficar ouvindo o canal
+        uavs[selfID].connectBase();
     }
 
     solicitarStatusDoUAVVizinho();
@@ -117,7 +117,6 @@ void ModuloComunicacao::handleMessage(cMessage *msg){
 
 }
 
-//ATENÇÃO!!
 //Acho que sprintf(msgname, "msg-%d-para-%d", src, dest); mostra na tela um texto na mensagem
 //Depois usar bubble("CHEGOU, gostei do recebido!"); que ele mostra na interface gráfica que chegou a mensagem!
 

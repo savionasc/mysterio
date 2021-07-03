@@ -6,15 +6,12 @@ import inet.visualizer.integrated.IntegratedVisualizer;
 import inet.visualizer.integrated.IntegratedCanvasVisualizer;
 import inet.node.base.ApplicationLayerNodeBase;
 
-module BasestationUAVs
-{
+module BasestationUAVs extends ApplicationLayerNodeBase {
     parameters:
         @display("i=block/broadcast");
 }
 
-
-network MysterioCommunication2
-{
+network MysterioCommunication2 {
     parameters:
         int numHosts;
         @display("bgb=1000,1000");
@@ -30,7 +27,7 @@ network MysterioCommunication2
             @display("i=misc/node_vs");
             @display("t=UAV");
         }
-        Basestation: BasestationUAVs {
+        basestation: BasestationUAVs {
             @display("p=220,220");
         }
     connections:

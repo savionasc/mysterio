@@ -32,8 +32,9 @@ void ModuloComunicacao2::initialize(){
     uavs[selfID].setSelfID(selfID);
 
     if(!uavs[selfID].isConnected()){
-        uavs[selfID].connectBase(); //Implementar o listen... para ficar ouvindo o canal
+        uavs[selfID].connectBase();
     }
+    bubble("INICIANDO, Iniciando!");
 }
 
 void ModuloComunicacao2::handleMessage(cMessage *msg){
