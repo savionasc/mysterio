@@ -91,8 +91,6 @@ class socket_receber {
                 u.setSocketCode(this->sock);
                 u.setSelfID(this->idUAV);
 
-                //Substituir isso por dispatchMessage
-
                 char snd[150];
                 std::string txt = "MSG bateria[" + to_string(this->idUAV) + "]: " + to_string(bateria[this->idUAV]);
                 strcpy(snd, txt.c_str());
@@ -105,8 +103,6 @@ class socket_receber {
                 UAVCommunicationSocket u;
                 u.setSocketCode(this->sock);
                 u.setSelfID(this->idUAV);
-
-                //Substituir isso por dispatchMessage
 
                 char snd[150];
                 std::string txt = "MSG tempo de voo[" + to_string(this->idUAV) + "]: " + to_string(tempoVoo[this->idUAV]);

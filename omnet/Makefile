@@ -20,5 +20,5 @@ DroneStatus.o: common/DroneStatus.h common/DroneStatus.cc
 clean:
 	rm -rf *.o scenarios/main
 
-vai:
+run:
 	./scenarios/main

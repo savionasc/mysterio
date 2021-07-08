@@ -14,9 +14,16 @@ Coord position[NUMUAVS];
 double velocidade[NUMUAVS];
 float bateria[NUMUAVS];
 double tempoVoo[NUMUAVS];
+bool ativo[NUMUAVS];// = {true, true};
 GoToTask minhasTarefas[NUMUAVS]; //Task
 UAVCommunicationSocket uavs[NUMUAVS];
+//Matriz de tarefas...
+//[uav][tarefa]
 
+//1 - Tarefa: decolar (idUAV)
+//2 - Tarefa: goto (idUAV, positionTarget)
+//3 - Tarefa: dar uma volta sobre (idUAV, positionTarget, distanciaSobre)
+//4 - Tarefa: retornar a base (idUAV, basePosition)
 int UAVLeader = -1;
 int UAVDestino = -1;
 
@@ -68,9 +75,12 @@ void UAVMobility::setTargetPosition() {
 }
 
 void UAVMobility::move() {
-    LineSegmentsMobilityBase::move();
-    raiseErrorIfOutside();
-    this->rescueData();
+    if(ativo[selfID]){
+        cout << "Move" << endl;
+        LineSegmentsMobilityBase::move();
+        raiseErrorIfOutside();
+        this->rescueData();
+    }
 }
 
 //CheckTasks
