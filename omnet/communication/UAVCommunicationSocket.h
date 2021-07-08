@@ -29,7 +29,6 @@ namespace mysterio {
 class UAVCommunicationSocket : public UAVCommunication {
     friend class socket_receber;
 public:
-
     //UAVCommunication
     void connectBase();
     void dispatchStatusMessage(DroneStatusMessage msg);
@@ -66,7 +65,6 @@ class socket_receber {
             recv(newSd, (Message*)&msg, sizeof(msg), 0);
             if(!strcmp(msg.getMsg(), "exit") || !strcmp(msg.getMsg(), "quit")){
                 std::cout << "UAV has quit the session" << std::endl;
-                //UAVCommunication u; u.disconnectBase();
                 close(newSd);
                 return false;
             }else if(!strcmp(msg.getMsg(), "location")){ //Mudar isso aqui e chamar o OnMessageReceve
@@ -77,18 +75,14 @@ class socket_receber {
                 u.setSocketCode(this->sock);
                 u.setSelfID(this->idUAV);
 
-                //Substituir isso por dispatchMessage
-
                 char snd[150];
-                std::string txt = "MSG: x: " + to_string(coor.x);
-                txt += " y: " + to_string(coor.y);
-                txt += " z: " + to_string(coor.z);
+                std::string txt = "MSG - Coordenadas (" + to_string(coor.x);
+                txt += "," + to_string(coor.y);
+                txt += "," + to_string(coor.z) + ")";
                 strcpy(snd, txt.c_str());
-                //Message m(snd, 11);
                 DroneStatusMessage m(snd, LOCATION_STATUS_RESPONSE, this->idUAV, -1);   //MUDAR AQUI???
                 m.status.setLocation(coor.x, coor.y, coor.z);
-                cout << "Coordenadas: " << coor.x << coor.y << coor.z << endl;
-                //u.dispatchMessage(m);
+                cout << txt << endl;
                 u.dispatchStatusMessage(m);
             }else if(!strcmp(msg.getMsg(), "battery")){ //Mudar isso aqui e chamar o OnMessageReceve
                 std::cout << " Battery status " << std::endl;

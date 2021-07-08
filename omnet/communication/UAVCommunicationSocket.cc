@@ -4,28 +4,20 @@
 #include <iostream>
 using namespace std;
 
-
 namespace mysterio {
 
-void UAVCommunicationSocket::dispatchStatusMessage(DroneStatusMessage msg){ //falta o cast
-    //Aqui envia mensagem via socket pro Communication
-    //send(this->getSocketCode(), msg.getMsg(), strlen(msg.getMsg()), 0);
-
-    //send(this->getSocketCode(), (Message*)&msg, sizeof(msg), 0);
+void UAVCommunicationSocket::dispatchStatusMessage(DroneStatusMessage msg){
     //DroneStatusMessage* s = dynamic_cast<DroneStatusMessage*>(&msg);
-    //cout << "C ALT! " << s->status.getLocationX() << endl;
-    int a = -37;
-    send(this->getSocketCode(), (int*)&a, sizeof(a), 0);
+    int codeMessage = STATUS_MESSAGE;
+    send(this->getSocketCode(), (int*)&codeMessage, sizeof(codeMessage), 0);
     send(this->getSocketCode(), (DroneStatusMessage*)&msg, sizeof(msg), 0);
 }
 
 void UAVCommunicationSocket::dispatchMessage(Message msg){
     //Aqui envia mensagem via socket pro Communication
     //send(this->getSocketCode(), msg.getMsg(), strlen(msg.getMsg()), 0);
-
-    //send(this->getSocketCode(), (Message*)&msg, sizeof(msg), 0);
-    int a = -38;
-    send(this->getSocketCode(), (int*)&a, sizeof(a), 0);
+    int codeMessage = MESSAGE;
+    send(this->getSocketCode(), (int*)&codeMessage, sizeof(codeMessage), 0);
     send(this->getSocketCode(), (Message*)&msg, sizeof(msg), 0);
 }
 
@@ -93,4 +85,3 @@ void UAVCommunicationSocket::disconnectBase(){
 }
 
 }
-

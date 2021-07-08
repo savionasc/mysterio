@@ -3,6 +3,7 @@
 #include <netinet/in.h>
 #include <string.h>
 
+#include "../../src/utils/Codes.h"
 #include "../status/MysStatus.h"
 #include "../../src/utils/Message.h"
 #include "DroneStatusMessage.h"
@@ -20,7 +21,7 @@ public:
         int tipoMSG; //Recebendo tipo da mensagem para saber se é Status ou só Message mesmo...
         memset(&tipoMSG, 0, sizeof(tipoMSG));
         recv(newSd, (int*)&tipoMSG, sizeof(tipoMSG), 0);
-        if(tipoMSG == -37){
+        if(tipoMSG == STATUS_MESSAGE){
             cout << "-37!!! " << tipoMSG << endl;
             DroneStatusMessage msg;
             memset(&msg, 0, sizeof(msg));
@@ -45,11 +46,11 @@ public:
                 status.onDroneStatusMessageReceive(msg);
             }
             std::cout << "UAV Message: " << msg.status.getLocationX() << msg.status.getLocationY() << msg.status.getLocationZ() << std::endl;
-        }else if(tipoMSG == -38){
+        }else if(tipoMSG == MESSAGE){
             Message msg;
             memset(&msg, 0, sizeof(msg));
             recv(newSd, (Message*)&msg, sizeof(msg), 0);
-            cout << "Mensagem recebida!" << endl;
+            cout << "Mensagem recebida: " << msg.getMsg() << endl;
         }
         return true;
     }
