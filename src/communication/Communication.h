@@ -46,8 +46,10 @@ public:
     }
 
     virtual void sendMessageSocket(int id, Message msg){//MysMessage msg){
+        cout << "CT: " << ct << endl;
         if(id == -1){ //Broadcast
             for (int i = 0; i <= ct; i++){
+                msg.setDestination(i);
                 thread enviar(SendSocket(), conexoes[i], msg);
                 enviar.detach();
             }
@@ -72,7 +74,7 @@ public:
                 std::cout << "Digite a mensagem:" << std::endl;
                 char m[1500];
                 std::cin >> m;
-                Message msg(m, 10, id, -1);
+                Message msg(m, 10, -1, id);
                 sendMessageSocket(id, msg);
             }
             conectar.join();

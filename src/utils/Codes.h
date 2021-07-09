@@ -11,6 +11,7 @@
 #define PORT       1111
 
 enum CodeMessage {
+
     //STATUS
     SOLICITAR_LOCALIZACAO = 10,
     SOLICITAR_VELOCIDADE,

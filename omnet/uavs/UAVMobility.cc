@@ -76,7 +76,6 @@ void UAVMobility::setTargetPosition() {
 
 void UAVMobility::move() {
     if(ativo[selfID]){
-        cout << "Move" << endl;
         LineSegmentsMobilityBase::move();
         raiseErrorIfOutside();
         this->rescueData();

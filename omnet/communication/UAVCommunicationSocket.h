@@ -23,6 +23,7 @@ using namespace std;
 extern Coord position[NUMUAVS];
 extern float bateria[NUMUAVS];
 extern double tempoVoo[NUMUAVS];
+extern bool ativo[NUMUAVS];
 
 namespace mysterio {
 
@@ -110,6 +111,12 @@ class socket_receber {
                 DroneStatusMessage m(snd, FLIGHTTIME_STATUS_RESPONSE, this->idUAV, -1);
                 m.status.setFlightTime((int) tempoVoo[this->idUAV]);
                 u.dispatchMessage(m);
+            }else if(!strcmp(msg.getMsg(), "start")){
+                ativo[msg.getDestination()] = true;
+                cout << msg.getMsg() << ":" << msg.getDestination() << endl;
+            }else if(!strcmp(msg.getMsg(), "stop")){
+                ativo[msg.getDestination()] = false;
+                cout << msg.getMsg() << ":" << msg.getDestination() << endl;
             }else{
                 std::cout << "Mensagem recebida em ["<< this->idUAV <<"]: " << msg.getMsg() << std::endl;
             }
