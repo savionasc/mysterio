@@ -46,7 +46,6 @@ public:
     }
 
     virtual void sendMessageSocket(int id, Message msg){//MysMessage msg){
-        cout << "CT: " << ct << endl;
         if(id == -1){ //Broadcast
             for (int i = 0; i <= ct; i++){
                 msg.setDestination(i);
