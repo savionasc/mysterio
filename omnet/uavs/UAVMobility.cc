@@ -15,8 +15,10 @@ double velocidade[NUMUAVS];
 float bateria[NUMUAVS];
 double tempoVoo[NUMUAVS];
 bool ativo[NUMUAVS];// = {true, true};
-GoToTask minhasTarefas[NUMUAVS]; //Task
+int itera[NUMUAVS];
+GoToTask minhasTarefas[NUMUAVS][5]; //Task
 UAVCommunicationSocket uavs[NUMUAVS];
+int stg = 0;
 //Matriz de tarefas...
 //[uav][tarefa]
 
@@ -54,14 +56,31 @@ void UAVMobility::initialize(int stage) {
 }
 
 void UAVMobility::setTargetPosition() {
+    //Verificando se está parado
+    Coordinate currentPosition(lastPosition.x,lastPosition.y,lastPosition.z);
+    if(minhasTarefas[selfID][itera[selfID]].isComplete(currentPosition)){
+        itera[selfID]++;
+        //nextMoveIsWait = true;
+    }
+
     if (nextMoveIsWait) {
-        simtime_t waitTime = waitTimeParameter->doubleValue();
+        simtime_t waitTime = waitTimeParameter->doubleValue()+3;
         nextChange = simTime() + waitTime;
         nextMoveIsWait = false;
+        cout << "Caiu no nextMoveIsWait" << endl;
     } else {
-        if(minhasTarefas[selfID].started)
-            targetPosition = this->CoordinateToCoord(minhasTarefas[selfID].target);
-        else{
+        if(minhasTarefas[selfID][itera[selfID]].started){
+            cout << "Caiu no minhasTarefas[selfID][0].started" << endl;
+            targetPosition = this->CoordinateToCoord(minhasTarefas[selfID][itera[selfID]].target);
+            Coord x = this->CoordinateToCoord(minhasTarefas[selfID][itera[selfID]].target);
+            cout << x << endl;
+        }else if(stg <= NUMUAVS){
+            Coord ini(220, 220, 220);
+            targetPosition = ini;
+            cout << "Caiu no ini" << endl;
+            stg++;
+        }else{
+            cout << "Caiu no getRandomPosition()" << endl;
             targetPosition = getRandomPosition();
         }
 
@@ -76,6 +95,11 @@ void UAVMobility::setTargetPosition() {
 
 void UAVMobility::move() {
     if(ativo[selfID]){
+        if(!minhasTarefas[selfID][itera[selfID]].started){
+            minhasTarefas[selfID][itera[selfID]].started = true;
+            this->setTargetPosition();
+            //targetPosition = this->CoordinateToCoord(minhasTarefas[selfID][0].target); //colocar um i para tarefa atual
+        }
         LineSegmentsMobilityBase::move();
         raiseErrorIfOutside();
         this->rescueData();

@@ -18,7 +18,6 @@ public:
     char objetivo[150]; //Definir um tipo Objetivo
     Coordinate target;
     Coordinate initialPosition;
-
 };
 
 #endif

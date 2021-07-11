@@ -18,14 +18,13 @@ extern Coord position[NUMUAVS];
 extern double velocidade[NUMUAVS];
 extern float bateria[NUMUAVS];
 extern double tempoVoo[NUMUAVS];
-extern GoToTask minhasTarefas[NUMUAVS];
+extern GoToTask minhasTarefas[NUMUAVS][5];
+std::array<GoToTask,2> tarefas;
 extern UAVCommunicationSocket uavs[NUMUAVS];
 extern int UAVDestino;
 extern int UAVLeader;
 
-
-//static GoToTask irNaEsquina;
-
+//Size cout << sizeof(minhasTarefas)/sizeof(minhasTarefas[0]) << endl;
 void ModuloComunicacao2::initialize(){
     selfID = getIndex();
 

@@ -16,6 +16,7 @@
 #include "inet/common/geometry/common/Coord.h"
 #include "inet/power/base/EpEnergyStorageBase.h"
 #include "inet/power/storage/SimpleEpEnergyStorage.h"
+#include "../mission/GoToTask.h"
 
 using namespace inet;
 using namespace std;
@@ -23,6 +24,7 @@ using namespace std;
 extern Coord position[NUMUAVS];
 extern float bateria[NUMUAVS];
 extern double tempoVoo[NUMUAVS];
+extern GoToTask minhasTarefas[NUMUAVS][5]; //Task
 extern bool ativo[NUMUAVS];
 
 namespace mysterio {
@@ -117,6 +119,24 @@ class socket_receber {
             }else if(!strcmp(msg.getMsg(), "stop")){
                 ativo[msg.getDestination()] = false;
                 cout << msg.getMsg() << ":" << msg.getDestination() << endl;
+            }else if(!strcmp(msg.getMsg(), "decolar")){
+                Coordinate dec(220,220,300);
+                GoToTask decolar(0, dec);
+                minhasTarefas[0][0] = decolar;
+                decolar.idUAV = 1;
+                minhasTarefas[1][0] = decolar;
+            }else if(!strcmp(msg.getMsg(), "carro")){
+                Coordinate c(500,500,300);
+                GoToTask t(0, c);
+                minhasTarefas[0][1] = t;
+                t.idUAV = 1;
+                minhasTarefas[1][1] = t;
+            }else if(!strcmp(msg.getMsg(), "goto0")){
+                ativo[0] = true;
+                //minhasTarefas[0][0].started = true;
+            }else if(!strcmp(msg.getMsg(), "goto1")){
+                ativo[1] = true;
+                //minhasTarefas[1][0].started = true;
             }else{
                 std::cout << "Mensagem recebida em ["<< this->idUAV <<"]: " << msg.getMsg() << std::endl;
             }

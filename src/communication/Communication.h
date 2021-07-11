@@ -45,16 +45,15 @@ public:
         return serverSd;
     }
 
-    virtual void sendMessageSocket(int id, Message msg){//MysMessage msg){
-        cout << "CT: " << ct << endl;
-        if(id == -1){ //Broadcast
+    virtual void sendMessageSocket(int idUAV, Message msg){
+        if(idUAV == -1){ //Broadcast
             for (int i = 0; i <= ct; i++){
                 msg.setDestination(i);
                 thread enviar(SendSocket(), conexoes[i], msg);
                 enviar.detach();
             }
         }else{ //unicast
-            thread enviar(SendSocket(), conexoes[id], msg);
+            thread enviar(SendSocket(), conexoes[idUAV], msg);
             enviar.join();
         }
     }

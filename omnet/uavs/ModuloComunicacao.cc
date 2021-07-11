@@ -19,7 +19,7 @@ extern Coord position[NUMUAVS];
 extern double velocidade[NUMUAVS];
 extern float bateria[NUMUAVS];
 extern double tempoVoo[NUMUAVS];
-extern GoToTask minhasTarefas[NUMUAVS];
+extern GoToTask minhasTarefas[NUMUAVS][5];
 
 extern int UAVDestino;
 extern int UAVLeader;
@@ -75,11 +75,11 @@ void ModuloComunicacao::handleMessage(cMessage *msg){
         }else if(mMSG->getKind() == GOTOTASK){
             cout << "Atribuindo tarefa ao drone [" << selfID << "]" << endl;
             Coordinate c(100.0, 100.0, 100.0);
-            minhasTarefas[selfID].started = true;
-            minhasTarefas[selfID].assignTask(selfID, c);
+            minhasTarefas[selfID][0].started = true;
+            minhasTarefas[selfID][0].assignTask(selfID, c);
         }else if(mMSG->getKind() == TASKCOMPLETED){
             Coordinate currentPosition(100.0, 100.0, 100.0);
-            cout << "Resultado da tarefa pro drone [" << selfID << "]: " << minhasTarefas[selfID].isComplete(currentPosition) << endl;
+            cout << "Resultado da tarefa pro drone [" << selfID << "]: " << minhasTarefas[selfID][0].isComplete(currentPosition) << endl;
         }
     } else {
         if(UAVDestino == -1 && selfID == UAVLeader){
