@@ -1,7 +1,7 @@
 #ifndef MYSTERIO_OMNET_UAVS_MODULOCOMUNICACAO_H_
 #define MYSTERIO_OMNET_UAVS_MODULOCOMUNICACAO_H_
 
-#include "../common/DroneMessage_m.h"
+#include "DroneMessage_m.h"
 
 using namespace omnetpp;
 using namespace std;

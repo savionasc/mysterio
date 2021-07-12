@@ -1,7 +1,8 @@
 #ifndef MYSTERIO_SRC_UTILS_MESSAGE_H_
 #define MYSTERIO_SRC_UTILS_MESSAGE_H_
 #include <string.h>
-#include "../../omnet/common/DroneStatus.h"
+
+#include "../../omnet/status/DroneStatus.h"
 
 class Message {
 public:

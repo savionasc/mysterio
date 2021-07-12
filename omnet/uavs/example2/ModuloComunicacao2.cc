@@ -4,7 +4,7 @@
 #include "../../mission/GoToTask.h"
 #include "../UAVMobility.h"
 #include <iostream>
-#include "../../common/DroneStatus.h"
+#include "../../status/DroneStatus.h"
 #include "../../../src/utils/Codes.h"
 
 using namespace omnetpp;

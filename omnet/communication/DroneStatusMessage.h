@@ -1,7 +1,7 @@
 #ifndef MYSTERIO_OMNET_COMMUNICATION_DRONESTATUSMESSAGE_H_
 #define MYSTERIO_OMNET_COMMUNICATION_DRONESTATUSMESSAGE_H_
 #include "../../src/utils/Message.h"
-#include "../common/DroneStatus.h"
+#include "../status/DroneStatus.h"
 
 class DroneStatusMessage : public Message{
 public:

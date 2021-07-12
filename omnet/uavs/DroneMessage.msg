@@ -1,5 +1,5 @@
 cplusplus {{
-#include "mysterio/omnet/common/DroneStatus.h"
+#include "mysterio/omnet/status/DroneStatus.h"
 #include "../../src/mission/Task.h"
 #include <string>
 }}

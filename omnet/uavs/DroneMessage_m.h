@@ -1,5 +1,5 @@
 //
-// Generated file, do not edit! Created by nedtool 5.4 from mysterio/omnet/common/DroneMessage.msg.
+// Generated file, do not edit! Created by nedtool 5.4 from mysterio/omnet/uavs/DroneMessage.msg.
 //
 
 #if defined(__clang__)
@@ -31,13 +31,13 @@
 
 class DroneMessage;
 // cplusplus {{
-#include "mysterio/omnet/common/DroneStatus.h"
+#include "mysterio/omnet/status/DroneStatus.h"
 #include "../../src/mission/Task.h"
 #include <string>
 // }}
 
 /**
- * Class generated from <tt>mysterio/omnet/common/DroneMessage.msg:15</tt> by nedtool.
+ * Class generated from <tt>mysterio/omnet/uavs/DroneMessage.msg:15</tt> by nedtool.
  * <pre>
  * message DroneMessage extends cMessage
  * {

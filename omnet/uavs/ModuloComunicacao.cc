@@ -5,7 +5,7 @@
 #include "../uavs/UAVMobility.h"
 #include "../../src/utils/Message.h"
 #include <iostream>
-#include "../common/DroneStatus.h"
+#include "../status/DroneStatus.h"
 
 using namespace omnetpp;
 using namespace inet;
