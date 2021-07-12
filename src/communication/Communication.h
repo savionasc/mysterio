@@ -45,13 +45,8 @@ public:
         return serverSd;
     }
 
-<<<<<<< HEAD
-    virtual void sendMessageSocket(int idUAV, Message msg){
+    virtual void sendMessageSocket(int idUAV, Message msg){//MysMessage msg){
         if(idUAV == -1){ //Broadcast
-=======
-    virtual void sendMessageSocket(int id, Message msg){//MysMessage msg){
-        if(id == -1){ //Broadcast
->>>>>>> 6dd0609698aa40bee4636d8c2899f72df879ff70
             for (int i = 0; i <= ct; i++){
                 msg.setDestination(i);
                 thread enviar(SendSocket(), conexoes[i], msg);
