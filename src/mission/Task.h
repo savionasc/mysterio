@@ -19,7 +19,10 @@ public:
     //Se for da missão é saber quantas tarefas foram cumpridas e quantas não foram
     //Se for da tarefa é saber quanto falta para chegar no destino
     int idUAV;
+    int type;
     Command cmd;
+    bool started;
+    //Colocar o target de novo?
 };
 
 #endif

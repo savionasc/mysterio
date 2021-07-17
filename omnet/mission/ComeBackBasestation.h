@@ -8,6 +8,8 @@ public:
     virtual ~ComeBackBasestation();
     bool isComplete();
     void assignTask();
+    void assignTask(int idUAV, Coordinate target); //Mudar para command em vez de void?
+    Coordinate base;
 };
 
 #endif

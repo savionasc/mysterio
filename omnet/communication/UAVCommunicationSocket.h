@@ -25,7 +25,9 @@ extern Coord position[NUMUAVS];
 extern float bateria[NUMUAVS];
 extern double tempoVoo[NUMUAVS];
 extern GoToTask minhasTarefas[NUMUAVS][5]; //Task
+extern std::vector<Task*> base; //Task
 extern bool ativo[NUMUAVS];
+extern int itera[NUMUAVS];
 
 namespace mysterio {
 
@@ -126,11 +128,42 @@ class socket_receber {
                 decolar.idUAV = 1;
                 minhasTarefas[1][0] = decolar;
             }else if(!strcmp(msg.getMsg(), "carro")){
-                Coordinate c(500,500,300);
+                Coordinate c(350,500,300);
                 GoToTask t(0, c);
                 minhasTarefas[0][1] = t;
                 t.idUAV = 1;
                 minhasTarefas[1][1] = t;
+            }else if(!strcmp(msg.getMsg(), "dar-volta")){
+                //escrever como montar o comando... dar-volta-10;12;8;
+                //startsWith: dar-volta, split...
+
+            }else if(!strcmp(msg.getMsg(), "retornar-base")){
+
+            }else if(!strcmp(msg.getMsg(), "pousar")){
+                //Cat cat;
+                //Animal* AnimlaPtr2 = &cat;
+                //Cat* catPtr2 = dynamic_cast<Cat*>(AnimalPtr2);
+                //GoToTask gotoc;
+                //Task* taskPtr = tarf[0][0]; //&gotoc;
+                //GoToTask* gotoPtr = dynamic_cast<GoToTask*>(taskPtr);
+
+
+                //std::vector<BaseClass*> base;
+                //base.push_back(new FirstDerivedClass());
+                //base.push_back(new SecondDerivedClass());
+
+                Coordinate currentP(10,10,10);
+                GoToTask gotoc(0, currentP);
+                //base[0] = &gotoc;
+                gotoc.initialPosition = Coordinate(0,1,2);
+                base.push_back(&gotoc);
+                base[0]->type = 10;
+                base[0]->started = true;
+                //base[0]->initialPosition = Coordinate(0,1,2);
+                itera[0]++;
+                //gotoPtr->type = 10;
+                //gotoPtr->started = true;
+                //gotoPtr->initialPosition = Coordinate(0,1,2);
             }else if(!strcmp(msg.getMsg(), "goto0")){
                 ativo[0] = true;
                 //minhasTarefas[0][0].started = true;

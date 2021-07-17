@@ -17,6 +17,7 @@ double tempoVoo[NUMUAVS];
 bool ativo[NUMUAVS];// = {true, true};
 int itera[NUMUAVS];
 GoToTask minhasTarefas[NUMUAVS][5]; //Task
+std::vector<Task*> base; //Task
 UAVCommunicationSocket uavs[NUMUAVS];
 int stg = 0;
 //Matriz de tarefas...
@@ -44,6 +45,9 @@ UAVMobility::UAVMobility(){ nextMoveIsWait = false; }
 void UAVMobility::initialize(int stage) {
     LineSegmentsMobilityBase::initialize(stage);
     selfID = getParentModule()->getIndex();
+    for (int i = 0; i < NUMUAVS; i++) {
+        itera[i] = -1;
+    }
 
     if (stage == INITSTAGE_LOCAL) {
         waitTimeParameter = &par("waitTime");
@@ -56,6 +60,19 @@ void UAVMobility::initialize(int stage) {
 }
 
 void UAVMobility::setTargetPosition() {
+    //std::vector<BaseClass*> base;
+    //base.push_back(new FirstDerivedClass());
+    //base.push_back(new SecondDerivedClass());
+    cout << "itera: " << itera[selfID] << endl;
+    if(itera[0] > -1 && base[0]->type == 10){
+        cout << "Deu certo!!!!" << endl;
+        Task* taskPtr = base[0]; //&gotoc;
+        GoToTask* gotoPtr = dynamic_cast<GoToTask*>(taskPtr);
+
+        cout << "Type:" << base[0]->type << endl;
+        cout << "started:" << gotoPtr->started << endl;
+        cout << "initial:" << gotoPtr->initialPosition.getX() << gotoPtr->initialPosition.getY() << gotoPtr->initialPosition.getZ() << endl;
+    }
     //Verificando se está parado
     Coordinate currentPosition(lastPosition.x,lastPosition.y,lastPosition.z);
     if(minhasTarefas[selfID][itera[selfID]].isComplete(currentPosition)){

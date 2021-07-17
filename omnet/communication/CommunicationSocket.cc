@@ -1,9 +1,7 @@
+#include <thread>
 #include "CommunicationSocket.h"
 #include "../../src/utils/Codes.h"
 #include "../../src/communication/Communication.h"
-
-#include <thread>
-
 #include "ConnServerSocket.cc"
 
 using namespace std;

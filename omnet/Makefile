@@ -15,8 +15,8 @@ UAV.o: ../src/utils/UAV.h ../src/utils/UAV.cc
 	g++ -c ../src/utils/UAV.h ../src/utils/UAV.cc
 Coordinate.o:  ../src/utils/Coordinate.h
 	g++ -c ../src/utils/Coordinate.h
-DroneStatus.o: common/DroneStatus.h common/DroneStatus.cc
-	g++ -c common/DroneStatus.h common/DroneStatus.cc
+DroneStatus.o: status/DroneStatus.h status/DroneStatus.cc
+	g++ -c status/DroneStatus.h status/DroneStatus.cc
 clean:
 	rm -rf *.o scenarios/main
 
