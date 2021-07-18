@@ -16,17 +16,18 @@ float bateria[NUMUAVS];
 double tempoVoo[NUMUAVS];
 bool ativo[NUMUAVS];// = {true, true};
 int itera[NUMUAVS];
-GoToTask minhasTarefas[NUMUAVS][5]; //Task
-std::vector<Task*> base; //Task
+//GoToTask minhasTarefas[NUMUAVS][5]; //Task
+std::vector<Task*> base[NUMUAVS]; //Task
 UAVCommunicationSocket uavs[NUMUAVS];
 int stg = 0;
 //Matriz de tarefas...
 //[uav][tarefa]
 
-//1 - Tarefa: decolar (idUAV)
+//1 - Tarefa: decolar (idUAV, altura)
 //2 - Tarefa: goto (idUAV, positionTarget)
 //3 - Tarefa: dar uma volta sobre (idUAV, positionTarget, distanciaSobre)
 //4 - Tarefa: retornar a base (idUAV, basePosition)
+//5 - Tarefa: pousar (idUAV, chao)
 int UAVLeader = -1;
 int UAVDestino = -1;
 
@@ -63,21 +64,37 @@ void UAVMobility::setTargetPosition() {
     //std::vector<BaseClass*> base;
     //base.push_back(new FirstDerivedClass());
     //base.push_back(new SecondDerivedClass());
-    cout << "itera: " << itera[selfID] << endl;
-    if(itera[0] > -1 && base[0]->type == 10){
+    cout << "itera: " << itera[selfID] << " size: " << base[selfID].size() << endl;
+    if(itera[selfID] > -1 && base[selfID][0]->type == 10){
         cout << "Deu certo!!!!" << endl;
-        Task* taskPtr = base[0]; //&gotoc;
+        Task* taskPtr = base[selfID][0]; //&gotoc;
         GoToTask* gotoPtr = dynamic_cast<GoToTask*>(taskPtr);
 
-        cout << "Type:" << base[0]->type << endl;
+        cout << "Type:" << base[selfID][0]->type << endl;
+        cout << "started:" << gotoPtr->started << endl;
+        cout << "initial:" << gotoPtr->initialPosition.getX() << gotoPtr->initialPosition.getY() << gotoPtr->initialPosition.getZ() << endl;
+    }else if(itera[selfID] > -1 && base[selfID][0]->type == 11){
+        cout << "Deu certo!!!!" << endl;
+        Task* taskPtr = base[selfID][0]; //&gotoc;
+        GoToTask* gotoPtr = dynamic_cast<GoToTask*>(taskPtr);
+
+        cout << "Type:" << base[selfID][0]->type << endl;
         cout << "started:" << gotoPtr->started << endl;
         cout << "initial:" << gotoPtr->initialPosition.getX() << gotoPtr->initialPosition.getY() << gotoPtr->initialPosition.getZ() << endl;
     }
-    //Verificando se está parado
-    Coordinate currentPosition(lastPosition.x,lastPosition.y,lastPosition.z);
-    if(minhasTarefas[selfID][itera[selfID]].isComplete(currentPosition)){
-        itera[selfID]++;
-        //nextMoveIsWait = true;
+    if(itera[selfID] > -1){
+        cout << "entrou!" << endl;
+        //Verificando se está parado
+        Coordinate currentPosition(lastPosition.x,lastPosition.y,lastPosition.z);
+        //if(minhasTarefas[selfID][itera[selfID]].isComplete(currentPosition)){
+        Task* taskPtr = base[selfID][itera[selfID]]; //&gotoc;
+        GoToTask* gotoPtr = dynamic_cast<GoToTask*>(taskPtr);
+        if(gotoPtr->isComplete(currentPosition)){
+            //itera[selfID]++;
+            //cout << "itera: " << itera[selfID] << " size: " << base[selfID].size() << endl;
+
+            //nextMoveIsWait = true;
+        }
     }
 
     if (nextMoveIsWait) {
@@ -86,10 +103,14 @@ void UAVMobility::setTargetPosition() {
         nextMoveIsWait = false;
         cout << "Caiu no nextMoveIsWait" << endl;
     } else {
-        if(minhasTarefas[selfID][itera[selfID]].started){
+        cout << "Else" << endl;
+        //if(minhasTarefas[selfID][itera[selfID]].started){
+        if(itera[selfID] > -1 && base[selfID][itera[selfID]]->started){
             cout << "Caiu no minhasTarefas[selfID][0].started" << endl;
-            targetPosition = this->CoordinateToCoord(minhasTarefas[selfID][itera[selfID]].target);
-            Coord x = this->CoordinateToCoord(minhasTarefas[selfID][itera[selfID]].target);
+            Task* taskPtr = base[selfID][itera[selfID]]; //&gotoc;
+            GoToTask* gotoPtr = dynamic_cast<GoToTask*>(taskPtr);
+            targetPosition = this->CoordinateToCoord(gotoPtr->target);
+            Coord x = this->CoordinateToCoord(gotoPtr->target);
             cout << x << endl;
         }else if(stg <= NUMUAVS){
             Coord ini(220, 220, 220);
@@ -111,12 +132,18 @@ void UAVMobility::setTargetPosition() {
 }
 
 void UAVMobility::move() {
+    cout << "Ativo["<< selfID <<"]: " << ativo[selfID] << endl;
     if(ativo[selfID]){
-        if(!minhasTarefas[selfID][itera[selfID]].started){
-            minhasTarefas[selfID][itera[selfID]].started = true;
+        if(!base[selfID][itera[selfID]]->started){
+            base[selfID][itera[selfID]]->started = true;
             this->setTargetPosition();
             //targetPosition = this->CoordinateToCoord(minhasTarefas[selfID][0].target); //colocar um i para tarefa atual
         }
+        //if(!minhasTarefas[selfID][itera[selfID]].started){
+            //minhasTarefas[selfID][itera[selfID]].started = true;
+            //this->setTargetPosition();
+            ////targetPosition = this->CoordinateToCoord(minhasTarefas[selfID][0].target); //colocar um i para tarefa atual
+        //}
         LineSegmentsMobilityBase::move();
         raiseErrorIfOutside();
         this->rescueData();
