@@ -1,9 +1,9 @@
 #include "../uavs/UAVMobility.h"
-#include "../mission/GoToTask.h"
 #include <iostream>
 #include "../scenarios/Example1Communication.h"
 #include "../communication/UAVCommunicationSocket.h"
 #include "../../src/utils/Codes.h"
+#include "../mission/GoTo.h"
 
 using namespace omnetpp;
 using namespace std;
@@ -68,7 +68,7 @@ void UAVMobility::setTargetPosition() {
     if(itera[selfID] > -1 && base[selfID][0]->type == 10){
         cout << "Deu certo!!!!" << endl;
         Task* taskPtr = base[selfID][0]; //&gotoc;
-        GoToTask* gotoPtr = dynamic_cast<GoToTask*>(taskPtr);
+        GoTo* gotoPtr = dynamic_cast<GoTo*>(taskPtr);
 
         cout << "Type:" << base[selfID][0]->type << endl;
         cout << "started:" << gotoPtr->started << endl;
@@ -76,7 +76,7 @@ void UAVMobility::setTargetPosition() {
     }else if(itera[selfID] > -1 && base[selfID][0]->type == 11){
         cout << "Deu certo!!!!" << endl;
         Task* taskPtr = base[selfID][0]; //&gotoc;
-        GoToTask* gotoPtr = dynamic_cast<GoToTask*>(taskPtr);
+        GoTo* gotoPtr = dynamic_cast<GoTo*>(taskPtr);
 
         cout << "Type:" << base[selfID][0]->type << endl;
         cout << "started:" << gotoPtr->started << endl;
@@ -88,7 +88,7 @@ void UAVMobility::setTargetPosition() {
         Coordinate currentPosition(lastPosition.x,lastPosition.y,lastPosition.z);
         //if(minhasTarefas[selfID][itera[selfID]].isComplete(currentPosition)){
         Task* taskPtr = base[selfID][itera[selfID]]; //&gotoc;
-        GoToTask* gotoPtr = dynamic_cast<GoToTask*>(taskPtr);
+        GoTo* gotoPtr = dynamic_cast<GoTo*>(taskPtr);
         if(gotoPtr->isComplete(currentPosition)){
             //itera[selfID]++;
             //cout << "itera: " << itera[selfID] << " size: " << base[selfID].size() << endl;
@@ -108,7 +108,7 @@ void UAVMobility::setTargetPosition() {
         if(itera[selfID] > -1 && base[selfID][itera[selfID]]->started){
             cout << "Caiu no minhasTarefas[selfID][0].started" << endl;
             Task* taskPtr = base[selfID][itera[selfID]]; //&gotoc;
-            GoToTask* gotoPtr = dynamic_cast<GoToTask*>(taskPtr);
+            GoTo* gotoPtr = dynamic_cast<GoTo*>(taskPtr);
             targetPosition = this->CoordinateToCoord(gotoPtr->target);
             Coord x = this->CoordinateToCoord(gotoPtr->target);
             cout << x << endl;

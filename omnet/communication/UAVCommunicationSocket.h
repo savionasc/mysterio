@@ -16,7 +16,7 @@
 #include "inet/common/geometry/common/Coord.h"
 #include "inet/power/base/EpEnergyStorageBase.h"
 #include "inet/power/storage/SimpleEpEnergyStorage.h"
-#include "../mission/GoToTask.h"
+#include "../mission/GoTo.h"
 
 using namespace inet;
 using namespace std;
@@ -133,7 +133,7 @@ class socket_receber {
                 //base.push_back(new SecondDerivedClass());
                 for (int i = 0; i < NUMUAVS; i++) {
                     Coordinate currentP(220,220,300);
-                    GoToTask gotoc(0, currentP);
+                    GoTo gotoc(0, currentP);
                     //base[0] = &gotoc;
                     //gotoc.initialPosition = Coordinate(0,1,2);
                     base[i].push_back(&gotoc);

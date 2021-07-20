@@ -1,7 +1,7 @@
 #include "ModuloComunicacao2.h"
 
 #include "../../communication/UAVCommunicationSocket.h"
-#include "../../mission/GoToTask.h"
+#include "../../mission/GoTo.h"
 #include "../UAVMobility.h"
 #include <iostream>
 #include "../../status/DroneStatus.h"
