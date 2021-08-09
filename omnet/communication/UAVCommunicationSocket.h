@@ -16,7 +16,7 @@
 #include "inet/common/geometry/common/Coord.h"
 #include "inet/power/base/EpEnergyStorageBase.h"
 #include "inet/power/storage/SimpleEpEnergyStorage.h"
-#include "../mission/GoToTask.h"
+#include "../mission/GoTo.h"
 
 using namespace inet;
 using namespace std;
@@ -128,26 +128,32 @@ class socket_receber {
                 //decolar.idUAV = 1;
                 //minhasTarefas[1][0] = decolar;
             }else if(!strcmp(msg.getMsg(), "decolar")){ //take off
-                //std::vector<BaseClass*> base;
-                //base.push_back(new FirstDerivedClass());
-                //base.push_back(new SecondDerivedClass());
                 for (int i = 0; i < NUMUAVS; i++) {
-                    Coordinate currentP(220,220,300);
-                    GoToTask gotoc(0, currentP);
+                    Coordinate currentP(100.0,100.0,100.0);
+                    Task gotoc(0, currentP);
                     //base[0] = &gotoc;
                     //gotoc.initialPosition = Coordinate(0,1,2);
                     base[i].push_back(&gotoc);
-                    base[i][0]->type = 10;
-                    base[i][0]->idUAV = 1;
-                    itera[i]++;
+                    int j = base[i].size()-1;
+                    base[i][j]->type = 10;
+                    base[i][j]->idUAV = i;
+                    //itera[i]++;
+                    cout << "lista["<<i<<"]: " << base[i].size()<< endl;
                 }
 
             }else if(!strcmp(msg.getMsg(), "carro")){
-                //Coordinate c(350,500,300);
-                //GoToTask t(0, c);
-                //minhasTarefas[0][1] = t;
-                //t.idUAV = 1;
-                //minhasTarefas[1][1] = t;
+                for (int i = 0; i < NUMUAVS; i++) {
+                    Coordinate currentP(400.0,380.0,390.0);
+                    Task gotoc(0, currentP);
+                    //base[0] = &gotoc;
+                    //gotoc.initialPosition = Coordinate(0,1,2);
+                    base[i].push_back(&gotoc);
+                    int j = base[i].size()-1;
+                    base[i][j]->type = 11;
+                    base[i][j]->idUAV = i;
+                    //itera[i]++;
+                    cout << "lista["<<i<<"]: " << base[i].size()<< endl;
+                }
             }else if(!strcmp(msg.getMsg(), "dar-volta")){
                 //escrever como montar o comando... dar-volta-10;12;8;
                 //startsWith: dar-volta, split...

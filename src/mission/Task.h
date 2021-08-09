@@ -7,6 +7,13 @@ class Task { //Goto, ComeBackBaseStation
 
 public:
     //Função de Avaliação
+    Task(){}
+    Task(int idUAV, Coordinate targetPosition) {
+        this->idUAV = idUAV;
+        this->target = targetPosition;
+        //this->assignTask(idUAV, targetPosition);
+    }
+    virtual ~Task(){}
     virtual bool isComplete(){ } //For GoTo Task, Current Coordinate is a parameter necessary to check this
     virtual void assignTask(int idUAV, Command command, int *args[]){ //Drone, comando, parametros do comando
         this->idUAV = idUAV;
@@ -22,6 +29,7 @@ public:
     int type;
     Command cmd;
     bool started;
+    Coordinate target;
     //Colocar o target de novo?
 };
 

@@ -1,12 +1,12 @@
-#ifndef MYSTERIO_OMNET_MISSION_GOTOTASK_H_
-#define MYSTERIO_OMNET_MISSION_GOTOTASK_H_
+#ifndef MYSTERIO_OMNET_MISSION_GOTO_H_
+#define MYSTERIO_OMNET_MISSION_GOTO_H_
 #include "../../src/mission/Task.h"
 
-class GoToTask : public Task {
+class GoTo : public Task {
 public:
-    GoToTask();
-    GoToTask(int idUAV, Coordinate currentPosition);
-    virtual ~GoToTask();
+    GoTo();
+    GoTo(int idUAV, Coordinate currentPosition);
+    virtual ~GoTo();
     bool isComplete();
     bool isComplete(Coordinate currentPosition);
     Coordinate getTask();

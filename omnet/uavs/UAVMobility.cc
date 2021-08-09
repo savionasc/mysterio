@@ -1,5 +1,5 @@
 #include "../uavs/UAVMobility.h"
-#include "../mission/GoToTask.h"
+#include "../mission/GoTo.h"
 #include <iostream>
 #include "../scenarios/Example1Communication.h"
 #include "../communication/UAVCommunicationSocket.h"
@@ -14,14 +14,11 @@ Coord position[NUMUAVS];
 double velocidade[NUMUAVS];
 float bateria[NUMUAVS];
 double tempoVoo[NUMUAVS];
-bool ativo[NUMUAVS];// = {true, true};
+bool ativo[NUMUAVS];
 int itera[NUMUAVS];
-//GoToTask minhasTarefas[NUMUAVS][5]; //Task
+//GoTo minhasTarefas[NUMUAVS][5]; //Task
 std::vector<Task*> base[NUMUAVS]; //Task
 UAVCommunicationSocket uavs[NUMUAVS];
-int stg = 0;
-//Matriz de tarefas...
-//[uav][tarefa]
 
 //1 - Tarefa: decolar (idUAV, altura)
 //2 - Tarefa: goto (idUAV, positionTarget)
@@ -34,12 +31,6 @@ int UAVDestino = -1;
 using namespace power;
 
 Define_Module(UAVMobility);
-
-    //Para contar o tempo, talvez adicionar no subscribe ou aqui no próprio uav
-    //clock_t t;
-    //t = clock();
-    //t = clock() - t;
-    //cout << ((double)t)/((CLOCKS_PER_SEC/1000)) << endl;
 
 UAVMobility::UAVMobility(){ nextMoveIsWait = false; }
 
@@ -61,67 +52,32 @@ void UAVMobility::initialize(int stage) {
 }
 
 void UAVMobility::setTargetPosition() {
-    //std::vector<BaseClass*> base;
-    //base.push_back(new FirstDerivedClass());
-    //base.push_back(new SecondDerivedClass());
+
     cout << "itera: " << itera[selfID] << " size: " << base[selfID].size() << endl;
-    if(itera[selfID] > -1 && base[selfID][0]->type == 10){
-        cout << "Deu certo!!!!" << endl;
-        Task* taskPtr = base[selfID][0]; //&gotoc;
-        GoToTask* gotoPtr = dynamic_cast<GoToTask*>(taskPtr);
+    //Verificar se é uma atividade disso, ou atividade daquilo pelo type
+    //if(itera[0] > -1 && base[0][0]->type == 10){
 
-        cout << "Type:" << base[selfID][0]->type << endl;
-        cout << "started:" << gotoPtr->started << endl;
-        cout << "initial:" << gotoPtr->initialPosition.getX() << gotoPtr->initialPosition.getY() << gotoPtr->initialPosition.getZ() << endl;
-    }else if(itera[selfID] > -1 && base[selfID][0]->type == 11){
-        cout << "Deu certo!!!!" << endl;
-        Task* taskPtr = base[selfID][0]; //&gotoc;
-        GoToTask* gotoPtr = dynamic_cast<GoToTask*>(taskPtr);
-
-        cout << "Type:" << base[selfID][0]->type << endl;
-        cout << "started:" << gotoPtr->started << endl;
-        cout << "initial:" << gotoPtr->initialPosition.getX() << gotoPtr->initialPosition.getY() << gotoPtr->initialPosition.getZ() << endl;
-    }
-    if(itera[selfID] > -1){
-        cout << "entrou!" << endl;
-        //Verificando se está parado
-        Coordinate currentPosition(lastPosition.x,lastPosition.y,lastPosition.z);
-        //if(minhasTarefas[selfID][itera[selfID]].isComplete(currentPosition)){
-        Task* taskPtr = base[selfID][itera[selfID]]; //&gotoc;
-        GoToTask* gotoPtr = dynamic_cast<GoToTask*>(taskPtr);
-        if(gotoPtr->isComplete(currentPosition)){
-            //itera[selfID]++;
-            //cout << "itera: " << itera[selfID] << " size: " << base[selfID].size() << endl;
-
-            //nextMoveIsWait = true;
-        }
-    }
+    //Checando se a atividade está completa pra passar para outra tarefa
+    //if(gotoPtr->isComplete(currentPosition)){
+        //itera[selfID]++;
+        //nextMoveIsWait = true;
+    //}
 
     if (nextMoveIsWait) {
         simtime_t waitTime = waitTimeParameter->doubleValue()+3;
         nextChange = simTime() + waitTime;
         nextMoveIsWait = false;
-        cout << "Caiu no nextMoveIsWait" << endl;
     } else {
-        cout << "Else" << endl;
-        //if(minhasTarefas[selfID][itera[selfID]].started){
-        if(itera[selfID] > -1 && base[selfID][itera[selfID]]->started){
-            cout << "Caiu no minhasTarefas[selfID][0].started" << endl;
-            Task* taskPtr = base[selfID][itera[selfID]]; //&gotoc;
-            GoToTask* gotoPtr = dynamic_cast<GoToTask*>(taskPtr);
-            targetPosition = this->CoordinateToCoord(gotoPtr->target);
-            Coord x = this->CoordinateToCoord(gotoPtr->target);
-            cout << x << endl;
-        }else if(stg <= NUMUAVS){
-            Coord ini(220, 220, 220);
-            targetPosition = ini;
-            cout << "Caiu no ini" << endl;
-            stg++;
+        if(base[selfID].size() != itera[selfID] && base[selfID].size() > 0){
+            cout << "ATRIBUIU!!!" << endl;
+            //Coord ini(100.0, 100.0, 100.0);
+            //targetPosition = ini;
+            targetPosition = this->CoordinateToCoord(base[selfID][0]->target);
+            itera[selfID]++;
         }else{
-            cout << "Caiu no getRandomPosition()" << endl;
             targetPosition = getRandomPosition();
         }
-
+        cout << "target-" << selfID <<": " << targetPosition << endl;
         double speed = speedParameter->doubleValue();
         double distance = lastPosition.distance(targetPosition);
         simtime_t travelTime = distance / speed;
@@ -132,31 +88,23 @@ void UAVMobility::setTargetPosition() {
 }
 
 void UAVMobility::move() {
-    cout << "Ativo["<< selfID <<"]: " << ativo[selfID] << endl;
-    if(ativo[selfID]){
-        if(!base[selfID][itera[selfID]]->started){
-            base[selfID][itera[selfID]]->started = true;
-            this->setTargetPosition();
-            //targetPosition = this->CoordinateToCoord(minhasTarefas[selfID][0].target); //colocar um i para tarefa atual
-        }
-        //if(!minhasTarefas[selfID][itera[selfID]].started){
-            //minhasTarefas[selfID][itera[selfID]].started = true;
+    //if(ativo[selfID]){
+        //if(!base[selfID][itera[selfID]]->started){
+            //base[selfID][itera[selfID]]->started = true;
             //this->setTargetPosition();
-            ////targetPosition = this->CoordinateToCoord(minhasTarefas[selfID][0].target); //colocar um i para tarefa atual
+            //targetPosition = this->CoordinateToCoord(minhasTarefas[selfID][0].target); //colocar um i para tarefa atual
         //}
         LineSegmentsMobilityBase::move();
         raiseErrorIfOutside();
         this->rescueData();
-    }
+    //}
 }
-
-//CheckTasks
 
 double UAVMobility::getMaxSpeed() const {
     return speedParameter->isExpression() ? NaN : speedParameter->doubleValue();
 }
 
-J UAVMobility::pegarBateria(int idUAV){ //Retirar daqui e passar para o Mobility
+J UAVMobility::pegarBateria(int idUAV){
     cModule *a = getParentModule()->getParentModule()->getSubmodule("host", idUAV)->getSubmodule("energyStorage", 0);
     SimpleEpEnergyStorage *energySto = check_and_cast<SimpleEpEnergyStorage*>(a);
     return energySto->getResidualEnergyCapacity();
