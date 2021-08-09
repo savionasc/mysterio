@@ -4,7 +4,10 @@ GoTo::GoTo() {
     Coordinate position(-1,-1,-1);
     this->initialPosition = position;
 }
+<<<<<<< HEAD
 
+=======
+>>>>>>> fdd33f45c5f3bb8a8d8af53ef66c338281cdd69c
 GoTo::GoTo(int idUAV, Coordinate targetPosition) {
     this->assignTask(idUAV, targetPosition);
 }
@@ -35,6 +38,10 @@ void GoTo::assignTask(int idUAV, Command command, int *args[]){
 
 }
 
+<<<<<<< HEAD
+=======
+
+>>>>>>> fdd33f45c5f3bb8a8d8af53ef66c338281cdd69c
 bool GoTo::isComplete(){
     return false;
 }
