@@ -129,13 +129,9 @@ class socket_receber {
                 //minhasTarefas[1][0] = decolar;
             }else if(!strcmp(msg.getMsg(), "decolar")){ //take off
                 for (int i = 0; i < NUMUAVS; i++) {
-<<<<<<< HEAD
                     Coordinate currentP(100.0,100.0,100.0);
-                    Task gotoc(0, currentP);
-=======
-                    Coordinate currentP(220,220,300);
+                    //Coordinate currentP(220,220,300);
                     GoTo gotoc(0, currentP);
->>>>>>> fdd33f45c5f3bb8a8d8af53ef66c338281cdd69c
                     //base[0] = &gotoc;
                     //gotoc.initialPosition = Coordinate(0,1,2);
                     base[i].push_back(&gotoc);
@@ -154,7 +150,7 @@ class socket_receber {
                     //gotoc.initialPosition = Coordinate(0,1,2);
                     base[i].push_back(&gotoc);
                     int j = base[i].size()-1;
-                    base[i][j]->type = 11;
+                    base[i][j]->type = FLY_AROUND;
                     base[i][j]->idUAV = i;
                     //itera[i]++;
                     cout << "lista["<<i<<"]: " << base[i].size()<< endl;

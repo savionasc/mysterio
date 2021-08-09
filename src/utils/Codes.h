@@ -22,6 +22,11 @@ enum CodeMessage {
     RESPONDER_LOCALIZACAO = 30,
     RESPONDER_VELOCIDADE,
 
+    //Task
+    GOTO = 80,
+    COMEBACK_BASESTATION,
+    FLY_AROUND,
+
 
     //300 - UAV Request
     LOCATION_STATUS_REQUEST = 300,
