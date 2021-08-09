@@ -27,6 +27,7 @@ UAVCommunicationSocket uavs[NUMUAVS];
 //5 - Tarefa: pousar (idUAV, chao)
 int UAVLeader = -1;
 int UAVDestino = -1;
+int pontos[NUMUAVS];
 
 using namespace power;
 
@@ -39,6 +40,7 @@ void UAVMobility::initialize(int stage) {
     selfID = getParentModule()->getIndex();
     for (int i = 0; i < NUMUAVS; i++) {
         itera[i] = -1;
+        pontos[NUMUAVS] = 0;
     }
 
     if (stage == INITSTAGE_LOCAL) {
@@ -70,11 +72,39 @@ void UAVMobility::setTargetPosition() {
     } else {
 
         if(base[selfID].size() != itera[selfID] && base[selfID].size() > 0){
+            int j = base[selfID].size()-1;
             cout << "ATRIBUIU!!!" << endl;
             //Coord ini(100.0, 100.0, 100.0);
             //targetPosition = ini;
-            targetPosition = this->CoordinateToCoord(base[selfID][0]->target);
-            itera[selfID]++;
+            if(base[selfID][j]->type == FLY_AROUND){
+                if(pontos[selfID] > 3){
+                    pontos[selfID] = 0;
+                }
+                if(pontos[selfID] == 0){
+                    Coord c = this->CoordinateToCoord(base[selfID][j]->target);
+                    c.setY(c.getY()+50);
+                    targetPosition = c;
+                }else if(pontos[selfID] == 1){
+                    Coord c = this->CoordinateToCoord(base[selfID][j]->target);
+                    c.setX(c.getX()-50);
+                    c.setY(c.getY()+50);
+                    targetPosition = c;
+                }else if(pontos[selfID] == 2){
+                    Coord c = this->CoordinateToCoord(base[selfID][j]->target);
+                    c.setX(c.getX()+50);
+                    c.setY(c.getY()-50);
+                    targetPosition = c;
+                }else if(pontos[selfID] == 3){
+                    Coord c = this->CoordinateToCoord(base[selfID][j]->target);
+                    c.setY(c.getY()-50);
+                    targetPosition = c;
+                    itera[selfID]++;
+                }
+                pontos[selfID]++;
+            }else{
+                targetPosition = this->CoordinateToCoord(base[selfID][j]->target);
+                itera[selfID]++;
+            }
         }else{
             targetPosition = getRandomPosition();
         }

@@ -144,7 +144,7 @@ class socket_receber {
 
             }else if(!strcmp(msg.getMsg(), "carro")){
                 for (int i = 0; i < NUMUAVS; i++) {
-                    Coordinate currentP(400.0,380.0,390.0);
+                    Coordinate currentP(300.0,420.0,90.0);
                     Task gotoc(0, currentP);
                     //base[0] = &gotoc;
                     //gotoc.initialPosition = Coordinate(0,1,2);

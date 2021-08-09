@@ -1,27 +1,15 @@
-<<<<<<< HEAD
-file 233221 1628513824                                          
+file 234042 1628519688                                          
 version 2
-run Mysterio_ex2-0-20210809-09:53:04-6421
+run Mysterio_ex2-0-20210809-11:30:57-8093
 attr configname Mysterio_ex2
-attr datetime 20210809-09:53:04
-=======
-                                                                
-version 2
-run Mysterio_ex2-0-20210719-21:48:18-9801
-attr configname Mysterio_ex2
-attr datetime 20210719-21:48:18
->>>>>>> fdd33f45c5f3bb8a8d8af53ef66c338281cdd69c
+attr datetime 20210809-11:30:57
 attr experiment Mysterio_ex2
 attr inifile omnetpp.ini
 attr iterationvars ""
 attr iterationvarsf ""
 attr measurement ""
 attr network MysterioCommunication2
-<<<<<<< HEAD
-attr processid 6421
-=======
-attr processid 9801
->>>>>>> fdd33f45c5f3bb8a8d8af53ef66c338281cdd69c
+attr processid 8093
 attr repetition 0
 attr replication #0
 attr resultdir results
@@ -92,7 +80,6 @@ attr title "Power generation, vector"
 vector 2 MysterioCommunication2.host[1].energyStorage residualEnergyCapacity:vector ETV
 attr interpolationmode linear
 attr source residualEnergyCapacityChanged
-<<<<<<< HEAD
 attr title "Residual energy capacity, vector"
 vector 3 MysterioCommunication2.host[1].energyGenerator powerGeneration:vector ETV
 attr interpolationmode sample-hold
@@ -106,13 +93,10 @@ vector 5 MysterioCommunication2.host[1].energyStorage powerGeneration:vector ETV
 attr interpolationmode sample-hold
 attr source powerGenerationChanged
 attr title "Power generation, vector"
-0	4644 110488 0 4698 0 230.830367565 3979 0.044766912712936 0.05 196.49457026811 9.7099775113398
-1	115132 225 0 4463 0 219.267260960022 9 0 0.004 0.02 8e-05
-2	115357 117178 0 4698 0 230.830367565 4033 0.036249016797893 0.05 194.82960527846 9.4584558713984
-3	232535 230 0 4286 0 210.873436353407 9 0 0.004 0.02 8e-05
-4	232765 225 0 4463 0 219.267260960022 9 0 0.004 0.02 8e-05
-5	232990 230 0 4286 0 210.873436353407 9 0 0.004 0.02 8e-05
+0	4644 121800 0 4537 0 222.076780854 3778 0.036249016797893 0.05 176.72683955189 8.3202352266944
+1	126444 228 0 4377 0 214.770443572443 9 0 0.004 0.02 8e-05
+2	126672 106735 0 4537 0 222.076780854 3762 0.043109799509706 0.05 185.40233809925 9.1464224821425
+3	233407 203 0 4429 0 216.635377748378 8 0 0.004 0.016 6.4e-05
+4	233610 228 0 4377 0 214.770443572443 9 0 0.004 0.02 8e-05
+5	233838 203 0 4429 0 216.635377748378 8 0 0.004 0.016 6.4e-05
 
-=======
-at
->>>>>>> fdd33f45c5f3bb8a8d8af53ef66c338281cdd69c

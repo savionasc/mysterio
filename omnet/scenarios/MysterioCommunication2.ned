@@ -28,7 +28,7 @@ network MysterioCommunication2 {
             @display("t=UAV");
         }
         basestation: BasestationUAVs {
-            @display("p=220,220");
+            @display("p=300,420");
         }
     connections:
         host[0].out++ --> {  delay = 100ms; } --> host[1].in++;
