@@ -1,9 +1,13 @@
 #include "../uavs/UAVMobility.h"
+<<<<<<< HEAD
 #include "../mission/GoTo.h"
+=======
+>>>>>>> fdd33f45c5f3bb8a8d8af53ef66c338281cdd69c
 #include <iostream>
 #include "../scenarios/Example1Communication.h"
 #include "../communication/UAVCommunicationSocket.h"
 #include "../../src/utils/Codes.h"
+#include "../mission/GoTo.h"
 
 using namespace omnetpp;
 using namespace std;
@@ -54,6 +58,7 @@ void UAVMobility::initialize(int stage) {
 void UAVMobility::setTargetPosition() {
 
     cout << "itera: " << itera[selfID] << " size: " << base[selfID].size() << endl;
+<<<<<<< HEAD
     //Verificar se é uma atividade disso, ou atividade daquilo pelo type
     //if(itera[0] > -1 && base[0][0]->type == 10){
 
@@ -62,18 +67,68 @@ void UAVMobility::setTargetPosition() {
         //itera[selfID]++;
         //nextMoveIsWait = true;
     //}
+=======
+    if(itera[selfID] > -1 && base[selfID][0]->type == 10){
+        cout << "Deu certo!!!!" << endl;
+        Task* taskPtr = base[selfID][0]; //&gotoc;
+        GoTo* gotoPtr = dynamic_cast<GoTo*>(taskPtr);
+
+        cout << "Type:" << base[selfID][0]->type << endl;
+        cout << "started:" << gotoPtr->started << endl;
+        cout << "initial:" << gotoPtr->initialPosition.getX() << gotoPtr->initialPosition.getY() << gotoPtr->initialPosition.getZ() << endl;
+    }else if(itera[selfID] > -1 && base[selfID][0]->type == 11){
+        cout << "Deu certo!!!!" << endl;
+        Task* taskPtr = base[selfID][0]; //&gotoc;
+        GoTo* gotoPtr = dynamic_cast<GoTo*>(taskPtr);
+
+        cout << "Type:" << base[selfID][0]->type << endl;
+        cout << "started:" << gotoPtr->started << endl;
+        cout << "initial:" << gotoPtr->initialPosition.getX() << gotoPtr->initialPosition.getY() << gotoPtr->initialPosition.getZ() << endl;
+    }
+    if(itera[selfID] > -1){
+        cout << "entrou!" << endl;
+        //Verificando se está parado
+        Coordinate currentPosition(lastPosition.x,lastPosition.y,lastPosition.z);
+        //if(minhasTarefas[selfID][itera[selfID]].isComplete(currentPosition)){
+        Task* taskPtr = base[selfID][itera[selfID]]; //&gotoc;
+        GoTo* gotoPtr = dynamic_cast<GoTo*>(taskPtr);
+        if(gotoPtr->isComplete(currentPosition)){
+            //itera[selfID]++;
+            //cout << "itera: " << itera[selfID] << " size: " << base[selfID].size() << endl;
+
+            //nextMoveIsWait = true;
+        }
+    }
+>>>>>>> fdd33f45c5f3bb8a8d8af53ef66c338281cdd69c
 
     if (nextMoveIsWait) {
         simtime_t waitTime = waitTimeParameter->doubleValue()+3;
         nextChange = simTime() + waitTime;
         nextMoveIsWait = false;
     } else {
+<<<<<<< HEAD
         if(base[selfID].size() != itera[selfID] && base[selfID].size() > 0){
             cout << "ATRIBUIU!!!" << endl;
             //Coord ini(100.0, 100.0, 100.0);
             //targetPosition = ini;
             targetPosition = this->CoordinateToCoord(base[selfID][0]->target);
             itera[selfID]++;
+=======
+        cout << "Else" << endl;
+        //if(minhasTarefas[selfID][itera[selfID]].started){
+        if(itera[selfID] > -1 && base[selfID][itera[selfID]]->started){
+            cout << "Caiu no minhasTarefas[selfID][0].started" << endl;
+            Task* taskPtr = base[selfID][itera[selfID]]; //&gotoc;
+            GoTo* gotoPtr = dynamic_cast<GoTo*>(taskPtr);
+            targetPosition = this->CoordinateToCoord(gotoPtr->target);
+            Coord x = this->CoordinateToCoord(gotoPtr->target);
+            cout << x << endl;
+        }else if(stg <= NUMUAVS){
+            Coord ini(220, 220, 220);
+            targetPosition = ini;
+            cout << "Caiu no ini" << endl;
+            stg++;
+>>>>>>> fdd33f45c5f3bb8a8d8af53ef66c338281cdd69c
         }else{
             targetPosition = getRandomPosition();
         }

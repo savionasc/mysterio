@@ -1,14 +1,24 @@
 version 2
+<<<<<<< HEAD
 run Mysterio_ex2-0-20210809-09:53:04-6421
 attr configname Mysterio_ex2
 attr datetime 20210809-09:53:04
+=======
+run Mysterio_ex2-0-20210719-21:48:18-9801
+attr configname Mysterio_ex2
+attr datetime 20210719-21:48:18
+>>>>>>> fdd33f45c5f3bb8a8d8af53ef66c338281cdd69c
 attr experiment Mysterio_ex2
 attr inifile omnetpp.ini
 attr iterationvars ""
 attr iterationvarsf ""
 attr measurement ""
 attr network MysterioCommunication2
+<<<<<<< HEAD
 attr processid 6421
+=======
+attr processid 9801
+>>>>>>> fdd33f45c5f3bb8a8d8af53ef66c338281cdd69c
 attr repetition 0
 attr replication #0
 attr resultdir results
@@ -80,6 +90,7 @@ vector 2 MysterioCommunication2.host[1].energyStorage residualEnergyCapacity:vec
 attr interpolationmode linear
 attr source residualEnergyCapacityChanged
 attr title "Residual energy capacity, vector"
+<<<<<<< HEAD
 vector 3 MysterioCommunication2.host[1].energyGenerator powerGeneration:vector ETV
 attr interpolationmode sample-hold
 attr source powerGenerationChanged
@@ -8141,3 +8152,6 @@ attr title "Power generation, vector"
 5	3433	168.408921564257	0
 5	4286	210.873436353407	0.004
 
+=======
+vector 3 MysterioComm
+>>>>>>> fdd33f45c5f3bb8a8d8af53ef66c338281cdd69c
