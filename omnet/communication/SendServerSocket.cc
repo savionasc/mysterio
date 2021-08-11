@@ -3,13 +3,13 @@
 #include "../../src/utils/Message.h"
 #include "../communication/DroneStatusMessage.h"
 
-class SendSocket {
+class SendSocket { //Renomear
 public:
     void operator()(int param, Message param2){
         enviar(param, param2);
     }
 
-    bool enviar(int newSd, Message message){
+    bool enviar(int newSd, Message message){ //newSd mudar o nome
         send(newSd, (Message*)&message, sizeof(message), 0);
     }
 };

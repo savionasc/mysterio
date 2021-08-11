@@ -8,7 +8,7 @@
 class Communicable { //Abstract Class?
 public:
     //especificar o destino?
-    virtual void onMessageReceive(Message msg){ }
+    virtual void onMessageReceive(Message msg){ }// = 0;
 };
 
 #endif

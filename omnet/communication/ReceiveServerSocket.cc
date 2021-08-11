@@ -9,7 +9,6 @@
 #include "DroneStatusMessage.h"
 
 using namespace std;
-
 class ReceiveSocket{
 public:
     void operator()(int param){

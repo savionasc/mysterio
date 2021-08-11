@@ -21,6 +21,7 @@
 using namespace inet;
 using namespace std;
 
+extern int buchox;
 extern Coord position[NUMUAVS];
 extern float bateria[NUMUAVS];
 extern double tempoVoo[NUMUAVS];
@@ -121,53 +122,40 @@ class socket_receber {
             }else if(!strcmp(msg.getMsg(), "stop")){
                 ativo[msg.getDestination()] = false;
                 cout << msg.getMsg() << ":" << msg.getDestination() << endl;
-            }else if(!strcmp(msg.getMsg(), "decolar-old")){
-                //Coordinate dec(220,220,300);
-                //GoToTask decolar(0, dec);
-                //minhasTarefas[0][0] = decolar;
-                //decolar.idUAV = 1;
-                //minhasTarefas[1][0] = decolar;
             }else if(!strcmp(msg.getMsg(), "decolar")){ //take off
                 for (int i = 0; i < NUMUAVS; i++) {
                     Coordinate currentP(100.0,100.0,100.0);
-                    //Coordinate currentP(220,220,300);
                     GoTo gotoc(0, currentP);
-                    //base[0] = &gotoc;
-                    //gotoc.initialPosition = Coordinate(0,1,2);
                     base[i].push_back(&gotoc);
                     int j = base[i].size()-1;
                     base[i][j]->type = 10;
                     base[i][j]->idUAV = i;
                     //itera[i]++;
+                    if(itera[i] < 0)
+                        itera[i]++;
                     cout << "lista["<<i<<"]: " << base[i].size()<< endl;
                 }
 
             }else if(!strcmp(msg.getMsg(), "carro")){
-                for (int i = 0; i < NUMUAVS; i++) {
-                    Coordinate currentP(300.0,420.0,90.0);
-                    Task gotoc(0, currentP);
-                    //base[0] = &gotoc;
-                    //gotoc.initialPosition = Coordinate(0,1,2);
-                    base[i].push_back(&gotoc);
-                    int j = base[i].size()-1;
-                    base[i][j]->type = FLY_AROUND;
-                    base[i][j]->idUAV = i;
-                    //itera[i]++;
-                    cout << "lista["<<i<<"]: " << base[i].size()<< endl;
-                }
+                int i = idUAV;
+                //for (int i = 0; i < NUMUAVS; i++) {
+                Coordinate currentP(300.0,420.0,90.0);
+                Task gotoc(0, currentP);
+                base[i].push_back(&gotoc);
+                int j = base[i].size()-1;
+                base[i][j]->type = FLY_AROUND;
+                base[i][j]->idUAV = i;
+                if(itera[i] < 0)
+                    itera[i]++;
+                cout << "lista["<<i<<"]: " << base[i].size()<< endl;
+                //}
             }else if(!strcmp(msg.getMsg(), "dar-volta")){
-                //escrever como montar o comando... dar-volta-10;12;8;
-                //startsWith: dar-volta, split...
-
             }else if(!strcmp(msg.getMsg(), "retornar-base")){
-
             }else if(!strcmp(msg.getMsg(), "pousar")){
             }else if(!strcmp(msg.getMsg(), "goto0")){
-                ativo[0] = true;
-                //minhasTarefas[0][0].started = true;
+                cout << "buchox: " << buchox << endl;
             }else if(!strcmp(msg.getMsg(), "goto1")){
-                ativo[1] = true;
-                //minhasTarefas[1][0].started = true;
+                buchox += 76;
             }else{
                 std::cout << "Mensagem recebida em ["<< this->idUAV <<"]: " << msg.getMsg() << std::endl;
             }

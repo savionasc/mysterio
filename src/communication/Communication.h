@@ -13,6 +13,7 @@ class Communication {
 public:
     int conexoes[NUMUAVS]; //Passar o Array pro Framework
 public:
+    //ReceiveMessageFromUAV or Route
     virtual void sendMessage(Communicable *source, Communicable *dest, Message msg) = 0;
     //virtual int* getActiveConnections(); //Criar uma classe Conexões para guardar o ID do UAV e o Socket
     virtual int* getActiveConnections(){
@@ -45,6 +46,7 @@ public:
         return serverSd;
     }
 
+    //SendMessageToUAV
     virtual void sendMessageSocket(int idUAV, Message msg){
         if(idUAV == -1){ //Broadcast
             for (int i = 0; i <= ct; i++){

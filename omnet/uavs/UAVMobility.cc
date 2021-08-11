@@ -77,30 +77,29 @@ void UAVMobility::setTargetPosition() {
             //Coord ini(100.0, 100.0, 100.0);
             //targetPosition = ini;
             if(base[selfID][j]->type == FLY_AROUND){
-                if(pontos[selfID] > 3){
-                    pontos[selfID] = 0;
-                }
-                if(pontos[selfID] == 0){
-                    Coord c = this->CoordinateToCoord(base[selfID][j]->target);
-                    c.setY(c.getY()+50);
-                    targetPosition = c;
-                }else if(pontos[selfID] == 1){
-                    Coord c = this->CoordinateToCoord(base[selfID][j]->target);
+                Coord c;
+                if(pontos[selfID] == 0 || pontos[selfID] == 4){
+                    c = this->CoordinateToCoord(base[selfID][j]->target);
                     c.setX(c.getX()-50);
-                    c.setY(c.getY()+50);
-                    targetPosition = c;
-                }else if(pontos[selfID] == 2){
-                    Coord c = this->CoordinateToCoord(base[selfID][j]->target);
+                    c.setY(c.getY()-50);
+                }else if(pontos[selfID] == 1){
+                    c = this->CoordinateToCoord(base[selfID][j]->target);
                     c.setX(c.getX()+50);
                     c.setY(c.getY()-50);
-                    targetPosition = c;
+                }else if(pontos[selfID] == 2){
+                    c = this->CoordinateToCoord(base[selfID][j]->target);
+                    c.setX(c.getX()+50);
+                    c.setY(c.getY()+50);
                 }else if(pontos[selfID] == 3){
-                    Coord c = this->CoordinateToCoord(base[selfID][j]->target);
-                    c.setY(c.getY()-50);
-                    targetPosition = c;
+                    c = this->CoordinateToCoord(base[selfID][j]->target);
+                    c.setX(c.getX()-50);
+                    c.setY(c.getY()+50);
+                }else if(pontos[selfID] == 5){
+                    c = this->CoordinateToCoord(base[selfID][j]->target);
                     itera[selfID]++;
                 }
-                pontos[selfID]++;
+                targetPosition = c;
+                pontos[selfID] = (pontos[selfID] < 5) ? pontos[selfID]+1 : 0;
             }else{
                 targetPosition = this->CoordinateToCoord(base[selfID][j]->target);
                 itera[selfID]++;

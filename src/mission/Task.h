@@ -6,7 +6,6 @@
 class Task { //Goto, ComeBackBaseStation
 
 public:
-    //Função de Avaliação
     Task(){}
     Task(int idUAV, Coordinate targetPosition) {
         this->idUAV = idUAV;
@@ -14,23 +13,40 @@ public:
         //this->assignTask(idUAV, targetPosition);
     }
     virtual ~Task(){}
-    virtual bool isComplete(){ } //For GoTo Task, Current Coordinate is a parameter necessary to check this
+
+    virtual bool isComplete(){
+        return this->finished; //complete
+    }
+
+    //Task(Command command(int *args[]))
+    //TaskManager(Task, idUAV)
     virtual void assignTask(int idUAV, Command command, int *args[]){ //Drone, comando, parametros do comando
         this->idUAV = idUAV;
         this->cmd = command;
     }
+
+    //TaskManager
+    virtual void markAsComplete(Coordinate c){//Task
+        //Task.uav.get
+        if(c.getX() == target.getX() && c.getY() == target.getY() && c.getZ() == target.getZ())
+            this->finished = true;
+    }
+
+    //Criar uma setComplete
+
 
 
     //int Priority?
     //Talvez calculemos o progresso num futuro próximo...
     //Se for da missão é saber quantas tarefas foram cumpridas e quantas não foram
     //Se for da tarefa é saber quanto falta para chegar no destino
-    int idUAV;
+    int idUAV; //UAV
     int type;
-    Command cmd;
-    bool started;
+    Command cmd; //Remover
+    bool started = false; //status
+    bool finished = false;
     Coordinate target;
-    //Colocar o target de novo?
+    int repeat = 0; //TaskManager
 };
 
 #endif
