@@ -2,6 +2,8 @@
 #define MYSTERIO_SRC_MISSION_TASK_H_
 #include "../utils/Coordinate.h"
 #include "Command.h"
+#define STARTED 1
+#define COMPLETED 2
 
 class Task { //Goto, ComeBackBaseStation
 
@@ -15,7 +17,7 @@ public:
     virtual ~Task(){}
 
     virtual bool isComplete(){
-        return this->finished; //complete
+        return (this->status == 2) ? true : false; //complete
     }
 
     //Task(Command command(int *args[]))
@@ -29,7 +31,15 @@ public:
     virtual void markAsComplete(Coordinate c){//Task
         //Task.uav.get
         if(c.getX() == target.getX() && c.getY() == target.getY() && c.getZ() == target.getZ())
-            this->finished = true;
+            this->status = COMPLETED;
+    }
+
+    void setStatus(int status){
+        this->status = status;
+    }
+
+    void setComplete(){
+        this->status = COMPLETED;
     }
 
     //Criar uma setComplete
@@ -43,8 +53,7 @@ public:
     int idUAV; //UAV
     int type;
     Command cmd; //Remover
-    bool started = false; //status
-    bool finished = false;
+    int status = 0; //status{started, completed}
     Coordinate target;
     int repeat = 0; //TaskManager
 };
