@@ -4,6 +4,9 @@
 #include "Command.h"
 #define STARTED 1
 #define COMPLETED 2
+#define GOTO 80
+#define COMEBACK_BASESTATION 81
+#define FLY_AROUND 82
 
 class Task { //Goto, ComeBackBaseStation
 

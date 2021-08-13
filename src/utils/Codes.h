@@ -4,11 +4,11 @@
 #define NUMUAVS 2
 
 //DB CONFIG
-#define HOSTNAME   "127.0.0.1"
-#define USERNAME   "root"
-#define PASSWORD   "root"
-#define DATABASE   "mestrado"
-#define PORT       1111
+#define HOSTNAME "127.0.0.1"
+#define USERNAME "root"
+#define PASSWORD "root"
+#define DATABASE "mestrado"
+#define PORT     1111
 
 enum CodeMessage {
 
@@ -16,17 +16,9 @@ enum CodeMessage {
     SOLICITAR_LOCALIZACAO = 10,
     SOLICITAR_VELOCIDADE,
 
-    //Tarefas
-
     //UAV STATUS
     RESPONDER_LOCALIZACAO = 30,
     RESPONDER_VELOCIDADE,
-
-    //Task
-    GOTO = 80,
-    COMEBACK_BASESTATION,
-    FLY_AROUND,
-
 
     //300 - UAV Request
     LOCATION_STATUS_REQUEST = 300,
@@ -39,7 +31,6 @@ enum CodeMessage {
     VELOCITY_STATUS_RESPONSE,
     BATTERY_STATUS_RESPONSE,
     FLIGHTTIME_STATUS_RESPONSE,
-
 
     MESSAGE = 270,
     STATUS_MESSAGE,

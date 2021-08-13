@@ -16,10 +16,9 @@ float bateria[NUMUAVS];
 double tempoVoo[NUMUAVS];
 bool ativo[NUMUAVS];
 int itera[NUMUAVS];
-//GoTo minhasTarefas[NUMUAVS][5]; //Task
 std::vector<Task*> base[NUMUAVS]; //Task
 UAVCommunicationSocket uavs[NUMUAVS];
-
+//std::vector<UAVCommunicationSocket> uavs;
 //1 - Tarefa: decolar (idUAV, altura)
 //2 - Tarefa: goto (idUAV, positionTarget)
 //3 - Tarefa: dar uma volta sobre (idUAV, positionTarget, distanciaSobre)
@@ -74,8 +73,6 @@ void UAVMobility::setTargetPosition() {
         if(base[selfID].size() != itera[selfID] && base[selfID].size() > 0){
             int j = base[selfID].size()-1;
             cout << "ATRIBUIU!!!" << endl;
-            //Coord ini(100.0, 100.0, 100.0);
-            //targetPosition = ini;
             if(base[selfID][j]->type == FLY_AROUND){
                 Coord c;
                 if(pontos[selfID] == 0 || pontos[selfID] == 4){

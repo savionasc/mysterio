@@ -3,15 +3,12 @@
 #include "../communication/CommunicationSocket.h"
 #include "../status/MysStatus.h"
 
-namespace mysterio {
-
 class Example1Communication {
 public:
-    Example1Communication();
-    virtual ~Example1Communication();
+    Example1Communication(){}
+    virtual ~Example1Communication(){}
     CommunicationSocket conn;
     MysStatus status;
 };
 
-}
 #endif

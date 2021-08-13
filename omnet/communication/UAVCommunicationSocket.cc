@@ -2,6 +2,8 @@
 #include "../../src/utils/Codes.h"
 #include "DroneStatusMessage.h"
 #include <iostream>
+
+#include "SocketMessageReceive.h"
 using namespace std;
 
 namespace mysterio {
@@ -44,7 +46,7 @@ void UAVCommunicationSocket::connectBase(){
             this->connected = true;
             this->socketCode = clientSd;
 
-            thread receber(socket_receber(), this->socketCode, this->selfID, this->socketCode);
+            thread receber(SocketMessageReceive(), this->socketCode, this->selfID, this->socketCode);
             receber.detach(); //join
         }
 

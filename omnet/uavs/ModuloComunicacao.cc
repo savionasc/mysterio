@@ -15,11 +15,11 @@ Define_Module(ModuloComunicacao);
 //shared variables
 using namespace mysterio;
 extern UAVCommunicationSocket uavs[NUMUAVS];
+//extern std::vector<UAVCommunicationSocket> uavs;
 extern Coord position[NUMUAVS];
 extern double velocidade[NUMUAVS];
 extern float bateria[NUMUAVS];
 extern double tempoVoo[NUMUAVS];
-//extern GoToTask minhasTarefas[NUMUAVS][5];
 
 extern int UAVDestino;
 extern int UAVLeader;
