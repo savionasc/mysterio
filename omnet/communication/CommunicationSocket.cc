@@ -5,7 +5,6 @@
 #include "ConnServerSocket.cc"
 
 using namespace std;
-
 //Enviar mensagens Unicast, Broadcast e Multicast
 
 //int conexoes[NUMUAVS];
@@ -22,23 +21,6 @@ void CommunicationSocket::sendMessageSocket(int id, Message msg){
 //status->subscribe(newUAV);?
 void CommunicationSocket::listenSocket(){
     Communication::listenSocket();
-    /*int serverSd = configureSocketServer(PORT);
-    thread conectar(ConnSocket(), serverSd);
-    while(ct == -1){
-
-    }
-    cout << "Passando por Socket Communication" << endl;
-    int antigo = 1;
-    if(antigo == 0){
-        while(1){
-            thread enviar(SendSocket(), conexoes[0]);
-            enviar.join();
-        }
-    }else{
-        sendMessageSocket();
-    }
-
-    conectar.join();*/
 }
 
 int* CommunicationSocket::getActiveConnections(){

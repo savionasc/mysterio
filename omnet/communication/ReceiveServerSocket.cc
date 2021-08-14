@@ -9,7 +9,7 @@
 #include "DroneStatusMessage.h"
 
 using namespace std;
-class ReceiveSocket{
+class ReceiveServerSocket{ //Não seria ReceiveUAVSocket?
 public:
     void operator()(int param){
         while(esperarMensagem(param)){ }

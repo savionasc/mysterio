@@ -13,7 +13,7 @@ using namespace std;
 //extern int conexoes[];
 extern int ct;
 
-class ConnSocket{
+class ConnServerSocket{
 public:
     void operator()(int param1, int *param2){
         while(conectarNovoUAV(param1, param2)){ }
@@ -31,8 +31,8 @@ public:
         std::cout << "Connected with UAV!" << std::endl;
         ct++;
         conexoes[ct] = newSd;
-        thread conectar(ConnSocket(), serverSd, conexoes);
-        thread receber(ReceiveSocket(), conexoes[ct]);
+        thread conectar(ConnServerSocket(), serverSd, conexoes);
+        thread receber(ReceiveServerSocket(), conexoes[ct]);
         receber.join();
         return true;
     }

@@ -3,7 +3,7 @@
 #include "../../src/utils/Message.h"
 #include "../communication/DroneStatusMessage.h"
 
-class SendSocket { //Renomear
+class SendServerSocket {
 public:
     void operator()(int param, Message param2){
         enviar(param, param2);

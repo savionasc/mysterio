@@ -51,11 +51,11 @@ public:
         if(idUAV == -1){ //Broadcast
             for (int i = 0; i <= ct; i++){
                 msg.setDestination(i);
-                thread enviar(SendSocket(), conexoes[i], msg);
+                thread enviar(SendServerSocket(), conexoes[i], msg);
                 enviar.detach();
             }
         }else{ //unicast
-            thread enviar(SendSocket(), conexoes[idUAV], msg);
+            thread enviar(SendServerSocket(), conexoes[idUAV], msg);
             enviar.join();
         }
     }
@@ -63,7 +63,7 @@ public:
     virtual void listenSocket(){ //Here starts the server communication
         int serverSd = configureSocketServer(PORT);
         if(serverSd > 0){
-            thread conectar(ConnSocket(), serverSd, conexoes);
+            thread conectar(ConnServerSocket(), serverSd, conexoes);
             std::cout << "Waiting for a UAV to connect..." << std::endl;
             while(ct == -1){ //waiting for the first UAV
 
