@@ -9,7 +9,7 @@ public:
         enviar(param, param2);
     }
 
-    bool enviar(int newSd, Message message){ //newSd mudar o nome
-        send(newSd, (Message*)&message, sizeof(message), 0);
+    bool enviar(int idUAVSocket, Message message){
+        send(idUAVSocket, (Message*)&message, sizeof(message), 0);
     }
 };

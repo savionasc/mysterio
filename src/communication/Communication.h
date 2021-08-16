@@ -9,12 +9,12 @@
 
 // Componente de comunicação do framework com Classes do tipo Communicable
 class Communication {
-//protected:
 public:
     int conexoes[NUMUAVS]; //Passar o Array pro Framework
 public:
     //ReceiveMessageFromUAV or Route
-    virtual void sendMessage(Communicable *source, Communicable *dest, Message msg) = 0;
+    //Antigo sendMessage
+    virtual void ReceiveMessageFromUAV(Communicable *source, Communicable *dest, Message msg) = 0;
     //virtual int* getActiveConnections(); //Criar uma classe Conexões para guardar o ID do UAV e o Socket
     virtual int* getActiveConnections(){
         return conexoes;
@@ -46,8 +46,9 @@ public:
         return serverSd;
     }
 
-    //SendMessageToUAV
-    virtual void sendMessageSocket(int idUAV, Message msg){
+    //sendMessageToUAV
+    //Antigo sendMessageSocket
+    virtual void sendMessageToUAV(int idUAV, Message msg){
         if(idUAV == -1){ //Broadcast
             for (int i = 0; i <= ct; i++){
                 msg.setDestination(i);
@@ -76,7 +77,7 @@ public:
                 char m[1500];
                 std::cin >> m;
                 Message msg(m, 10, -1, id);
-                sendMessageSocket(id, msg);
+                sendMessageToUAV(id, msg);
             }
             conectar.join();
         }else{ //when it fails enter here

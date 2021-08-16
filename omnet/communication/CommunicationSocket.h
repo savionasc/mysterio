@@ -12,11 +12,11 @@ class CommunicationSocket : public Communication {
 public:
 
     //Communication
-    void sendMessage(Communicable *source, Communicable *dest, Message msg);
+    void ReceiveMessageFromUAV(Communicable *source, Communicable *dest, Message msg);
 
     int* getActiveConnections(); //Criar uma classe Conexões para guardar o ID do UAV e o Socket
     void listenSocket();
-    void sendMessageSocket(int id, Message msg);
+    void sendMessageToUAV(int id, Message msg);
 
     int configureSocketServer(int port);
 

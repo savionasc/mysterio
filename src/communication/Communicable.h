@@ -4,11 +4,11 @@
 #include "../utils/Message.h"
 
 // deve ser implementado em todos os objetos comunicaveis (Componentes ou UAVs)
-//This interface is importante to create Communicables classes
+//This interface is important to create Communicables classes
+//Communication Receive?
 class Communicable { //Abstract Class?
 public:
-    //especificar o destino?
-    virtual void onMessageReceive(Message msg){ }// = 0;
+    virtual void onMessageReceive(Message msg){ }
 };
 
 #endif

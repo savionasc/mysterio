@@ -14,8 +14,8 @@ int CommunicationSocket::configureSocketServer(int port){
     return Communication::configureSocketServer(port);
 }
 
-void CommunicationSocket::sendMessageSocket(int id, Message msg){
-    Communication::sendMessageSocket(id, msg);
+void CommunicationSocket::sendMessageToUAV(int id, Message msg){
+    Communication::sendMessageToUAV(id, msg);
 }
 
 //status->subscribe(newUAV);?
@@ -27,7 +27,7 @@ int* CommunicationSocket::getActiveConnections(){
     return nullptr;//Communication::conexoes; //conexoes;
 }
 
-void CommunicationSocket::sendMessage(Communicable *source, Communicable *dest, Message msg){
+void CommunicationSocket::ReceiveMessageFromUAV(Communicable *source, Communicable *dest, Message msg){
     getActiveConnections();
     if(msg.getCode() == 11)
         dest->onMessageReceive(msg);
