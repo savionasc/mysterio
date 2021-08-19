@@ -18,6 +18,7 @@ bool ativo[NUMUAVS];
 int itera[NUMUAVS];
 std::vector<Task*> base[NUMUAVS]; //Task
 UAVCommunicationSocket uavs[NUMUAVS];
+int parar = 0;
 //std::vector<UAVCommunicationSocket> uavs;
 //1 - Tarefa: decolar (idUAV, altura)
 //2 - Tarefa: goto (idUAV, positionTarget)
@@ -65,11 +66,12 @@ void UAVMobility::setTargetPosition() {
     //}
 
     if (nextMoveIsWait) {
+        cout << "parar: " << parar << endl;
         simtime_t waitTime = waitTimeParameter->doubleValue()+3;
         nextChange = simTime() + waitTime;
         nextMoveIsWait = false;
     } else {
-
+        cout << "parar: " << parar << endl;
         if(base[selfID].size() != itera[selfID] && base[selfID].size() > 0){
             int j = base[selfID].size()-1;
             cout << "ATRIBUIU!!!" << endl;
@@ -115,6 +117,12 @@ void UAVMobility::setTargetPosition() {
 }
 
 void UAVMobility::move() {
+    if(parar == 1){
+        nextMoveIsWait = true;
+        nextChange = simTime() + 0.1;
+        cout << "p" << endl;
+        parar++;
+    }
     //if(ativo[selfID]){
         //if(!base[selfID][itera[selfID]]->started){
             //base[selfID][itera[selfID]]->started = true;
