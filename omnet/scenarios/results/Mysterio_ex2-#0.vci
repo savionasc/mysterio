@@ -1,15 +1,15 @@
-file 101802 1629404120                                          
+file 3473 1629461623                                            
 version 2
-run Mysterio_ex2-0-20210819-17:14:27-3184
+run Mysterio_ex2-0-20210820-09:12:29-3042
 attr configname Mysterio_ex2
-attr datetime 20210819-17:14:27
+attr datetime 20210820-09:12:29
 attr experiment Mysterio_ex2
 attr inifile omnetpp.ini
 attr iterationvars ""
 attr iterationvarsf ""
 attr measurement ""
 attr network MysterioCommunication2
-attr processid 3184
+attr processid 3042
 attr repetition 0
 attr replication #0
 attr resultdir results
@@ -69,34 +69,4 @@ param **.constraintAreaMaxY 1000m
 param **.constraintAreaMaxZ 1000m
 param **.networkConfiguratorModule "\"\""
 
-vector 0 MysterioCommunication2.host[0].energyStorage residualEnergyCapacity:vector ETV
-attr interpolationmode linear
-attr source residualEnergyCapacityChanged
-attr title "Residual energy capacity, vector"
-vector 1 MysterioCommunication2.host[0].energyGenerator powerGeneration:vector ETV
-attr interpolationmode sample-hold
-attr source powerGenerationChanged
-attr title "Power generation, vector"
-vector 2 MysterioCommunication2.host[1].energyStorage residualEnergyCapacity:vector ETV
-attr interpolationmode linear
-attr source residualEnergyCapacityChanged
-attr title "Residual energy capacity, vector"
-vector 3 MysterioCommunication2.host[1].energyGenerator powerGeneration:vector ETV
-attr interpolationmode sample-hold
-attr source powerGenerationChanged
-attr title "Power generation, vector"
-vector 4 MysterioCommunication2.host[0].energyStorage powerGeneration:vector ETV
-attr interpolationmode sample-hold
-attr source powerGenerationChanged
-attr title "Power generation, vector"
-vector 5 MysterioCommunication2.host[1].energyStorage powerGeneration:vector ETV
-attr interpolationmode sample-hold
-attr source powerGenerationChanged
-attr title "Power generation, vector"
-0	4644 44859 0 2899 0 143.010148922112 1754 0.03735860471658 0.05 82.796357296839 3.9383519377902
-1	49503 120 0 2360 0 116.138987064781 5 0 0.004 0.012 4.8e-05
-2	49623 51878 0 2899 0 143.010148922112 1718 0.040895346879862 0.05 80.944336240286 3.8332518849316
-3	101501 90 0 1651 0 80.801076278637 4 0 0.004 0.008 3.2e-05
-4	101591 120 0 2360 0 116.138987064781 5 0 0.004 0.012 4.8e-05
-5	101711 90 0 1651 0 80.801076278637 4 0 0.004 0.008 3.2e-05
 

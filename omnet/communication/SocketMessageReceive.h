@@ -2,7 +2,7 @@
 #define MYSTERIO_OMNET_COMMUNICATION_SOCKETMESSAGERECEIVE_H_
 #include "UAVCommunicationSocket.h"
 
-extern int parar;
+extern int pular;
 namespace mysterio {
 class SocketMessageReceive {
     public:
@@ -101,8 +101,8 @@ class SocketMessageReceive {
                 //}
             }else if(!strcmp(msg.getMsg(), "dar-volta")){
             }else if(!strcmp(msg.getMsg(), "retornar-base")){
-            }else if(!strcmp(msg.getMsg(), "pousar")){
-                parar = 1;
+            }else if(!strcmp(msg.getMsg(), "next")){
+                pular = 1;
             }else if(!strcmp(msg.getMsg(), "goto0")){
             }else if(!strcmp(msg.getMsg(), "goto1")){
             }else{
