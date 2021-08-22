@@ -55,9 +55,7 @@ void UAVMobility::initialize(int stage) {
 
 void UAVMobility::setTargetPosition() {
 
-    cout << "itera: " << itera[selfID] << " size: " << base[selfID].size() << endl;
-    //Verificar se é uma atividade disso, ou atividade daquilo pelo type
-    //if(itera[0] > -1 && base[0][0]->type == 10){
+    //cout << "itera: " << itera[selfID] << " size: " << base[selfID].size() << endl;
 
     //Checando se a atividade está completa pra passar para outra tarefa
     //if(gotoPtr->isComplete(currentPosition)){
@@ -66,12 +64,10 @@ void UAVMobility::setTargetPosition() {
     //}
 
     if (nextMoveIsWait) {
-        cout << "parar: " << pular << endl;
         simtime_t waitTime = waitTimeParameter->doubleValue()+3;
         nextChange = simTime() + waitTime;
         nextMoveIsWait = false;
     } else {
-        cout << "parar: " << pular << endl;
         if(base[selfID].size() != itera[selfID] && base[selfID].size() > 0){
             int j = base[selfID].size()-1;
             cout << "ATRIBUIU!!!" << endl;
@@ -106,7 +102,6 @@ void UAVMobility::setTargetPosition() {
         }else{
             targetPosition = getRandomPosition();
         }
-        cout << "target-" << selfID <<": " << targetPosition << endl;
         double speed = speedParameter->doubleValue();
         double distance = lastPosition.distance(targetPosition);
         simtime_t travelTime = distance / speed;
@@ -119,16 +114,9 @@ void UAVMobility::setTargetPosition() {
 void UAVMobility::move() {
     if(pular == 1)
         this->stop();
-    //if(ativo[selfID]){
-        //if(!base[selfID][itera[selfID]]->started){
-            //base[selfID][itera[selfID]]->started = true;
-            //this->setTargetPosition();
-            //targetPosition = this->CoordinateToCoord(minhasTarefas[selfID][0].target); //colocar um i para tarefa atual
-        //}
-        LineSegmentsMobilityBase::move();
-        raiseErrorIfOutside();
-        this->rescueData();
-    //}
+    LineSegmentsMobilityBase::move();
+    raiseErrorIfOutside();
+    this->rescueData();
 }
 
 double UAVMobility::getMaxSpeed() const {

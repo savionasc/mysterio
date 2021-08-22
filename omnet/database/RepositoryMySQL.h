@@ -7,7 +7,9 @@
 class RepositoryMySQL : public Repository {
 public:
     RepositoryMySQL();
+    RepositoryMySQL(bool prints);
     virtual ~RepositoryMySQL();
+
     virtual bool createConnection();
     virtual void destroyConnection();
 
@@ -19,9 +21,12 @@ public:
     void setBattery(int idUAV, float battery);
     int getFlightTime(int idUAV);
     void setFlightTime(int idUAV, int flightTime);
+    void enablePrints();
+    void disablePrints();
 
 protected:
     MYSQL connection;
+    bool prints = false;
 };
 
 #endif

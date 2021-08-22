@@ -3,12 +3,11 @@
 #include "../communication/CommunicationSocket.h"
 
 MysStatus::MysStatus(){
-    this->r.createConnection();
+    this->r.disablePrints();
 }
 
-void MysStatus::onMessageReceive(Message msg){ //Tratar o que for DroneStatusMessage
+void MysStatus::onMessageReceive(Message msg){
     DroneStatusMessage* mMSG = dynamic_cast<DroneStatusMessage*>(&msg);
-    cout << "Resposta recebida no Status!" << endl;
     cout << mMSG->getMsg() << endl;
     switch (mMSG->getCode()) {
         case LOCATION_STATUS_REQUEST:{
@@ -53,8 +52,7 @@ void MysStatus::onMessageReceive(Message msg){ //Tratar o que for DroneStatusMes
     }
 }
 
-void MysStatus::onDroneStatusMessageReceive(DroneStatusMessage msg){ //Tratar o que for DroneStatusMessage
-    cout << "Resposta recebida no Status!" << endl;
+void MysStatus::onDroneStatusMessageReceive(DroneStatusMessage msg){
     cout << msg.getMsg() << endl;
     switch (msg.getCode()) {
         case LOCATION_STATUS_REQUEST:{
@@ -110,7 +108,6 @@ Coordinate MysStatus::getUAVLocation(int idUAV){ //Request?
 
     cout << "Pegando localização do Banco de Dados!" << endl;
 
-    //this->r.requestStatusInformation();
     this->r.requestUAVLocation(idUAV);
     return c;
 }
@@ -122,7 +119,6 @@ void MysStatus::updateUAVLocation(Coordinate coord, int idUAV){ //saveUAVCurrent
     s.setYAxis(coord.getY());
     s.setZAxis(coord.getZ());
     this->uavs[idUAV] = s; //Substituir
-    cout << "Passando localização pro Banco de Dados!" << endl;
     this->r.saveUAVLocation(1, coord);
 }
 

@@ -24,7 +24,7 @@ class SocketMessageReceive {
                 close(newSd);
                 return false;
             }else if(!strcmp(msg.getMsg(), "location")){ //Mudar isso aqui e chamar o OnMessageReceve
-                std::cout << " status " << std::endl;
+                std::cout << "[U" << this->idUAV << "] Respondendo status " << std::endl;
                 Coord coor = position[idUAV];
 
                 UAVCommunicationSocket u;

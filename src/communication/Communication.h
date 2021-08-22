@@ -70,10 +70,10 @@ public:
 
             }
             while(true){
-                std::cout << "Digite um UAV para receber" << std::endl;
+                std::cout << "[C] Digite um UAV para receber:" << std::endl;
                 int id;
                 std::cin >> id;
-                std::cout << "Digite a mensagem:" << std::endl;
+                std::cout << "[C] Digite a mensagem:" << std::endl;
                 char m[1500];
                 std::cin >> m;
                 Message msg(m, 10, -1, id);

@@ -1,5 +1,6 @@
 #include "RepositoryMySQL.h"
 #include "../../src/utils/Coordinate.h"
+#include <iostream>
 #include <stdio.h>
 #include <string>
 #include <string.h>
@@ -10,22 +11,33 @@ RepositoryMySQL::RepositoryMySQL() {
     this->createConnection();
 }
 
+RepositoryMySQL::RepositoryMySQL(bool prints) {
+    this->prints = prints;
+    this->createConnection();
+}
+
 //Reconnect nos tratamentos de exceção
+
+//Depois trocar printf por cout
 
 bool RepositoryMySQL::createConnection(){
     mysql_init(&connection);
     if (mysql_real_connect(&connection,HOSTNAME,USERNAME,PASSWORD,DATABASE,0,NULL,0)){
-        printf("Conectado com o banco de dados com sucesso!\n");
+        if(this->prints)
+            std::cout << "[DB] Conectado com o banco de dados com sucesso!" << std::endl;
     }else{
-        printf("Falha na conexão com o banco de dados!\n");
-        if (mysql_errno(&connection))
-            printf("Erro %d : %s\n", mysql_errno(&connection), mysql_error(&connection));
+        if(this->prints){
+            std::cout << "[DB] Falha na conexão com o banco de dados!" << std::endl;
+            if (mysql_errno(&connection))
+                std::cout << "[DB] Erro " << mysql_errno(&connection) << " : " << mysql_error(&connection) << std::endl;
+        }
     }
 }
 
 void RepositoryMySQL::destroyConnection(){
     mysql_close(&connection);
-    printf("Conexão finalizada com o banco de dados!\n");
+    if(this->prints)
+        std::cout << "[DB] Conexão finalizada com o banco de dados!" << std::endl;
 }
 
 Coordinate RepositoryMySQL::requestUAVLocation(int idUAV){
@@ -38,7 +50,8 @@ Coordinate RepositoryMySQL::requestUAVLocation(int idUAV){
     int conta;
     Coordinate c;
     if (mysql_query(&connection,query))
-        printf("Erro: %s\n",mysql_error(&connection));
+        if(this->prints)
+            std::cout << "Erro: " << mysql_error(&connection)<< std::endl;
     else{
         resp = mysql_store_result(&connection);
         if (resp) {
@@ -48,7 +61,7 @@ Coordinate RepositoryMySQL::requestUAVLocation(int idUAV){
                 if (mysql_num_fields(resp)>1)
                     printf("\t");
             }
-            printf("\n");
+            printf("\n[DB] ");
             while ((linhas=mysql_fetch_row(resp)) != NULL){
                 c.setX(std::stof(linhas[0]));
                 c.setY(std::stof(linhas[1]));
@@ -77,10 +90,12 @@ void RepositoryMySQL::saveUAVLocation(int idUAV, Coordinate coord){
     int res;
     res = mysql_query(&connection,snd);
 
-    if (!res)
-        printf("Registro inserido %llu\n", mysql_affected_rows(&connection));
-    else
-        printf("Erro na inserção %d : %s\n", mysql_errno(&connection), mysql_error(&connection));
+    if(this->prints){
+        if (!res)
+            std::cout << "[DB] Registro inserido " << mysql_affected_rows(&connection) << std::endl;
+        else
+            std::cout << "[DB] Erro na inserção " << mysql_errno(&connection) << " : " << mysql_error(&connection) << std::endl;
+    }
 }
 
 double RepositoryMySQL::getVelocity(int idUAV){
@@ -93,7 +108,7 @@ double RepositoryMySQL::getVelocity(int idUAV){
     int conta;
     double velocity;
     if (mysql_query(&connection,query))
-        printf("Erro: %s\n",mysql_error(&connection));
+        printf("[DB] Erro: %s\n",mysql_error(&connection));
     else{
         resp = mysql_store_result(&connection);
         if (resp) {
@@ -103,7 +118,7 @@ double RepositoryMySQL::getVelocity(int idUAV){
                 if (mysql_num_fields(resp)>1)
                     printf("\t");
             }
-            printf("\n");
+            printf("\n[DB] ");
             while ((linhas=mysql_fetch_row(resp)) != NULL){
                 velocity = std::stod(linhas[0]);
                 for (conta=0;conta<mysql_num_fields(resp);conta++)
@@ -128,9 +143,9 @@ void RepositoryMySQL::setVelocity(int idUAV, double velocity){
     res = mysql_query(&connection,snd);
 
     if (!res)
-        printf("Registro inserido %llu\n", mysql_affected_rows(&connection));
+        printf("[DB] Registro inserido %llu\n", mysql_affected_rows(&connection));
     else
-        printf("Erro na inserção %d : %s\n", mysql_errno(&connection), mysql_error(&connection));
+        printf("[DB] Erro na inserção %d : %s\n", mysql_errno(&connection), mysql_error(&connection));
 }
 
 float RepositoryMySQL::getBattery(int idUAV){
@@ -153,7 +168,7 @@ float RepositoryMySQL::getBattery(int idUAV){
                 if (mysql_num_fields(resp)>1)
                     printf("\t");
             }
-            printf("\n");
+            printf("\n[DB] ");
             while ((linhas=mysql_fetch_row(resp)) != NULL){
                 battery = std::stof(linhas[0]);
                 for (conta=0;conta<mysql_num_fields(resp);conta++)
@@ -178,9 +193,9 @@ void RepositoryMySQL::setBattery(int idUAV, float battery){
     res = mysql_query(&connection,snd);
 
     if (!res)
-        printf("Registro inserido %llu\n", mysql_affected_rows(&connection));
+        printf("[DB] Registro inserido %llu\n", mysql_affected_rows(&connection));
     else
-        printf("Erro na inserção %d : %s\n", mysql_errno(&connection), mysql_error(&connection));
+        printf("[DB] Erro na inserção %d : %s\n", mysql_errno(&connection), mysql_error(&connection));
 }
 
 int RepositoryMySQL::getFlightTime(int idUAV){
@@ -203,7 +218,7 @@ int RepositoryMySQL::getFlightTime(int idUAV){
                 if (mysql_num_fields(resp)>1)
                     printf("\t");
             }
-            printf("\n");
+            printf("\n[DB] ");
             while ((linhas=mysql_fetch_row(resp)) != NULL){
                 flightTime = std::stoi(linhas[0]);
                 for (conta=0;conta<mysql_num_fields(resp);conta++)
@@ -228,9 +243,12 @@ void RepositoryMySQL::setFlightTime(int idUAV, int flightTime){
     res = mysql_query(&connection,snd);
 
     if (!res)
-        printf("Registro inserido %llu\n", mysql_affected_rows(&connection));
+        printf("[DB] Registro inserido %llu\n", mysql_affected_rows(&connection));
     else
-        printf("Erro na inserção %d : %s\n", mysql_errno(&connection), mysql_error(&connection));
+        printf("[DB] Erro na inserção %d : %s\n", mysql_errno(&connection), mysql_error(&connection));
 }
+
+void RepositoryMySQL::enablePrints(){ this->prints = true; }
+void RepositoryMySQL::disablePrints(){ this->prints = false; }
 
 RepositoryMySQL::~RepositoryMySQL() { this->destroyConnection(); }
