@@ -6,6 +6,9 @@ using namespace std;
 
 int main(int argc, char const *argv[]){
 
+	//This number identification will be important to set database execution
+	int numExecution = 1; 
+
     CommunicationSocket comm;
     ///
     ///
