@@ -7,13 +7,16 @@ using namespace std;
 
 class Command {
 public:
-    Command(){string cmd = "go"; /*this->v.push_back(cmd);*/}
+    Command(){ this->instruction = "go"; /*this->v.push_back(cmd);*/}
     virtual ~Command(){}
 
     int id = -1;
-    std::string cmd = "";
+    std::string instruction = "";
+    //Criar um toString no coordinate
+    //Depois criar uma função que retorna coordinate recebendo uma string
     //Coordinate coord; defalt -1, -1, -1
-    //vector<string> v;
+
+    vector<string> args; //queue?
 };
 
 #endif
