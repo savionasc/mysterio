@@ -11,8 +11,8 @@ public:
     bool isComplete(Coordinate currentPosition);
     Coordinate getTask();
     void assignTask();
-    void assignTask(int idUAV, Coordinate target);
-    void assignTask(int idUAV, Command command, int *args[]);
+    void assignTask(UAV uav, Coordinate target);
+    void assignTask(UAV uav, Command command, int *args[]);
     bool started = false;
 //protected:
     char objetivo[150]; //Definir um tipo Objetivo

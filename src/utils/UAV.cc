@@ -2,6 +2,8 @@
 
 UAV::UAV() { }
 
+UAV::UAV(int idUAV) { this->iD = idUAV; }
+
 UAV::~UAV() { }
 
 int UAV::getID(){

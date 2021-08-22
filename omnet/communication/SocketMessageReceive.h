@@ -75,11 +75,12 @@ class SocketMessageReceive {
             }else if(!strcmp(msg.getMsg(), "decolar")){ //take off
                 for (int i = 0; i < NUMUAVS; i++) {
                     Coordinate currentP(100.0,100.0,100.0);
-                    GoTo gotoc(0, currentP);
+                    UAV u(0);
+                    Task gotoc(u, currentP);
                     base[i].push_back(&gotoc);
                     int j = base[i].size()-1;
                     base[i][j]->type = 10;
-                    base[i][j]->idUAV = i;
+                    base[i][j]->uav.setID(i);
                     //itera[i]++;
                     if(itera[i] < 0)
                         itera[i]++;
@@ -90,11 +91,12 @@ class SocketMessageReceive {
                 int i = idUAV;
                 //for (int i = 0; i < NUMUAVS; i++) {
                 Coordinate currentP(300.0,420.0,90.0);
-                Task gotoc(0, currentP);
+                UAV u(0);
+                Task gotoc(u, currentP);
                 base[i].push_back(&gotoc);
                 int j = base[i].size()-1;
                 base[i][j]->type = FLY_AROUND;
-                base[i][j]->idUAV = i;
+                base[i][j]->uav.setID(i);
                 if(itera[i] < 0)
                     itera[i]++;
                 cout << "lista["<<i<<"]: " << base[i].size()<< endl;

@@ -8,6 +8,7 @@ class UAV : public Communicable { //Aqui eu pensei que seria um exemplo simples 
     // MOVER PARA UTILS E MUDAR PARA UAV
 public:
     UAV();
+    UAV(int idUAV);
     virtual ~UAV();
     virtual int getID();
     virtual void setID(int id);

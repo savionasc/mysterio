@@ -8,7 +8,7 @@ bool ComeBackBasestation::isComplete(){ } //Passar coordenate
 
 void ComeBackBasestation::assignTask(){}
 
-void ComeBackBasestation::assignTask(int idUAV, Coordinate target){
+void ComeBackBasestation::assignTask(UAV uav, Coordinate target){
     this->base = target;
-    this->idUAV = idUAV;
+    this->uav = uav;
 }

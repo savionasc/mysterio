@@ -25,12 +25,12 @@ void GoTo::assignTask(){
 
 }
 
-void GoTo::assignTask(int idUAV, Coordinate target){
+void GoTo::assignTask(UAV uav, Coordinate target){
     this->target = target;
-    this->idUAV = idUAV;
+    this->uav = uav;
 }
 
-void GoTo::assignTask(int idUAV, Command command, int *args[]){
+void GoTo::assignTask(UAV uav, Command command, int *args[]){
 
 }
 
