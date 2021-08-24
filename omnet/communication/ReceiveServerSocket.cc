@@ -2,13 +2,17 @@
 #include <sys/socket.h>
 #include <netinet/in.h>
 #include <string.h>
-
-#include "../../src/utils/Codes.h"
 #include "../status/MysStatus.h"
 #include "../../src/utils/Message.h"
 #include "DroneStatusMessage.h"
 
 using namespace std;
+enum codemessage{
+    MESSAGE = 270,
+    STATUS_MESSAGE,
+    TASK_MESSAGE
+};
+
 class ReceiveServerSocket{ //Não seria ReceiveUAVSocket?
 public:
     void operator()(int param){

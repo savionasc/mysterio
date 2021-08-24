@@ -4,6 +4,13 @@
 
 extern int pular;
 namespace mysterio {
+enum codes{
+    LOCATION_STATUS_RESPONSE = 310,
+    VELOCITY_STATUS_RESPONSE,
+    BATTERY_STATUS_RESPONSE,
+    FLIGHTTIME_STATUS_RESPONSE,
+};
+
 class SocketMessageReceive {
     public:
         SocketMessageReceive(){}
@@ -52,7 +59,8 @@ class SocketMessageReceive {
                 strcpy(snd, txt.c_str());
                 DroneStatusMessage m(snd, BATTERY_STATUS_RESPONSE, this->idUAV, -1);
                 m.status.setBattery(bateria[this->idUAV]);
-                u.dispatchMessage(m);
+                cout << txt << endl;
+                u.dispatchStatusMessage(m);
             }else if(!strcmp(msg.getMsg(), "flight-time")){ //Mudar isso aqui e chamar o OnMessageReceve
                 std::cout << " Flight Time Status " << std::endl;
 
@@ -65,7 +73,8 @@ class SocketMessageReceive {
                 strcpy(snd, txt.c_str());
                 DroneStatusMessage m(snd, FLIGHTTIME_STATUS_RESPONSE, this->idUAV, -1);
                 m.status.setFlightTime((int) tempoVoo[this->idUAV]);
-                u.dispatchMessage(m);
+                cout << txt << endl;
+                u.dispatchStatusMessage(m);
             }else if(!strcmp(msg.getMsg(), "start")){
                 ativo[msg.getDestination()] = true;
                 cout << msg.getMsg() << ":" << msg.getDestination() << endl;

@@ -2,7 +2,6 @@
 #include <iostream>
 #include "../scenarios/Example1Communication.h"
 #include "../communication/UAVCommunicationSocket.h"
-#include "../../src/utils/Codes.h"
 #include "../mission/GoTo.h"
 
 using namespace omnetpp;

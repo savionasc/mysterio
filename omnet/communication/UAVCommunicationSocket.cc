@@ -1,9 +1,10 @@
 #include "UAVCommunicationSocket.h"
-#include "../../src/utils/Codes.h"
 #include "DroneStatusMessage.h"
 #include <iostream>
 
 #include "SocketMessageReceive.h"
+#define HOSTNAME "127.0.0.1"
+
 using namespace std;
 
 namespace mysterio {

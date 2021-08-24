@@ -1,6 +1,5 @@
 #include <thread>
 #include "CommunicationSocket.h"
-#include "../../src/utils/Codes.h"
 #include "../../src/communication/Communication.h"
 #include "ConnServerSocket.cc"
 

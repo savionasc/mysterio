@@ -3,9 +3,11 @@
 #include "Communicable.h"
 #include "../utils/Message.h"
 #include "../../omnet/communication/DroneStatusMessage.h"
-#include "../utils/Codes.h"
 #include "../../omnet/communication/ConnServerSocket.cc"
 #include <thread>
+
+#define NUMUAVS 2
+#define PORT    1111
 
 // Componente de comunicação do framework com Classes do tipo Communicable
 class Communication {

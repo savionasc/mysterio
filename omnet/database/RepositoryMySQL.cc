@@ -5,7 +5,10 @@
 #include <string>
 #include <string.h>
 
-#include "../../src/utils/Codes.h"
+#define HOSTNAME "127.0.0.1"
+#define USERNAME "root"
+#define PASSWORD "root"
+#define DATABASE "mestrado"
 
 RepositoryMySQL::RepositoryMySQL() {
     this->createConnection();
