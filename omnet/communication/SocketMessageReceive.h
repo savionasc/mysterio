@@ -47,6 +47,22 @@ class SocketMessageReceive {
                 m.status.setLocation(coor.x, coor.y, coor.z);
                 cout << txt << endl;
                 u.dispatchStatusMessage(m);
+            }else if(!strcmp(msg.getMsg(), "velocity")){ //Mudar isso aqui e chamar o OnMessageReceve
+                std::cout << "[U" << this->idUAV << "] Respondendo status " << std::endl;
+                double vel = velocidade[idUAV];
+
+                UAVCommunicationSocket u;
+                u.setSocketCode(this->sock);
+                u.setSelfID(this->idUAV);
+
+                char snd[150];
+                std::string txt = "MSG - Velocidade (" + to_string(vel);
+                txt += "m/s)";
+                strcpy(snd, txt.c_str());
+                DroneStatusMessage m(snd, VELOCITY_STATUS_RESPONSE, this->idUAV, -1);   //MUDAR AQUI???
+                m.status.setVelocity(vel);
+                cout << txt << endl;
+                u.dispatchStatusMessage(m);
             }else if(!strcmp(msg.getMsg(), "battery")){ //Mudar isso aqui e chamar o OnMessageReceve
                 std::cout << " Battery status " << std::endl;
 

@@ -21,6 +21,7 @@ using namespace inet;
 using namespace std;
 
 extern Coord position[NUMUAVS];
+extern double velocidade[NUMUAVS];
 extern float bateria[NUMUAVS];
 extern double tempoVoo[NUMUAVS];
 extern std::vector<Task*> base[NUMUAVS]; //Task
