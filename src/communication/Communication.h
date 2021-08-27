@@ -4,6 +4,7 @@
 #include "../utils/Message.h"
 #include "../../omnet/communication/DroneStatusMessage.h"
 #include "../../omnet/communication/ConnServerSocket.cc"
+#include "../../omnet/singleton.cc"
 #include <thread>
 
 #define NUMUAVS 2
@@ -80,6 +81,10 @@ public:
                 std::cin >> m;
                 Message msg(m, 10, -1, id);
                 sendMessageToUAV(id, msg);
+                Singleton* singleton = Singleton::GetInstance("BAR");
+                std::cout << singleton->value() << "\n";
+                std::cout << "State: " << singleton->state() << "\n";
+                singleton->SomeBusinessLogic();
             }
             conectar.join();
         }else{ //when it fails enter here

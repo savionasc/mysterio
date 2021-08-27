@@ -3,8 +3,10 @@
 #include "../utils/Coordinate.h"
 #include "../utils/UAV.h"
 #include "Command.h"
+//States
 #define STARTED 1
 #define COMPLETED 2
+//Types
 #define GOTO 80
 #define COMEBACK_BASESTATION 81
 #define FLY_AROUND 82
@@ -16,26 +18,11 @@ public:
     Task(UAV uav, Coordinate targetPosition) {
         this->uav = uav;
         this->target = targetPosition;
-        //this->assignTask(idUAV, targetPosition);
     }
     virtual ~Task(){}
 
     virtual bool isComplete(){
         return (this->status == COMPLETED) ? true : false; //complete
-    }
-
-    //Task(Command command(int *args[]))
-    //TaskManager(Task, idUAV)
-    virtual void assignTask(UAV uav, Command command, int *args[]){ //Drone, comando, parametros do comando
-        this->uav = uav;
-        this->cmd = command;
-    }
-
-    //TaskManager
-    virtual void markAsComplete(Coordinate c){//Task
-        //Task.uav.get
-        if(c.getX() == target.getX() && c.getY() == target.getY() && c.getZ() == target.getZ())
-            this->status = COMPLETED;
     }
 
     void setStatus(int status){
