@@ -52,6 +52,17 @@ public:
     //sendMessageToUAV
     //Antigo sendMessageSocket
     virtual void sendMessageToUAV(int idUAV, Message msg){
+
+        //Ver onde colocar o TaskManager
+        //if task, adicionar no MissionPlanner (Singleton)
+
+        if(!strcmp(msg.getMsg(), "carro")){
+            Singleton* singleton = Singleton::GetInstance("TASK");
+            std::cout << singleton->value() << "\n";
+            std::cout << "State: " << singleton->state() << "\n";
+            singleton->SomeBusinessLogic();
+        }
+
         if(idUAV == -1){ //Broadcast
             for (int i = 0; i <= ct; i++){
                 msg.setDestination(i);
@@ -81,10 +92,6 @@ public:
                 std::cin >> m;
                 Message msg(m, 10, -1, id);
                 sendMessageToUAV(id, msg);
-                Singleton* singleton = Singleton::GetInstance("BAR");
-                std::cout << singleton->value() << "\n";
-                std::cout << "State: " << singleton->state() << "\n";
-                singleton->SomeBusinessLogic();
             }
             conectar.join();
         }else{ //when it fails enter here

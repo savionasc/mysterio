@@ -43,7 +43,7 @@ public:
             Message msg;
             memset(&msg, 0, sizeof(msg));
             recv(newSd, (Message*)&msg, sizeof(msg), 0);
-            cout << "Mensagem recebida: " << msg.getMsg() << endl;
+            cout << "[U" << msg.getDestination() << "] Mensagem recebida: " << msg.getMsg() << endl;
         }
         return true;
     }
