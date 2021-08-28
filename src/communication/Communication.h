@@ -4,8 +4,8 @@
 #include "../utils/Message.h"
 #include "../../omnet/communication/DroneStatusMessage.h"
 #include "../../omnet/communication/ConnServerSocket.cc"
-#include "../../omnet/singleton.cc"
 #include <thread>
+#include "../../omnet/Singleton.h"
 
 #define NUMUAVS 2
 #define PORT    1111
