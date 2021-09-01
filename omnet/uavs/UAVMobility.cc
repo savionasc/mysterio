@@ -68,36 +68,8 @@ void UAVMobility::setTargetPosition() {
         nextMoveIsWait = false;
     } else {
         if(base[selfID].size() != itera[selfID] && base[selfID].size() > 0){
-            int j = base[selfID].size()-1;
             cout << "ATRIBUIU!!!" << endl;
-            if(base[selfID][j]->type == FLY_AROUND){
-                Coord c;
-                if(pontos[selfID] == 0 || pontos[selfID] == 4){
-                    c = this->CoordinateToCoord(base[selfID][j]->target);
-                    c.setX(c.getX()-50);
-                    c.setY(c.getY()-50);
-                }else if(pontos[selfID] == 1){
-                    c = this->CoordinateToCoord(base[selfID][j]->target);
-                    c.setX(c.getX()+50);
-                    c.setY(c.getY()-50);
-                }else if(pontos[selfID] == 2){
-                    c = this->CoordinateToCoord(base[selfID][j]->target);
-                    c.setX(c.getX()+50);
-                    c.setY(c.getY()+50);
-                }else if(pontos[selfID] == 3){
-                    c = this->CoordinateToCoord(base[selfID][j]->target);
-                    c.setX(c.getX()-50);
-                    c.setY(c.getY()+50);
-                }else if(pontos[selfID] == 5){
-                    c = this->CoordinateToCoord(base[selfID][j]->target);
-                    itera[selfID]++;
-                }
-                targetPosition = c;
-                pontos[selfID] = (pontos[selfID] < 5) ? pontos[selfID]+1 : 0;
-            }else{
-                targetPosition = this->CoordinateToCoord(base[selfID][j]->target);
-                itera[selfID]++;
-            }
+            executeTask(base[selfID].size()-1);
         }else{
             targetPosition = getRandomPosition();
         }
@@ -135,7 +107,38 @@ void UAVMobility::rescueData(){
     tempoVoo[selfID] = simTime().dbl();
 }
 
-void UAVMobility::stop(){
+void UAVMobility::executeTask(int j){
+    if(base[selfID][j]->type == FLY_AROUND){
+        Coord c;
+        if(pontos[selfID] == 0 || pontos[selfID] == 4){
+            c = this->CoordinateToCoord(base[selfID][j]->target);
+            c.setX(c.getX()-50);
+            c.setY(c.getY()-50);
+        }else if(pontos[selfID] == 1){
+            c = this->CoordinateToCoord(base[selfID][j]->target);
+            c.setX(c.getX()+50);
+            c.setY(c.getY()-50);
+        }else if(pontos[selfID] == 2){
+            c = this->CoordinateToCoord(base[selfID][j]->target);
+            c.setX(c.getX()+50);
+            c.setY(c.getY()+50);
+        }else if(pontos[selfID] == 3){
+            c = this->CoordinateToCoord(base[selfID][j]->target);
+            c.setX(c.getX()-50);
+            c.setY(c.getY()+50);
+        }else if(pontos[selfID] == 5){
+            c = this->CoordinateToCoord(base[selfID][j]->target);
+            itera[selfID]++;
+        }
+        targetPosition = c;
+        pontos[selfID] = (pontos[selfID] < 5) ? pontos[selfID]+1 : 0;
+    }else{
+        targetPosition = this->CoordinateToCoord(base[selfID][j]->target);
+        itera[selfID]++;
+    }
+}
+
+void UAVMobility::stop(){ //Finaliza a atividade no Omnet
     nextMoveIsWait = true;
     nextChange = simTime() + 0.1;
     cout << "step" << endl;

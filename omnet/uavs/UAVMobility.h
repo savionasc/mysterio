@@ -61,6 +61,8 @@ class INET_API UAVMobility : public LineSegmentsMobilityBase
 
     void rescueData();
 
+    void executeTask(int j);
+
     void stop();
 
     J pegarBateria(int idUAV);
