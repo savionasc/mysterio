@@ -10,7 +10,8 @@ using namespace std;
 enum codemessage{
     MESSAGE = 270,
     STATUS_MESSAGE,
-    TASK_MESSAGE
+    TASK_MESSAGE,
+    TASK_COMPLETED_MESSAGE
 };
 
 class ReceiveServerSocket{ //Não seria ReceiveUAVSocket?
@@ -43,7 +44,17 @@ public:
             Message msg;
             memset(&msg, 0, sizeof(msg));
             recv(newSd, (Message*)&msg, sizeof(msg), 0);
-            cout << "[U" << msg.getDestination() << "] Mensagem recebida: " << msg.getMsg() << endl;
+
+            if(msg.getCode()){
+                cout << "[U" << msg.getDestination() << "] Atividade finalizada, codigo da mensagem: " << msg.getCode() << endl;
+            }else{
+                cout << "[U" << msg.getDestination() << "] Mensagem recebida: " << msg.getMsg() << endl;
+            }
+        }else if(typeMSG == TASK_COMPLETED_MESSAGE){
+            Message msg;
+            memset(&msg, 0, sizeof(msg));
+            recv(newSd, (Message*)&msg, sizeof(msg), 0);
+            cout << "[U" << msg.getDestination() << "] Atividade finalizada, codigo da mensagem: " << msg.getCode() << endl;
         }
         return true;
     }

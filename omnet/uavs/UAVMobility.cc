@@ -26,7 +26,7 @@ int pular = 0; //this variable forces terminate current "task" of uav
 //5 - Tarefa: pousar (idUAV, chao)
 int UAVLeader = -1;
 int UAVDestino = -1;
-int pontos[NUMUAVS];
+int points[NUMUAVS];
 
 using namespace power;
 
@@ -39,7 +39,7 @@ void UAVMobility::initialize(int stage) {
     uav.setID(getParentModule()->getIndex());
     for (int i = 0; i < NUMUAVS; i++) {
         itera[i] = -1;
-        pontos[NUMUAVS] = 0;
+        points[NUMUAVS] = 0;
     }
 
     if (stage == INITSTAGE_LOCAL) {
@@ -109,29 +109,44 @@ void UAVMobility::rescueData(){
 void UAVMobility::executeTask(int j){
     if(base[uav.getID()][j]->type == FLY_AROUND){
         Coord c;
-        if(pontos[uav.getID()] == 0 || pontos[uav.getID()] == 4){
+        if(points[uav.getID()] == 0 || points[uav.getID()] == 4){
             c = this->CoordinateToCoord(base[uav.getID()][j]->target);
             c.setX(c.getX()-50);
             c.setY(c.getY()-50);
-        }else if(pontos[uav.getID()] == 1){
+        }else if(points[uav.getID()] == 1){
             c = this->CoordinateToCoord(base[uav.getID()][j]->target);
             c.setX(c.getX()+50);
             c.setY(c.getY()-50);
-        }else if(pontos[uav.getID()] == 2){
+        }else if(points[uav.getID()] == 2){
             c = this->CoordinateToCoord(base[uav.getID()][j]->target);
             c.setX(c.getX()+50);
             c.setY(c.getY()+50);
-        }else if(pontos[uav.getID()] == 3){
+        }else if(points[uav.getID()] == 3){
             c = this->CoordinateToCoord(base[uav.getID()][j]->target);
             c.setX(c.getX()-50);
             c.setY(c.getY()+50);
-        }else if(pontos[uav.getID()] == 5){
-            c = this->CoordinateToCoord(base[uav.getID()][j]->target);
+        }else if(points[uav.getID()] == 5){
+            //Finalizando task
             base[uav.getID()][j]->setComplete();
+
+            //Próxima coorde
+            c = this->CoordinateToCoord(base[uav.getID()][j]->target);
+
+            //enviando mensagem de finalizada
+            this->uav.setIdSocket(uavs[uav.getID()].getSocketCode());
+            UAVCommunicationSocket u;
+            u.setSocketCode(this->uav.getIdSocket());
+            u.setSelfID(this->uav.getID());
+            Message msg;
+            msg.setCode(273);
+            msg.setSource(u.getSelfID());
+            u.dispatchMessage(msg);
+
+            //next task
             itera[uav.getID()]++;
         }
         targetPosition = c;
-        pontos[uav.getID()] = (pontos[uav.getID()] < 5) ? pontos[uav.getID()]+1 : 0;
+        points[uav.getID()] = (points[uav.getID()] < 5) ? points[uav.getID()]+1 : 0;
     }else{
         targetPosition = this->CoordinateToCoord(base[uav.getID()][j]->target);
         itera[uav.getID()]++;
