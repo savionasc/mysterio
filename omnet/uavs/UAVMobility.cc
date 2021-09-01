@@ -36,7 +36,7 @@ UAVMobility::UAVMobility(){ nextMoveIsWait = false; }
 
 void UAVMobility::initialize(int stage) {
     LineSegmentsMobilityBase::initialize(stage);
-    selfID = getParentModule()->getIndex();
+    uav.setID(getParentModule()->getIndex());
     for (int i = 0; i < NUMUAVS; i++) {
         itera[i] = -1;
         pontos[NUMUAVS] = 0;
@@ -46,7 +46,7 @@ void UAVMobility::initialize(int stage) {
         waitTimeParameter = &par("waitTime");
         hasWaitTime = waitTimeParameter->isExpression() || waitTimeParameter->doubleValue() != 0;
         speedParameter = &par("speed");
-        velocidade[selfID] = par("speed").operator double();
+        velocidade[uav.getID()] = par("speed").operator double();
         stationary = !speedParameter->isExpression() && speedParameter->doubleValue() == 0;
     }
     this->rescueData();
@@ -67,9 +67,8 @@ void UAVMobility::setTargetPosition() {
         nextChange = simTime() + waitTime;
         nextMoveIsWait = false;
     } else {
-        if(base[selfID].size() != itera[selfID] && base[selfID].size() > 0){
-            cout << "ATRIBUIU!!!" << endl;
-            executeTask(base[selfID].size()-1);
+        if(base[uav.getID()].size() != itera[uav.getID()] && base[uav.getID()].size() > 0){ //if there are tasks not performed
+            executeTask(base[uav.getID()].size()-1);
         }else{
             targetPosition = getRandomPosition();
         }
@@ -101,40 +100,41 @@ J UAVMobility::pegarBateria(int idUAV){
 }
 
 void UAVMobility::rescueData(){
-    position[selfID] = lastPosition;
-    velocidade[selfID] = speedParameter->doubleValue();
-    bateria[selfID] = std::stof(pegarBateria(selfID).str());
-    tempoVoo[selfID] = simTime().dbl();
+    position[uav.getID()] = lastPosition;
+    velocidade[uav.getID()] = speedParameter->doubleValue();
+    bateria[uav.getID()] = std::stof(pegarBateria(uav.getID()).str());
+    tempoVoo[uav.getID()] = simTime().dbl();
 }
 
 void UAVMobility::executeTask(int j){
-    if(base[selfID][j]->type == FLY_AROUND){
+    if(base[uav.getID()][j]->type == FLY_AROUND){
         Coord c;
-        if(pontos[selfID] == 0 || pontos[selfID] == 4){
-            c = this->CoordinateToCoord(base[selfID][j]->target);
+        if(pontos[uav.getID()] == 0 || pontos[uav.getID()] == 4){
+            c = this->CoordinateToCoord(base[uav.getID()][j]->target);
             c.setX(c.getX()-50);
             c.setY(c.getY()-50);
-        }else if(pontos[selfID] == 1){
-            c = this->CoordinateToCoord(base[selfID][j]->target);
+        }else if(pontos[uav.getID()] == 1){
+            c = this->CoordinateToCoord(base[uav.getID()][j]->target);
             c.setX(c.getX()+50);
             c.setY(c.getY()-50);
-        }else if(pontos[selfID] == 2){
-            c = this->CoordinateToCoord(base[selfID][j]->target);
+        }else if(pontos[uav.getID()] == 2){
+            c = this->CoordinateToCoord(base[uav.getID()][j]->target);
             c.setX(c.getX()+50);
             c.setY(c.getY()+50);
-        }else if(pontos[selfID] == 3){
-            c = this->CoordinateToCoord(base[selfID][j]->target);
+        }else if(pontos[uav.getID()] == 3){
+            c = this->CoordinateToCoord(base[uav.getID()][j]->target);
             c.setX(c.getX()-50);
             c.setY(c.getY()+50);
-        }else if(pontos[selfID] == 5){
-            c = this->CoordinateToCoord(base[selfID][j]->target);
-            itera[selfID]++;
+        }else if(pontos[uav.getID()] == 5){
+            c = this->CoordinateToCoord(base[uav.getID()][j]->target);
+            base[uav.getID()][j]->setComplete();
+            itera[uav.getID()]++;
         }
         targetPosition = c;
-        pontos[selfID] = (pontos[selfID] < 5) ? pontos[selfID]+1 : 0;
+        pontos[uav.getID()] = (pontos[uav.getID()] < 5) ? pontos[uav.getID()]+1 : 0;
     }else{
-        targetPosition = this->CoordinateToCoord(base[selfID][j]->target);
-        itera[selfID]++;
+        targetPosition = this->CoordinateToCoord(base[uav.getID()][j]->target);
+        itera[uav.getID()]++;
     }
 }
 

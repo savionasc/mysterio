@@ -12,6 +12,8 @@ public:
     virtual ~UAV();
     virtual int getID();
     virtual void setID(int id);
+    virtual int getIdSocket();
+    virtual void setIdSocket(int id);
     virtual double getXAxis();
     virtual void setXAxis(double xAxis);
     virtual double getYAxis();
@@ -32,7 +34,8 @@ public:
     virtual void setFlightTime(int flightTime);
 
 protected:
-    int iD;
+    int idUAV;
+    int idSocket;
     int tempoDeVoo;
     double xAxis;
     double yAxis;

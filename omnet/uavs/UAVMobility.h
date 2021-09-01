@@ -24,6 +24,7 @@
 #include "inet/power/base/EpEnergyStorageBase.h"
 #include "inet/power/storage/SimpleEpEnergyStorage.h"
 #include "../../src/utils/Coordinate.h"
+#include "../../src/utils/UAV.h"
 
 namespace inet {
 
@@ -67,7 +68,9 @@ class INET_API UAVMobility : public LineSegmentsMobilityBase
 
     J pegarBateria(int idUAV);
 
-    int selfID;
+    //int selfID;
+    UAV uav;
+
 
   public:
     UAVMobility();
