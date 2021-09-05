@@ -101,32 +101,37 @@ class SocketMessageReceive {
             }else if(!strcmp(msg.getMsg(), "decolar")){ //take off
                 for (int i = 0; i < NUMUAVS; i++) {
                     Coordinate currentP(100.0,100.0,100.0);
-                    UAV u(0);
+                    UAV u(i);
                     Task gotoc(u, currentP);
-                    base[i].push_back(&gotoc);
+                    base[i].push_back(gotoc);
                     int j = base[i].size()-1;
-                    base[i][j]->type = 10;
-                    base[i][j]->uav.setID(i);
-                    //itera[i]++;
-                    if(itera[i] < 0)
+                    base[i][j].type = 10;
+                    base[i][j].uav.setID(i);
+                    if(itera[i] < 0){
                         itera[i]++;
-                    cout << "lista["<<i<<"]: " << base[i].size()<< endl;
+                    }
+                    cout << "UAV["<<i<<"]-Tasks: " << base[i].size()<< endl;
                 }
 
             }else if(!strcmp(msg.getMsg(), "carro")){
                 int i = this->uav.getID();//idUAV;
-                //for (int i = 0; i < NUMUAVS; i++) {
                 Coordinate currentP(300.0,420.0,90.0);
-                UAV u(0);
+                UAV u(i);
                 Task gotoc(u, currentP);
-                base[i].push_back(&gotoc);
+                base[i].push_back(gotoc);
                 int j = base[i].size()-1;
-                base[i][j]->type = FLY_AROUND;
-                base[i][j]->uav.setID(i);
-                if(itera[i] < 0)
+                base[i][j].type = FLY_AROUND;
+                base[i][j].uav.setID(i);
+                if(itera[i] < 0){
                     itera[i]++;
-                cout << "lista["<<i<<"]: " << base[i].size()<< endl;
-                //}
+                }
+                cout << "UAV["<<i<<"]-Tasks: " << base[i].size()<< endl;
+            }else if(!strcmp(msg.getMsg(), "task")){
+                cout << "Atividade atual: " << itera[this->uav.getID()] << endl;
+            }else if(!strcmp(msg.getMsg(), "d")){
+                for (int i = 0; i < base[this->uav.getID()].size(); i++) {
+                    cout << "Status: " << base[0][i].status << endl;
+                }
             }else if(!strcmp(msg.getMsg(), "dar-volta")){
             }else if(!strcmp(msg.getMsg(), "retornar-base")){
             }else if(!strcmp(msg.getMsg(), "next")){
