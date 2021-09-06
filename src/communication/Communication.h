@@ -56,11 +56,48 @@ public:
         //Ver onde colocar o TaskManager
         //if task, adicionar no MissionPlanner (Singleton)
 
-        if(!strcmp(msg.getMsg(), "carro")){
+        if(!strcmp(msg.getMsg(), "task")){
             Singleton* singleton = Singleton::GetInstance("TASK");
             std::cout << singleton->value() << "\n";
             std::cout << "State: " << singleton->state() << "\n";
             singleton->SomeBusinessLogic();
+            UAV u(0);
+            std::cout << "Tarefas pro UAV0: " << singleton->numTasks(u) << "\n";
+        }
+
+        if(!strcmp(msg.getMsg(), "tasks")){
+            Singleton* singleton = Singleton::GetInstance("TASK");
+            std::cout << singleton->value() << "\n";
+            std::cout << "State: " << singleton->state() << "\n";
+            singleton->SomeBusinessLogic();
+            UAV u(0);
+            std::cout << "Tarefas pro UAV0: " << singleton->numTasks(u) << "\n";
+            for (int i = 0; i < singleton->numTasks(u); i++) {
+                cout << "Task: " << singleton->getTask(u, i).type << endl;
+            }
+        }
+
+        if(!strcmp(msg.getMsg(), "decolar")){ //take off
+            for (int i = 0; i < NUMUAVS; i++) {
+                Coordinate currentP(100.0,100.0,100.0);
+                UAV u(i);
+                Task gotoc(u, currentP);
+                gotoc.type = 10;
+                gotoc.uav.setID(i);
+                Singleton* singleton = Singleton::GetInstance("TASK");
+                singleton->addTask(gotoc);
+                cout << "UAV["<<u.getID()<<"]-Tasks: " << singleton->numTasks(u) << endl;
+            }
+
+        }else if(!strcmp(msg.getMsg(), "carro")){
+            Coordinate currentP(300.0,420.0,90.0);
+            UAV u(idUAV);
+            Task gotoc(u, currentP);
+            gotoc.type = FLY_AROUND;
+            gotoc.uav.setID(idUAV);
+            Singleton* singleton = Singleton::GetInstance("TASK");
+            singleton->addTask(gotoc);
+            cout << "UAV["<<u.getID()<<"]-Tasks: " << singleton->numTasks(u) << endl;
         }
 
         if(idUAV == -1){ //Broadcast

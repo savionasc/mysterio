@@ -22,14 +22,14 @@ class SocketMessageReceive {
             while(esperarMensagem(param)){ }
         }
 
-        bool esperarMensagem(int newSd){
+        bool esperarMensagem(int socket){
             //Aqui deve converter toda e qualquer mensagem e repassar pra this.OnMessageReceve
             Message msg;
             memset(&msg, 0, sizeof(msg));
-            recv(newSd, (Message*)&msg, sizeof(msg), 0);
+            recv(socket, (Message*)&msg, sizeof(msg), 0); //Mensagem de sinalização
             if(!strcmp(msg.getMsg(), "exit") || !strcmp(msg.getMsg(), "quit")){
                 std::cout << "UAV has quit the session" << std::endl;
-                close(newSd);
+                close(socket);
                 return false;
             }else if(!strcmp(msg.getMsg(), "location")){ //Mudar isso aqui e chamar o OnMessageReceve
                 std::cout << "[U" << this->uav.getID() << "] Respondendo status " << std::endl;
@@ -98,7 +98,9 @@ class SocketMessageReceive {
             }else if(!strcmp(msg.getMsg(), "stop")){
                 ativo[msg.getDestination()] = false;
                 cout << msg.getMsg() << ":" << msg.getDestination() << endl;
-            }else if(!strcmp(msg.getMsg(), "decolar")){ //take off
+            }else if(!strcmp(msg.getMsg(), "tarefa definida")){ //take off
+                //receber a tarefa...
+            }/*else if(!strcmp(msg.getMsg(), "decolar")){ //take off
                 for (int i = 0; i < NUMUAVS; i++) {
                     Coordinate currentP(100.0,100.0,100.0);
                     UAV u(i);
@@ -126,7 +128,7 @@ class SocketMessageReceive {
                     itera[i]++;
                 }
                 cout << "UAV["<<i<<"]-Tasks: " << base[i].size()<< endl;
-            }else if(!strcmp(msg.getMsg(), "task")){
+            }*/else if(!strcmp(msg.getMsg(), "task")){
                 cout << "Atividade atual: " << itera[this->uav.getID()] << endl;
             }else if(!strcmp(msg.getMsg(), "d")){
                 for (int i = 0; i < base[this->uav.getID()].size(); i++) {
