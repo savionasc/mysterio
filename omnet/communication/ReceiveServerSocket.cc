@@ -7,12 +7,6 @@
 #include "DroneStatusMessage.h"
 
 using namespace std;
-enum codemessage{
-    MESSAGE = 270,
-    STATUS_MESSAGE,
-    TASK_MESSAGE,
-    TASK_COMPLETED_MESSAGE
-};
 
 class ReceiveServerSocket{ //Não seria ReceiveUAVSocket?
 public:

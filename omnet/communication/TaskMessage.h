@@ -2,7 +2,6 @@
 #define MYSTERIO_OMNET_COMMUNICATION_TASKMESSAGE_H_
 #include "../../src/utils/Message.h"
 #include "../../src/mission/Task.h"
-//#include "../status/DroneStatus.h"
 
 class TaskMessage : public Message{
 public:
@@ -22,6 +21,7 @@ public:
 
     virtual ~TaskMessage(){}
     Task task;
+    Coordinate c;
     char msg[1500];
 };
 #endif

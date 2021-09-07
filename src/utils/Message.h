@@ -4,6 +4,13 @@
 
 #include "../../omnet/status/DroneStatus.h"
 
+enum codemessages{
+    MESSAGE = 270,
+    STATUS_MESSAGE,
+    TASK_MESSAGE,
+    TASK_COMPLETED_MESSAGE
+};
+
 class Message {
 public:
     Message(){ }

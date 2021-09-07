@@ -83,30 +83,41 @@ public:
                 UAV u(i);
                 Task gotoc(u, currentP);
                 gotoc.type = 10;
-                gotoc.uav.setID(i);
+                gotoc.idUAV = i;
                 Singleton* singleton = Singleton::GetInstance("TASK");
                 singleton->addTask(gotoc);
                 cout << "UAV["<<u.getID()<<"]-Tasks: " << singleton->numTasks(u) << endl;
             }
 
         }else if(!strcmp(msg.getMsg(), "carro")){
+            cout << "CARRO" << endl;
             Coordinate currentP(300.0,420.0,90.0);
             UAV u(idUAV);
             Task gotoc(u, currentP);
             gotoc.type = FLY_AROUND;
-            gotoc.uav.setID(idUAV);
+            gotoc.idUAV = idUAV;
             Singleton* singleton = Singleton::GetInstance("TASK");
             singleton->addTask(gotoc);
             cout << "UAV["<<u.getID()<<"]-Tasks: " << singleton->numTasks(u) << endl;
-        }
 
-        if(idUAV == -1){ //Broadcast
+            //Enviando tarefa
+            int codeMessage = TASK_MESSAGE;
+            //send(conexoes[idUAV], (int*)&codeMessage, sizeof(codeMessage), 0);
+            TaskMessage taskMessage(msg.getMsg(), TASK_MESSAGE);
+            //taskMessage.task = gotoc;
+            taskMessage.c = singleton->getTask(u, 0).target;
+            taskMessage.task = singleton->getTask(u, 0);
+            thread enviar(SendServerSocket(), conexoes[idUAV], taskMessage);
+            enviar.detach();
+        }else if(idUAV == -1){ //Broadcast
+            cout << "BROADCAST" << endl;
             for (int i = 0; i <= ct; i++){
                 msg.setDestination(i);
                 thread enviar(SendServerSocket(), conexoes[i], msg);
                 enviar.detach();
             }
         }else{ //unicast
+            cout << "UNICAST" << endl;
             thread enviar(SendServerSocket(), conexoes[idUAV], msg);
             enviar.join();
         }

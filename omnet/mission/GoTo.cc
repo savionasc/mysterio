@@ -27,7 +27,7 @@ void GoTo::assignTask(){
 
 void GoTo::assignTask(UAV uav, Coordinate target){
     this->target = target;
-    this->uav = uav;
+    this->idUAV = uav.getID();
 }
 
 void GoTo::assignTask(UAV uav, Command command, int *args[]){

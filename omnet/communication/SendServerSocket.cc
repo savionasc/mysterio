@@ -1,6 +1,7 @@
 #include <sys/socket.h>
 #include <netinet/in.h>
 #include "../../src/utils/Message.h"
+#include "../../src/mission/Task.h"
 #include "../communication/TaskMessage.h"
 
 class SendServerSocket {
@@ -16,10 +17,15 @@ public:
     }
 
     bool enviar(int idUAVSocket, Message message){
+        int codeMessage = MESSAGE;
+        send(idUAVSocket, (int*)&codeMessage, sizeof(codeMessage), 0);
         send(idUAVSocket, (Message*)&message, sizeof(message), 0);
     }
 
     bool enviarTarefa(int idUAVSocket, TaskMessage message){
+        int codeMessage = TASK_MESSAGE;
+        send(idUAVSocket, (int*)&codeMessage, sizeof(codeMessage), 0);
+        cout << "Task: " << message.code << endl;
         send(idUAVSocket, (TaskMessage*)&message, sizeof(message), 0);
     }
 };

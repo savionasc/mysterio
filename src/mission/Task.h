@@ -16,7 +16,7 @@ class Task { //Goto, ComeBackBaseStation
 public:
     Task(){}
     Task(UAV uav, Coordinate targetPosition) {
-        this->uav = uav;
+        this->idUAV = uav.getID();
         this->target = targetPosition;
     }
     virtual ~Task(){}
@@ -36,10 +36,10 @@ public:
     //Talvez calculemos o progresso num futuro próximo...
     //Se for da missão é saber quantas tarefas foram cumpridas e quantas não foram
     //Se for da tarefa é saber quanto falta para chegar no destino
-    //int idUAV;
-    UAV uav;
+    int idUAV;
+    //UAV uav;
     int type;
-    Command cmd; //Criar uma lista/fila de comandos..
+    //Command cmd; //Criar uma lista/fila de comandos..
     int status = 0; //status{started, completed}
     Coordinate target;
     int repeat = 0; //TaskManager

@@ -7,11 +7,8 @@ using namespace std;
 
 class Command {
 public:
-    Command(){ this->instruction = "go"; /*this->v.push_back(cmd);*/}
-    virtual ~Command(){}
-
     int id = -1;
-    std::string instruction = "";
+    std::string instruction = "go";
     //Criar um toString no coordinate
     //Depois criar uma função que retorna coordinate recebendo uma string
     //Coordinate coord; defalt -1, -1, -1

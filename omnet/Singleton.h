@@ -32,7 +32,7 @@ public:
     }
     
     void addTask(Task t){
-        this->tasks[t.uav.getID()].push_back(t);
+        this->tasks[t.idUAV].push_back(t);
     }
 
     Task getTask(UAV u, int t){

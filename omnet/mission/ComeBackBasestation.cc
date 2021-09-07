@@ -10,5 +10,5 @@ void ComeBackBasestation::assignTask(){}
 
 void ComeBackBasestation::assignTask(UAV uav, Coordinate target){
     this->base = target;
-    this->uav = uav;
+    this->idUAV = uav.getID();
 }
