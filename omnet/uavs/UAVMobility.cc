@@ -76,16 +76,16 @@ void UAVMobility::setTargetPosition() {
                 UAVCommunicationSocket u;
                 u.setSocketCode(this->uav.getIdSocket());
                 u.setSelfID(this->uav.getID());
-                Message msg;
+                TaskMessage msg;
                 msg.setCode(273);
                 msg.setSource(u.getSelfID());
-                u.dispatchMessage(msg);
+                msg.task = base[uav.getID()][task];
+                u.dispatchTaskMessage(msg);
 
                 //next task
                 itera[uav.getID()]++;
 
             }else{
-                cout << "else " << itera[uav.getID()] << endl;
                 executeTask(task);
             }
         }else{
@@ -155,7 +155,7 @@ void UAVMobility::executeTask(int j){
             //Finalizando task
             base[uav.getID()][j].status = 2;
 
-            //Próxima coorde
+            //Próxima coordenada
             c = this->CoordinateToCoord(base[uav.getID()][j].target);
 
         }
@@ -163,7 +163,6 @@ void UAVMobility::executeTask(int j){
         points[uav.getID()] = (points[uav.getID()] < 5) ? points[uav.getID()]+1 : 0;
     }else{
         targetPosition = this->CoordinateToCoord(base[uav.getID()][j].target);
-        //base[uav.getID()][j]->status = 2;
         itera[uav.getID()]++;
     }
 }

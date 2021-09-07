@@ -19,6 +19,7 @@ protected:
     ~Singleton() {}
     std::string value_;
     int state_;
+    int taskID_;
 
 public:
     Singleton(Singleton &other) = delete;
@@ -32,15 +33,38 @@ public:
     }
     
     void addTask(Task t){
-        this->tasks[t.idUAV].push_back(t);
+        t.id = createNewTaskID();
+        this->tasks[t.uav.getID()].push_back(t);
     }
 
-    Task getTask(UAV u, int t){
+    Task getTaskByIndex(UAV u, int t){
         return this->tasks[u.getID()][t];
+    }
+
+    Task getTaskByID(UAV u, int id){
+        for (int i = 0; i < this->tasks[u.getID()].size(); i++) {
+            if(this->tasks[u.getID()][i].id == id){
+                return this->tasks[u.getID()][i];
+            }
+        }
+        Task t;
+        return t;
+    }
+
+    void setTask(Task t){
+        for (int i = 0; i < this->tasks[t.uav.getID()].size(); i++) {
+            if(this->tasks[t.uav.getID()][i].id == t.id ){
+                this->tasks[t.uav.getID()][i] = t;
+            }
+        }
     }
 
     int numTasks(UAV u){
         return this->tasks[u.getID()].size();
+    }
+
+    int createNewTaskID(){
+        return ++taskID_;
     }
 
     std::string value() const{
@@ -50,5 +74,7 @@ public:
     int state() const{
         return state_;
     }
+
+
 };
 #endif

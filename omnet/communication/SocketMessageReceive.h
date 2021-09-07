@@ -159,17 +159,17 @@ class SocketMessageReceive {
                 Task x = tmsg.task;
                 cout << "Mensagem recebida1: tipo: " << tmsg.code << endl;// << " idUAV: " << tmsg.uav.getID() << endl;
                 cout << "Mensagem recebida2: tipo: " << tmsg.c.getX() << " " << tmsg.c.getY() << " " << tmsg.c.getZ() << endl;
-                cout << "Mensagem recebida3: tipo: " << x.type << " idUAV: " << x.idUAV;
+                cout << "Mensagem recebida3: tipo: " << x.type << " idUAV: " << x.uav.getID();
                 cout << "Target: " << x.target.getX() << " " << x.target.getY() << " " << x.target.getZ() << endl;
                 /*TaskMessage tmsg2;
                 memset(&tmsg2, 0, sizeof(tmsg2));
                 recv(socket, (TaskMessage*)&tmsg2, sizeof(tmsg2), 0);
                 cout << "Mensagem recebida2: tipo: " << tmsg2.task.type << " idUAV: " << tmsg2.task.uav.getID() << endl;*/
-                int i = x.idUAV;;//idUAV;
+                int i = x.uav.getID();//idUAV;
                 base[i].push_back(x);
                 int j = base[i].size()-1;
                 base[i][j].type = x.type;
-                base[i][j].idUAV = x.idUAV;
+                base[i][j].uav.setID(x.uav.getID());
                 if(itera[i] < 0){
                     itera[i]++;
                 }

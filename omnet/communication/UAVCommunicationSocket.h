@@ -12,6 +12,7 @@
 #include "../../src/utils/Message.h"
 #include "../../omnet/communication/DroneStatusMessage.h"
 #include "../communication/DroneStatusMessage.h"
+#include "../communication/TaskMessage.h"
 #include "inet/common/geometry/common/Coord.h"
 #include "inet/power/base/EpEnergyStorageBase.h"
 #include "inet/power/storage/SimpleEpEnergyStorage.h"
@@ -36,6 +37,7 @@ class UAVCommunicationSocket : public UAVCommunication {
 public:
     //UAVCommunication
     void connectBase();
+    void dispatchTaskMessage(TaskMessage msg);
     void dispatchStatusMessage(DroneStatusMessage msg);
     void dispatchMessage(Message msg); //Aqui ele deve enviar mensagem pro Communication
     void disconnectBase();

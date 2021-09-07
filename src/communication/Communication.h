@@ -73,7 +73,9 @@ public:
             UAV u(0);
             std::cout << "Tarefas pro UAV0: " << singleton->numTasks(u) << "\n";
             for (int i = 0; i < singleton->numTasks(u); i++) {
-                cout << "Task: " << singleton->getTask(u, i).type << endl;
+                cout << "Task: " << singleton->getTaskByIndex(u, i).type << endl;
+                cout << "Status da tarefa: " << singleton->getTaskByIndex(u, i).status;
+                cout << "ID da tarefa: " << singleton->getTaskByIndex(u, i).id << endl;
             }
         }
 
@@ -83,7 +85,7 @@ public:
                 UAV u(i);
                 Task gotoc(u, currentP);
                 gotoc.type = 10;
-                gotoc.idUAV = i;
+                gotoc.uav.setID(i);
                 Singleton* singleton = Singleton::GetInstance("TASK");
                 singleton->addTask(gotoc);
                 cout << "UAV["<<u.getID()<<"]-Tasks: " << singleton->numTasks(u) << endl;
@@ -95,18 +97,17 @@ public:
             UAV u(idUAV);
             Task gotoc(u, currentP);
             gotoc.type = FLY_AROUND;
-            gotoc.idUAV = idUAV;
+            gotoc.uav = u;
             Singleton* singleton = Singleton::GetInstance("TASK");
             singleton->addTask(gotoc);
             cout << "UAV["<<u.getID()<<"]-Tasks: " << singleton->numTasks(u) << endl;
 
             //Enviando tarefa
             int codeMessage = TASK_MESSAGE;
-            //send(conexoes[idUAV], (int*)&codeMessage, sizeof(codeMessage), 0);
             TaskMessage taskMessage(msg.getMsg(), TASK_MESSAGE);
-            //taskMessage.task = gotoc;
-            taskMessage.c = singleton->getTask(u, 0).target;
-            taskMessage.task = singleton->getTask(u, 0);
+            taskMessage.c = singleton->getTaskByIndex(u, singleton->numTasks(u)-1).target;
+            taskMessage.task = singleton->getTaskByIndex(u, singleton->numTasks(u)-1);
+            cout << "Criando tarefa com id: " << taskMessage.task.id << endl;
             thread enviar(SendServerSocket(), conexoes[idUAV], taskMessage);
             enviar.detach();
         }else if(idUAV == -1){ //Broadcast

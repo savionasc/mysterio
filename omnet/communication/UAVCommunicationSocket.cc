@@ -9,6 +9,12 @@ using namespace std;
 
 namespace mysterio {
 
+void UAVCommunicationSocket::dispatchTaskMessage(TaskMessage msg){
+    int codeMessage = TASK_MESSAGE;
+    send(this->getSocketCode(), (int*)&codeMessage, sizeof(codeMessage), 0);
+    send(this->getSocketCode(), (TaskMessage*)&msg, sizeof(msg), 0);
+}
+
 void UAVCommunicationSocket::dispatchStatusMessage(DroneStatusMessage msg){
     //DroneStatusMessage* s = dynamic_cast<DroneStatusMessage*>(&msg);
     int codeMessage = STATUS_MESSAGE;

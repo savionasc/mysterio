@@ -5,6 +5,8 @@
 #include "../status/MysStatus.h"
 #include "../../src/utils/Message.h"
 #include "DroneStatusMessage.h"
+#include "TaskMessage.h"
+#include "../Singleton.h"
 
 using namespace std;
 
@@ -44,6 +46,16 @@ public:
             }else{
                 cout << "[U" << msg.getDestination() << "] Mensagem recebida: " << msg.getMsg() << endl;
             }
+        }else if(typeMSG == TASK_MESSAGE){
+            TaskMessage msg;
+            memset(&msg, 0, sizeof(msg));
+            recv(newSd, (TaskMessage*)&msg, sizeof(msg), 0);
+            cout << "Tarefa recebida - Code Message: " << msg.code;
+            cout << " Status: " << msg.task.status << " ID da tarefa: " << msg.task.id << endl;
+            cout << "Finalizada? " << msg.task.isComplete() << endl;
+            cout << "UAV " << msg.task.uav.getID() << endl;
+            Singleton* singleton = Singleton::GetInstance("TASK");
+            singleton->setTask(msg.task);
         }else if(typeMSG == TASK_COMPLETED_MESSAGE){
             Message msg;
             memset(&msg, 0, sizeof(msg));
