@@ -2,11 +2,12 @@
 #include <sys/socket.h>
 #include <netinet/in.h>
 #include <string.h>
+
+#include "../../src/mission/MissionPlanner.h"
 #include "../status/MysStatus.h"
 #include "../../src/utils/Message.h"
 #include "DroneStatusMessage.h"
 #include "TaskMessage.h"
-#include "../Singleton.h"
 
 using namespace std;
 
@@ -54,7 +55,7 @@ public:
             cout << " Status: " << msg.task.status << " ID da tarefa: " << msg.task.id << endl;
             cout << "Finalizada? " << msg.task.isComplete() << endl;
             cout << "UAV " << msg.task.uav.getID() << endl;
-            Singleton* singleton = Singleton::GetInstance("TASK");
+            MissionPlanner* singleton = MissionPlanner::GetInstance("TASK");
             singleton->setTask(msg.task);
         }else if(typeMSG == TASK_COMPLETED_MESSAGE){
             Message msg;

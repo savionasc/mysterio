@@ -1,14 +1,11 @@
 #include "../scenarios/Example1Communication.h"
 #include <iostream>
 #include "../communication/CommunicationSocket.h"
-#include "../Singleton.h"
+#include "../../src/mission/MissionPlanner.h"
 
 using namespace std;
 
 int main(int argc, char const *argv[]){
-    //Singleton* singleton = Singleton::GetInstance("BAR");
-    //std::cout << singleton->value() << "\n";
-
 	//This number identification will be important to set database execution
 	int numExecution = 1; 
 

@@ -5,7 +5,7 @@
 #include "../../omnet/communication/DroneStatusMessage.h"
 #include "../../omnet/communication/ConnServerSocket.cc"
 #include <thread>
-#include "../../omnet/Singleton.h"
+#include "../mission/MissionPlanner.h"
 
 #define NUMUAVS 2
 #define PORT    1111
@@ -57,19 +57,15 @@ public:
         //if task, adicionar no MissionPlanner (Singleton)
 
         if(!strcmp(msg.getMsg(), "task")){
-            Singleton* singleton = Singleton::GetInstance("TASK");
+            MissionPlanner* singleton = MissionPlanner::GetInstance("TASK");
             std::cout << singleton->value() << "\n";
-            std::cout << "State: " << singleton->state() << "\n";
-            singleton->SomeBusinessLogic();
             UAV u(0);
             std::cout << "Tarefas pro UAV0: " << singleton->numTasks(u) << "\n";
         }
 
         if(!strcmp(msg.getMsg(), "tasks")){
-            Singleton* singleton = Singleton::GetInstance("TASK");
+            MissionPlanner* singleton = MissionPlanner::GetInstance("TASK");
             std::cout << singleton->value() << "\n";
-            std::cout << "State: " << singleton->state() << "\n";
-            singleton->SomeBusinessLogic();
             UAV u(0);
             std::cout << "Tarefas pro UAV0: " << singleton->numTasks(u) << "\n";
             for (int i = 0; i < singleton->numTasks(u); i++) {
@@ -86,7 +82,7 @@ public:
                 Task gotoc(u, currentP);
                 gotoc.type = 10;
                 gotoc.uav.setID(i);
-                Singleton* singleton = Singleton::GetInstance("TASK");
+                MissionPlanner* singleton = MissionPlanner::GetInstance("TASK");
                 singleton->addTask(gotoc);
                 cout << "UAV["<<u.getID()<<"]-Tasks: " << singleton->numTasks(u) << endl;
             }
@@ -98,7 +94,7 @@ public:
             Task gotoc(u, currentP);
             gotoc.type = FLY_AROUND;
             gotoc.uav = u;
-            Singleton* singleton = Singleton::GetInstance("TASK");
+            MissionPlanner* singleton = MissionPlanner::GetInstance("TASK");
             singleton->addTask(gotoc);
             cout << "UAV["<<u.getID()<<"]-Tasks: " << singleton->numTasks(u) << endl;
 
