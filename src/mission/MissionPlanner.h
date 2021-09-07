@@ -70,6 +70,9 @@ public:
         return taskID_;
     }
 
+    std::vector<Task> taskList(UAV u) const{
+        return tasks[u.getID()];
+    }
 
 };
 #endif

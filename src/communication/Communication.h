@@ -6,6 +6,7 @@
 #include "../../omnet/communication/ConnServerSocket.cc"
 #include <thread>
 #include "../mission/MissionPlanner.h"
+#include "../taskmanager/TaskManager.h"
 
 #define NUMUAVS 2
 #define PORT    1111
@@ -132,6 +133,9 @@ public:
                 std::cout << "[C] Digite um UAV para receber:" << std::endl;
                 int id;
                 std::cin >> id;
+                TaskManager t;
+                UAV u(id);
+                cout << "Tarefas desse UAV: " << t.getNumTasks(u) << endl;
                 std::cout << "[C] Digite a mensagem:" << std::endl;
                 char m[1500];
                 std::cin >> m;

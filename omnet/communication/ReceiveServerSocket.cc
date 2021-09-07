@@ -55,8 +55,8 @@ public:
             cout << " Status: " << msg.task.status << " ID da tarefa: " << msg.task.id << endl;
             cout << "Finalizada? " << msg.task.isComplete() << endl;
             cout << "UAV " << msg.task.uav.getID() << endl;
-            MissionPlanner* singleton = MissionPlanner::GetInstance("TASK");
-            singleton->setTask(msg.task);
+            MissionPlanner* planner = MissionPlanner::GetInstance("TASK");
+            planner->setTask(msg.task);
         }else if(typeMSG == TASK_COMPLETED_MESSAGE){
             Message msg;
             memset(&msg, 0, sizeof(msg));
