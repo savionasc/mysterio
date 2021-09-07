@@ -3,7 +3,8 @@
 #include <netinet/in.h>
 #include <string.h>
 
-#include "../../src/mission/MissionPlanner.h"
+//#include "../../src/mission/MissionPlanner.h"
+#include "../../src/taskmanager/TaskManager.h"
 #include "../status/MysStatus.h"
 #include "../../src/utils/Message.h"
 #include "DroneStatusMessage.h"
@@ -55,8 +56,8 @@ public:
             cout << " Status: " << msg.task.status << " ID da tarefa: " << msg.task.id << endl;
             cout << "Finalizada? " << msg.task.isComplete() << endl;
             cout << "UAV " << msg.task.uav.getID() << endl;
-            MissionPlanner* planner = MissionPlanner::GetInstance("TASK");
-            planner->setTask(msg.task);
+            TaskManager t;
+            t.setTask(msg.task);
         }else if(typeMSG == TASK_COMPLETED_MESSAGE){
             Message msg;
             memset(&msg, 0, sizeof(msg));

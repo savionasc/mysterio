@@ -36,6 +36,21 @@ class SocketMessageReceive {
                     std::cout << "UAV has quit the session" << std::endl;
                     close(socket);
                     return false;
+
+                    //IMPORTANTE
+
+                    //POR MOTIVOS DE ORGANIZAÇÃO, ENVIAR DO SOCKET PARA UMA CLASSE
+                    //O SOCKET SÓ DEVE TRATAR DE SOCKET E COMUNICAÇÃO
+                    //A CLASSE QUE TRATA O QUE O FRAMEWORK QUER E DEVOLVE POR DISPATCH
+
+                    //Daqui pra baixo enviar para o UAVCommunicationSocket
+                    //Aí no OnMessageReceve ele trata tudo e fica mais organizado
+
+                    //UAVCommunicationSocket u;
+                    //u.OnMessageReceive(msg);
+                    //IMPORTANTE
+
+
                 }else if(!strcmp(msg.getMsg(), "location")){ //Mudar isso aqui e chamar o OnMessageReceve
                     std::cout << "[U" << this->uav.getID() << "] Respondendo status " << std::endl;
                     Coord coor = position[this->uav.getID()];

@@ -27,9 +27,10 @@ public:
 
     static MissionPlanner *GetInstance(const std::string& value);
     
-    void addTask(Task t){
+    Task addTask(Task t){
         t.id = createNewTaskID();
         this->tasks[t.uav.getID()].push_back(t);
+        return t;
     }
 
     Task getTaskByIndex(UAV u, int t){
@@ -54,7 +55,7 @@ public:
         }
     }
 
-    int numTasks(UAV u){
+    int numTasks(UAV u){ //Já feito
         return this->tasks[u.getID()].size();
     }
 
@@ -66,7 +67,7 @@ public:
         return value_;
     } 
 
-    int lastTaskID() const{
+    int taskID() const{
         return taskID_;
     }
 
