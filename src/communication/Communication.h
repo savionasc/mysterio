@@ -135,6 +135,27 @@ public:
             while(ct == -1){ //waiting for the first UAV
 
             }
+            //É aqui que seto informações pós registro dos UAVs...
+
+            /*cout << "CARRO" << endl;
+            Coordinate currentP(300.0,420.0,90.0);
+            UAV u(0);
+            Task gotoc(u, currentP);
+            gotoc.type = FLY_AROUND;
+            gotoc.uav = u;
+            TaskManager t;
+            t.addTask(gotoc);
+            cout << "UAV["<<u.getID()<<"]-Tasks: " << t.getNumTasks(u) << endl;
+
+            //Enviando tarefa
+            int codeMessage = TASK_MESSAGE;
+            TaskMessage taskMessage("AAAA", TASK_MESSAGE);
+            taskMessage.c = t.getTaskByIndex(u, t.getNumTasks(u)-1).target;
+            taskMessage.task = t.getTaskByIndex(u, t.getNumTasks(u)-1);
+            cout << "Criando tarefa com id: " << taskMessage.task.id << endl;
+            this->sendTaskMessageToUAV(conexoes[0], taskMessage);/*
+            //Antes desse loop
+
             while(true){
                 std::cout << "[C] Digite um UAV para receber:" << std::endl;
                 int id;
