@@ -5,11 +5,12 @@
 #include "Command.h"
 //States
 #define STARTED 1
-#define COMPLETED 2
+#define COMPLETED 2 //Colocar perto de completar...
 //Types
 #define GOTO 80
 #define COMEBACK_BASESTATION 81
 #define FLY_AROUND 82
+#define FLY_AROUND_SQUARE 83
 
 class Task { //Goto, ComeBackBaseStation
 

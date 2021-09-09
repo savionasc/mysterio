@@ -63,6 +63,8 @@ class INET_API UAVMobility : public LineSegmentsMobilityBase
     void rescueData();
 
     void executeTask(int j);
+    Coord flyAround(int j);
+    Coord flyAroundSquare(int j);
 
     void stop();
 

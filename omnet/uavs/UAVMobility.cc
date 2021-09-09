@@ -27,7 +27,7 @@ int pular = 0; //this variable forces terminate current "task" of uav
 //5 - Tarefa: pousar (idUAV, chao)
 int UAVLeader = -1;
 int UAVDestino = -1;
-int points[NUMUAVS];
+int waypoints[NUMUAVS];
 
 using namespace power;
 
@@ -40,7 +40,7 @@ void UAVMobility::initialize(int stage) {
     uav.setID(getParentModule()->getIndex());
     for (int i = 0; i < NUMUAVS; i++) {
         itera[i] = -1;
-        points[NUMUAVS] = 0;
+        waypoints[NUMUAVS] = 0;
     }
 
     if (stage == INITSTAGE_LOCAL) {
@@ -132,35 +132,67 @@ void UAVMobility::rescueData(){
     tempoVoo[uav.getID()] = simTime().dbl();
 }
 
+Coord UAVMobility::flyAround(int j){
+    Coord c;
+    if(waypoints[uav.getID()] == 0 || waypoints[uav.getID()] == 4){
+        c = this->CoordinateToCoord(base[uav.getID()][j].target);
+        c.setX(c.getX()-50);
+        c.setY(c.getY()-50);
+    }else if(waypoints[uav.getID()] == 1){
+        c = this->CoordinateToCoord(base[uav.getID()][j].target);
+        c.setX(c.getX()+50);
+        c.setY(c.getY()-50);
+    }else if(waypoints[uav.getID()] == 2){
+        c = this->CoordinateToCoord(base[uav.getID()][j].target);
+        c.setX(c.getX()+50);
+        c.setY(c.getY()+50);
+    }else if(waypoints[uav.getID()] == 3){
+        c = this->CoordinateToCoord(base[uav.getID()][j].target);
+        c.setX(c.getX()-50);
+        c.setY(c.getY()+50);
+    }else if(waypoints[uav.getID()] == 5){
+        //Finalizando task
+        base[uav.getID()][j].status = 2;
+
+        //Próxima coordenada
+        c = this->CoordinateToCoord(base[uav.getID()][j].target);
+
+    }
+    waypoints[uav.getID()] = (waypoints[uav.getID()] < 5) ? waypoints[uav.getID()]+1 : 0;
+    return c;
+}
+
+Coord UAVMobility::flyAroundSquare(int j){
+    Coord c;
+    if(waypoints[uav.getID()] == 0 || waypoints[uav.getID()] == 4){
+        //Finalizando task
+        if(waypoints[uav.getID()] == 4)
+            base[uav.getID()][j].status = 2;
+        c = this->CoordinateToCoord(base[uav.getID()][j].target);
+        c.setX(c.getX()-400);
+        c.setY(c.getY()-400);
+    }else if(waypoints[uav.getID()] == 1){
+        c = this->CoordinateToCoord(base[uav.getID()][j].target);
+        c.setX(c.getX()+400);
+        c.setY(c.getY()-400);
+    }else if(waypoints[uav.getID()] == 2){
+        c = this->CoordinateToCoord(base[uav.getID()][j].target);
+        c.setX(c.getX()+400);
+        c.setY(c.getY()+400);
+    }else if(waypoints[uav.getID()] == 3){
+        c = this->CoordinateToCoord(base[uav.getID()][j].target);
+        c.setX(c.getX()-400);
+        c.setY(c.getY()+400);
+    }
+    waypoints[uav.getID()] = (waypoints[uav.getID()] < 4) ? waypoints[uav.getID()]+1 : 0;
+    return c;
+}
+
 void UAVMobility::executeTask(int j){
     if(base[uav.getID()][j].type == FLY_AROUND){
-        Coord c;
-        if(points[uav.getID()] == 0 || points[uav.getID()] == 4){
-            c = this->CoordinateToCoord(base[uav.getID()][j].target);
-            c.setX(c.getX()-50);
-            c.setY(c.getY()-50);
-        }else if(points[uav.getID()] == 1){
-            c = this->CoordinateToCoord(base[uav.getID()][j].target);
-            c.setX(c.getX()+50);
-            c.setY(c.getY()-50);
-        }else if(points[uav.getID()] == 2){
-            c = this->CoordinateToCoord(base[uav.getID()][j].target);
-            c.setX(c.getX()+50);
-            c.setY(c.getY()+50);
-        }else if(points[uav.getID()] == 3){
-            c = this->CoordinateToCoord(base[uav.getID()][j].target);
-            c.setX(c.getX()-50);
-            c.setY(c.getY()+50);
-        }else if(points[uav.getID()] == 5){
-            //Finalizando task
-            base[uav.getID()][j].status = 2;
-
-            //Próxima coordenada
-            c = this->CoordinateToCoord(base[uav.getID()][j].target);
-
-        }
-        targetPosition = c;
-        points[uav.getID()] = (points[uav.getID()] < 5) ? points[uav.getID()]+1 : 0;
+        targetPosition = flyAround(j);
+    }else if (base[uav.getID()][j].type == FLY_AROUND_SQUARE){
+        targetPosition = flyAroundSquare(j);
     }else{
         targetPosition = this->CoordinateToCoord(base[uav.getID()][j].target);
         itera[uav.getID()]++;
