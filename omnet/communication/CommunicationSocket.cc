@@ -6,7 +6,6 @@
 using namespace std;
 //Enviar mensagens Unicast, Broadcast e Multicast
 
-//int conexoes[NUMUAVS];
 int ct = -1; //Passar o Array pro Framework
 
 int CommunicationSocket::configureSocketServer(int port){
@@ -18,9 +17,9 @@ void CommunicationSocket::sendMessageToUAV(int id, Message msg){
 }
 
 //status->subscribe(newUAV);?
-void CommunicationSocket::listenSocket(){
+/*void CommunicationSocket::listenSocket(){
     Communication::listenSocket();
-}
+}*/
 
 int* CommunicationSocket::getActiveConnections(){
     return nullptr;//Communication::conexoes; //conexoes;

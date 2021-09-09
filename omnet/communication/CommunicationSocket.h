@@ -7,6 +7,8 @@
 #include "../../src/utils/Message.h"
 #include "../status/MysStatus.h"
 
+extern int conexoes[NUMUAVS];
+
 // componente de comunicação do framework com os drones
 class CommunicationSocket : public Communication {
 public:
@@ -15,12 +17,12 @@ public:
     void ReceiveMessageFromUAV(Communicable *source, Communicable *dest, Message msg);
 
     int* getActiveConnections(); //Criar uma classe Conexões para guardar o ID do UAV e o Socket
-    void listenSocket();
+    //void listenSocket();
     void sendMessageToUAV(int id, Message msg);
 
     int configureSocketServer(int port);
 
-    int conexoes[NUMUAVS];
+    //int conexoes[NUMUAVS];
 };
 
 #endif

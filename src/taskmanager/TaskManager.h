@@ -3,13 +3,14 @@
 #include <vector>
 #include "../mission/MissionPlanner.h"
 #include "../../omnet/communication/TaskMessage.h"
+//#include "../../omnet/communication/CommunicationSocket.h"
 
 //
 //#include "../../omnet/communication/SendServerSocket.h"
 //#include "../../omnet/communication/ConnServerSocket.cc"
 //#include <thread>
 
-#define NUMUAVS 2
+//#define NUMUAVS 2
 
 //extern int conn[NUMUAVS];
 
@@ -34,7 +35,7 @@ public:
 
         //Falta só enviar pro Drone...
 
-        //Communication c;
+        //CommunicationSocket c;
         //c.sendMessageToUAV(u.getID(), msg)
         //c.sendTaskMessageToUAVID(u.getID(), tmsg);
     }

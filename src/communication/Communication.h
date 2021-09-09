@@ -5,17 +5,17 @@
 #include "../../omnet/communication/DroneStatusMessage.h"
 #include "../../omnet/communication/ConnServerSocket.cc"
 #include <thread>
-#include "../taskmanager/TaskManager.h"
-
-//extern int conn[2];
+//#include "../taskmanager/TaskManager.h"
 #define NUMUAVS 2
-#define PORT    1111
+#define PORT 1111
+
+extern int conexoes[NUMUAVS];
 
 // Componente de comunicação do framework com Classes do tipo Communicable
 class Communication {
 public:
-    int conexoes[NUMUAVS]; //Passar o Array pro Framework
-public:
+//    int conexoes[NUMUAVS]; //Passar o Array pro Framework
+//public:
     //ReceiveMessageFromUAV or Route
     //Antigo sendMessage
     virtual void ReceiveMessageFromUAV(Communicable *source, Communicable *dest, Message msg) = 0;
@@ -63,57 +63,7 @@ public:
         //Ver onde colocar o TaskManager
         //if task, adicionar no MissionPlanner (Singleton)
 
-        if(!strcmp(msg.getMsg(), "task")){
-            TaskManager t;
-            UAV u(0);
-            std::cout << "Tarefas pro UAV0: " << t.getNumTasks(u) << "\n";
-        }
-
-        if(!strcmp(msg.getMsg(), "tasks")){
-            TaskManager t;
-            UAV u(0);
-            std::cout << "Tarefas pro UAV0: " << t.getNumTasks(u) << "\n";
-            vector<Task> ts = t.getTaskList(u);
-            for (int i = 0; i < t.getNumTasks(u); i++) {
-                cout << "Task: " << ts[i].type << endl;
-                cout << "Status da tarefa: " << ts[i].status;
-                cout << "ID da tarefa: " << ts[i].id << endl;
-            }
-        }
-
-        if(!strcmp(msg.getMsg(), "decolar")){ //take off
-            for (int i = 0; i < NUMUAVS; i++) {
-                Coordinate currentP(100.0,100.0,100.0);
-                UAV u(i);
-                Task gotoc(u, currentP);
-                gotoc.type = 10;
-                gotoc.uav.setID(i);
-                TaskManager t;
-                t.addTask(gotoc);
-                cout << "UAV["<<u.getID()<<"]-Tasks: " << t.getNumTasks(u) << endl;
-            }
-
-        }else if(!strcmp(msg.getMsg(), "carro")){
-            cout << "CARRO" << endl;
-            Coordinate currentP(300.0,420.0,90.0);
-            UAV u(idUAV);
-            Task gotoc(u, currentP);
-            gotoc.type = FLY_AROUND;
-            gotoc.uav = u;
-            TaskManager t;
-            t.addTask(gotoc);
-            cout << "UAV["<<u.getID()<<"]-Tasks: " << t.getNumTasks(u) << endl;
-
-            //Enviando tarefa
-            int codeMessage = TASK_MESSAGE;
-            TaskMessage taskMessage(msg.getMsg(), TASK_MESSAGE);
-            taskMessage.c = t.getTaskByIndex(u, t.getNumTasks(u)-1).target;
-            taskMessage.task = t.getTaskByIndex(u, t.getNumTasks(u)-1);
-            cout << "Criando tarefa com id: " << taskMessage.task.id << endl;
-            this->sendTaskMessageToUAV(conexoes[idUAV], taskMessage);
-            //thread enviar(SendServerSocket(), conexoes[idUAV], taskMessage);
-            //enviar.detach();
-        }else if(idUAV == -1){ //Broadcast
+        if(idUAV == -1){ //Broadcast
             cout << "BROADCAST" << endl;
             for (int i = 0; i <= ct; i++){
                 msg.setDestination(i);
@@ -124,65 +74,6 @@ public:
             cout << "UNICAST" << endl;
             thread enviar(SendServerSocket(), conexoes[idUAV], msg);
             enviar.join();
-        }
-    }
-
-    virtual void listenSocket(){ //Here starts the server communication
-        int serverSd = configureSocketServer(PORT);
-        if(serverSd > 0){
-            thread conectar(ConnServerSocket(), serverSd, conexoes);
-            std::cout << "Waiting for a UAV to connect..." << std::endl;
-            while(ct == -1){ //waiting for the first UAV
-
-            }
-            //É aqui que seto informações pós registro dos UAVs...
-
-            /*cout << "CARRO" << endl;
-            Coordinate currentP(300.0,420.0,90.0);
-            UAV u(0);
-            Task gotoc(u, currentP);
-            gotoc.type = FLY_AROUND;
-            gotoc.uav = u;
-            TaskManager t;
-            t.addTask(gotoc);
-            cout << "UAV["<<u.getID()<<"]-Tasks: " << t.getNumTasks(u) << endl;
-
-            //Enviando tarefa
-            int codeMessage = TASK_MESSAGE;
-            TaskMessage taskMessage("AAAA", TASK_MESSAGE);
-            taskMessage.c = t.getTaskByIndex(u, t.getNumTasks(u)-1).target;
-            taskMessage.task = t.getTaskByIndex(u, t.getNumTasks(u)-1);
-            cout << "Criando tarefa com id: " << taskMessage.task.id << endl;
-            this->sendTaskMessageToUAV(conexoes[0], taskMessage);/*
-            //Antes desse loop
-
-            while(true){
-                std::cout << "[C] Digite um UAV para receber:" << std::endl;
-                int id;
-                std::cin >> id;
-                TaskManager t;
-                UAV u(id);
-                cout << "Tarefas desse UAV: " << t.getNumTasks(u) << endl;
-                std::cout << "[C] Digite a mensagem:" << std::endl;
-                char m[1500];
-                std::cin >> m;
-                Message msg(m, 10, -1, id);
-                sendMessageToUAV(id, msg);
-            }
-            conectar.join();
-        }else{ //when it fails enter here
-            switch (serverSd) {
-                case -1:
-                    std::cerr << "Inaccessible ports" << std::endl;
-                    break;
-                case -2:
-                    std::cerr << "Error establishing the server socket" << std::endl;
-                    break;
-                case -3:
-                    std::cerr << "Error binding socket to local address" << std::endl;
-                    break;
-            }
-            exit(0);
         }
     }
 };
