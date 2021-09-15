@@ -27,8 +27,8 @@ public:
     //Task(Command command(int *args[]))
     //TaskManager(Task, idUAV)
     virtual void assignTask(Task t, UAV u){ ///TESTAR
-        t.uav = u;
-        t = this->addTask(t);
+        //t.uav = u;
+        //t = this->addTask(t);
         TaskMessage tm;
         tm.destination = u.getID();
         tm.task = t;
@@ -39,6 +39,9 @@ public:
         //c.sendMessageToUAV(u.getID(), msg)
         //c.sendTaskMessageToUAVID(u.getID(), tmsg);
     }
+
+    //assignTaskPredefinidas(){
+    //}
 
     //TaskManager
     virtual void markAsComplete(Coordinate c){//Task

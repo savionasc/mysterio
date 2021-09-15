@@ -28,8 +28,8 @@ public:
     static MissionPlanner *GetInstance(const std::string& value);
     
     Task addTask(Task t){
-        t.id = createNewTaskID();
-        this->tasks[t.uav.getID()].push_back(t);
+        t.setId(createNewTaskID());
+        this->tasks[t.getUAV().getID()].push_back(t);
         return t;
     }
 
@@ -39,7 +39,7 @@ public:
 
     Task getTaskByID(UAV u, int id){
         for (int i = 0; i < this->tasks[u.getID()].size(); i++) {
-            if(this->tasks[u.getID()][i].id == id){
+            if(this->tasks[u.getID()][i].getID() == id){
                 return this->tasks[u.getID()][i];
             }
         }
@@ -48,9 +48,9 @@ public:
     }
 
     void setTask(Task t){
-        for (int i = 0; i < this->tasks[t.uav.getID()].size(); i++) {
-            if(this->tasks[t.uav.getID()][i].id == t.id ){
-                this->tasks[t.uav.getID()][i] = t;
+        for (int i = 0; i < this->tasks[t.getUAV().getID()].size(); i++) {
+            if(this->tasks[t.getUAV().getID()][i].getID() == t.getID() ){
+                this->tasks[t.getUAV().getID()][i] = t;
             }
         }
     }

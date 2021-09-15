@@ -16,7 +16,7 @@ class Task { //Goto, ComeBackBaseStation
 
 public:
     Task(){}
-    Task(UAV uav, Coordinate targetPosition) {
+    Task(UAV uav, Coordinate targetPosition) { // adicionar type no construtor
         this->uav = uav;
         this->target = targetPosition;
     }
@@ -34,6 +34,59 @@ public:
         this->status = COMPLETED;
     }
 
+    int getID() const {
+        return id;
+    }
+
+    void setId(int id) {
+        this->id = id;
+    }
+
+    int getRepeat() const {
+        return repeat;
+    }
+
+    void setRepeat(int repeat = 0) {
+        this->repeat = repeat;
+    }
+
+    int getStatus() const {
+        return status;
+    }
+
+    const Coordinate& getTarget() const {
+        return target;
+    }
+
+    void setTarget(const Coordinate& target) {
+        this->target = target;
+    }
+
+    int getType() const {
+        return type;
+    }
+
+    void setType(int type) {
+        this->type = type;
+    }
+
+    UAV getUAV() {
+        return uav;
+    }
+
+    void setUAV(UAV uav) {
+        this->uav = uav;
+    }
+
+    Command getCmd() {
+        return cmd;
+    }
+
+    void setCmd(Command cmd) {
+        this->cmd = cmd;
+    }
+
+private:
     //Talvez calculemos o progresso num futuro próximo...
     //Se for da missão é saber quantas tarefas foram cumpridas e quantas não foram
     //Se for da tarefa é saber quanto falta para chegar no destino
@@ -41,7 +94,7 @@ public:
     int id;
     UAV uav;
     int type;
-    //Command cmd; //Criar uma lista/fila de comandos..
+    Command cmd; //Criar uma lista/fila de comandos..
     int status = 0; //status{started, completed}
     Coordinate target;
     int repeat = 0; //TaskManager

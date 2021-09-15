@@ -53,9 +53,9 @@ public:
             memset(&msg, 0, sizeof(msg));
             recv(newSd, (TaskMessage*)&msg, sizeof(msg), 0);
             cout << "Tarefa recebida - Code Message: " << msg.code;
-            cout << " Status: " << msg.task.status << " ID da tarefa: " << msg.task.id << endl;
+            cout << " Status: " << msg.task.getStatus() << " ID da tarefa: " << msg.task.getID() << endl;
             cout << "Finalizada? " << msg.task.isComplete() << endl;
-            cout << "UAV " << msg.task.uav.getID() << endl;
+            cout << "UAV " << msg.task.getUAV().getID() << endl;
             TaskManager t;
             t.setTask(msg.task);
         }else if(typeMSG == TASK_COMPLETED_MESSAGE){

@@ -152,7 +152,7 @@ class SocketMessageReceive {
                     cout << "Atividade atual: " << itera[this->uav.getID()] << endl;
                 }else if(!strcmp(msg.getMsg(), "d")){
                     for (int i = 0; i < base[this->uav.getID()].size(); i++) {
-                        cout << "Status: " << base[0][i].status << endl;
+                        cout << "Status: " << base[0][i].getStatus() << endl;
                     }
                 }else if(!strcmp(msg.getMsg(), "dar-volta")){
                 }else if(!strcmp(msg.getMsg(), "retornar-base")){
@@ -174,17 +174,17 @@ class SocketMessageReceive {
                 Task x = tmsg.task;
                 cout << "Mensagem recebida1: tipo: " << tmsg.code << endl;// << " idUAV: " << tmsg.uav.getID() << endl;
                 cout << "Mensagem recebida2: tipo: " << tmsg.c.getX() << " " << tmsg.c.getY() << " " << tmsg.c.getZ() << endl;
-                cout << "Mensagem recebida3: tipo: " << x.type << " idUAV: " << x.uav.getID();
-                cout << "Target: " << x.target.getX() << " " << x.target.getY() << " " << x.target.getZ() << endl;
+                cout << "Mensagem recebida3: tipo: " << x.getType() << " idUAV: " << x.getUAV().getID();
+                cout << "Target: " << x.getTarget().getX() << " " << x.getTarget().getY() << " " << x.getTarget().getZ() << endl;
                 /*TaskMessage tmsg2;
                 memset(&tmsg2, 0, sizeof(tmsg2));
                 recv(socket, (TaskMessage*)&tmsg2, sizeof(tmsg2), 0);
                 cout << "Mensagem recebida2: tipo: " << tmsg2.task.type << " idUAV: " << tmsg2.task.uav.getID() << endl;*/
-                int i = x.uav.getID();//idUAV;
+                int i = x.getUAV().getID();//idUAV;
                 base[i].push_back(x);
                 int j = base[i].size()-1;
-                base[i][j].type = x.type;
-                base[i][j].uav.setID(x.uav.getID());
+                base[i][j].setType(x.getType());
+                base[i][j].getUAV().setID(x.getUAV().getID());
                 if(itera[i] < 0){
                     itera[i]++;
                 }

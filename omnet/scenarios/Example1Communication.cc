@@ -21,21 +21,26 @@ void listenSocket(){ //Here starts the server communication
 
         //Atribuindo tarefas previamente (pós registro dos UAVs)
 
+        //Instanciar o planner
+        //instanciar tarefas
+        //Atribuir as tarefas pros drones que ele quer (por meio do planner)
+        //começar a missão
+        //Pegar cada tarefa predefinida e dar um assync pra cada uma
+
         cout << "Tarefa atribuída: Volta no carro" << endl;
         Coordinate currentP(300.0,420.0,90.0);
         UAV u(0);
-        Task gotoc(u, currentP);
-        gotoc.type = FLY_AROUND;
-        gotoc.uav = u;
+        Task gotoc(u, currentP); // adicionar type no construtor
+        gotoc.setType(FLY_AROUND);
         TaskManager t;
         t.addTask(gotoc);
 
         //Enviando tarefa
         int codeMessage = TASK_MESSAGE;
         TaskMessage taskMessage("AAAA", TASK_MESSAGE);
-        taskMessage.c = t.getTaskByIndex(u, t.getNumTasks(u)-1).target;
+        taskMessage.c = t.getTaskByIndex(u, t.getNumTasks(u)-1).getTarget();
         taskMessage.task = t.getTaskByIndex(u, t.getNumTasks(u)-1);
-        cout << "Criando tarefa com id: " << taskMessage.task.id << endl;
+        cout << "Criando tarefa com id: " << taskMessage.task.getID()<< endl;
         CommunicationSocket comm;
         comm.sendTaskMessageToUAV(conexoes[0], taskMessage);
 
@@ -62,13 +67,13 @@ void listenSocket(){ //Here starts the server communication
 
             if(!strcmp(msg.getMsg(), "tasks")){
                 TaskManager t;
-                UAV u(0);
+                UAV u(id);
                 std::cout << "Tarefas pro UAV0: " << t.getNumTasks(u) << "\n";
                 vector<Task> ts = t.getTaskList(u);
                 for (int i = 0; i < t.getNumTasks(u); i++) {
-                    cout << "Task: " << ts[i].type << endl;
-                    cout << "Status da tarefa: " << ts[i].status;
-                    cout << "ID da tarefa: " << ts[i].id << endl;
+                    cout << "Task: " << ts[i].getType() << endl;
+                    cout << "Status da tarefa: " << ts[i].getStatus();
+                    cout << "ID da tarefa: " << ts[i].getID() << endl;
                 }
             }
 
@@ -77,7 +82,7 @@ void listenSocket(){ //Here starts the server communication
                     Coordinate currentP(50.0,50.0,100.0);
                     UAV u(i);
                     Task gotoc(u, currentP);
-                    gotoc.type = 10;
+                    gotoc.setType(10);
                     TaskManager t;
                     t.addTask(gotoc);
                     cout << "UAV["<<u.getID()<<"]-Tasks: " << t.getNumTasks(u) << endl;
@@ -85,9 +90,9 @@ void listenSocket(){ //Here starts the server communication
                     //Enviando tarefa
                     int codeMessage = TASK_MESSAGE;
                     TaskMessage taskMessage(msg.getMsg(), TASK_MESSAGE);
-                    taskMessage.c = t.getTaskByIndex(u, t.getNumTasks(u)-1).target;
+                    taskMessage.c = t.getTaskByIndex(u, t.getNumTasks(u)-1).getTarget();
                     taskMessage.task = t.getTaskByIndex(u, t.getNumTasks(u)-1);
-                    cout << "Criando tarefa com id: " << taskMessage.task.id << endl;
+                    cout << "Criando tarefa com id: " << taskMessage.task.getID() << endl;
                     comm.sendTaskMessageToUAV(conexoes[u.getID()], taskMessage);
                 }
             }else if(!strcmp(msg.getMsg(), "quarteirao")){ //take off
@@ -95,7 +100,7 @@ void listenSocket(){ //Here starts the server communication
                     Coordinate currentP(500.0,500.0,400.0);
                     UAV u(i);
                     Task gotoc(u, currentP);
-                    gotoc.type = FLY_AROUND_SQUARE;
+                    gotoc.setType(FLY_AROUND_SQUARE);
                     TaskManager t;
                     t.addTask(gotoc);
                     cout << "UAV["<<u.getID()<<"]-Tasks: " << t.getNumTasks(u) << endl;
@@ -103,17 +108,17 @@ void listenSocket(){ //Here starts the server communication
                     //Enviando tarefa
                     int codeMessage = TASK_MESSAGE;
                     TaskMessage taskMessage(msg.getMsg(), TASK_MESSAGE);
-                    taskMessage.c = t.getTaskByIndex(u, t.getNumTasks(u)-1).target;
+                    taskMessage.c = t.getTaskByIndex(u, t.getNumTasks(u)-1).getTarget();
                     taskMessage.task = t.getTaskByIndex(u, t.getNumTasks(u)-1);
-                    cout << "Criando tarefa com id: " << taskMessage.task.id << endl;
+                    cout << "Criando tarefa com id: " << taskMessage.task.getID() << endl;
                     comm.sendTaskMessageToUAV(conexoes[u.getID()], taskMessage);
                 }
             }else if(!strcmp(msg.getMsg(), "carro")){
                 Coordinate currentP(300.0,420.0,90.0);
                 UAV u(id);
                 Task gotoc(u, currentP);
-                gotoc.type = FLY_AROUND;
-                gotoc.uav = u;
+                gotoc.setType(FLY_AROUND);
+                gotoc.setUAV(u);
                 TaskManager t;
                 t.addTask(gotoc);
                 cout << "UAV["<<u.getID()<<"]-Tasks: " << t.getNumTasks(u) << endl;
@@ -121,9 +126,9 @@ void listenSocket(){ //Here starts the server communication
                 //Enviando tarefa
                 int codeMessage = TASK_MESSAGE;
                 TaskMessage taskMessage(msg.getMsg(), TASK_MESSAGE);
-                taskMessage.c = t.getTaskByIndex(u, t.getNumTasks(u)-1).target;
+                taskMessage.c = t.getTaskByIndex(u, t.getNumTasks(u)-1).getTarget();
                 taskMessage.task = t.getTaskByIndex(u, t.getNumTasks(u)-1);
-                cout << "Criando tarefa com id: " << taskMessage.task.id << endl;
+                cout << "Criando tarefa com id: " << taskMessage.task.getID() << endl;
                 comm.sendTaskMessageToUAV(conexoes[id], taskMessage);
             }
             comm.sendMessageToUAV(id, msg);

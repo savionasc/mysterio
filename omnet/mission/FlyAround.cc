@@ -3,7 +3,7 @@
 FlyAround::FlyAround() { }
 
 FlyAround::FlyAround(UAV uav, Coordinate point, int laps) {
-    this->uav= uav;
+    this->setUAV(uav);
     this->point = point;
     this->laps = laps;
 }
@@ -20,6 +20,6 @@ bool FlyAround::isComplete() {
 //if command == "go"
 //o drone vai interpretar que tem que ir pras coordenadas passadas em args...
 void FlyAround::assignTask(UAV uav, Command command, int *args[]){ //Drone, comando, parametros do comando
-    this->uav = uav;
+    this->setUAV(uav);
     //this->cmd = command;
 }

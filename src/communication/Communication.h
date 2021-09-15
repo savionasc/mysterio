@@ -5,8 +5,9 @@
 #include "../../omnet/communication/DroneStatusMessage.h"
 #include "../../omnet/communication/ConnServerSocket.cc"
 #include <thread>
+
 //#include "../taskmanager/TaskManager.h"
-#define NUMUAVS 2
+#define NUMUAVS 2 //mudar o array[] para list/container array mesmo
 #define PORT 1111
 
 extern int conexoes[NUMUAVS];
@@ -25,7 +26,7 @@ public:
     }
 
     virtual void sendTaskMessageToUAV(int idSocket, TaskMessage tmsg){
-        cout << "Criando tarefa com id: " << tmsg.task.id << endl;
+        cout << "Criando tarefa com id: " << tmsg.task.getID() << endl;
         thread enviar(SendServerSocket(), idSocket, tmsg);
         enviar.detach();
     }
