@@ -1,21 +1,36 @@
 #ifndef MYSTERIO_SRC_MISSION_COMMAND_H_
 #define MYSTERIO_SRC_MISSION_COMMAND_H_
-//#include <string>
 #include <iostream>
-//#include <vector>
+
 using namespace std;
 
 class Command {
 public:
-    int id = -1;
-    char instruction[35];
-    //std::string instruction = "go";
+    int getId() const {
+        return ID;
+    }
+
+    void setId(int id) {
+        ID = id;
+    }
+
+    const char* getInstruction() const {
+        return instruction;
+    }
+
+    const char* getArguments() const {
+        return arguments;
+    }
+
+private:
+    int ID;
+    char instruction[15]; //instructions like "go"
+
+    //Para os args,
     //Criar um toString no coordinate
     //Depois criar uma função que retorna coordinate recebendo uma string
     //Coordinate coord; defalt -1, -1, -1
-
-    //vector<string> args; //queue?
-    char args[5][35];
+    char arguments[50];
 };
 
 #endif
