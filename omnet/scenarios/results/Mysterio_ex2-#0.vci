@@ -1,22 +1,22 @@
-file 207687 1632940024                                          
+file 163778 1633113243                                          
 version 2
-run Mysterio_ex2-0-20210929-15:26:32-4552
+run Mysterio_ex2-0-20211001-15:32:44-3481
 attr configname Mysterio_ex2
-attr datetime 20210929-15:26:32
+attr datetime 20211001-15:32:44
 attr experiment Mysterio_ex2
 attr inifile omnetpp.ini
 attr iterationvars ""
 attr iterationvarsf ""
 attr measurement ""
 attr network MysterioCommunication2
-attr processid 4552
+attr processid 3481
 attr repetition 0
 attr replication #0
 attr resultdir results
 attr runnumber 0
 attr seedset 0
-param *.host[*].mobility.numeroDrones 10
-param *.numHosts 10
+param *.host[*].mobility.numeroDrones 2
+param *.numHosts 2
 param *.host[*].osgModel "\"3d/drone.ive.100.scale.0,0,90.rot\""
 param *.basestation.osgModel "\"3d/car.ive.50.scale.0,0,90.rot\""
 param *.canvasVisualizer.energyStorageVisualizer.displayEnergyStorages true
@@ -59,7 +59,7 @@ param *.visualizer.*.mobilityVisualizer.displayMobility true
 param *.visualizer.*.mobilityVisualizer.displayPositions true
 param *.visualizer.*.mobilityVisualizer.displayOrientations false
 param *.visualizer.*.mobilityVisualizer.displayVelocities true
-param *.visualizer.*.mobilityVisualizer.displayMovementTrails false
+param *.visualizer.*.mobilityVisualizer.displayMovementTrails true
 param *.visualizer.*.mobilityVisualizer.animationSpeed 3
 param **.constraintAreaMinX 0m
 param **.constraintAreaMinY 0m
@@ -85,138 +85,18 @@ vector 3 MysterioCommunication2.host[1].energyGenerator powerGeneration:vector E
 attr interpolationmode sample-hold
 attr source powerGenerationChanged
 attr title "Power generation, vector"
-vector 4 MysterioCommunication2.host[2].energyStorage residualEnergyCapacity:vector ETV
-attr interpolationmode linear
-attr source residualEnergyCapacityChanged
-attr title "Residual energy capacity, vector"
-vector 5 MysterioCommunication2.host[2].energyGenerator powerGeneration:vector ETV
+vector 4 MysterioCommunication2.host[0].energyStorage powerGeneration:vector ETV
 attr interpolationmode sample-hold
 attr source powerGenerationChanged
 attr title "Power generation, vector"
-vector 6 MysterioCommunication2.host[3].energyStorage residualEnergyCapacity:vector ETV
-attr interpolationmode linear
-attr source residualEnergyCapacityChanged
-attr title "Residual energy capacity, vector"
-vector 7 MysterioCommunication2.host[3].energyGenerator powerGeneration:vector ETV
+vector 5 MysterioCommunication2.host[1].energyStorage powerGeneration:vector ETV
 attr interpolationmode sample-hold
 attr source powerGenerationChanged
 attr title "Power generation, vector"
-vector 8 MysterioCommunication2.host[4].energyStorage residualEnergyCapacity:vector ETV
-attr interpolationmode linear
-attr source residualEnergyCapacityChanged
-attr title "Residual energy capacity, vector"
-vector 9 MysterioCommunication2.host[4].energyGenerator powerGeneration:vector ETV
-attr interpolationmode sample-hold
-attr source powerGenerationChanged
-attr title "Power generation, vector"
-vector 10 MysterioCommunication2.host[5].energyStorage residualEnergyCapacity:vector ETV
-attr interpolationmode linear
-attr source residualEnergyCapacityChanged
-attr title "Residual energy capacity, vector"
-vector 11 MysterioCommunication2.host[5].energyGenerator powerGeneration:vector ETV
-attr interpolationmode sample-hold
-attr source powerGenerationChanged
-attr title "Power generation, vector"
-vector 12 MysterioCommunication2.host[6].energyStorage residualEnergyCapacity:vector ETV
-attr interpolationmode linear
-attr source residualEnergyCapacityChanged
-attr title "Residual energy capacity, vector"
-vector 13 MysterioCommunication2.host[6].energyGenerator powerGeneration:vector ETV
-attr interpolationmode sample-hold
-attr source powerGenerationChanged
-attr title "Power generation, vector"
-vector 14 MysterioCommunication2.host[7].energyStorage residualEnergyCapacity:vector ETV
-attr interpolationmode linear
-attr source residualEnergyCapacityChanged
-attr title "Residual energy capacity, vector"
-vector 15 MysterioCommunication2.host[7].energyGenerator powerGeneration:vector ETV
-attr interpolationmode sample-hold
-attr source powerGenerationChanged
-attr title "Power generation, vector"
-vector 16 MysterioCommunication2.host[8].energyStorage residualEnergyCapacity:vector ETV
-attr interpolationmode linear
-attr source residualEnergyCapacityChanged
-attr title "Residual energy capacity, vector"
-vector 17 MysterioCommunication2.host[8].energyGenerator powerGeneration:vector ETV
-attr interpolationmode sample-hold
-attr source powerGenerationChanged
-attr title "Power generation, vector"
-vector 18 MysterioCommunication2.host[9].energyStorage residualEnergyCapacity:vector ETV
-attr interpolationmode linear
-attr source residualEnergyCapacityChanged
-attr title "Residual energy capacity, vector"
-vector 19 MysterioCommunication2.host[9].energyGenerator powerGeneration:vector ETV
-attr interpolationmode sample-hold
-attr source powerGenerationChanged
-attr title "Power generation, vector"
-vector 20 MysterioCommunication2.host[0].energyStorage powerGeneration:vector ETV
-attr interpolationmode sample-hold
-attr source powerGenerationChanged
-attr title "Power generation, vector"
-vector 21 MysterioCommunication2.host[1].energyStorage powerGeneration:vector ETV
-attr interpolationmode sample-hold
-attr source powerGenerationChanged
-attr title "Power generation, vector"
-vector 22 MysterioCommunication2.host[2].energyStorage powerGeneration:vector ETV
-attr interpolationmode sample-hold
-attr source powerGenerationChanged
-attr title "Power generation, vector"
-vector 23 MysterioCommunication2.host[3].energyStorage powerGeneration:vector ETV
-attr interpolationmode sample-hold
-attr source powerGenerationChanged
-attr title "Power generation, vector"
-vector 24 MysterioCommunication2.host[4].energyStorage powerGeneration:vector ETV
-attr interpolationmode sample-hold
-attr source powerGenerationChanged
-attr title "Power generation, vector"
-vector 25 MysterioCommunication2.host[5].energyStorage powerGeneration:vector ETV
-attr interpolationmode sample-hold
-attr source powerGenerationChanged
-attr title "Power generation, vector"
-vector 26 MysterioCommunication2.host[6].energyStorage powerGeneration:vector ETV
-attr interpolationmode sample-hold
-attr source powerGenerationChanged
-attr title "Power generation, vector"
-vector 27 MysterioCommunication2.host[7].energyStorage powerGeneration:vector ETV
-attr interpolationmode sample-hold
-attr source powerGenerationChanged
-attr title "Power generation, vector"
-vector 28 MysterioCommunication2.host[8].energyStorage powerGeneration:vector ETV
-attr interpolationmode sample-hold
-attr source powerGenerationChanged
-attr title "Power generation, vector"
-vector 29 MysterioCommunication2.host[9].energyStorage powerGeneration:vector ETV
-attr interpolationmode sample-hold
-attr source powerGenerationChanged
-attr title "Power generation, vector"
-0	9355 21573 0 7083 0 70.21930084 831 0.0480298005 0.05 41.315155715445 2.0543063098472
-1	30928 91 0 4665 0 46.271460600806 4 0 0.004 0.008 3.2e-05
-2	31019 22555 0 7083 0 70.21930084 838 0.04521910375044 0.05 41.199699950479 2.0269964804525
-3	53574 91 0 4336 0 42.993122123816 4 0 0.004 0.008 3.2e-05
-4	53665 19018 0 7083 0 70.21930084 839 0.0495 0.05 41.88894546845 2.0914236429968
-5	72683 37 0 6555 0 64.956352146224 2 0 0.004 0.004 1.6e-05
-6	72720 16002 0 7083 0 70.21930084 831 0.0480298005 0.05 41.459810059392 2.0685831123834
-7	88722 66 0 1658 0 16.545781916141 3 0 0.004 0.008 3.2e-05
-8	88788 20809 0 7083 0 70.21930084 849 0.046137234721396 0.05 41.870499381072 2.0659941520727
-9	109597 142 0 6180 0 61.293729463676 6 0 0.004 0.012 4.8e-05
-10	109739 15584 0 7083 0 70.21930084 828 0.0495 0.05 41.374875642064 2.0674989690449
-11	125323 13 0 0 0 0 1 0.004 0.004 0.004 1.6e-05
-12	125336 23361 0 7083 0 70.21930084 836 0.046496124296662 0.05 41.505400142722 2.0610820847721
-13	148697 39 0 5143 0 51.007856448547 2 0 0.004 0.004 1.6e-05
-14	148736 18367 0 7083 0 70.21930084 843 0.047549502495 0.05 41.851677052957 2.0780420431782
-15	167103 151 0 6237 0 61.835533123629 6 0 0.004 0.012 4.8e-05
-16	167254 20327 0 7083 0 70.21930084 843 0.0480298005 0.05 41.939041488327 2.0866914578269
-17	187581 125 0 6459 0 64.031448250521 5 0 0.004 0.012 4.8e-05
-18	187706 19068 0 7083 0 70.21930084 833 0.0495 0.05 41.61692723539 2.0792082587205
-19	206774 69 0 3070 0 30.495204601799 3 0 0.004 0.008 3.2e-05
-20	206843 95 0 4665 0 46.271460600806 4 0 0.004 0.008 3.2e-05
-21	206938 95 0 4336 0 42.993122123816 4 0 0.004 0.008 3.2e-05
-22	207033 39 0 6555 0 64.956352146224 2 0 0.004 0.004 1.6e-05
-23	207072 69 0 1658 0 16.545781916141 3 0 0.004 0.008 3.2e-05
-24	207141 148 0 6180 0 61.293729463676 6 0 0.004 0.012 4.8e-05
-25	207289 13 0 0 0 0 1 0.004 0.004 0.004 1.6e-05
-26	207302 39 0 5143 0 51.007856448547 2 0 0.004 0.004 1.6e-05
-27	207341 151 0 6237 0 61.835533123629 6 0 0.004 0.012 4.8e-05
-28	207492 125 0 6459 0 64.031448250521 5 0 0.004 0.012 4.8e-05
-29	207617 69 0 3070 0 30.495204601799 3 0 0.004 0.008 3.2e-05
+0	4644 88066 0 4473 0 221.992462250933 2749 0.040081529476952 0.05 132.79506183456 6.4364778701906
+1	92710 198 0 3285 0 162.648103863273 8 0 0.004 0.016 6.4e-05
+2	92908 70379 0 4473 0 221.992462250933 2698 0.04660326739535 0.05 134.55302229371 6.7110227763399
+3	163287 146 0 4239 0 210.252513870041 6 0 0.004 0.012 4.8e-05
+4	163433 198 0 3285 0 162.648103863273 8 0 0.004 0.016 6.4e-05
+5	163631 146 0 4239 0 210.252513870041 6 0 0.004 0.012 4.8e-05
 

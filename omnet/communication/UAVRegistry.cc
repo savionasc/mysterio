@@ -6,14 +6,14 @@
 #include <netinet/in.h>
 #include <thread>
 
-#include "ReceiveServerSocket.cc"
-#include "SendServerSocket.cc"
+#include "MessageReceive.cc"
+#include "MessageSender.cc"
 
 using namespace std;
 //extern int conexoes[];
 extern int ct;
 
-class ConnServerSocket{
+class UAVRegistry{
 public:
     void operator()(int param1, int *param2){
         while(conectarNovoUAV(param1, param2)){ }
@@ -31,8 +31,8 @@ public:
         std::cout << "Connected with UAV!" << std::endl;
         ct++;
         conexoes[ct] = newSd;
-        thread conectar(ConnServerSocket(), serverSd, conexoes);
-        thread receber(ReceiveServerSocket(), conexoes[ct]);
+        thread conectar(UAVRegistry(), serverSd, conexoes);
+        thread receber(MessageReceive(), conexoes[ct]);
         receber.join();
         return true;
     }

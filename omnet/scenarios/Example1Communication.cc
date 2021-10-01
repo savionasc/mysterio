@@ -13,7 +13,7 @@ void listenSocket(){ //Here starts the server communication
     CommunicationSocket comm;
     int serverSocket = comm.configureSocketServer(PORT);
     if(serverSocket > 0){
-        thread conectar(ConnServerSocket(), serverSocket, conexoes);
+        thread conectar(UAVRegistry(), serverSocket, conexoes);
         std::cout << "Waiting for a UAV to connect..." << std::endl;
         //waiting for the first UAV
         while(ct == -1){

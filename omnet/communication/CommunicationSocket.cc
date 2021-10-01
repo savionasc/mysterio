@@ -1,7 +1,7 @@
 #include <thread>
 #include "CommunicationSocket.h"
 #include "../../src/communication/Communication.h"
-#include "ConnServerSocket.cc"
+#include "UAVRegistry.cc"
 
 using namespace std;
 //Enviar mensagens Unicast, Broadcast e Multicast

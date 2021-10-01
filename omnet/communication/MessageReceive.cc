@@ -12,7 +12,7 @@
 
 using namespace std;
 
-class ReceiveServerSocket{ //Não seria ReceiveUAVSocket?
+class MessageReceive{ //Não seria ReceiveUAVSocket?
 public:
     void operator()(int param){
         while(esperarMensagem(param)){ }

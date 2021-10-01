@@ -3,8 +3,8 @@
 #include "Communicable.h"
 #include "../utils/Message.h"
 #include "../../omnet/communication/DroneStatusMessage.h"
-#include "../../omnet/communication/ConnServerSocket.cc"
 #include <thread>
+#include "../../omnet/communication/UAVRegistry.cc"
 
 //#include "../taskmanager/TaskManager.h"
 #define NUMUAVS 2 //mudar o array[] para list/container array mesmo
@@ -27,7 +27,7 @@ public:
 
     virtual void sendTaskMessageToUAV(int idSocket, TaskMessage tmsg){
         cout << "Criando tarefa com id: " << tmsg.task.getID() << endl;
-        thread enviar(SendServerSocket(), idSocket, tmsg);
+        thread enviar(MessageSender(), idSocket, tmsg);
         enviar.detach();
     }
 
@@ -68,12 +68,12 @@ public:
             cout << "BROADCAST" << endl;
             for (int i = 0; i <= ct; i++){
                 msg.setDestination(i);
-                thread enviar(SendServerSocket(), conexoes[i], msg);
+                thread enviar(MessageSender(), conexoes[i], msg);
                 enviar.detach();
             }
         }else{ //unicast
             cout << "UNICAST" << endl;
-            thread enviar(SendServerSocket(), conexoes[idUAV], msg);
+            thread enviar(MessageSender(), conexoes[idUAV], msg);
             enviar.join();
         }
     }

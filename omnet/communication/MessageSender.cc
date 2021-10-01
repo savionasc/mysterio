@@ -4,7 +4,7 @@
 #include "../../src/mission/Task.h"
 #include "../communication/TaskMessage.h"
 
-class SendServerSocket {
+class MessageSender {
 public:
     void operator()(int param, Message param2){
         enviar(param, param2);

@@ -1,8 +1,8 @@
 all: Example1Communication.o MysStatus.o RepositoryMySQL.o CommunicationSocket.o UAV.o DroneStatus.o MissionPlanner.o
 	g++ -pthread -o scenarios/main Example1Communication.o MysStatus.o RepositoryMySQL.o CommunicationSocket.o UAV.o DroneStatus.o MissionPlanner.o -lmysqlclient
 
-CommunicationSocket.o: communication/CommunicationSocket.cc communication/CommunicationSocket.h communication/ConnServerSocket.cc
-	g++ -c communication/CommunicationSocket.cc communication/CommunicationSocket.h communication/ConnServerSocket.cc
+CommunicationSocket.o: communication/CommunicationSocket.cc communication/CommunicationSocket.h communication/UAVRegistry.cc
+	g++ -c communication/CommunicationSocket.cc communication/CommunicationSocket.h communication/UAVRegistry.cc
 SocketConnect.o: communication/SocketConnect.cc
 	g++ -c communication/SocketConnect.cc
 Example1Communication.o: scenarios/Example1Communication.cc communication/CommunicationSocket.h status/MysStatus.h
