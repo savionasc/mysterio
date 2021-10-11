@@ -84,6 +84,6 @@ void UAV::setFlightTime(int flightTime) {
         return false;
 }*/
 
-void UAV::onMessageReceive(Message msg){
+/*void UAV::onMessageReceive(Message msg){
 
-}
+}*/
