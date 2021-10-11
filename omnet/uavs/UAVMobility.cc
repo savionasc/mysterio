@@ -79,7 +79,7 @@ void UAVMobility::setTargetPosition() {
                 TaskMessage msg;
                 msg.setCode(273);
                 msg.setSource(u.getSelfID());
-                msg.task = base[uav.getID()][task];
+                msg.setTask(base[uav.getID()][task]);
                 u.dispatchTaskMessage(msg);
 
                 //next task

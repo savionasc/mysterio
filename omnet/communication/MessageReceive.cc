@@ -26,12 +26,12 @@ public:
             DroneStatusMessage msg;
             memset(&msg, 0, sizeof(msg));
             recv(newSd, (DroneStatusMessage*)&msg, sizeof(msg), 0);
-            cout << "Mensagem: " << msg.msg << endl;
-            if(!strcmp(msg.msg, "exit")){
+            cout << "Mensagem: " << msg.getMsg() << endl;
+            if(!strcmp(msg.getMsg(), "exit")){
                 std::cout << "UAV has quit the session" << std::endl;
                 return false;
             }//else if(!strcmp(msg.msg, "status")){ //Mudar isso aqui e chamar o OnMessageReceve
-            else if(msg.code > 10 && msg.code < 21){ //Ideia de definir tipos por intervalos
+            else if(msg.getCode() > 10 && msg.getCode() < 21){ //Ideia de definir tipos por intervalos
                 MysStatus status;
                 status.onDroneStatusMessageReceive(msg);
             }else {
@@ -52,12 +52,12 @@ public:
             TaskMessage msg;
             memset(&msg, 0, sizeof(msg));
             recv(newSd, (TaskMessage*)&msg, sizeof(msg), 0);
-            cout << "Tarefa recebida - Code Message: " << msg.code;
-            cout << " Status: " << msg.task.getStatus() << " ID da tarefa: " << msg.task.getID() << endl;
-            cout << "Finalizada? " << msg.task.isComplete() << endl;
-            cout << "UAV " << msg.task.getUAV().getID() << endl;
+            cout << "Tarefa recebida - Code Message: " << msg.getCode();
+            cout << " Status: " << msg.getTask().getStatus() << " ID da tarefa: " << msg.getTask().getID() << endl;
+            cout << "Finalizada? " << msg.getTask().isComplete() << endl;
+            cout << "UAV " << msg.getTask().getUAV().getID() << endl;
             TaskManager t;
-            t.setTask(msg.task);
+            t.setTask(msg.getTask());
         }else if(typeMSG == TASK_COMPLETED_MESSAGE){
             Message msg;
             memset(&msg, 0, sizeof(msg));

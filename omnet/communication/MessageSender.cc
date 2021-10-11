@@ -25,7 +25,7 @@ public:
     bool enviarTarefa(int idUAVSocket, TaskMessage message){
         int codeMessage = TASK_MESSAGE;
         send(idUAVSocket, (int*)&codeMessage, sizeof(codeMessage), 0);
-        cout << "Task: " << message.code << endl;
+        cout << "Task: " << message.getCode() << endl;
         send(idUAVSocket, (TaskMessage*)&message, sizeof(message), 0);
     }
 };

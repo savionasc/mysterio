@@ -6,7 +6,7 @@ using namespace std;
 
 class Command {
 public:
-    int getId() const {
+    int getId() {
         return ID;
     }
 
@@ -14,11 +14,11 @@ public:
         ID = id;
     }
 
-    const char* getInstruction() const {
+    const char* getInstruction() {
         return instruction;
     }
 
-    const char* getArguments() const {
+    const char* getArguments() {
         return arguments;
     }
 

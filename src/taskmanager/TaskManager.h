@@ -30,8 +30,8 @@ public:
         //t.uav = u;
         //t = this->addTask(t);
         TaskMessage tm;
-        tm.destination = u.getID();
-        tm.task = t;
+        tm.setDestination(u.getID());
+        tm.setTask(t);
 
         //Falta só enviar pro Drone...
 

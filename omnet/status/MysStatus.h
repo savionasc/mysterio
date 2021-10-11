@@ -41,7 +41,7 @@ public:
     virtual float getBattery(int idUAV);           //rescues from the repository
     virtual void updateBattery(float level, int idUAV);          //send to repository
 
-protected:
+private:
     std::map<int,UAV> uavs;
     int tempoDeFuncionamento; //do sistema
     UAV pegarUAV(int idUAV){

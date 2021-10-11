@@ -9,17 +9,27 @@ public:
 
     DroneStatusMessage(char *msg, short int code){
         strcpy(this->msg, msg);
-        this->code = code;
+        this->setCode(code);
     }
 
     DroneStatusMessage(char *msg, short int code, short int src, short int dest){
         strcpy(this->msg, msg);
-        this->code = code;
-        this->source = src;
-        this->destination = dest;
+        this->setCode(code);
+        this->setSource(src);
+        this->setDestination(dest);
     }
 
     virtual ~DroneStatusMessage(){}
+
+    DroneStatus getStatus() {
+        return status;
+    }
+
+    void setStatus(DroneStatus status) {
+        this->status = status;
+    }
+
+private:
     DroneStatus status;
     char msg[1500];
 };

@@ -26,7 +26,7 @@ public:
     }
 
     virtual void sendTaskMessageToUAV(int idSocket, TaskMessage tmsg){
-        cout << "Criando tarefa com id: " << tmsg.task.getID() << endl;
+        cout << "Criando tarefa com id: " << tmsg.getTask().getID() << endl;
         thread enviar(MessageSender(), idSocket, tmsg);
         enviar.detach();
     }

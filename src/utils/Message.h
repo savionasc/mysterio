@@ -45,7 +45,7 @@ public:
 
     void setSource(short int source) { this->source = source; }
 
-public:
+private:
     char msg[1500];
     short int code; //This variable must identify the request type of the message
     short int source;

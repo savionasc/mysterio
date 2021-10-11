@@ -16,7 +16,7 @@ public:
     int getFlightTime();
     void setFlightTime(int flightTime);
 
-protected:
+private:
     double locationX;
     double locationY;
     double locationZ;

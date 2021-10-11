@@ -19,32 +19,32 @@ void MysStatus::onMessageReceive(Message msg){
             break;
         }
         case LOCATION_STATUS_RESPONSE:{
-            Coordinate c(mMSG->status.getLocationX(), mMSG->status.getLocationY(), mMSG->status.getLocationZ());
-            this->updateUAVLocation(c, mMSG->source);
+            Coordinate c(mMSG->getStatus().getLocationX(), mMSG->getStatus().getLocationY(), mMSG->getStatus().getLocationZ());
+            this->updateUAVLocation(c, mMSG->getSource());
             break;
         }
         case VELOCITY_STATUS_REQUEST:{
-            cout << "Velocidade recuperada pelo banco: " << this->getUAVVelocity(mMSG->source) << endl;
+            cout << "Velocidade recuperada pelo banco: " << this->getUAVVelocity(mMSG->getSource()) << endl;
             break;
         }
         case VELOCITY_STATUS_RESPONSE:{
-            this->updateUAVVelocity(mMSG->status.getVelocity(), mMSG->source);
+            this->updateUAVVelocity(mMSG->getStatus().getVelocity(), mMSG->getSource());
             break;
         }
         case BATTERY_STATUS_REQUEST:{
-            cout << "Bateria recuperada pelo banco: " << this->getBattery(mMSG->source) << endl;
+            cout << "Bateria recuperada pelo banco: " << this->getBattery(mMSG->getSource()) << endl;
             break;
         }
         case BATTERY_STATUS_RESPONSE:{
-            this->updateBattery(mMSG->status.getBattery(), mMSG->source);
+            this->updateBattery(mMSG->getStatus().getBattery(), mMSG->getSource());
             break;
         }
         case FLIGHTTIME_STATUS_REQUEST:{
-            cout << "Tempo de voo recuperado pelo banco: " << this->getFlightTime(mMSG->source) << endl;
+            cout << "Tempo de voo recuperado pelo banco: " << this->getFlightTime(mMSG->getSource()) << endl;
             break;
         }
         case FLIGHTTIME_STATUS_RESPONSE:{
-            this->updateFlightTime(mMSG->status.getFlightTime(), mMSG->source);
+            this->updateFlightTime(mMSG->getStatus().getFlightTime(), mMSG->getSource());
             break;
         }
         default:
@@ -64,32 +64,32 @@ void MysStatus::onDroneStatusMessageReceive(DroneStatusMessage msg){
             break;
         }
         case LOCATION_STATUS_RESPONSE:{
-            Coordinate c(msg.status.getLocationX(), msg.status.getLocationY(), msg.status.getLocationZ());
-            this->updateUAVLocation(c, msg.source);
+            Coordinate c(msg.getStatus().getLocationX(), msg.getStatus().getLocationY(), msg.getStatus().getLocationZ());
+            this->updateUAVLocation(c, msg.getSource());
             break;
         }
         case VELOCITY_STATUS_REQUEST:{
-            cout << "Velocidade recuperada pelo banco: " << this->getUAVVelocity(msg.source) << endl;
+            cout << "Velocidade recuperada pelo banco: " << this->getUAVVelocity(msg.getSource()) << endl;
             break;
         }
         case VELOCITY_STATUS_RESPONSE:{
-            this->updateUAVVelocity(msg.status.getVelocity(), msg.source);
+            this->updateUAVVelocity(msg.getStatus().getVelocity(), msg.getSource());
             break;
         }
         case BATTERY_STATUS_REQUEST:{
-            cout << "Bateria recuperada pelo banco: " << this->getBattery(msg.source) << endl;
+            cout << "Bateria recuperada pelo banco: " << this->getBattery(msg.getSource()) << endl;
             break;
         }
         case BATTERY_STATUS_RESPONSE:{
-            this->updateBattery(msg.status.getBattery(), msg.source);
+            this->updateBattery(msg.getStatus().getBattery(), msg.getSource());
             break;
         }
         case FLIGHTTIME_STATUS_REQUEST:{
-            cout << "Tempo de voo recuperado pelo banco: " << this->getFlightTime(msg.source) << endl;
+            cout << "Tempo de voo recuperado pelo banco: " << this->getFlightTime(msg.getSource()) << endl;
             break;
         }
         case FLIGHTTIME_STATUS_RESPONSE:{
-            this->updateFlightTime(msg.status.getFlightTime(), msg.source);
+            this->updateFlightTime(msg.getStatus().getFlightTime(), msg.getSource());
             break;
         }
         default:

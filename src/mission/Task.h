@@ -50,19 +50,19 @@ public:
         this->repeat = repeat;
     }
 
-    int getStatus() const {
+    int getStatus() {
         return status;
     }
 
-    const Coordinate& getTarget() const {
+    const Coordinate getTarget(){
         return target;
     }
 
-    void setTarget(const Coordinate& target) {
+    void setTarget(Coordinate target) {
         this->target = target;
     }
 
-    int getType() const {
+    int getType() {
         return type;
     }
 

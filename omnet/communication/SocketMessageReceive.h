@@ -65,7 +65,7 @@ class SocketMessageReceive {
                     txt += "," + to_string(coor.z) + ")";
                     strcpy(snd, txt.c_str());
                     DroneStatusMessage m(snd, LOCATION_STATUS_RESPONSE, this->uav.getID(), -1);   //MUDAR AQUI???
-                    m.status.setLocation(coor.x, coor.y, coor.z);
+                    m.getStatus().setLocation(coor.x, coor.y, coor.z);
                     cout << txt << endl;
                     u.dispatchStatusMessage(m);
                 }else if(!strcmp(msg.getMsg(), "velocity")){ //Mudar isso aqui e chamar o OnMessageReceve
@@ -81,7 +81,7 @@ class SocketMessageReceive {
                     txt += "m/s)";
                     strcpy(snd, txt.c_str());
                     DroneStatusMessage m(snd, VELOCITY_STATUS_RESPONSE, this->uav.getID(), -1);   //MUDAR AQUI???
-                    m.status.setVelocity(vel);
+                    m.getStatus().setVelocity(vel);
                     cout << txt << endl;
                     u.dispatchStatusMessage(m);
                 }else if(!strcmp(msg.getMsg(), "battery")){ //Mudar isso aqui e chamar o OnMessageReceve
@@ -95,7 +95,7 @@ class SocketMessageReceive {
                     std::string txt = "MSG bateria[" + to_string(this->uav.getID()) + "]: " + to_string(bateria[this->uav.getID()]);
                     strcpy(snd, txt.c_str());
                     DroneStatusMessage m(snd, BATTERY_STATUS_RESPONSE, this->uav.getID(), -1);
-                    m.status.setBattery(bateria[this->uav.getID()]);
+                    m.getStatus().setBattery(bateria[this->uav.getID()]);
                     cout << txt << endl;
                     u.dispatchStatusMessage(m);
                 }else if(!strcmp(msg.getMsg(), "flight-time")){ //Mudar isso aqui e chamar o OnMessageReceve
@@ -109,7 +109,7 @@ class SocketMessageReceive {
                     std::string txt = "MSG tempo de voo[" + to_string(this->uav.getID()) + "]: " + to_string(tempoVoo[this->uav.getID()]);
                     strcpy(snd, txt.c_str());
                     DroneStatusMessage m(snd, FLIGHTTIME_STATUS_RESPONSE, this->uav.getID(), -1);
-                    m.status.setFlightTime((int) tempoVoo[this->uav.getID()]);
+                    m.getStatus().setFlightTime((int) tempoVoo[this->uav.getID()]);
                     cout << txt << endl;
                     u.dispatchStatusMessage(m);
                 }else if(!strcmp(msg.getMsg(), "start")){
@@ -171,9 +171,9 @@ class SocketMessageReceive {
                 memset(&tmsg, 0, sizeof(tmsg));
                 //recv(socket, (TaskMessage*)&tmsg, sizeof(tmsg), 0);
                 recv(socket, (TaskMessage*)&tmsg, sizeof(tmsg), 0);
-                Task x = tmsg.task;
-                cout << "Mensagem recebida1: tipo: " << tmsg.code << endl;// << " idUAV: " << tmsg.uav.getID() << endl;
-                cout << "Mensagem recebida2: tipo: " << tmsg.c.getX() << " " << tmsg.c.getY() << " " << tmsg.c.getZ() << endl;
+                Task x = tmsg.getTask();
+                cout << "Mensagem recebida1: tipo: " << tmsg.getCode() << endl;// << " idUAV: " << tmsg.uav.getID() << endl;
+                cout << "Mensagem recebida2: tipo: " << tmsg.getCoord().getX() << " " << tmsg.getCoord().getY() << " " << tmsg.getCoord().getZ() << endl;
                 cout << "Mensagem recebida3: tipo: " << x.getType() << " idUAV: " << x.getUAV().getID();
                 cout << "Target: " << x.getTarget().getX() << " " << x.getTarget().getY() << " " << x.getTarget().getZ() << endl;
                 /*TaskMessage tmsg2;
