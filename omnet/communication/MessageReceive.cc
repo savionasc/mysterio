@@ -61,6 +61,7 @@ public:
             }else{
                 cout << "[U" << msg.getSource() << "] Mensagem recebida: " << msg.getMsg() << endl;
             }
+            cout << "MSG: " << msg.getMsg() << endl;
         }else if(typeMSG == TASK_MESSAGE){
             TaskMessage msg;
             memset(&msg, 0, sizeof(msg));

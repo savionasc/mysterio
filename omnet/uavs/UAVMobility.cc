@@ -95,8 +95,8 @@ void UAVMobility::setTargetPosition() {
             u.setSelfID(this->uav.getID());
             Message msg;
             msg.setCode(123);
-            msg.setMsg("Drone sem atividades escalonadas!");
-            cout << "Dois: " << this->uav.getID() << "|" << u.getSelfID() << endl;
+            char m[] = "Drone sem atividades escalonadas!";
+            msg.setMsg(m);
             msg.setSource(u.getSelfID());
             u.dispatchMessage(msg);
             targetPosition = getRandomPosition();

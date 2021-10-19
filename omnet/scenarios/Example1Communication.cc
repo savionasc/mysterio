@@ -10,13 +10,16 @@ using namespace std;
 int conexoes[NUMUAVS];
 
 void listenSocket(){ //Here starts the server communication
+    int numeroDeUAVs = 2;
+
     MysCommunication comm;
     int serverSocket = comm.configureSocketServer(PORT);
     if(serverSocket > 0){
         thread conectar(UAVRegistry(), serverSocket, conexoes);
         std::cout << "Waiting for a UAV to connect..." << std::endl;
         //waiting for the first UAV
-        while(ct == -1){
+        //while(ct == -1){
+        while(ct+1 < numeroDeUAVs){
         }
 
         //Atribuindo tarefas previamente (pós registro dos UAVs)
@@ -46,6 +49,8 @@ void listenSocket(){ //Here starts the server communication
         taskMessage.setTask(t.getTaskByIndex(u, t.getNumTasks(u)-1));
         cout << "Criando tarefa com id: " << taskMessage.getTask().getID()<< endl;
         MysCommunication comm;
+        MysStatus *m;
+        cout << "Tamanho do map de UAVs: " << m->getSize() << endl;
         comm.sendTaskMessageToUAV(conexoes[0], taskMessage);
 
         //Antes desse loop é onde atribui tarefas previamente

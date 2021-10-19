@@ -78,6 +78,10 @@ public:
             enviar.join();
         }
     }
+
+    virtual void reconnect(UAV u){
+
+    }
 };
 
 #endif

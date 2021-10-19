@@ -8,6 +8,7 @@
 
 #include "MessageReceive.cc"
 #include "MessageSender.cc"
+#include "../status/MysStatus.h"
 
 using namespace std;
 //extern int conexoes[];
@@ -22,15 +23,20 @@ public:
     bool conectarNovoUAV(int serverSd, int *conexoes){
         sockaddr_in newSockAddr;
         socklen_t newSockAddrSistdze = sizeof(newSockAddr);
-        int newSd = accept(serverSd, (sockaddr *)&newSockAddr, &newSockAddrSistdze);
-        if(newSd < 0){
+        int idSocket = accept(serverSd, (sockaddr *)&newSockAddr, &newSockAddrSistdze);
+        if(idSocket < 0){
             std::cerr << "Error accepting request from UAV!" << std::endl;
             exit(1);
             return false;
         }
         std::cout << "Connected with UAV!" << std::endl;
         ct++;
-        conexoes[ct] = newSd;
+        MysStatus *ms;
+        UAV u(ms->getSize());
+        u.setIdSocket(idSocket);
+        ms->addUAV(u);
+        conexoes[ct] = idSocket;
+        cout << "UAV registrado: " << u.getID() << " ct: " << ct << endl;
         thread conectar(UAVRegistry(), serverSd, conexoes);
         thread receber(MessageReceive(), conexoes[ct]);
         receber.join();

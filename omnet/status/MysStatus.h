@@ -62,6 +62,22 @@ public:
         numeroDeUAVs++;
     }
 
+    void addUAV(UAV u){
+        uavs[u.getID()] = u;
+    }
+
+    int getSize(){
+        return uavs.size();
+    }
+
+    UAV getUAV(int idUAV){
+        return this->getUAV(idUAV);
+    }
+
+    void setUAV(UAV u){
+        uavs[u.getID()] = u;
+    }
+
 protected:
     MysStatus(){ setNumeroDeUAVs(2); r.disablePrints(); }
     int numeroDeUAVs;
