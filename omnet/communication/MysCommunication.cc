@@ -1,5 +1,7 @@
+#include "MysCommunication.h"
+
 #include <thread>
-#include "CommunicationSocket.h"
+#include "TaskMessage.h"
 #include "../../src/communication/Communication.h"
 #include "UAVRegistry.cc"
 
@@ -8,12 +10,18 @@ using namespace std;
 
 int ct = -1; //Passar o Array pro Framework
 
-int CommunicationSocket::configureSocketServer(int port){
+int MysCommunication::configureSocketServer(int port){
     return Communication::configureSocketServer(port);
 }
 
-void CommunicationSocket::sendMessageToUAV(int id, Message msg){
+void MysCommunication::sendMessageToUAV(int id, Message msg){
     Communication::sendMessageToUAV(id, msg);
+}
+
+void MysCommunication::sendTaskMessageToUAV(int idSocket, TaskMessage tmsg){
+    cout << "Criando tarefa com id: " << tmsg.getTask().getID() << endl;
+    thread enviar(MessageSender(), idSocket, tmsg);
+    enviar.detach();
 }
 
 //status->subscribe(newUAV);?
@@ -21,11 +29,11 @@ void CommunicationSocket::sendMessageToUAV(int id, Message msg){
     Communication::listenSocket();
 }*/
 
-int* CommunicationSocket::getActiveConnections(){
+int* MysCommunication::getActiveConnections(){
     return nullptr;//Communication::conexoes; //conexoes;
 }
 
-void CommunicationSocket::ReceiveMessageFromUAV(Communicable *source, Communicable *dest, Message msg){
+void MysCommunication::ReceiveMessageFromUAV(Communicable *source, Communicable *dest, Message msg){
     getActiveConnections();
     if(msg.getCode() == 11)
         dest->onMessageReceive(msg);

@@ -1,36 +1,36 @@
-#include "UAVCommunicationSocket.h"
 #include "DroneStatusMessage.h"
 #include <iostream>
 
-#include "SocketMessageReceive.h"
+#include "UAVMysCommunication.h"
+
+#include "UAVMessageReceive.h"
 #define HOSTNAME "127.0.0.1"
 
 using namespace std;
 
 namespace mysterio {
 
-void UAVCommunicationSocket::dispatchTaskMessage(TaskMessage msg){
+void UAVMysCommunication::dispatchTaskMessage(TaskMessage msg){
     int codeMessage = TASK_MESSAGE;
     send(this->getSocketCode(), (int*)&codeMessage, sizeof(codeMessage), 0);
     send(this->getSocketCode(), (TaskMessage*)&msg, sizeof(msg), 0);
 }
 
-void UAVCommunicationSocket::dispatchStatusMessage(DroneStatusMessage msg){
+void UAVMysCommunication::dispatchStatusMessage(DroneStatusMessage msg){
     //DroneStatusMessage* s = dynamic_cast<DroneStatusMessage*>(&msg);
     int codeMessage = STATUS_MESSAGE;
     send(this->getSocketCode(), (int*)&codeMessage, sizeof(codeMessage), 0);
     send(this->getSocketCode(), (DroneStatusMessage*)&msg, sizeof(msg), 0);
 }
 
-void UAVCommunicationSocket::dispatchMessage(Message msg){
-    //Aqui envia mensagem via socket pro Communication
+void UAVMysCommunication::dispatchMessage(Message msg){
     //send(this->getSocketCode(), msg.getMsg(), strlen(msg.getMsg()), 0);
     int codeMessage = MESSAGE;
     send(this->getSocketCode(), (int*)&codeMessage, sizeof(codeMessage), 0);
     send(this->getSocketCode(), (Message*)&msg, sizeof(msg), 0);
 }
 
-void UAVCommunicationSocket::connectBase(){
+void UAVMysCommunication::connectBase(){
     if(!this->connected){
         this->connected = true;
         char msg[1500];
@@ -53,7 +53,7 @@ void UAVCommunicationSocket::connectBase(){
             this->connected = true;
             this->socketCode = clientSd;
 
-            thread receber(SocketMessageReceive(), this->socketCode, this->selfID, this->socketCode);
+            thread receber(UAVMessageReceive(), this->socketCode, this->selfID, this->socketCode);
             receber.detach(); //join
         }
 
@@ -65,31 +65,31 @@ void UAVCommunicationSocket::connectBase(){
     }
 }
 
-int UAVCommunicationSocket::getSocketCode(){
+int UAVMysCommunication::getSocketCode(){
     return this->socketCode;
 }
 
-bool UAVCommunicationSocket::isConnected() {
+bool UAVMysCommunication::isConnected() {
     return connected;
 }
 
-void UAVCommunicationSocket::setConnected(bool connected) {
+void UAVMysCommunication::setConnected(bool connected) {
     this->connected = connected;
 }
 
-void UAVCommunicationSocket::setSocketCode(int socketCode) {
+void UAVMysCommunication::setSocketCode(int socketCode) {
     this->socketCode = socketCode;
 }
 
-int UAVCommunicationSocket::getSelfID(){
+int UAVMysCommunication::getSelfID(){
     return this->selfID;
 }
 
-void UAVCommunicationSocket::setSelfID(int selfID){
+void UAVMysCommunication::setSelfID(int selfID){
     this->selfID = selfID;
 }
 
-void UAVCommunicationSocket::disconnectBase(){
+void UAVMysCommunication::disconnectBase(){
     close(getSocketCode());
 }
 

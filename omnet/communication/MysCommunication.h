@@ -10,7 +10,7 @@
 extern int conexoes[NUMUAVS];
 
 // componente de comunicação do framework com os drones
-class CommunicationSocket : public Communication {
+class MysCommunication : public Communication {
 public:
 
     //Communication
@@ -21,6 +21,8 @@ public:
     void sendMessageToUAV(int id, Message msg);
 
     int configureSocketServer(int port);
+
+    void sendTaskMessageToUAV(int idSocket, TaskMessage tmsg);
 
     //int conexoes[NUMUAVS];
 };

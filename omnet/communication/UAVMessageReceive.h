@@ -1,7 +1,9 @@
-#ifndef MYSTERIO_OMNET_COMMUNICATION_SOCKETMESSAGERECEIVE_H_
-#define MYSTERIO_OMNET_COMMUNICATION_SOCKETMESSAGERECEIVE_H_
-#include "UAVCommunicationSocket.h"
+#ifndef MYSTERIO_OMNET_COMMUNICATION_UAVMESSAGERECEIVE_H_
+#define MYSTERIO_OMNET_COMMUNICATION_UAVMESSAGERECEIVE_H_
 #include "../../src/utils/UAV.h"
+#include "UAVMysCommunication.h"
+
+using namespace std;
 
 extern int pular;
 namespace mysterio {
@@ -13,10 +15,10 @@ enum codes{
     FLIGHTTIME_STATUS_RESPONSE,
 };
 
-class SocketMessageReceive {
+class UAVMessageReceive {
     public:
-        SocketMessageReceive(){}
-        virtual ~SocketMessageReceive(){}
+        UAVMessageReceive(){}
+        virtual ~UAVMessageReceive(){}
         void operator()(int param, int param2, int param3){
             this->uav.setID(param2);
             this->uav.setIdSocket(param3);
@@ -55,39 +57,45 @@ class SocketMessageReceive {
                     std::cout << "[U" << this->uav.getID() << "] Respondendo status " << std::endl;
                     Coord coor = position[this->uav.getID()];
 
-                    UAVCommunicationSocket u;
+                    UAVMysCommunication u;
                     u.setSocketCode(this->uav.getIdSocket());
                     u.setSelfID(this->uav.getID());
 
-                    char snd[150];
+                    DroneStatusMessage m(msg.getMsg(), LOCATION_STATUS_RESPONSE, this->uav.getID(), -1);   //MUDAR AQUI???
+                    m.setSource(u.getSelfID());
+                    DroneStatus d = m.getStatus();
+                    d.setLocation(coor.x, coor.y, coor.z);
+                    m.setStatus(d);
+
+                    //Nao usado mais
+                    char snd[1500];
                     std::string txt = "MSG - Coordenadas (" + to_string(coor.x);
                     txt += "," + to_string(coor.y);
                     txt += "," + to_string(coor.z) + ")";
                     strcpy(snd, txt.c_str());
-                    DroneStatusMessage m(snd, LOCATION_STATUS_RESPONSE, this->uav.getID(), -1);   //MUDAR AQUI???
-                    m.getStatus().setLocation(coor.x, coor.y, coor.z);
-                    cout << txt << endl;
+                    cout << "TXT: " << snd << endl;
+
+                    cout << "MSG: " << m.getStatus().getLocationX() << "|" << m.getStatus().getLocationY() << "|" << m.getStatus().getLocationZ() << endl;
                     u.dispatchStatusMessage(m);
                 }else if(!strcmp(msg.getMsg(), "velocity")){ //Mudar isso aqui e chamar o OnMessageReceve
                     std::cout << "[U" << this->uav.getID() << "] Respondendo status " << std::endl;
                     double vel = velocidade[this->uav.getID()];
 
-                    UAVCommunicationSocket u;
+                    UAVMysCommunication u;
                     u.setSocketCode(this->uav.getIdSocket());
                     u.setSelfID(this->uav.getID());
 
-                    char snd[150];
-                    std::string txt = "MSG - Velocidade (" + to_string(vel);
-                    txt += "m/s)";
-                    strcpy(snd, txt.c_str());
-                    DroneStatusMessage m(snd, VELOCITY_STATUS_RESPONSE, this->uav.getID(), -1);   //MUDAR AQUI???
-                    m.getStatus().setVelocity(vel);
-                    cout << txt << endl;
+                    DroneStatusMessage m(msg.getMsg(), VELOCITY_STATUS_RESPONSE, this->uav.getID(), -1); //MUDAR AQUI???
+                    DroneStatus d = m.getStatus();
+                    d.setVelocity(vel);
+                    m.setStatus(d);
+                    m.setSource(u.getSelfID());
+
                     u.dispatchStatusMessage(m);
                 }else if(!strcmp(msg.getMsg(), "battery")){ //Mudar isso aqui e chamar o OnMessageReceve
                     std::cout << " Battery status " << std::endl;
 
-                    UAVCommunicationSocket u;
+                    UAVMysCommunication u;
                     u.setSocketCode(this->uav.getIdSocket());
                     u.setSelfID(this->uav.getID());
 
@@ -101,7 +109,7 @@ class SocketMessageReceive {
                 }else if(!strcmp(msg.getMsg(), "flight-time")){ //Mudar isso aqui e chamar o OnMessageReceve
                     std::cout << " Flight Time Status " << std::endl;
 
-                    UAVCommunicationSocket u;
+                    UAVMysCommunication u;
                     u.setSocketCode(this->uav.getIdSocket());
                     u.setSelfID(this->uav.getID());
 

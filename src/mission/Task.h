@@ -12,7 +12,7 @@
 #define FLY_AROUND 82
 #define FLY_AROUND_SQUARE 83
 
-class Task { //Goto, ComeBackBaseStation
+class Task {
 
 public:
     Task(){}
@@ -22,19 +22,7 @@ public:
     }
     virtual ~Task(){}
 
-    virtual bool isComplete(){
-        return (this->status == COMPLETED) ? true : false; //complete
-    }
-
-    void setStatus(int status){
-        this->status = status;
-    }
-
-    void setComplete(){
-        this->status = COMPLETED;
-    }
-
-    int getID() const {
+    int getID() {
         return id;
     }
 
@@ -42,7 +30,15 @@ public:
         this->id = id;
     }
 
-    int getRepeat() const {
+    virtual bool isComplete(){
+        return (this->status == COMPLETED) ? true : false; //complete
+    }
+
+    void setComplete(){
+        this->status = COMPLETED;
+    }
+
+    int getRepeat() {
         return repeat;
     }
 
@@ -54,7 +50,11 @@ public:
         return status;
     }
 
-    const Coordinate getTarget(){
+    void setStatus(int status){
+        this->status = status;
+    }
+
+    Coordinate getTarget(){
         return target;
     }
 
@@ -84,6 +84,10 @@ public:
 
     void setCmd(Command cmd) {
         this->cmd = cmd;
+    }
+
+    virtual void executeTask(){
+
     }
 
 private:

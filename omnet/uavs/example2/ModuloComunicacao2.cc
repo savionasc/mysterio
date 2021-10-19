@@ -1,9 +1,10 @@
 #include "ModuloComunicacao2.h"
 
-#include "../../communication/UAVCommunicationSocket.h"
 #include "../../mission/GoTo.h"
 #include "../UAVMobility.h"
 #include <iostream>
+
+#include "../../communication/UAVMysCommunication.h"
 #include "../../status/DroneStatus.h"
 
 using namespace omnetpp;
@@ -17,7 +18,7 @@ extern Coord position[NUMUAVS];
 extern double velocidade[NUMUAVS];
 extern float bateria[NUMUAVS];
 extern double tempoVoo[NUMUAVS];
-extern UAVCommunicationSocket uavs[NUMUAVS];
+extern UAVMysCommunication uavs[NUMUAVS];
 //extern std::vector<UAVCommunicationSocket> uavs;
 extern int UAVDestino;
 extern int UAVLeader;

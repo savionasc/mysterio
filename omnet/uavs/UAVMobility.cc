@@ -1,7 +1,8 @@
 #include "../uavs/UAVMobility.h"
 #include <iostream>
+
+#include "../communication/UAVMysCommunication.h"
 #include "../scenarios/Example1Communication.h"
-#include "../communication/UAVCommunicationSocket.h"
 #include "../mission/GoTo.h"
 
 using namespace omnetpp;
@@ -17,7 +18,7 @@ bool ativo[NUMUAVS];
 int itera[NUMUAVS];
 //std::vector<Task*> base[NUMUAVS]; //Task
 std::vector<Task> base[NUMUAVS];
-UAVCommunicationSocket uavs[NUMUAVS];
+UAVMysCommunication uavs[NUMUAVS];
 int pular = 0; //this variable forces terminate current "task" of uav
 //std::vector<UAVCommunicationSocket> uavs;
 //1 - Tarefa: decolar (idUAV, altura)
@@ -73,7 +74,7 @@ void UAVMobility::setTargetPosition() {
 
                 //enviando mensagem de finalizada
                 this->uav.setIdSocket(uavs[uav.getID()].getSocketCode());
-                UAVCommunicationSocket u;
+                UAVMysCommunication u;
                 u.setSocketCode(this->uav.getIdSocket());
                 u.setSelfID(this->uav.getID());
                 TaskMessage msg;
@@ -89,11 +90,13 @@ void UAVMobility::setTargetPosition() {
                 executeTask(task);
             }
         }else{
-            UAVCommunicationSocket u;
+            UAVMysCommunication u;
             u.setSocketCode(this->uav.getIdSocket());
             u.setSelfID(this->uav.getID());
             Message msg;
+            msg.setCode(123);
             msg.setMsg("Drone sem atividades escalonadas!");
+            cout << "Dois: " << this->uav.getID() << "|" << u.getSelfID() << endl;
             msg.setSource(u.getSelfID());
             u.dispatchMessage(msg);
             targetPosition = getRandomPosition();

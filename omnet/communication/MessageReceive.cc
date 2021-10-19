@@ -3,7 +3,6 @@
 #include <netinet/in.h>
 #include <string.h>
 
-//#include "../../src/mission/MissionPlanner.h"
 #include "../../src/taskmanager/TaskManager.h"
 #include "../status/MysStatus.h"
 #include "../../src/utils/Message.h"
@@ -12,7 +11,7 @@
 
 using namespace std;
 
-class MessageReceive{ //Não seria ReceiveUAVSocket?
+class MessageReceive{
 public:
     void operator()(int param){
         while(esperarMensagem(param)){ }
@@ -22,21 +21,35 @@ public:
         int typeMSG;
         memset(&typeMSG, 0, sizeof(typeMSG));
         recv(newSd, (int*)&typeMSG, sizeof(typeMSG), 0);
+        cout << "Tipo da mensagem: " << typeMSG << endl;
         if(typeMSG == STATUS_MESSAGE){
             DroneStatusMessage msg;
             memset(&msg, 0, sizeof(msg));
             recv(newSd, (DroneStatusMessage*)&msg, sizeof(msg), 0);
-            cout << "Mensagem: " << msg.getMsg() << endl;
+            cout << "MensagemStatus: " << msg.getCode() << "X" << msg.getStatus().getLocationX() << msg.getMsg() << endl;
+            cout << "Minha mensagem: " << msg.getMsg() << endl;
+            if(strcmp(msg.getMsg(), "velocity") == 0){
+                MysStatus* status = MysStatus::GetInstance();
+                cout << "Numero de UAVs no singleton: " << status->numeroUAVs() << endl;
+            }
+
+            if(strcmp(msg.getMsg(), "location") == 0){
+                cout << "Add no singleton: " << endl;
+                MysStatus* status = MysStatus::GetInstance();
+                status->addUAV();
+            }
+
             if(!strcmp(msg.getMsg(), "exit")){
                 std::cout << "UAV has quit the session" << std::endl;
                 return false;
             }//else if(!strcmp(msg.msg, "status")){ //Mudar isso aqui e chamar o OnMessageReceve
             else if(msg.getCode() > 10 && msg.getCode() < 21){ //Ideia de definir tipos por intervalos
-                MysStatus status;
-                status.onDroneStatusMessageReceive(msg);
+                MysStatus* status = MysStatus::GetInstance();
+                status->onDroneStatusMessageReceive(msg);
             }else {
-                MysStatus status;
-                status.onDroneStatusMessageReceive(msg);
+                //MysStatus *status;
+                MysStatus* status = MysStatus::GetInstance();
+                status->onDroneStatusMessageReceive(msg);
             }
         }else if(typeMSG == MESSAGE){
             Message msg;
@@ -44,9 +57,9 @@ public:
             recv(newSd, (Message*)&msg, sizeof(msg), 0);
 
             if(msg.getCode()){
-                cout << "[U" << msg.getDestination() << "] Atividade finalizada, codigo da mensagem: " << msg.getCode() << endl;
+                cout << "[U" << msg.getSource() << "] Atividade finalizada, codigo da mensagem: " << msg.getCode() << endl;
             }else{
-                cout << "[U" << msg.getDestination() << "] Mensagem recebida: " << msg.getMsg() << endl;
+                cout << "[U" << msg.getSource() << "] Mensagem recebida: " << msg.getMsg() << endl;
             }
         }else if(typeMSG == TASK_MESSAGE){
             TaskMessage msg;

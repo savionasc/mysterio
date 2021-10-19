@@ -6,6 +6,9 @@
 #include "../database/RepositoryMySQL.h"
 #include <iostream>
 #include <map>
+#include <vector>
+#include <thread>
+#include <mutex>
 
 using namespace std;
 
@@ -24,7 +27,7 @@ enum codes{
 
 class MysStatus : public Status, public Communicable{
 public:
-    MysStatus();
+
     //Communicable
     virtual void onMessageReceive(Message msg);
     virtual void onDroneStatusMessageReceive(DroneStatusMessage msg);
@@ -41,18 +44,44 @@ public:
     virtual float getBattery(int idUAV);           //rescues from the repository
     virtual void updateBattery(float level, int idUAV);          //send to repository
 
+    static MysStatus *GetInstance();
+
+    MysStatus(MysStatus &other) = delete;
+    void operator=(const MysStatus &) = delete;
+
+
+    int numeroUAVs(){
+        return numeroDeUAVs;
+    }
+
+    void setNumeroDeUAVs(int numero){
+        this->numeroDeUAVs = numero;
+    }
+
+    void addUAV(){
+        numeroDeUAVs++;
+    }
+
+protected:
+    MysStatus(){ setNumeroDeUAVs(2); r.disablePrints(); }
+    int numeroDeUAVs;
+
 private:
-    std::map<int,UAV> uavs;
     int tempoDeFuncionamento; //do sistema
+
+    //singleton
+    static MysStatus * mpinstance_;
+    static std::mutex mutex_;
+    static std::map<int,UAV> uavs;
+
     UAV pegarUAV(int idUAV){
-        UAV r;
-        r.setID(-1);
+        UAV u;
+        u.setID(-1);
         for (std::map<int, UAV>::iterator it=uavs.begin(); it!=uavs.end(); ++it)
             if(it->first == idUAV)
                 return it->second;
-        return r;
+        return u;
     }
-    int numNodes;
 
     RepositoryMySQL r; //Deixar de solicitar diretamente pro banco para pedir pro UAV
 };

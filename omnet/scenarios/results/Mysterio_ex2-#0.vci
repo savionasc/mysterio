@@ -1,15 +1,15 @@
-file 28410 1633974718                                           
+file 33164 1634646638                                           
 version 2
-run Mysterio_ex2-0-20211011-14:51:33-4444
+run Mysterio_ex2-0-20211019-09:30:17-4424
 attr configname Mysterio_ex2
-attr datetime 20211011-14:51:33
+attr datetime 20211019-09:30:17
 attr experiment Mysterio_ex2
 attr inifile omnetpp.ini
 attr iterationvars ""
 attr iterationvarsf ""
 attr measurement ""
 attr network MysterioCommunication2
-attr processid 4444
+attr processid 4424
 attr repetition 0
 attr replication #0
 attr resultdir results
@@ -93,10 +93,10 @@ vector 5 MysterioCommunication2.host[1].energyStorage powerGeneration:vector ETV
 attr interpolationmode sample-hold
 attr source powerGenerationChanged
 attr title "Power generation, vector"
-0	4644 13755 0 975 0 48.1 592 0.045648315205361 0.05 29.14847320825 1.4361970779497
-1	18399 63 0 727 0 36.292258994315 3 0 0.004 0.008 3.2e-05
-2	18462 9756 0 975 0 48.1 578 0.0495 0.05 28.882011814763 1.4432094765042
-3	28218 64 0 970 0 47.891578112099 3 0 0.004 0.008 3.2e-05
-4	28282 63 0 727 0 36.292258994315 3 0 0.004 0.008 3.2e-05
-5	28345 64 0 970 0 47.891578112099 3 0 0.004 0.008 3.2e-05
+0	4644 16111 0 1095 0 54.523331282799 677 0.0495 0.05 33.819179235442 1.6894324811554
+1	20755 63 0 505 0 25.195065580817 3 0 0.004 0.008 3.2e-05
+2	20818 12210 0 1095 0 54.523331282799 676 0.0495 0.05 33.77643917734 1.6876547733918
+3	33028 36 0 944 0 46.974101355068 2 0 0.004 0.004 1.6e-05
+4	33064 63 0 505 0 25.195065580817 3 0 0.004 0.008 3.2e-05
+5	33127 36 0 944 0 46.974101355068 2 0 0.004 0.004 1.6e-05
 

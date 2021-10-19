@@ -1,12 +1,12 @@
-all: Example1Communication.o MysStatus.o RepositoryMySQL.o CommunicationSocket.o UAV.o DroneStatus.o MissionPlanner.o
-	g++ -pthread -o scenarios/main Example1Communication.o MysStatus.o RepositoryMySQL.o CommunicationSocket.o UAV.o DroneStatus.o MissionPlanner.o -lmysqlclient
+all: Example1Communication.o MysStatus.o RepositoryMySQL.o MysCommunication.o UAV.o DroneStatus.o MissionPlanner.o
+	g++ -pthread -o scenarios/main Example1Communication.o MysStatus.o RepositoryMySQL.o MysCommunication.o UAV.o DroneStatus.o MissionPlanner.o -lmysqlclient
 
-CommunicationSocket.o: communication/CommunicationSocket.cc communication/CommunicationSocket.h communication/UAVRegistry.cc
-	g++ -c communication/CommunicationSocket.cc communication/CommunicationSocket.h communication/UAVRegistry.cc
+MysCommunication.o: communication/MysCommunication.cc communication/MysCommunication.h communication/UAVRegistry.cc
+	g++ -c communication/MysCommunication.cc communication/MysCommunication.h communication/UAVRegistry.cc
 SocketConnect.o: communication/SocketConnect.cc
 	g++ -c communication/SocketConnect.cc
-Example1Communication.o: scenarios/Example1Communication.cc communication/CommunicationSocket.h status/MysStatus.h
-	g++ -c scenarios/Example1Communication.cc communication/CommunicationSocket.h communication/CommunicationSocket.cc status/MysStatus.h 
+Example1Communication.o: scenarios/Example1Communication.cc communication/MysCommunication.h status/MysStatus.h
+	g++ -c scenarios/Example1Communication.cc communication/MysCommunication.h communication/MysCommunication.cc status/MysStatus.h 
 MysStatus.o: status/MysStatus.cc status/MysStatus.h ../src/status/Status.h
 	g++ -c status/MysStatus.cc status/MysStatus.h ../src/status/Status.h
 MissionPlanner.o: ../src/mission/MissionPlanner.cc ../src/mission/MissionPlanner.h

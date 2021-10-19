@@ -1,10 +1,11 @@
 #include "ModuloComunicacao.h"
 
-#include "../communication/UAVCommunicationSocket.h"
 #include "../mission/GoTo.h"
 #include "../uavs/UAVMobility.h"
 #include "../../src/utils/Message.h"
 #include <iostream>
+
+#include "../communication/UAVMysCommunication.h"
 #include "../status/DroneStatus.h"
 
 using namespace omnetpp;
@@ -14,7 +15,7 @@ Define_Module(ModuloComunicacao);
 
 //shared variables
 using namespace mysterio;
-extern UAVCommunicationSocket uavs[NUMUAVS];
+extern UAVMysCommunication uavs[NUMUAVS];
 //extern std::vector<UAVCommunicationSocket> uavs;
 extern Coord position[NUMUAVS];
 extern double velocidade[NUMUAVS];

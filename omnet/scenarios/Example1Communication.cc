@@ -1,6 +1,6 @@
 #include "../scenarios/Example1Communication.h"
 #include <iostream>
-#include "../communication/CommunicationSocket.h"
+#include "../communication/MysCommunication.h"
 #include "../../src/mission/MissionPlanner.h"
 
 using namespace std;
@@ -10,7 +10,7 @@ using namespace std;
 int conexoes[NUMUAVS];
 
 void listenSocket(){ //Here starts the server communication
-    CommunicationSocket comm;
+    MysCommunication comm;
     int serverSocket = comm.configureSocketServer(PORT);
     if(serverSocket > 0){
         thread conectar(UAVRegistry(), serverSocket, conexoes);
@@ -35,13 +35,17 @@ void listenSocket(){ //Here starts the server communication
         TaskManager t;
         t.addTask(gotoc);
 
+        char let[10] = "AAAAA";
+
         //Enviando tarefa
         int codeMessage = TASK_MESSAGE;
-        TaskMessage taskMessage("AAAA", TASK_MESSAGE);
+        //s.c_str()
+        //string s = "AAAA";
+        TaskMessage taskMessage(let, TASK_MESSAGE);
         taskMessage.setCoord(t.getTaskByIndex(u, t.getNumTasks(u)-1).getTarget());
         taskMessage.setTask(t.getTaskByIndex(u, t.getNumTasks(u)-1));
         cout << "Criando tarefa com id: " << taskMessage.getTask().getID()<< endl;
-        CommunicationSocket comm;
+        MysCommunication comm;
         comm.sendTaskMessageToUAV(conexoes[0], taskMessage);
 
         //Antes desse loop é onde atribui tarefas previamente

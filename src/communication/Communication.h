@@ -15,7 +15,6 @@ extern int conexoes[NUMUAVS];
 // Componente de comunicação do framework com Classes do tipo Communicable
 class Communication {
 public:
-//    int conexoes[NUMUAVS]; //Passar o Array pro Framework
 //public:
     //ReceiveMessageFromUAV or Route
     //Antigo sendMessage
@@ -25,11 +24,13 @@ public:
         return conexoes;
     }
 
-    virtual void sendTaskMessageToUAV(int idSocket, TaskMessage tmsg){
+    virtual void sendTaskMessageToUAV(int idSocket, TaskMessage tmsg) = 0;//{
+        /*
         cout << "Criando tarefa com id: " << tmsg.getTask().getID() << endl;
         thread enviar(MessageSender(), idSocket, tmsg);
         enviar.detach();
-    }
+        */
+    //}
 
     virtual int configureSocketServer(int portServer){ //Here is configured and inicialized the socket server
         //Returns -1 for Inaccessible ports

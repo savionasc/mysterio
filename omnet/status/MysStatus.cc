@@ -1,9 +1,19 @@
 #include "MysStatus.h"
 
-#include "../communication/CommunicationSocket.h"
+#include "../communication/MysCommunication.h"
 
-MysStatus::MysStatus(){
-    this->r.disablePrints();
+using namespace std;
+
+MysStatus* MysStatus::mpinstance_{nullptr};
+std::mutex MysStatus::mutex_;
+std::map<int,UAV> MysStatus::uavs;
+
+MysStatus *MysStatus::GetInstance(){
+    std::lock_guard<std::mutex> lock(mutex_);
+    if (mpinstance_ == nullptr){
+        mpinstance_ = new MysStatus();
+    }
+    return mpinstance_;
 }
 
 void MysStatus::onMessageReceive(Message msg){
@@ -98,7 +108,7 @@ void MysStatus::onDroneStatusMessageReceive(DroneStatusMessage msg){
 }
 
 int MysStatus::CountActiveUAVs(){
-    return numNodes;
+    return numeroDeUAVs;
 }
 
 //Getters and updaters

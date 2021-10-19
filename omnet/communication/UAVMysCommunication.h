@@ -8,7 +8,6 @@
 #include <arpa/inet.h>
 #include <netinet/in.h>
 #include "../../src/communication/UAVCommunication.h"
-#include "CommunicationSocket.h"
 #include "../../src/utils/Message.h"
 #include "../../omnet/communication/DroneStatusMessage.h"
 #include "../communication/DroneStatusMessage.h"
@@ -17,6 +16,7 @@
 #include "inet/power/base/EpEnergyStorageBase.h"
 #include "inet/power/storage/SimpleEpEnergyStorage.h"
 #include "../mission/GoTo.h"
+#include "MysCommunication.h"
 
 using namespace inet;
 using namespace std;
@@ -32,7 +32,7 @@ extern int itera[NUMUAVS];
 
 namespace mysterio {
 
-class UAVCommunicationSocket : public UAVCommunication {
+class UAVMysCommunication : public UAVCommunication {
     friend class SocketMessageReceive;
 public:
     //UAVCommunication
