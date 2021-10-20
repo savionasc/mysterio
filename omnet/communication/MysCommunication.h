@@ -7,8 +7,6 @@
 #include "../../src/utils/Message.h"
 #include "../status/MysStatus.h"
 
-extern int conexoes[NUMUAVS];
-
 // componente de comunicação do framework com os drones
 class MysCommunication : public Communication {
 public:

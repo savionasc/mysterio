@@ -11,35 +11,35 @@
 #include "../status/MysStatus.h"
 
 using namespace std;
-//extern int conexoes[];
-extern int ct;
 
 class UAVRegistry{
 public:
-    void operator()(int param1, int *param2){
-        while(conectarNovoUAV(param1, param2)){ }
+    //void operator()(int param1, int *param2){
+        //while(conectarNovoUAV(param1, param2)){ }
+    void operator()(int param){
+        while(conectarNovoUAV(param)){ }
     }
 
-    bool conectarNovoUAV(int serverSd, int *conexoes){
+    //bool conectarNovoUAV(int serverSocket, int *listaConexoes){
+    bool conectarNovoUAV(int serverSocket){
         sockaddr_in newSockAddr;
         socklen_t newSockAddrSistdze = sizeof(newSockAddr);
-        int idSocket = accept(serverSd, (sockaddr *)&newSockAddr, &newSockAddrSistdze);
+        int idSocket = accept(serverSocket, (sockaddr *)&newSockAddr, &newSockAddrSistdze);
         if(idSocket < 0){
             std::cerr << "Error accepting request from UAV!" << std::endl;
             exit(1);
             return false;
         }
         std::cout << "Connected with UAV!" << std::endl;
-        ct++;
         MysStatus *ms;
         UAV u(ms->getSize());
         u.setIdSocket(idSocket);
         ms->addUAV(u);
-        conexoes[ct] = idSocket;
-        cout << "UAV registrado: " << u.getID() << " ct: " << ct << endl;
-        thread conectar(UAVRegistry(), serverSd, conexoes);
-        //thread receber(MessageReceive(), conexoes[ct]);
-        thread receber(MessageReceive(), ms->getUAV(ct).getIdSocket());
+        //listaConexoes[u.getID()] = idSocket;
+        cout << "UAV registrado: " << u.getID() << endl;
+        thread conectar(UAVRegistry(), serverSocket);
+        //thread receber(MessageReceive(), ms->getUAV(u.getID()).getIdSocket());
+        thread receber(MessageReceive(), u.getIdSocket());
         receber.join();
         return true;
     }

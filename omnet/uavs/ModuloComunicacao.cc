@@ -16,7 +16,6 @@ Define_Module(ModuloComunicacao);
 //shared variables
 using namespace mysterio;
 extern UAVMysCommunication uavs[NUMUAVS];
-//extern std::vector<UAVCommunicationSocket> uavs;
 extern Coord position[NUMUAVS];
 extern double velocidade[NUMUAVS];
 extern float bateria[NUMUAVS];
@@ -24,8 +23,6 @@ extern double tempoVoo[NUMUAVS];
 
 extern int UAVDestino;
 extern int UAVLeader;
-
-//static GoToTask irNaEsquina;
 
 void ModuloComunicacao::initialize(){
     selfID = getIndex();

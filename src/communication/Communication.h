@@ -5,23 +5,22 @@
 #include "../../omnet/communication/DroneStatusMessage.h"
 #include <thread>
 #include "../../omnet/communication/UAVRegistry.cc"
+#include "../../omnet/status/MysStatus.h"
 
 //#include "../taskmanager/TaskManager.h"
 #define NUMUAVS 2 //mudar o array[] para list/container array mesmo
-#define PORT 1111
-
-extern int conexoes[NUMUAVS];
 
 // Componente de comunicação do framework com Classes do tipo Communicable
 class Communication {
 public:
 //public:
-    //ReceiveMessageFromUAV or Route
     //Antigo sendMessage
     virtual void ReceiveMessageFromUAV(Communicable *source, Communicable *dest, Message msg) = 0;
-    //virtual int* getActiveConnections(); //Criar uma classe Conexões para guardar o ID do UAV e o Socket
-    virtual int* getActiveConnections(){
-        return conexoes;
+    //virtual int* getActiveConnections(); retorna lista ou map de conexoes...
+
+    virtual int countActiveConnections(){
+        MysStatus *ms;
+        return ms->getSize();
     }
 
     virtual void sendTaskMessageToUAV(int idSocket, TaskMessage tmsg) = 0;//{
@@ -65,16 +64,17 @@ public:
         //Ver onde colocar o TaskManager
         //if task, adicionar no MissionPlanner (Singleton)
 
+        MysStatus *ms;
         if(idUAV == -1){ //Broadcast
             cout << "BROADCAST" << endl;
-            for (int i = 0; i <= ct; i++){
+            for (int i = 0; i <= ms->getSize(); i++){
                 msg.setDestination(i);
-                thread enviar(MessageSender(), conexoes[i], msg);
+                thread enviar(MessageSender(), ms->getUAV(i).getIdSocket(), msg);
                 enviar.detach();
             }
         }else{ //unicast
             cout << "UNICAST" << endl;
-            thread enviar(MessageSender(), conexoes[idUAV], msg);
+            thread enviar(MessageSender(), ms->getUAV(idUAV).getIdSocket(), msg);
             enviar.join();
         }
     }

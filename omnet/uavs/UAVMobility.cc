@@ -16,11 +16,9 @@ float bateria[NUMUAVS];
 double tempoVoo[NUMUAVS];
 bool ativo[NUMUAVS];
 int itera[NUMUAVS];
-//std::vector<Task*> base[NUMUAVS]; //Task
 std::vector<Task> base[NUMUAVS];
 UAVMysCommunication uavs[NUMUAVS];
 int pular = 0; //this variable forces terminate current "task" of uav
-//std::vector<UAVCommunicationSocket> uavs;
 //1 - Tarefa: decolar (idUAV, altura)
 //2 - Tarefa: goto (idUAV, positionTarget)
 //3 - Tarefa: dar uma volta sobre (idUAV, positionTarget, distanciaSobre)

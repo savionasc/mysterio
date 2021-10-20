@@ -5,22 +5,21 @@
 
 using namespace std;
 
-#define PORT 1111
-#define NUMUAVS 2
-int conexoes[NUMUAVS];
+//int conexoes[2];
+
+MysStatus *ms;
 
 void listenSocket(){ //Here starts the server communication
     int numeroDeUAVs = 2;
 
-    MysStatus *ms;
     MysCommunication comm;
-    int serverSocket = comm.configureSocketServer(PORT);
+    int serverSocket = comm.configureSocketServer(1111); //Port number
     if(serverSocket > 0){
-        thread conectar(UAVRegistry(), serverSocket, conexoes);
+        //thread conectar(UAVRegistry(), serverSocket, conexoes);
+        thread conectar(UAVRegistry(), serverSocket);
         std::cout << "Waiting for a UAV to connect..." << std::endl;
         //waiting for the first UAV
-        //while(ct == -1){
-        while(ct+1 < numeroDeUAVs){
+        while(ms->getSize() < numeroDeUAVs){
         }
 
         //Atribuindo tarefas previamente (pós registro dos UAVs)
@@ -90,7 +89,7 @@ void listenSocket(){ //Here starts the server communication
             }
 
             if(!strcmp(msg.getMsg(), "decolar")){ //take off
-                for (int i = 0; i < NUMUAVS; i++) {
+                for (int i = 0; i < ms->getSize(); i++) {
                     Coordinate currentP(50.0,50.0,100.0);
                     UAV u(i);
                     Task gotoc(u, currentP);
@@ -110,7 +109,7 @@ void listenSocket(){ //Here starts the server communication
                     comm.sendTaskMessageToUAV(ms->getUAV(u.getID()).getIdSocket(), taskMessage);
                 }
             }else if(!strcmp(msg.getMsg(), "quarteirao")){ //take off
-                for (int i = 0; i < NUMUAVS; i++) {
+                for (int i = 0; i < ms->getSize(); i++) {
                     Coordinate currentP(500.0,500.0,400.0);
                     UAV u(i);
                     Task gotoc(u, currentP);

@@ -40,7 +40,7 @@ void UAVMysCommunication::connectBase(){
         sendSockAddr.sin_family = AF_INET;
         sendSockAddr.sin_addr.s_addr =
             inet_addr(inet_ntoa(*(struct in_addr*)*host->h_addr_list));
-        sendSockAddr.sin_port = htons(PORT);
+        sendSockAddr.sin_port = htons(1111);
         int clientSd = socket(AF_INET, SOCK_STREAM, 0);
 
         int status = connect(clientSd,

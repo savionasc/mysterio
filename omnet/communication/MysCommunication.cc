@@ -3,12 +3,9 @@
 #include <thread>
 #include "TaskMessage.h"
 #include "../../src/communication/Communication.h"
-#include "UAVRegistry.cc"
 
 using namespace std;
 //Enviar mensagens Unicast, Broadcast e Multicast
-
-int ct = -1; //Passar o Array pro Framework
 
 int MysCommunication::configureSocketServer(int port){
     return Communication::configureSocketServer(port);

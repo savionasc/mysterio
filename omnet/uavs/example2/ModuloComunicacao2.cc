@@ -19,7 +19,6 @@ extern double velocidade[NUMUAVS];
 extern float bateria[NUMUAVS];
 extern double tempoVoo[NUMUAVS];
 extern UAVMysCommunication uavs[NUMUAVS];
-//extern std::vector<UAVCommunicationSocket> uavs;
 extern int UAVDestino;
 extern int UAVLeader;
 
