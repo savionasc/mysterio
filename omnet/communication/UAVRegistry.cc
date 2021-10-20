@@ -14,13 +14,10 @@ using namespace std;
 
 class UAVRegistry{
 public:
-    //void operator()(int param1, int *param2){
-        //while(conectarNovoUAV(param1, param2)){ }
     void operator()(int param){
         while(conectarNovoUAV(param)){ }
     }
 
-    //bool conectarNovoUAV(int serverSocket, int *listaConexoes){
     bool conectarNovoUAV(int serverSocket){
         sockaddr_in newSockAddr;
         socklen_t newSockAddrSistdze = sizeof(newSockAddr);
@@ -35,10 +32,8 @@ public:
         UAV u(ms->getSize());
         u.setIdSocket(idSocket);
         ms->addUAV(u);
-        //listaConexoes[u.getID()] = idSocket;
         cout << "UAV registrado: " << u.getID() << endl;
         thread conectar(UAVRegistry(), serverSocket);
-        //thread receber(MessageReceive(), ms->getUAV(u.getID()).getIdSocket());
         thread receber(MessageReceive(), u.getIdSocket());
         receber.join();
         return true;

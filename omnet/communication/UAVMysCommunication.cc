@@ -54,14 +54,8 @@ void UAVMysCommunication::connectBase(){
             this->socketCode = clientSd;
 
             thread receber(UAVMessageReceive(), this->socketCode, this->selfID, this->socketCode);
-            receber.detach(); //join
+            receber.detach();
         }
-
-        //void CommunicationSocket::connectANewUAV(int ID, StatusC1 *aggregator){
-        //    UAV newUAV;
-        //    newUAV.setID(ID);
-        //    aggregator->addUAV(newUAV);
-        //}
     }
 }
 
@@ -92,5 +86,4 @@ void UAVMysCommunication::setSelfID(int selfID){
 void UAVMysCommunication::disconnectBase(){
     close(getSocketCode());
 }
-
 }
