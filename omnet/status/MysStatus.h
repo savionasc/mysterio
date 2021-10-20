@@ -71,7 +71,11 @@ public:
     }
 
     UAV getUAV(int idUAV){
-        return this->getUAV(idUAV);
+        return this->pegarUAV(idUAV);
+    }
+
+    int getIDSocket(int idUAV){
+        return this->pegarUAV(idUAV).getIdSocket();
     }
 
     void setUAV(UAV u){

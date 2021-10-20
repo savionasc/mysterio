@@ -17,15 +17,15 @@ public:
         while(esperarMensagem(param)){ }
     }
 
-    bool esperarMensagem(int newSd){
+    bool esperarMensagem(int socket){
         int typeMSG;
         memset(&typeMSG, 0, sizeof(typeMSG));
-        recv(newSd, (int*)&typeMSG, sizeof(typeMSG), 0);
+        recv(socket, (int*)&typeMSG, sizeof(typeMSG), 0);
         cout << "Tipo da mensagem: " << typeMSG << endl;
         if(typeMSG == STATUS_MESSAGE){
             DroneStatusMessage msg;
             memset(&msg, 0, sizeof(msg));
-            recv(newSd, (DroneStatusMessage*)&msg, sizeof(msg), 0);
+            recv(socket, (DroneStatusMessage*)&msg, sizeof(msg), 0);
             cout << "MensagemStatus: " << msg.getCode() << "X" << msg.getStatus().getLocationX() << msg.getMsg() << endl;
             cout << "Minha mensagem: " << msg.getMsg() << endl;
             if(strcmp(msg.getMsg(), "velocity") == 0){
@@ -54,7 +54,7 @@ public:
         }else if(typeMSG == MESSAGE){
             Message msg;
             memset(&msg, 0, sizeof(msg));
-            recv(newSd, (Message*)&msg, sizeof(msg), 0);
+            recv(socket, (Message*)&msg, sizeof(msg), 0);
 
             if(msg.getCode()){
                 cout << "[U" << msg.getSource() << "] Atividade finalizada, codigo da mensagem: " << msg.getCode() << endl;
@@ -65,7 +65,7 @@ public:
         }else if(typeMSG == TASK_MESSAGE){
             TaskMessage msg;
             memset(&msg, 0, sizeof(msg));
-            recv(newSd, (TaskMessage*)&msg, sizeof(msg), 0);
+            recv(socket, (TaskMessage*)&msg, sizeof(msg), 0);
             cout << "Tarefa recebida - Code Message: " << msg.getCode();
             cout << " Status: " << msg.getTask().getStatus() << " ID da tarefa: " << msg.getTask().getID() << endl;
             cout << "Finalizada? " << msg.getTask().isComplete() << endl;
@@ -75,7 +75,7 @@ public:
         }else if(typeMSG == TASK_COMPLETED_MESSAGE){
             Message msg;
             memset(&msg, 0, sizeof(msg));
-            recv(newSd, (Message*)&msg, sizeof(msg), 0);
+            recv(socket, (Message*)&msg, sizeof(msg), 0);
             cout << "[U" << msg.getDestination() << "] Atividade finalizada, codigo da mensagem: " << msg.getCode() << endl;
         }
         return true;

@@ -12,6 +12,7 @@ int conexoes[NUMUAVS];
 void listenSocket(){ //Here starts the server communication
     int numeroDeUAVs = 2;
 
+    MysStatus *ms;
     MysCommunication comm;
     int serverSocket = comm.configureSocketServer(PORT);
     if(serverSocket > 0){
@@ -49,9 +50,11 @@ void listenSocket(){ //Here starts the server communication
         taskMessage.setTask(t.getTaskByIndex(u, t.getNumTasks(u)-1));
         cout << "Criando tarefa com id: " << taskMessage.getTask().getID()<< endl;
         MysCommunication comm;
-        MysStatus *m;
-        cout << "Tamanho do map de UAVs: " << m->getSize() << endl;
-        comm.sendTaskMessageToUAV(conexoes[0], taskMessage);
+        cout << "Tamanho do map de UAVs: " << ms->getSize() << endl;
+
+        u = ms->getUAV(0);
+        comm.sendTaskMessageToUAV(u.getIdSocket(), taskMessage);
+        //comm.sendTaskMessageToUAV(conexoes[0], taskMessage);
 
         //Antes desse loop é onde atribui tarefas previamente
 
@@ -102,7 +105,9 @@ void listenSocket(){ //Here starts the server communication
                     taskMessage.setCoord(t.getTaskByIndex(u, t.getNumTasks(u)-1).getTarget());
                     taskMessage.setTask(t.getTaskByIndex(u, t.getNumTasks(u)-1));
                     cout << "Criando tarefa com id: " << taskMessage.getTask().getID() << endl;
-                    comm.sendTaskMessageToUAV(conexoes[u.getID()], taskMessage);
+                    //comm.sendTaskMessageToUAV(conexoes[u.getID()], taskMessage);
+
+                    comm.sendTaskMessageToUAV(ms->getUAV(u.getID()).getIdSocket(), taskMessage);
                 }
             }else if(!strcmp(msg.getMsg(), "quarteirao")){ //take off
                 for (int i = 0; i < NUMUAVS; i++) {
@@ -120,7 +125,9 @@ void listenSocket(){ //Here starts the server communication
                     taskMessage.setCoord(t.getTaskByIndex(u, t.getNumTasks(u)-1).getTarget());
                     taskMessage.setTask(t.getTaskByIndex(u, t.getNumTasks(u)-1));
                     cout << "Criando tarefa com id: " << taskMessage.getTask().getID() << endl;
-                    comm.sendTaskMessageToUAV(conexoes[u.getID()], taskMessage);
+                    //comm.sendTaskMessageToUAV(conexoes[u.getID()], taskMessage);
+                    comm.sendTaskMessageToUAV(ms->getUAV(u.getID()).getIdSocket(), taskMessage);
+
                 }
             }else if(!strcmp(msg.getMsg(), "carro")){
                 Coordinate currentP(300.0,420.0,90.0);
@@ -138,7 +145,9 @@ void listenSocket(){ //Here starts the server communication
                 taskMessage.setCoord(t.getTaskByIndex(u, t.getNumTasks(u)-1).getTarget());
                 taskMessage.setTask(t.getTaskByIndex(u, t.getNumTasks(u)-1));
                 cout << "Criando tarefa com id: " << taskMessage.getTask().getID() << endl;
-                comm.sendTaskMessageToUAV(conexoes[id], taskMessage);
+                //comm.sendTaskMessageToUAV(conexoes[id], taskMessage);
+
+                comm.sendTaskMessageToUAV(ms->getUAV(u.getID()).getIdSocket(), taskMessage);
             }
             comm.sendMessageToUAV(id, msg);
         }

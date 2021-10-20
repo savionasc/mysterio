@@ -38,7 +38,8 @@ public:
         conexoes[ct] = idSocket;
         cout << "UAV registrado: " << u.getID() << " ct: " << ct << endl;
         thread conectar(UAVRegistry(), serverSd, conexoes);
-        thread receber(MessageReceive(), conexoes[ct]);
+        //thread receber(MessageReceive(), conexoes[ct]);
+        thread receber(MessageReceive(), ms->getUAV(ct).getIdSocket());
         receber.join();
         return true;
     }
