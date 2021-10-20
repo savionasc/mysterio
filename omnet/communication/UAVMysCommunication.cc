@@ -1,9 +1,8 @@
-#include "DroneStatusMessage.h"
 #include <iostream>
 
 #include "UAVMysCommunication.h"
-
 #include "UAVMessageReceive.h"
+#include "../../src/communication/StatusMessage.h"
 #define HOSTNAME "127.0.0.1"
 
 using namespace std;
@@ -16,11 +15,11 @@ void UAVMysCommunication::dispatchTaskMessage(TaskMessage msg){
     send(this->getSocketCode(), (TaskMessage*)&msg, sizeof(msg), 0);
 }
 
-void UAVMysCommunication::dispatchStatusMessage(DroneStatusMessage msg){
+void UAVMysCommunication::dispatchStatusMessage(StatusMessage msg){
     //DroneStatusMessage* s = dynamic_cast<DroneStatusMessage*>(&msg);
     int codeMessage = STATUS_MESSAGE;
     send(this->getSocketCode(), (int*)&codeMessage, sizeof(codeMessage), 0);
-    send(this->getSocketCode(), (DroneStatusMessage*)&msg, sizeof(msg), 0);
+    send(this->getSocketCode(), (StatusMessage*)&msg, sizeof(msg), 0);
 }
 
 void UAVMysCommunication::dispatchMessage(Message msg){
@@ -86,4 +85,9 @@ void UAVMysCommunication::setSelfID(int selfID){
 void UAVMysCommunication::disconnectBase(){
     close(getSocketCode());
 }
+
+void UAVMysCommunication::reconnect(){
+    this->connectBase();
+}
+
 }

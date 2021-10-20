@@ -1,8 +1,8 @@
-#ifndef MYSTERIO_SRC_UTILS_MESSAGE_H_
-#define MYSTERIO_SRC_UTILS_MESSAGE_H_
+#ifndef MYSTERIO_SRC_COMMUNICATION_MESSAGE_H_
+#define MYSTERIO_SRC_COMMUNICATION_MESSAGE_H_
 #include <string.h>
 
-#include "../../omnet/status/DroneStatus.h"
+#include "../status/UAVStatus.h"
 
 enum codemessages{
     MESSAGE = 270,

@@ -1,5 +1,5 @@
-all: Example1Communication.o MysStatus.o RepositoryMySQL.o MysCommunication.o UAV.o DroneStatus.o MissionPlanner.o
-	g++ -pthread -o scenarios/main Example1Communication.o MysStatus.o RepositoryMySQL.o MysCommunication.o UAV.o DroneStatus.o MissionPlanner.o -lmysqlclient
+all: Example1Communication.o MysStatus.o RepositoryMySQL.o MysCommunication.o UAV.o MissionPlanner.o
+	g++ -pthread -o scenarios/main Example1Communication.o MysStatus.o RepositoryMySQL.o MysCommunication.o UAV.o MissionPlanner.o -lmysqlclient
 
 MysCommunication.o: communication/MysCommunication.cc communication/MysCommunication.h communication/UAVRegistry.cc
 	g++ -c communication/MysCommunication.cc communication/MysCommunication.h communication/UAVRegistry.cc
@@ -17,8 +17,8 @@ UAV.o: ../src/utils/UAV.h ../src/utils/UAV.cc
 	g++ -c ../src/utils/UAV.h ../src/utils/UAV.cc
 Coordinate.o:  ../src/utils/Coordinate.h
 	g++ -c ../src/utils/Coordinate.h
-DroneStatus.o: status/DroneStatus.h status/DroneStatus.cc
-	g++ -c status/DroneStatus.h status/DroneStatus.cc
+UAVStatus.o: ../src/status/UAVStatus.h
+	g++ -c ../src/status/UAVStatus.h
 clean:
 	rm -rf *.o scenarios/main
 

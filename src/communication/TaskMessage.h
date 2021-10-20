@@ -1,6 +1,6 @@
-#ifndef MYSTERIO_OMNET_COMMUNICATION_TASKMESSAGE_H_
-#define MYSTERIO_OMNET_COMMUNICATION_TASKMESSAGE_H_
-#include "../../src/utils/Message.h"
+#ifndef MYSTERIO_SRC_COMMUNICATION_TASKMESSAGE_H_
+#define MYSTERIO_SRC_COMMUNICATION_TASKMESSAGE_H_
+#include "Message.h"
 #include "../../src/mission/Task.h"
 
 class TaskMessage : public Message{

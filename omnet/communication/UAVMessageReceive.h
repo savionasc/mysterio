@@ -2,6 +2,7 @@
 #define MYSTERIO_OMNET_COMMUNICATION_UAVMESSAGERECEIVE_H_
 #include "../../src/utils/UAV.h"
 #include "UAVMysCommunication.h"
+#include "../uavs/UAVMobility.h"
 
 using namespace std;
 
@@ -48,10 +49,6 @@ class UAVMessageReceive {
                     //Daqui pra baixo enviar para o UAVCommunicationSocket
                     //Aí no OnMessageReceve ele trata tudo e fica mais organizado
 
-                    //UAVCommunicationSocket u;
-                    //u.OnMessageReceive(msg);
-                    //IMPORTANTE
-
 
                 }else if(!strcmp(msg.getMsg(), "location")){ //Mudar isso aqui e chamar o OnMessageReceve
                     std::cout << "[U" << this->uav.getID() << "] Respondendo status " << std::endl;
@@ -61,9 +58,9 @@ class UAVMessageReceive {
                     u.setSocketCode(this->uav.getIdSocket());
                     u.setSelfID(this->uav.getID());
 
-                    DroneStatusMessage m(msg.getMsg(), LOCATION_STATUS_RESPONSE, this->uav.getID(), -1);   //MUDAR AQUI???
+                    StatusMessage m(msg.getMsg(), LOCATION_STATUS_RESPONSE, this->uav.getID(), -1);   //MUDAR AQUI???
                     m.setSource(u.getSelfID());
-                    DroneStatus d = m.getStatus();
+                    UAVStatus d = m.getStatus();
                     d.setLocation(coor.x, coor.y, coor.z);
                     m.setStatus(d);
 
@@ -85,8 +82,8 @@ class UAVMessageReceive {
                     u.setSocketCode(this->uav.getIdSocket());
                     u.setSelfID(this->uav.getID());
 
-                    DroneStatusMessage m(msg.getMsg(), VELOCITY_STATUS_RESPONSE, this->uav.getID(), -1); //MUDAR AQUI???
-                    DroneStatus d = m.getStatus();
+                    StatusMessage m(msg.getMsg(), VELOCITY_STATUS_RESPONSE, this->uav.getID(), -1); //MUDAR AQUI???
+                    UAVStatus d = m.getStatus();
                     d.setVelocity(vel);
                     m.setStatus(d);
                     m.setSource(u.getSelfID());
@@ -102,7 +99,7 @@ class UAVMessageReceive {
                     char snd[150];
                     std::string txt = "MSG bateria[" + to_string(this->uav.getID()) + "]: " + to_string(bateria[this->uav.getID()]);
                     strcpy(snd, txt.c_str());
-                    DroneStatusMessage m(snd, BATTERY_STATUS_RESPONSE, this->uav.getID(), -1);
+                    StatusMessage m(snd, BATTERY_STATUS_RESPONSE, this->uav.getID(), -1);
                     m.getStatus().setBattery(bateria[this->uav.getID()]);
                     cout << txt << endl;
                     u.dispatchStatusMessage(m);
@@ -116,7 +113,7 @@ class UAVMessageReceive {
                     char snd[150];
                     std::string txt = "MSG tempo de voo[" + to_string(this->uav.getID()) + "]: " + to_string(tempoVoo[this->uav.getID()]);
                     strcpy(snd, txt.c_str());
-                    DroneStatusMessage m(snd, FLIGHTTIME_STATUS_RESPONSE, this->uav.getID(), -1);
+                    StatusMessage m(snd, FLIGHTTIME_STATUS_RESPONSE, this->uav.getID(), -1);
                     m.getStatus().setFlightTime((int) tempoVoo[this->uav.getID()]);
                     cout << txt << endl;
                     u.dispatchStatusMessage(m);

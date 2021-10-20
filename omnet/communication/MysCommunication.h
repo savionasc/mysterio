@@ -4,7 +4,7 @@
 #include "../../src/utils/Coordinate.h"
 #include "../../src/communication/Communication.h"
 #include "../../src/communication/Communicable.h"
-#include "../../src/utils/Message.h"
+#include "../../src/communication/Message.h"
 #include "../status/MysStatus.h"
 
 // componente de comunicação do framework com os drones
@@ -18,10 +18,19 @@ public:
     //void listenSocket();
     void sendMessageToUAV(int id, Message msg);
 
+    int configureConnection(int connection){ return connection; }
+
+    int countActiveConnections(){
+        MysStatus *ms;
+        return ms->getSize();
+    }
+
     int configureSocketServer(int port);
 
     void sendTaskMessageToUAV(int idSocket, TaskMessage tmsg);
 
+    void reconnect(UAV u){
+    }
     //int conexoes[NUMUAVS];
 };
 

@@ -2,13 +2,13 @@
 #define MYSTERIO_OMNET_STATUS_MYSSTATUS_H_
 #include "../../src/status/Status.h"
 #include "../../src/communication/Communicable.h"
-#include "../communication/DroneStatusMessage.h"
 #include "../database/RepositoryMySQL.h"
 #include <iostream>
 #include <map>
 #include <vector>
 #include <thread>
 #include <mutex>
+#include "../../src/communication/StatusMessage.h"
 
 using namespace std;
 
@@ -30,7 +30,7 @@ public:
 
     //Communicable
     virtual void onMessageReceive(Message msg);
-    virtual void onDroneStatusMessageReceive(DroneStatusMessage msg);
+    virtual void onDroneStatusMessageReceive(StatusMessage msg);
 
     //Status
     virtual int CountActiveUAVs();

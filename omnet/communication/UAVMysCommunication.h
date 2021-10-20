@@ -7,11 +7,11 @@
 #include <netdb.h>
 #include <arpa/inet.h>
 #include <netinet/in.h>
+
+#include "../../src/communication/Message.h"
+#include "../../src/communication/StatusMessage.h"
+#include "../../src/communication/TaskMessage.h"
 #include "../../src/communication/UAVCommunication.h"
-#include "../../src/utils/Message.h"
-#include "../../omnet/communication/DroneStatusMessage.h"
-#include "../communication/DroneStatusMessage.h"
-#include "../communication/TaskMessage.h"
 #include "inet/common/geometry/common/Coord.h"
 #include "inet/power/base/EpEnergyStorageBase.h"
 #include "inet/power/storage/SimpleEpEnergyStorage.h"
@@ -37,9 +37,10 @@ public:
     //UAVCommunication
     void connectBase();
     void dispatchTaskMessage(TaskMessage msg);
-    void dispatchStatusMessage(DroneStatusMessage msg);
+    void dispatchStatusMessage(StatusMessage msg);
     void dispatchMessage(Message msg); //Aqui ele deve enviar mensagem pro Communication
     void disconnectBase();
+    void reconnect();
 
     int  conexao();
     int  getSocketCode();

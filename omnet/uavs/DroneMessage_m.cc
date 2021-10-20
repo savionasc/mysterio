@@ -238,7 +238,7 @@ class DroneStatusDescriptor : public omnetpp::cClassDescriptor
 
 Register_ClassDescriptor(DroneStatusDescriptor)
 
-DroneStatusDescriptor::DroneStatusDescriptor() : omnetpp::cClassDescriptor(omnetpp::opp_typename(typeid(DroneStatus)), "")
+DroneStatusDescriptor::DroneStatusDescriptor() : omnetpp::cClassDescriptor(omnetpp::opp_typename(typeid(UAVStatus)), "")
 {
     propertynames = nullptr;
 }
@@ -250,7 +250,7 @@ DroneStatusDescriptor::~DroneStatusDescriptor()
 
 bool DroneStatusDescriptor::doesSupport(omnetpp::cObject *obj) const
 {
-    return dynamic_cast<DroneStatus *>(obj)!=nullptr;
+    return dynamic_cast<UAVStatus *>(obj)!=nullptr;
 }
 
 const char **DroneStatusDescriptor::getPropertyNames() const
@@ -350,7 +350,7 @@ int DroneStatusDescriptor::getFieldArraySize(void *object, int field) const
             return basedesc->getFieldArraySize(object, field);
         field -= basedesc->getFieldCount();
     }
-    DroneStatus *pp = (DroneStatus *)object; (void)pp;
+    UAVStatus *pp = (UAVStatus *)object; (void)pp;
     switch (field) {
         default: return 0;
     }
@@ -364,7 +364,7 @@ const char *DroneStatusDescriptor::getFieldDynamicTypeString(void *object, int f
             return basedesc->getFieldDynamicTypeString(object,field,i);
         field -= basedesc->getFieldCount();
     }
-    DroneStatus *pp = (DroneStatus *)object; (void)pp;
+    UAVStatus *pp = (UAVStatus *)object; (void)pp;
     switch (field) {
         default: return nullptr;
     }
@@ -378,7 +378,7 @@ std::string DroneStatusDescriptor::getFieldValueAsString(void *object, int field
             return basedesc->getFieldValueAsString(object,field,i);
         field -= basedesc->getFieldCount();
     }
-    DroneStatus *pp = (DroneStatus *)object; (void)pp;
+    UAVStatus *pp = (UAVStatus *)object; (void)pp;
     switch (field) {
         default: return "";
     }
@@ -392,7 +392,7 @@ bool DroneStatusDescriptor::setFieldValueAsString(void *object, int field, int i
             return basedesc->setFieldValueAsString(object,field,i,value);
         field -= basedesc->getFieldCount();
     }
-    DroneStatus *pp = (DroneStatus *)object; (void)pp;
+    UAVStatus *pp = (UAVStatus *)object; (void)pp;
     switch (field) {
         default: return false;
     }
@@ -417,7 +417,7 @@ void *DroneStatusDescriptor::getFieldStructValuePointer(void *object, int field,
             return basedesc->getFieldStructValuePointer(object, field, i);
         field -= basedesc->getFieldCount();
     }
-    DroneStatus *pp = (DroneStatus *)object; (void)pp;
+    UAVStatus *pp = (UAVStatus *)object; (void)pp;
     switch (field) {
         default: return nullptr;
     }
@@ -712,12 +712,12 @@ void DroneMessage::setDestino(int destino)
     this->destino = destino;
 }
 
-const DroneStatus& DroneMessage::getStatus() const
+const UAVStatus& DroneMessage::getStatus() const
 {
     return this->status;
 }
 
-void DroneMessage::setStatus(const DroneStatus& status)
+void DroneMessage::setStatus(const UAVStatus& status)
 {
     this->status = status;
 }
@@ -982,7 +982,7 @@ const char *DroneMessageDescriptor::getFieldStructName(int field) const
         field -= basedesc->getFieldCount();
     }
     switch (field) {
-        case FIELD_status: return omnetpp::opp_typename(typeid(DroneStatus));
+        case FIELD_status: return omnetpp::opp_typename(typeid(UAVStatus));
         case FIELD_task: return omnetpp::opp_typename(typeid(Task));
         default: return nullptr;
     };

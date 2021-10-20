@@ -3,11 +3,11 @@
 #include <netinet/in.h>
 #include <string.h>
 
+#include "../../src/communication/Message.h"
+#include "../../src/communication/StatusMessage.h"
+#include "../../src/communication/TaskMessage.h"
 #include "../../src/taskmanager/TaskManager.h"
 #include "../status/MysStatus.h"
-#include "../../src/utils/Message.h"
-#include "DroneStatusMessage.h"
-#include "TaskMessage.h"
 
 using namespace std;
 
@@ -23,9 +23,9 @@ public:
         recv(socket, (int*)&typeMSG, sizeof(typeMSG), 0);
         cout << "Tipo da mensagem: " << typeMSG << endl;
         if(typeMSG == STATUS_MESSAGE){
-            DroneStatusMessage msg;
+            StatusMessage msg;
             memset(&msg, 0, sizeof(msg));
-            recv(socket, (DroneStatusMessage*)&msg, sizeof(msg), 0);
+            recv(socket, (StatusMessage*)&msg, sizeof(msg), 0);
             cout << "MensagemStatus: " << msg.getCode() << "X" << msg.getStatus().getLocationX() << msg.getMsg() << endl;
             cout << "Minha mensagem: " << msg.getMsg() << endl;
             if(strcmp(msg.getMsg(), "velocity") == 0){

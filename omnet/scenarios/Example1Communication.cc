@@ -2,6 +2,8 @@
 #include <iostream>
 #include "../communication/MysCommunication.h"
 #include "../../src/mission/MissionPlanner.h"
+#include "../../src/taskmanager/TaskManager.h"
+#include "../communication/UAVRegistry.cc"
 
 using namespace std;
 

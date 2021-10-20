@@ -1,7 +1,7 @@
 #ifndef MYSTERIO_SRC_COMMUNICATION_UAVCOMMUNICATION_H_
 #define MYSTERIO_SRC_COMMUNICATION_UAVCOMMUNICATION_H_
 
-#include "../utils/Message.h"
+#include "Message.h"
 
 class UAVCommunication {
 public:
@@ -9,6 +9,7 @@ public:
     //virtual void dispatchMessage(const char *msg) = 0;
     virtual void dispatchMessage(Message msg) = 0;
     virtual void disconnectBase() = 0;
+    virtual void reconnect() = 0;
 
     //Ou fazer isso:
         //UpdateData(Status data){ }

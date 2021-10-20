@@ -2,11 +2,11 @@
 
 #include "../mission/GoTo.h"
 #include "../uavs/UAVMobility.h"
-#include "../../src/utils/Message.h"
 #include <iostream>
 
+#include "../../src/communication/Message.h"
 #include "../communication/UAVMysCommunication.h"
-#include "../status/DroneStatus.h"
+#include "../../src/status/UAVStatus.h"
 
 using namespace omnetpp;
 using namespace inet;
@@ -46,28 +46,28 @@ void ModuloComunicacao::handleMessage(cMessage *msg){
             cout << "[U2U] Enviando status(localizacao) de " << selfID << " para " << mMSG->getOrigem() << endl;
             enviarMensagem(1.0, selfID, mMSG->getOrigem(), "Enviando localizacao", RESPONDER_LOCALIZACAO);
         }else if(msg->getKind() == RESPONDER_LOCALIZACAO){ //Chegou no leader
-            DroneStatus s = mMSG->getStatus();
+            UAVStatus s = mMSG->getStatus();
             cout << "[U" << selfID << "] Localização de [" << mMSG->getOrigem() << "]:\n   X: " << s.getLocationX() << " Y: " << s.getLocationX() << " Z: " << s.getLocationX() << endl;
             this->solicitarStatusDoUAVVizinho();
         }else if(msg->getKind() == SOLICITAR_VELOCIDADE){
             cout << "[U2U] Enviando status(velocidade) de " << selfID << " para " << mMSG->getOrigem() << endl;
             enviarMensagem(1.0, selfID, mMSG->getOrigem(), "Enviando velocidade", RESPONDER_VELOCIDADE);
         }else if(mMSG->getKind() == RESPONDER_VELOCIDADE){
-            DroneStatus s = mMSG->getStatus();
+            UAVStatus s = mMSG->getStatus();
             cout << "[U" << selfID << "] Velocidade de ["<< mMSG->getOrigem() << "]: " << s.getVelocity() << " m/s" << endl << endl;
             this->solicitarStatusDoUAVVizinho();
         }else if(msg->getKind() == SOLICITAR_BATERIA){
             cout << "[U2U] Enviando status(bateria) de " << selfID << " para " << mMSG->getOrigem() << endl;
             enviarMensagem(1.0, selfID, mMSG->getOrigem(), "Enviando bateria", RESPONDER_BATERIA);
         }else if(mMSG->getKind() == RESPONDER_BATERIA){
-            DroneStatus s = mMSG->getStatus();
+            UAVStatus s = mMSG->getStatus();
             cout << "[U" << selfID << "] Bateria de ["<< mMSG->getOrigem() << "]: " << s.getBattery() << " J" << endl << endl;
             this->solicitarStatusDoUAVVizinho();
         }else if(msg->getKind() == SOLICITAR_TEMPOVOO){
             cout << "[U2U] Enviando status(tempo de voo) de " << selfID << " para " << mMSG->getOrigem() << endl;
             enviarMensagem(1.0, selfID, mMSG->getOrigem(), "Enviando tempo de voo", RESPONDER_TEMPOVOO);
         }else if(mMSG->getKind() == RESPONDER_TEMPOVOO){
-            DroneStatus s = mMSG->getStatus();
+            UAVStatus s = mMSG->getStatus();
             cout << "[U" << selfID << "] Tempo de voo de ["<< mMSG->getOrigem() << "]: " << s.getFlightTime() << " s" << endl << endl;
             this->solicitarStatusDoUAVVizinho();
         }else if(mMSG->getKind() == GOTOTASK){
@@ -92,7 +92,7 @@ void ModuloComunicacao::handleMessage(cMessage *msg){
             mMSG->setTitulo(mMSG->getFullName());
         }
 
-        DroneStatus s;
+        UAVStatus s;
         switch (msg->getKind()){
             case RESPONDER_LOCALIZACAO:
                 s.setLocation(position[selfID].x, position[selfID].y, position[selfID].z);

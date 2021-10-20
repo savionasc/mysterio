@@ -1,8 +1,9 @@
 #ifndef MYSTERIO_SRC_TASKMANAGER_TASKMANAGER_H_
 #define MYSTERIO_SRC_TASKMANAGER_TASKMANAGER_H_
 #include <vector>
+
+#include "../communication/TaskMessage.h"
 #include "../mission/MissionPlanner.h"
-#include "../../omnet/communication/TaskMessage.h"
 
 class TaskManager {
 public:

@@ -1,8 +1,8 @@
 #include <sys/socket.h>
 #include <netinet/in.h>
-#include "../../src/utils/Message.h"
+#include "../../src/communication/Message.h"
+#include "../../src/communication/TaskMessage.h"
 #include "../../src/mission/Task.h"
-#include "../communication/TaskMessage.h"
 
 class MessageSender {
 public:

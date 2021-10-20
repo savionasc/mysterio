@@ -17,7 +17,7 @@ MysStatus *MysStatus::GetInstance(){
 }
 
 void MysStatus::onMessageReceive(Message msg){
-    DroneStatusMessage* mMSG = dynamic_cast<DroneStatusMessage*>(&msg);
+    StatusMessage* mMSG = dynamic_cast<StatusMessage*>(&msg);
     cout << mMSG->getMsg() << endl;
     switch (mMSG->getCode()) {
         case LOCATION_STATUS_REQUEST:{
@@ -62,7 +62,7 @@ void MysStatus::onMessageReceive(Message msg){
     }
 }
 
-void MysStatus::onDroneStatusMessageReceive(DroneStatusMessage msg){
+void MysStatus::onDroneStatusMessageReceive(StatusMessage msg){
     cout << msg.getMsg() << endl;
     switch (msg.getCode()) {
         case LOCATION_STATUS_REQUEST:{
