@@ -8,6 +8,8 @@ public:
     virtual void connectBase() = 0;
     //virtual void dispatchMessage(const char *msg) = 0;
     virtual void dispatchMessage(Message msg) = 0;
+    //virtual void dispatchStatusMessage(Message msg) = 0;
+    //virtual void dispatchTaskMessage(Message msg) = 0;
     virtual void disconnectBase() = 0;
     virtual void reconnect() = 0;
 

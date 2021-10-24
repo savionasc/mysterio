@@ -8,12 +8,10 @@ class MessageSender {
 public:
     void operator()(int param, Message param2){
         enviar(param, param2);
-        cout << "Message Enviada" << endl;
     }
 
     void operator()(int param, TaskMessage param2){
         enviarTarefa(param, param2);
-        cout << "TaskMessage Enviada" << endl;
     }
 
     bool enviar(int idUAVSocket, Message message){
@@ -25,7 +23,6 @@ public:
     bool enviarTarefa(int idUAVSocket, TaskMessage message){
         int codeMessage = TASK_MESSAGE;
         send(idUAVSocket, (int*)&codeMessage, sizeof(codeMessage), 0);
-        cout << "Task: " << message.getCode() << endl;
         send(idUAVSocket, (TaskMessage*)&message, sizeof(message), 0);
     }
 };

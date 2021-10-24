@@ -2,7 +2,7 @@
 
 //#include <socket>
 #include "../../omnet/communication/UAVRegistry.cc"
-#include "../../omnet/status/MysStatus.h"
+#include "../../omnet/status/MysStatusManager.h"
 #include <thread>
 #include "../../src/communication/Communication.h"
 #include "../../src/communication/TaskMessage.h"
@@ -40,9 +40,7 @@ int MysCommunication::configureSocketServer(int portServer){
 }
 
 void MysCommunication::sendMessageToUAV(int idUAV, Message msg){
-    //Communication::sendMessageToUAV(id, msg);
-    MysStatus *ms;
-    cout << "FUI CHAMADO!!!" << endl;
+    MysStatusManager *ms;
     if(idUAV == -1){ //Broadcast
         cout << "BROADCAST" << endl;
         for (int i = 0; i <= ms->getSize(); i++){
@@ -51,14 +49,12 @@ void MysCommunication::sendMessageToUAV(int idUAV, Message msg){
             enviar.detach();
         }
     }else{ //unicast
-        cout << "UNICAST" << endl;
         thread enviar(MessageSender(), ms->getUAV(idUAV).getIdSocket(), msg);
         enviar.join();
     }
 }
 
 void MysCommunication::sendTaskMessageToUAV(int idSocket, TaskMessage tmsg){
-    cout << "Criando tarefa com id: " << tmsg.getTask().getID() << endl;
     thread enviar(MessageSender(), idSocket, tmsg);
     enviar.detach();
 }

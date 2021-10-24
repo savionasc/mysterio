@@ -7,6 +7,7 @@ public:
     virtual bool createConnection() = 0;
     virtual void saveUAVLocation(int idUAV, Coordinate coord) = 0;
     virtual Coordinate requestUAVLocation(int idUAV) = 0;
+    //virtual bool restoreConnection() = 0;
     virtual void destroyConnection() = 0;
 };
 

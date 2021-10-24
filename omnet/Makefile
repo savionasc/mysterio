@@ -1,14 +1,14 @@
-all: Example1Communication.o MysStatus.o RepositoryMySQL.o MysCommunication.o UAV.o MissionPlanner.o
-	g++ -pthread -o scenarios/main Example1Communication.o MysStatus.o RepositoryMySQL.o MysCommunication.o UAV.o MissionPlanner.o -lmysqlclient
+all: Example1Communication.o MysStatusManager.o RepositoryMySQL.o MysCommunication.o UAV.o MissionPlanner.o
+	g++ -pthread -o scenarios/main Example1Communication.o MysStatusManager.o RepositoryMySQL.o MysCommunication.o UAV.o MissionPlanner.o -lmysqlclient
 
 MysCommunication.o: communication/MysCommunication.cc communication/MysCommunication.h communication/UAVRegistry.cc
 	g++ -c communication/MysCommunication.cc communication/MysCommunication.h communication/UAVRegistry.cc
 SocketConnect.o: communication/SocketConnect.cc
 	g++ -c communication/SocketConnect.cc
-Example1Communication.o: scenarios/Example1Communication.cc communication/MysCommunication.h status/MysStatus.h
-	g++ -c scenarios/Example1Communication.cc communication/MysCommunication.h communication/MysCommunication.cc status/MysStatus.h 
-MysStatus.o: status/MysStatus.cc status/MysStatus.h ../src/status/Status.h
-	g++ -c status/MysStatus.cc status/MysStatus.h ../src/status/Status.h
+Example1Communication.o: scenarios/Example1Communication.cc communication/MysCommunication.h status/MysStatusManager.h
+	g++ -c scenarios/Example1Communication.cc communication/MysCommunication.h communication/MysCommunication.cc status/MysStatusManager.h 
+MysStatusManager.o: status/MysStatusManager.cc status/MysStatusManager.h ../src/status/StatusManager.h
+	g++ -c status/MysStatusManager.cc status/MysStatusManager.h ../src/status/StatusManager.h
 MissionPlanner.o: ../src/mission/MissionPlanner.cc ../src/mission/MissionPlanner.h
 	g++ -c ../src/mission/MissionPlanner.cc ../src/mission/MissionPlanner.h
 RepositoryMySQL.o: database/RepositoryMySQL.cc database/RepositoryMySQL.h ../src/utils/Coordinate.h

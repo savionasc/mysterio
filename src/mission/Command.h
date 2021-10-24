@@ -1,6 +1,8 @@
 #ifndef MYSTERIO_SRC_MISSION_COMMAND_H_
 #define MYSTERIO_SRC_MISSION_COMMAND_H_
 #include <iostream>
+#include <string.h>
+#include <vector>
 
 using namespace std;
 
@@ -22,14 +24,39 @@ public:
         return arguments;
     }
 
-private:
+    void addNewArgument(char *arg){
+        if(strlen(arguments) != 0){
+            strcat (arguments,"|");
+        }
+        strcat (arguments,arg);
+    }
+
+    void getNextArgument(){
+    }
+
+    char* getArgument(int i){
+        std::vector<char*> v;
+        char* chars_array = strtok(arguments, "|");
+        int a = -1;
+        while(chars_array){
+            if(++a == i){
+                return chars_array;
+            }
+            //cout << chars_array << endl;
+            v.push_back(chars_array);
+            chars_array = strtok(NULL, "|");
+        }
+    }
+
+private: //Add anothers attributies in this classes
     int ID;
-    char instruction[15]; //instructions like "go"
+    char instruction[15]; //instructions like "go" or "ComebackToBaseStation"
 
     //Para os args,
     //Criar um toString no coordinate
     //Depois criar uma função que retorna coordinate recebendo uma string
     //Coordinate coord; defalt -1, -1, -1
+
     char arguments[50];
 };
 

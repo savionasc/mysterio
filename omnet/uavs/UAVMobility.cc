@@ -93,7 +93,7 @@ void UAVMobility::setTargetPosition() {
             u.setSelfID(this->uav.getID());
             Message msg;
             msg.setCode(123);
-            char m[] = "Drone sem atividades escalonadas!";
+            char m[] = "No scheduled tasks!";
             msg.setMsg(m);
             msg.setSource(u.getSelfID());
             u.dispatchMessage(msg);

@@ -8,7 +8,7 @@
 
 #include "MessageReceive.cc"
 #include "MessageSender.cc"
-#include "../status/MysStatus.h"
+#include "../status/MysStatusManager.h"
 
 using namespace std;
 
@@ -27,12 +27,11 @@ public:
             exit(1);
             return false;
         }
-        std::cout << "Connected with UAV!" << std::endl;
-        MysStatus *ms;
+        MysStatusManager *ms;
         UAV u(ms->getSize());
         u.setIdSocket(idSocket);
         ms->addUAV(u);
-        cout << "UAV registrado: " << u.getID() << endl;
+        std::cout << "Connected with UAV[" << u.getID() << "]" << std::endl;
         thread conectar(UAVRegistry(), serverSocket);
         thread receber(MessageReceive(), u.getIdSocket());
         receber.join();

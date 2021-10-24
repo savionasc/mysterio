@@ -1,6 +1,5 @@
-#ifndef MYSTERIO_OMNET_STATUS_MYSSTATUS_H_
-#define MYSTERIO_OMNET_STATUS_MYSSTATUS_H_
-#include "../../src/status/Status.h"
+#ifndef MYSTERIO_OMNET_STATUS_MYSSTATUSMANAGER_H_
+#define MYSTERIO_OMNET_STATUS_MYSSTATUSMANAGER_H_
 #include "../../src/communication/Communicable.h"
 #include "../database/RepositoryMySQL.h"
 #include <iostream>
@@ -9,6 +8,7 @@
 #include <thread>
 #include <mutex>
 #include "../../src/communication/StatusMessage.h"
+#include "../../src/status/StatusManager.h"
 
 using namespace std;
 
@@ -25,7 +25,7 @@ enum codes{
         FLIGHTTIME_STATUS_RESPONSE,
 };
 
-class MysStatus : public Status, public Communicable{
+class MysStatusManager : public StatusManager, public Communicable{
 public:
 
     //Communicable
@@ -44,10 +44,10 @@ public:
     virtual float getBattery(int idUAV);           //rescues from the repository
     virtual void updateBattery(float level, int idUAV);          //send to repository
 
-    static MysStatus *GetInstance();
+    static MysStatusManager *GetInstance();
 
-    MysStatus(MysStatus &other) = delete;
-    void operator=(const MysStatus &) = delete;
+    MysStatusManager(MysStatusManager &other) = delete;
+    void operator=(const MysStatusManager &) = delete;
 
 
     int numeroUAVs(){
@@ -83,14 +83,14 @@ public:
     }
 
 protected:
-    MysStatus(){ setNumeroDeUAVs(2); r.disablePrints(); }
+    MysStatusManager(){ setNumeroDeUAVs(2); r.disablePrints(); }
     int numeroDeUAVs;
 
 private:
     int tempoDeFuncionamento; //do sistema
 
     //singleton
-    static MysStatus * mpinstance_;
+    static MysStatusManager * mpinstance_;
     static std::mutex mutex_;
     static std::map<int,UAV> uavs;
 

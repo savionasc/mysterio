@@ -20,6 +20,11 @@ public:
         this->uav = uav;
         this->target = targetPosition;
     }
+    Task(UAV uav, int type, Coordinate targetPosition) { // adicionar type no construtor
+        this->uav = uav;
+        this->type = type;
+        this->target = targetPosition;
+    }
     virtual ~Task(){}
 
     int getID() {

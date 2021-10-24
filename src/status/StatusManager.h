@@ -1,11 +1,11 @@
-#ifndef MYSTERIO_SRC_STATUS_STATUS_H_
-#define MYSTERIO_SRC_STATUS_STATUS_H_
+#ifndef MYSTERIO_SRC_STATUS_STATUSMANAGER_H_
+#define MYSTERIO_SRC_STATUS_STATUSMANAGER_H_
 #include "../utils/Coordinate.h"
 #include "../utils/UAV.h"
 #include <list>
 #include <iostream>
 
-class Status {
+class StatusManager {
 public:
     virtual Coordinate getUAVLocation(int idUAV) = 0;
     virtual void updateUAVLocation(Coordinate coord, int idUAV) = 0;

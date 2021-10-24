@@ -1,22 +1,22 @@
-#include "MysStatus.h"
+#include "MysStatusManager.h"
 
 #include "../communication/MysCommunication.h"
 
 using namespace std;
 
-MysStatus* MysStatus::mpinstance_{nullptr};
-std::mutex MysStatus::mutex_;
-std::map<int,UAV> MysStatus::uavs;
+MysStatusManager* MysStatusManager::mpinstance_{nullptr};
+std::mutex MysStatusManager::mutex_;
+std::map<int,UAV> MysStatusManager::uavs;
 
-MysStatus *MysStatus::GetInstance(){
+MysStatusManager *MysStatusManager::GetInstance(){
     std::lock_guard<std::mutex> lock(mutex_);
     if (mpinstance_ == nullptr){
-        mpinstance_ = new MysStatus();
+        mpinstance_ = new MysStatusManager();
     }
     return mpinstance_;
 }
 
-void MysStatus::onMessageReceive(Message msg){
+void MysStatusManager::onMessageReceive(Message msg){
     StatusMessage* mMSG = dynamic_cast<StatusMessage*>(&msg);
     cout << mMSG->getMsg() << endl;
     switch (mMSG->getCode()) {
@@ -62,7 +62,7 @@ void MysStatus::onMessageReceive(Message msg){
     }
 }
 
-void MysStatus::onDroneStatusMessageReceive(StatusMessage msg){
+void MysStatusManager::onDroneStatusMessageReceive(StatusMessage msg){
     cout << msg.getMsg() << endl;
     switch (msg.getCode()) {
         case LOCATION_STATUS_REQUEST:{
@@ -107,12 +107,12 @@ void MysStatus::onDroneStatusMessageReceive(StatusMessage msg){
     }
 }
 
-int MysStatus::CountActiveUAVs(){
+int MysStatusManager::CountActiveUAVs(){
     return numeroDeUAVs;
 }
 
 //Getters and updaters
-Coordinate MysStatus::getUAVLocation(int idUAV){ //Request?
+Coordinate MysStatusManager::getUAVLocation(int idUAV){ //Request?
     UAV s = pegarUAV(idUAV);
     Coordinate c(s.getXAxis(), s.getYAxis(), s.getZAxis());
 
@@ -122,7 +122,7 @@ Coordinate MysStatus::getUAVLocation(int idUAV){ //Request?
     return c;
 }
 
-void MysStatus::updateUAVLocation(Coordinate coord, int idUAV){ //saveUAVCurrentPosition?
+void MysStatusManager::updateUAVLocation(Coordinate coord, int idUAV){ //saveUAVCurrentPosition?
     //Não usar aqui Essa responsabilidade é para que tipo de classe? /ok
     UAV s = pegarUAV(idUAV);
     s.setXAxis(coord.getX());
@@ -132,26 +132,26 @@ void MysStatus::updateUAVLocation(Coordinate coord, int idUAV){ //saveUAVCurrent
     this->r.saveUAVLocation(1, coord);
 }
 
-double MysStatus::getUAVVelocity(int idUAV){
+double MysStatusManager::getUAVVelocity(int idUAV){
     UAV s = pegarUAV(idUAV);
     this->r.getVelocity(idUAV);
     return s.getVelocidade();
 }
 
-void MysStatus::updateUAVVelocity(double velocity, int idUAV){
+void MysStatusManager::updateUAVVelocity(double velocity, int idUAV){
     UAV s = pegarUAV(idUAV);
     s.setVelocidade(velocity);
     this->uavs[idUAV] = s; //Substituir
     this->r.setVelocity(idUAV, velocity);
 }
 
-int MysStatus::getFlightTime(int idUAV){
+int MysStatusManager::getFlightTime(int idUAV){
     UAV s = pegarUAV(idUAV);
     this->r.getFlightTime(idUAV);
     return s.getFlightTime();
 }
 
-void MysStatus::updateFlightTime(int time, int idUAV){
+void MysStatusManager::updateFlightTime(int time, int idUAV){
     //Não usar aqui Essa responsabilidade é para que tipo de classe? /ok
     UAV s = pegarUAV(idUAV);
     s.setFlightTime(time);
@@ -159,13 +159,13 @@ void MysStatus::updateFlightTime(int time, int idUAV){
     this->r.setFlightTime(idUAV, time);
 }
 
-float MysStatus::getBattery(int idUAV){
+float MysStatusManager::getBattery(int idUAV){
     UAV s = pegarUAV(idUAV);
     this->r.getBattery(idUAV);
     return s.getBattery();
 }
 
-void MysStatus::updateBattery(float level, int idUAV){
+void MysStatusManager::updateBattery(float level, int idUAV){
     //Não usar aqui Essa responsabilidade é para que tipo de classe? /ok
     UAV s = pegarUAV(idUAV);
     s.setBattery(level);

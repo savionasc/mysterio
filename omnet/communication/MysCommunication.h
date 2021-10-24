@@ -5,7 +5,7 @@
 #include "../../src/communication/Communication.h"
 #include "../../src/communication/Communicable.h"
 #include "../../src/communication/Message.h"
-#include "../status/MysStatus.h"
+#include "../status/MysStatusManager.h"
 
 // componente de comunicação do framework com os drones
 class MysCommunication : public Communication {
@@ -21,7 +21,7 @@ public:
     int configureConnection(int connection){ return connection; }
 
     int countActiveConnections(){
-        MysStatus *ms;
+        MysStatusManager *ms;
         return ms->getSize();
     }
 
