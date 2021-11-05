@@ -1,6 +1,6 @@
 #ifndef MYSTERIO_SRC_MISSION_MISSIONPLANNER_H_
 #define MYSTERIO_SRC_MISSION_MISSIONPLANNER_H_
-#define NUMUAVS 2
+#define NUMUAVS 4
 
 #include "Task.h"
 #include <iostream>
@@ -55,7 +55,7 @@ public:
         }
     }
 
-    int numTasks(UAV u){ //Já feito
+    int numTasks(UAV u){
         return this->tasks[u.getID()].size();
     }
 

@@ -1,22 +1,22 @@
-file 645414 1635089333                                          
+file 29226 1635946583                                           
 version 2
-run Mysterio_ex2-0-20211024-12:24:19-7354
+run Mysterio_ex2-0-20211103-10:36:10-9019
 attr configname Mysterio_ex2
-attr datetime 20211024-12:24:19
+attr datetime 20211103-10:36:10
 attr experiment Mysterio_ex2
 attr inifile omnetpp.ini
 attr iterationvars ""
 attr iterationvarsf ""
 attr measurement ""
 attr network MysterioCommunication2
-attr processid 7354
+attr processid 9019
 attr repetition 0
 attr replication #0
 attr resultdir results
 attr runnumber 0
 attr seedset 0
-param *.host[*].mobility.numeroDrones 2
-param *.numHosts 2
+param *.host[*].mobility.numeroDrones 4
+param *.numHosts 4
 param *.host[*].osgModel "\"3d/drone.ive.100.scale.0,0,90.rot\""
 param *.basestation.osgModel "\"3d/car.ive.50.scale.0,0,90.rot\""
 param *.canvasVisualizer.energyStorageVisualizer.displayEnergyStorages true
@@ -85,18 +85,48 @@ vector 3 MysterioCommunication2.host[1].energyGenerator powerGeneration:vector E
 attr interpolationmode sample-hold
 attr source powerGenerationChanged
 attr title "Power generation, vector"
-vector 4 MysterioCommunication2.host[0].energyStorage powerGeneration:vector ETV
+vector 4 MysterioCommunication2.host[2].energyStorage residualEnergyCapacity:vector ETV
+attr interpolationmode linear
+attr source residualEnergyCapacityChanged
+attr title "Residual energy capacity, vector"
+vector 5 MysterioCommunication2.host[2].energyGenerator powerGeneration:vector ETV
 attr interpolationmode sample-hold
 attr source powerGenerationChanged
 attr title "Power generation, vector"
-vector 5 MysterioCommunication2.host[1].energyStorage powerGeneration:vector ETV
+vector 6 MysterioCommunication2.host[3].energyStorage residualEnergyCapacity:vector ETV
+attr interpolationmode linear
+attr source residualEnergyCapacityChanged
+attr title "Residual energy capacity, vector"
+vector 7 MysterioCommunication2.host[3].energyGenerator powerGeneration:vector ETV
 attr interpolationmode sample-hold
 attr source powerGenerationChanged
 attr title "Power generation, vector"
-0	4644 316581 0 16496 0 807.893741638795 9887 0.039680714182183 0.05 480.74299381373 23.423826076184
-1	321225 1044 0 16234 0 794.776503773524 38 0 0.004 0.076 0.000304
-2	322269 320722 0 16496 0 807.893741638795 9921 0.03735860471658 0.05 478.19865045472 23.127986676349
-3	642991 689 0 15713 0 769.523264626245 25 0 0.004 0.052 0.000208
-4	643680 1044 0 16234 0 794.776503773524 38 0 0.004 0.076 0.000304
-5	644724 689 0 15713 0 769.523264626245 25 0 0.004 0.052 0.000208
+vector 8 MysterioCommunication2.host[0].energyStorage powerGeneration:vector ETV
+attr interpolationmode sample-hold
+attr source powerGenerationChanged
+attr title "Power generation, vector"
+vector 9 MysterioCommunication2.host[1].energyStorage powerGeneration:vector ETV
+attr interpolationmode sample-hold
+attr source powerGenerationChanged
+attr title "Power generation, vector"
+vector 10 MysterioCommunication2.host[2].energyStorage powerGeneration:vector ETV
+attr interpolationmode sample-hold
+attr source powerGenerationChanged
+attr title "Power generation, vector"
+vector 11 MysterioCommunication2.host[3].energyStorage powerGeneration:vector ETV
+attr interpolationmode sample-hold
+attr source powerGenerationChanged
+attr title "Power generation, vector"
+0	5818 6600 0 1039 0 25.938864634 320 0.045675862374182 0.05 15.666758061059 0.76760394546159
+1	12418 36 0 551 0 13.776212166758 2 0 0.004 0.004 1.6e-05
+2	12454 5603 0 1039 0 25.938864634 315 0.0495 0.05 15.66494039818 0.77903624120272
+3	18057 36 0 486 0 12.128204093041 2 0 0.004 0.004 1.6e-05
+4	18093 5402 0 1039 0 25.938864634 318 0.0495 0.05 15.886527273276 0.79365887815701
+5	23495 12 0 0 0 0 1 0.004 0.004 0.004 1.6e-05
+6	23507 5561 0 1039 0 25.938864634 314 0.0495 0.05 15.619346866684 0.77697470135357
+7	29068 35 0 317 0 7.958903521045 2 0 0.004 0.004 1.6e-05
+8	29103 36 0 551 0 13.776212166758 2 0 0.004 0.004 1.6e-05
+9	29139 36 0 486 0 12.128204093041 2 0 0.004 0.004 1.6e-05
+10	29175 13 0 0 0 0 1 0.004 0.004 0.004 1.6e-05
+11	29188 37 0 317 0 7.958903521045 2 0 0.004 0.004 1.6e-05
 

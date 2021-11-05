@@ -1,23 +1,24 @@
-                                                                
+file 479881 1635793028                                          
 version 2
-run Mysterio_ex1-0-20210625-19:52:00-2291
+run Mysterio_ex1-0-20211101-15:54:34-3412
 attr configname Mysterio_ex1
-attr datetime 20210625-19:52:00
+attr datetime 20211101-15:54:34
 attr experiment Mysterio_ex1
 attr inifile omnetpp.ini
 attr iterationvars ""
 attr iterationvarsf ""
 attr measurement ""
-attr network MysterioCommunication
-attr processid 2291
+attr network MysterioCommunication2
+attr processid 3412
 attr repetition 0
 attr replication #0
 attr resultdir results
 attr runnumber 0
 attr seedset 0
-param *.host[*].mobility.numeroDrones 10
-param *.numHosts 10
+param *.host[*].mobility.numeroDrones 2
+param *.numHosts 2
 param *.host[*].osgModel "\"3d/drone.ive.100.scale.0,0,90.rot\""
+param *.basestation.osgModel "\"3d/car.ive.50.scale.0,0,90.rot\""
 param *.canvasVisualizer.energyStorageVisualizer.displayEnergyStorages true
 param *.host[*].hasStatus true
 param *.host[*].energyStorage.typename "\"SimpleEpEnergyStorage\""
@@ -39,7 +40,9 @@ param *.host[*].mobility.angleDelta uniform(-10deg,10deg)
 param *.host[*].mobility.rotationAxisAngle uniform(-10deg,10deg)
 param *.host[*].mobility.speed uniform(10mps,20mps)
 param *.host[*].mobility.faceForward false
-param **.constraintAreaMinZ 200m
+param *.host[*].mobility.initialX 220m
+param *.host[*].mobility.initialY 220m
+param *.host[*].mobility.initialZ 80m
 param *.visualizer.osgVisualizer.typename "\"IntegratedOsgVisualizer\""
 param *.visualizer.osgVisualizer.sceneVisualizer.clearColor "\"skyblue\""
 param *.visualizer.osgVisualizer.sceneVisualizer.sceneImage "\"showcases/desert\""
@@ -57,7 +60,7 @@ param *.visualizer.*.mobilityVisualizer.displayPositions true
 param *.visualizer.*.mobilityVisualizer.displayOrientations false
 param *.visualizer.*.mobilityVisualizer.displayVelocities true
 param *.visualizer.*.mobilityVisualizer.displayMovementTrails true
-param *.visualizer.*.mobilityVisualizer.animationSpeed 1
+param *.visualizer.*.mobilityVisualizer.animationSpeed 3
 param **.constraintAreaMinX 0m
 param **.constraintAreaMinY 0m
 param **.constraintAreaMinZ 0m
@@ -66,17 +69,34 @@ param **.constraintAreaMaxY 1000m
 param **.constraintAreaMaxZ 1000m
 param **.networkConfiguratorModule "\"\""
 
-vector 0 MysterioCommunication.host[0].energyStorage residualEnergyCapacity:vector ETV
+vector 0 MysterioCommunication2.host[0].energyStorage residualEnergyCapacity:vector ETV
 attr interpolationmode linear
 attr source residualEnergyCapacityChanged
 attr title "Residual energy capacity, vector"
-vector 1 MysterioCommunication.host[0].energyGenerator powerGeneration:vector ETV
+vector 1 MysterioCommunication2.host[0].energyGenerator powerGeneration:vector ETV
 attr interpolationmode sample-hold
 attr source powerGenerationChanged
 attr title "Power generation, vector"
-vector 2 MysterioCommunication.host[1].energyStorage residualEnergyCapacity:vector ETV
+vector 2 MysterioCommunication2.host[1].energyStorage residualEnergyCapacity:vector ETV
 attr interpolationmode linear
 attr source residualEnergyCapacityChanged
 attr title "Residual energy capacity, vector"
-vector 3 MysterioCommunication.host[1].energyGenerator powerGeneration:vector ETV
-attr interpolationmode sa
+vector 3 MysterioCommunication2.host[1].energyGenerator powerGeneration:vector ETV
+attr interpolationmode sample-hold
+attr source powerGenerationChanged
+attr title "Power generation, vector"
+vector 4 MysterioCommunication2.host[0].energyStorage powerGeneration:vector ETV
+attr interpolationmode sample-hold
+attr source powerGenerationChanged
+attr title "Power generation, vector"
+vector 5 MysterioCommunication2.host[1].energyStorage powerGeneration:vector ETV
+attr interpolationmode sample-hold
+attr source powerGenerationChanged
+attr title "Power generation, vector"
+0	4644 232073 0 9314 0 452.576998744 7479 0.039283907040361 0.05 362.74230800062 17.631284249762
+1	236717 585 0 9198 0 446.755823038933 22 0 0.004 0.044 0.000176
+2	237302 240641 0 9314 0 452.576998744 7578 0.034127729750519 0.05 360.57577372116 17.262270852314
+3	477943 676 0 8779 0 426.123923649702 25 0 0.004 0.052 0.000208
+4	478619 585 0 9198 0 446.755823038933 22 0 0.004 0.044 0.000176
+5	479204 676 0 8779 0 426.123923649702 25 0 0.004 0.052 0.000208
+

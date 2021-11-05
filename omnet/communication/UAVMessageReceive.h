@@ -112,7 +112,7 @@ class UAVMessageReceive {
 
                     char snd[150];
                     std::string txt = "MSG flight time[" + to_string(this->uav.getID()) + "]: " + to_string(tempoVoo[this->uav.getID()]);
-tempo                    strcpy(snd, txt.c_str());
+                    strcpy(snd, txt.c_str());
                     StatusMessage m(snd, FLIGHTTIME_STATUS_RESPONSE, this->uav.getID(), -1);
                     m.getStatus().setFlightTime((int) tempoVoo[this->uav.getID()]);
                     cout << txt << endl;

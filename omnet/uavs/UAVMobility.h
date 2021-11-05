@@ -70,9 +70,7 @@ class INET_API UAVMobility : public LineSegmentsMobilityBase
 
     J pegarBateria(int idUAV);
 
-    //int selfID;
     UAV uav;
-
 
   public:
     UAVMobility();

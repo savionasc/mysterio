@@ -11,7 +11,7 @@ module BasestationUAVs extends ApplicationLayerNodeBase {
         @display("i=block/broadcast");
 }
 
-network MysterioCommunication2 {
+network MysterioCommunication1 {
     parameters:
         int numHosts;
         @display("bgb=1000,1000");

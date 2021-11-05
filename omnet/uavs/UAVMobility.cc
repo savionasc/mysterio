@@ -3,7 +3,7 @@
 
 #include "../communication/UAVMysCommunication.h"
 #include "../scenarios/Example1Communication.h"
-#include "../mission/GoTo.h"
+#include "../../src/mission/DependentTask.h"
 
 using namespace omnetpp;
 using namespace std;
@@ -54,12 +54,6 @@ void UAVMobility::initialize(int stage) {
 
 void UAVMobility::setTargetPosition() {
 
-    //Checando se a atividade está completa pra passar para outra tarefa
-    //if(gotoPtr->isComplete(currentPosition)){
-        //itera[selfID]++;
-        //nextMoveIsWait = true;
-    //}
-
     if (nextMoveIsWait) {
         simtime_t waitTime = waitTimeParameter->doubleValue()+3;
         nextChange = simTime() + waitTime;
@@ -98,6 +92,9 @@ void UAVMobility::setTargetPosition() {
             msg.setSource(u.getSelfID());
             u.dispatchMessage(msg);
             targetPosition = getRandomPosition();
+            if(u.getSelfID() == 1){
+                u.disconnectBase();
+            }
         }
         double speed = speedParameter->doubleValue();
         double distance = lastPosition.distance(targetPosition);
