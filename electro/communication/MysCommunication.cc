@@ -1,8 +1,8 @@
 #include "MysCommunication.h"
 
 //#include <socket>
-#include "../../omnet/communication/UAVRegistry.cc"
-#include "../../omnet/status/MysStatusManager.h"
+#include "UAVRegistry.cc"
+#include "../status/MysStatusManager.h"
 #include <thread>
 #include "../../src/communication/Communication.h"
 #include "../../src/communication/TaskMessage.h"

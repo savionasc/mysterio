@@ -1,5 +1,5 @@
 //
-// Generated file, do not edit! Created by nedtool 5.4 from mysterio/omnet/uavs/DroneMessage.msg.
+// Generated file, do not edit! Created by nedtool 5.4 from mysterio/electro/uavs/DroneMessage.msg.
 //
 
 #if defined(__clang__)
@@ -37,7 +37,7 @@ class DroneMessage;
 // }}
 
 /**
- * Class generated from <tt>mysterio/omnet/uavs/DroneMessage.msg:15</tt> by nedtool.
+ * Class generated from <tt>mysterio/electro/uavs/DroneMessage.msg:15</tt> by nedtool.
  * <pre>
  * message DroneMessage extends cMessage
  * {
