@@ -1,7 +1,7 @@
 #ifndef MYSTERIO_OMNET_UAVS_MODULOCOMUNICACAO_H_
 #define MYSTERIO_OMNET_UAVS_MODULOCOMUNICACAO_H_
 
-#include "../DroneMessage_m.h"
+#include "../UAVMessage_m.h"
 
 using namespace omnetpp;
 using namespace std;
@@ -24,8 +24,8 @@ class ModuloComunicacao2 : public cSimpleModule {
         TASKCOMPLETED
     };
   protected:
-    virtual DroneMessage *generateMessage();
-    virtual void forwardMessage(DroneMessage *msg);
+    virtual UAVMessage *generateMessage();
+    virtual void forwardMessage(UAVMessage *msg);
     virtual void initialize() override;
     virtual void handleMessage(cMessage *msg) override;
 
@@ -35,7 +35,7 @@ class ModuloComunicacao2 : public cSimpleModule {
     void solicitarStatusDoUAVVizinho();
 
     int selfID = -2;
-    DroneMessage* sendMSGEvt;
+    UAVMessage* sendMSGEvt;
 };
 }
 

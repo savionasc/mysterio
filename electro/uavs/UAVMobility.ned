@@ -15,7 +15,7 @@
 // along with this program; if not, see <http://www.gnu.org/licenses/>.
 //
 
-package mysterio.omnet.uavs;
+package mysterio.electro.uavs;
 
 import inet.mobility.base.MovingMobilityBase;
 
