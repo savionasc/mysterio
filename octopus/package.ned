@@ -1,3 +1,3 @@
-package mysterio.omnet;
+package mysterio.octopus;
 
 @namespace(inet);

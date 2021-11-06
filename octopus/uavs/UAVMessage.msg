@@ -1,10 +1,10 @@
 cplusplus {{
-#include "../status/DroneStatus.h"
+#include "../../src/status/UAVStatus.h"
 #include "../../src/mission/Task.h"
 #include <string>
 }}
 
-class DroneStatus {
+class UAVStatus {
     @existingClass;
 }
 
@@ -12,10 +12,10 @@ class Task {
     @existingClass;
 }
 
-message DroneMessage extends cMessage {
+message UAVMessage extends cMessage {
     int origem = -1;
     int destino = -1;
-    DroneStatus status;
+    UAVStatus status;
     Task task;
     string titulo;
 }

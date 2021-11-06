@@ -23,8 +23,8 @@
 #include "inet/mobility/base/LineSegmentsMobilityBase.h"
 #include "inet/power/base/EpEnergyStorageBase.h"
 #include "inet/power/storage/SimpleEpEnergyStorage.h"
-#include "../../../src/utils/Coordinate.h"
-#include "../../../src/utils/UAV.h"
+#include "../../src/utils/Coordinate.h"
+#include "../../src/utils/UAV.h"
 
 namespace inet {
 
