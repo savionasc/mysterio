@@ -3,7 +3,7 @@
 
 Para construir uma aplicação usando este framework, indicamos a nossa arquitetura que pode ser vista na figura a seguir:
 
-![Mysterio Framework e seus componentes](UAV architecture-Componente.png)
+![Mysterio Framework e seus componentes](https://github.com/savionasc/mysterio/blob/main/UAV%20architecture-Componente.png)
 
 <p style="text-align: center;">Arquitetura de Software do Mysterio Framework</p>
 
