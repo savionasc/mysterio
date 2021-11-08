@@ -1,10 +1,10 @@
 #include "UAVMobility2.h"
 #include <iostream>
 
-#include "../../communication/UAVMysCommunication.h"
-#include "../../scenarios/Example1Communication.h"
-#include "../../../src/mission/DependentTask.h"
-#include "../../mission/MysTask.h"
+#include "../communication/UAVMysCommunication.h"
+#include "../scenarios/Example1Communication.h"
+#include "../../src/mission/DependentTask.h"
+#include "../mission/MysTask.h"
 
 using namespace omnetpp;
 using namespace std;

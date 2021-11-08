@@ -37,7 +37,7 @@ void ModuloComunicacao::initialize(){
 }
 
 void ModuloComunicacao::handleMessage(cMessage *msg){
-    DroneMessage *mMSG = check_and_cast<DroneMessage*>(msg);
+    UAVMessage *mMSG = check_and_cast<UAVMessage*>(msg);
     cout << "[U2U] Executando ação: " << msg->getFullName() << endl;
 
     if(selfID == mMSG->getDestino()){
@@ -118,7 +118,7 @@ void ModuloComunicacao::handleMessage(cMessage *msg){
 //Acho que sprintf(msgname, "msg-%d-para-%d", src, dest); mostra na tela um texto na mensagem
 //Depois usar bubble("CHEGOU, gostei do recebido!"); que ele mostra na interface gráfica que chegou a mensagem!
 
-void ModuloComunicacao::forwardMessage(DroneMessage *msg){
+void ModuloComunicacao::forwardMessage(UAVMessage *msg){
     //Depois enviar mensagens para todos os vizinhos
     int n = gateSize("out");
     int k = intuniform(0, (n-1));
@@ -127,7 +127,7 @@ void ModuloComunicacao::forwardMessage(DroneMessage *msg){
     send(msg, "out", k);
 }
 
-DroneMessage *ModuloComunicacao::generateMessage(){
+UAVMessage *ModuloComunicacao::generateMessage(){
     int src = getIndex();
     int n = getVectorSize();
     int dest = intuniform(0, n-2);
@@ -137,7 +137,7 @@ DroneMessage *ModuloComunicacao::generateMessage(){
     char msgname[20];
     sprintf(msgname, "msg-%d-para-%d", src, dest);
 
-    DroneMessage *msg = new DroneMessage(msgname);
+    UAVMessage *msg = new UAVMessage(msgname);
     msg->setOrigem(src);
     msg->setDestino(dest);
 
@@ -148,7 +148,7 @@ DroneMessage *ModuloComunicacao::generateMessage(){
 
 //Auxiliary functions
 void ModuloComunicacao::enviarMensagem(double tempo, int origem, int destino, char const *name, int kind){
-    sendMSGEvt = new DroneMessage(name, kind);
+    sendMSGEvt = new UAVMessage(name, kind);
     sendMSGEvt->setDestino(destino);
     sendMSGEvt->setOrigem(origem);
     scheduleAt(simTime()+tempo, sendMSGEvt);
@@ -188,22 +188,22 @@ void ModuloComunicacao::solicitarStatusDoUAVVizinho(){
             if (scanf("%d", &continuar) == 1) {
                 switch(continuar){ //Creating Message to communication between UAVs without our framework
                     case 1:
-                        sendMSGEvt = new DroneMessage("Solicitando localizacao", SOLICITAR_LOCALIZACAO);
+                        sendMSGEvt = new UAVMessage("Solicitando localizacao", SOLICITAR_LOCALIZACAO);
                         break;
                     case 2:
-                        sendMSGEvt = new DroneMessage("Solicitando velocidade", SOLICITAR_VELOCIDADE);
+                        sendMSGEvt = new UAVMessage("Solicitando velocidade", SOLICITAR_VELOCIDADE);
                         break;
                     case 3:
-                        sendMSGEvt = new DroneMessage("Solicitando bateria", SOLICITAR_BATERIA);
+                        sendMSGEvt = new UAVMessage("Solicitando bateria", SOLICITAR_BATERIA);
                         break;
                     case 4:
-                        sendMSGEvt = new DroneMessage("Solicitando tempo de voo", SOLICITAR_TEMPOVOO);
+                        sendMSGEvt = new UAVMessage("Solicitando tempo de voo", SOLICITAR_TEMPOVOO);
                         break;
                     case 5:
-                        sendMSGEvt = new DroneMessage("Go To - Task", GOTOTASK);
+                        sendMSGEvt = new UAVMessage("Go To - Task", GOTOTASK);
                         break;
                     case 6:
-                        sendMSGEvt = new DroneMessage("Task Completed?", TASKCOMPLETED);
+                        sendMSGEvt = new UAVMessage("Task Completed?", TASKCOMPLETED);
                         break;
                     default:
                         printf("Digite uma opção valida!\n");

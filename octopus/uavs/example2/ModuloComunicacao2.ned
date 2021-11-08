@@ -1,4 +1,4 @@
-package mysterio.omnet.uavs.example2;
+package mysterio.octopus.uavs.example2;
 
 import inet.node.inet.StandardHost;
 

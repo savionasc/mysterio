@@ -1,12 +1,12 @@
 //
-// Generated file, do not edit! Created by nedtool 5.4 from mysterio/electro/uavs/DroneMessage.msg.
+// Generated file, do not edit! Created by nedtool 5.4 from mysterio/octopus/uavs/UAVMessage.msg.
 //
 
 #if defined(__clang__)
 #  pragma clang diagnostic ignored "-Wreserved-id-macro"
 #endif
-#ifndef __DRONEMESSAGE_M_H
-#define __DRONEMESSAGE_M_H
+#ifndef __UAVMESSAGE_M_H
+#define __UAVMESSAGE_M_H
 
 #include <omnetpp.h>
 
@@ -29,7 +29,7 @@
 
 
 
-class DroneMessage;
+class UAVMessage;
 // cplusplus {{
 #include "../../src/status/UAVStatus.h"
 #include "../../src/mission/Task.h"
@@ -37,19 +37,19 @@ class DroneMessage;
 // }}
 
 /**
- * Class generated from <tt>mysterio/electro/uavs/DroneMessage.msg:15</tt> by nedtool.
+ * Class generated from <tt>mysterio/octopus/uavs/UAVMessage.msg:15</tt> by nedtool.
  * <pre>
- * message DroneMessage extends cMessage
+ * message UAVMessage extends cMessage
  * {
  *     int origem = -1;
  *     int destino = -1;
- *     DroneStatus status;
+ *     UAVStatus status;
  *     Task task;
  *     string titulo;
  * }
  * </pre>
  */
-class INET_API DroneMessage : public ::omnetpp::cMessage
+class INET_API UAVMessage : public ::omnetpp::cMessage
 {
   protected:
     int origem = -1;
@@ -59,18 +59,18 @@ class INET_API DroneMessage : public ::omnetpp::cMessage
     omnetpp::opp_string titulo;
 
   private:
-    void copy(const DroneMessage& other);
+    void copy(const UAVMessage& other);
 
   protected:
     // protected and unimplemented operator==(), to prevent accidental usage
-    bool operator==(const DroneMessage&);
+    bool operator==(const UAVMessage&);
 
   public:
-    DroneMessage(const char *name=nullptr, short kind=0);
-    DroneMessage(const DroneMessage& other);
-    virtual ~DroneMessage();
-    DroneMessage& operator=(const DroneMessage& other);
-    virtual DroneMessage *dup() const override {return new DroneMessage(*this);}
+    UAVMessage(const char *name=nullptr, short kind=0);
+    UAVMessage(const UAVMessage& other);
+    virtual ~UAVMessage();
+    UAVMessage& operator=(const UAVMessage& other);
+    virtual UAVMessage *dup() const override {return new UAVMessage(*this);}
     virtual void parsimPack(omnetpp::cCommBuffer *b) const override;
     virtual void parsimUnpack(omnetpp::cCommBuffer *b) override;
 
@@ -80,17 +80,17 @@ class INET_API DroneMessage : public ::omnetpp::cMessage
     virtual int getDestino() const;
     virtual void setDestino(int destino);
     virtual const UAVStatus& getStatus() const;
-    virtual UAVStatus& getStatusForUpdate() { return const_cast<UAVStatus&>(const_cast<DroneMessage*>(this)->getStatus());}
+    virtual UAVStatus& getStatusForUpdate() { return const_cast<UAVStatus&>(const_cast<UAVMessage*>(this)->getStatus());}
     virtual void setStatus(const UAVStatus& status);
     virtual const Task& getTask() const;
-    virtual Task& getTaskForUpdate() { return const_cast<Task&>(const_cast<DroneMessage*>(this)->getTask());}
+    virtual Task& getTaskForUpdate() { return const_cast<Task&>(const_cast<UAVMessage*>(this)->getTask());}
     virtual void setTask(const Task& task);
     virtual const char * getTitulo() const;
     virtual void setTitulo(const char * titulo);
 };
 
-inline void doParsimPacking(omnetpp::cCommBuffer *b, const DroneMessage& obj) {obj.parsimPack(b);}
-inline void doParsimUnpacking(omnetpp::cCommBuffer *b, DroneMessage& obj) {obj.parsimUnpack(b);}
+inline void doParsimPacking(omnetpp::cCommBuffer *b, const UAVMessage& obj) {obj.parsimPack(b);}
+inline void doParsimUnpacking(omnetpp::cCommBuffer *b, UAVMessage& obj) {obj.parsimUnpack(b);}
 
-#endif // ifndef __DRONEMESSAGE_M_H
+#endif // ifndef __UAVMESSAGE_M_H
 
