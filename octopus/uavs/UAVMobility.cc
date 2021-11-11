@@ -61,6 +61,7 @@ void UAVMobility::setTargetPosition() {
     } else {
         if(base[uav.getID()].size() != itera[uav.getID()] && base[uav.getID()].size() > 0){ //if there are tasks not performed
             int task = itera[uav.getID()];
+
             if(base[uav.getID()][task].getStatus() == 2){ //finalizando
                 base[uav.getID()][task].setComplete();
 
@@ -120,6 +121,13 @@ double UAVMobility::getMaxSpeed() const {
 J UAVMobility::pegarBateria(int idUAV){
     cModule *a = getParentModule()->getParentModule()->getSubmodule("host", idUAV)->getSubmodule("energyStorage", 0);
     SimpleEpEnergyStorage *energySto = check_and_cast<SimpleEpEnergyStorage*>(a);
+
+    //Calculando porcentagem da bateria:
+    //float aaa = std::stof(energySto->getResidualEnergyCapacity().str());
+    //float bbb = std::stof(energySto->getNominalEnergyCapacity().str());
+    //float xa = (aaa / bbb);
+    //float res = xa * 100;
+    //cout << energySto->getResidualEnergyCapacity() << "/" << energySto->getNominalEnergyCapacity() << "-" << res << endl;
     return energySto->getResidualEnergyCapacity();
 }
 

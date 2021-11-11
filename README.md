@@ -43,7 +43,7 @@ Componente de persistência de dados, seja de Status dos UAVs ou outras informa�
 Classe que representa as tarefas, estas que podem ser abordadas de 2 maneiras previstas. A primeira seria não especificar diretamente como realizar a tarefa, mas apena indicar por meio dos atributos como diferenciar aquela tarefa e o que ela representa, que o UAV já deve interpretar e realizar ações pré-programadas. Já a segunda maneira de trabalhar com tarefas seria passar para a tarefa os comandos que o UAV deve executar para realizar aquela tarefa.
 
 #### TaskManager
-Componente responsável por gerenciar e receber informações das tarefas. Já possui implementação própria que não exige implementação própria do usuário.
+Componente responsável por gerenciar e receber informações das tarefas.
 
 #### MissionPlanner
-Componente que tem toda a autonomia de gerenciamento da missão, esta que é composta por um conjunto de tarefas designadas aos UAVs.
+Componente que tem toda a autonomia de gerenciamento da missão, esta que é composta por um conjunto de tarefas designadas aos UAVs. Já possui implementação própria que não exige implementação própria do usuário.
