@@ -44,7 +44,7 @@ void listenSocket(){ //Here starts the server communication
         //Enviando tarefa
         int codeMessage = TASK_MESSAGE;
         TaskMessage taskMessage(conteudo, TASK_MESSAGE);
-        taskMessage.setCoord(t.getTaskByIndex(u, t.getNumTasks(u)-1).getTarget());
+        //taskMessage.setCoord(t.getTaskByIndex(u, t.getNumTasks(u)-1).getTarget());
         taskMessage.setTask(t.getTaskByIndex(u, t.getNumTasks(u)-1));
 
         u = ms->getUAV(0);
@@ -96,7 +96,7 @@ void listenSocket(){ //Here starts the server communication
                     //Enviando tarefa
                     int codeMessage = TASK_MESSAGE;
                     TaskMessage taskMessage(msg.getMsg(), TASK_MESSAGE);
-                    taskMessage.setCoord(t.getTaskByIndex(u, t.getNumTasks(u)-1).getTarget());
+                    //taskMessage.setCoord(t.getTaskByIndex(u, t.getNumTasks(u)-1).getTarget());
                     taskMessage.setTask(t.getTaskByIndex(u, t.getNumTasks(u)-1));
 
                     comm.sendTaskMessageToUAV(ms->getUAV(u.getID()).getIdSocket(), taskMessage);
@@ -114,7 +114,7 @@ void listenSocket(){ //Here starts the server communication
                     //Enviando tarefa
                     int codeMessage = TASK_MESSAGE;
                     TaskMessage taskMessage(msg.getMsg(), TASK_MESSAGE);
-                    taskMessage.setCoord(t.getTaskByIndex(u, t.getNumTasks(u)-1).getTarget());
+                    //taskMessage.setCoord(t.getTaskByIndex(u, t.getNumTasks(u)-1).getTarget());
                     taskMessage.setTask(t.getTaskByIndex(u, t.getNumTasks(u)-1));
                     comm.sendTaskMessageToUAV(ms->getUAV(u.getID()).getIdSocket(), taskMessage);
 
@@ -131,7 +131,7 @@ void listenSocket(){ //Here starts the server communication
                 //Enviando tarefa
                 int codeMessage = TASK_MESSAGE;
                 TaskMessage taskMessage(msg.getMsg(), TASK_MESSAGE);
-                taskMessage.setCoord(t.getTaskByIndex(u, t.getNumTasks(u)-1).getTarget());
+                //taskMessage.setCoord(t.getTaskByIndex(u, t.getNumTasks(u)-1).getTarget());
                 taskMessage.setTask(t.getTaskByIndex(u, t.getNumTasks(u)-1));
 
                 comm.sendTaskMessageToUAV(ms->getUAV(u.getID()).getIdSocket(), taskMessage);
