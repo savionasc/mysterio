@@ -8,7 +8,8 @@ enum codemessages{
     MESSAGE = 270,
     STATUS_MESSAGE,
     TASK_MESSAGE,
-    TASK_COMPLETED_MESSAGE
+    TASK_COMPLETED_MESSAGE,
+    TASK_EMERGENCY_BATTERY_LOW
 };
 
 class Message {

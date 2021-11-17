@@ -18,7 +18,7 @@ public:
     //Task(Command command(int *args[]))
     //TaskManager(Task, idUAV)
     virtual void assignTask(Task t, UAV u){ ///TESTAR
-        //t.uav = u;
+        t.setUAV(u);
         //t = this->addTask(t);
         TaskMessage tm;
         tm.setDestination(u.getID());

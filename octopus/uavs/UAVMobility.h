@@ -52,8 +52,13 @@ class INET_API UAVMobility : public LineSegmentsMobilityBase
     /** @brief Overridden from LineSegmentsMobilityBase.*/
     virtual void setTargetPosition() override;
 
-    Coord CoordinateToCoord(Coordinate co){
+    Coord castCoordinateToCoord(Coordinate co){
         Coord coor(co.getX(), co.getY(), co.getZ());
+        return coor;
+    }
+
+    Coordinate castCoordToCoordinate(Coord co){
+        Coordinate coor(co.getX(), co.getY(), co.getZ());
         return coor;
     }
 
