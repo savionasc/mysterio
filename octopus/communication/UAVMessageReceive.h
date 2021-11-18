@@ -186,6 +186,7 @@ class UAVMessageReceive {
                 int j = base[i].size()-1;
                 base[i][j].setType(x.getType());
                 base[i][j].getUAV().setID(x.getUAV().getID());
+                waypoints[i] = base[i][j].getWaypoints();
                 if(itera[i] < 0){
                     itera[i]++;
                 }
