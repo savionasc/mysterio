@@ -125,7 +125,7 @@ void UAVMobility::setTargetPosition() {
 }
 
 void UAVMobility::move() {
-    if(bateria[uav.getID()] < 0.005 && ativo[uav.getID()] == true){
+    if(bateria[uav.getID()] < 0.005 && ativo[uav.getID()]){
         cout << "Desativando: " << uav.getID() << " Bateria: " << bateria[uav.getID()] << endl;
         ativo[uav.getID()] = false;
     }
@@ -232,12 +232,16 @@ Coord UAVMobility::flyAroundSquare(int j){
 void UAVMobility::executeTask(int j){
     if(base[uav.getID()][j].getType() == FLY_AROUND){
         targetPosition = flyAround(j);
+        cout << "Iterou FLY_AROUND" << endl;
     }else if (base[uav.getID()][j].getType() == FLY_AROUND_SQUARE){
         targetPosition = flyAroundSquare(j);
+        cout << "Iterou FLY_AROUND_SQUARE" << endl;
     }else{
         targetPosition = this->castCoordinateToCoord(base[uav.getID()][j].getTarget());
         itera[uav.getID()]++;
+        cout << "Iterou GoTo" << endl;
     }
+
 }
 
 void UAVMobility::stop(){ //Finaliza a atividade no Omnet

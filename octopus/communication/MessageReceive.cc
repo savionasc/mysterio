@@ -75,21 +75,31 @@ public:
             TaskManager t;
             MysStatusManager *ms;
             if(msg.getCode() == TASK_EMERGENCY_BATTERY_LOW){
-                Task task = msg.getTask();
-                cout << "SUBSTITUIR UAV[" << task.getUAV().getID() << "]" << endl;
+                Task task = msg.getTask(); //Pegando informações não modificadas da tarefa
+                msg.setCode(TASK_MESSAGE);
                 UAV u = ms->getUAV(1);
+                Task gotopos(u, msg.getCoord());
+                gotopos.setType(GOTO);
+                char conteudo[12] = "SUBSTITUIR";
+                msg.setDestination(u.getID());
+                msg.setMsg(conteudo);
+                t.assignTask(gotopos, u);
+                t.addTask(gotopos);
+                msg.setTask(t.getTaskByIndex(u, t.getNumTasks(u)-1));
+                MessageSender msgSender;
+                msgSender.enviarTarefa(u.getIdSocket(), msg);
+
+                //task.setType(FLY_AROUND);
+                cout << "SUBSTITUIR UAV[" << task.getUAV().getID() << "] type: " << task.getType() << endl;
+                cout << "Coordenadas: " << msg.getCoord().getX() << "|" << msg.getCoord().getY() << "|" << msg.getCoord().getZ() << endl;
                 task.setUAV(u);
                 //t.substituirUAV(msg); //no que tem UAVCommunication.send();
                 t.assignTask(task, u);
                 t.addTask(task);
 
-                char conteudo[12] = "SUBSTITUIR";
-
                 msg.setDestination(u.getID());
                 msg.setMsg(conteudo);
                 msg.setTask(t.getTaskByIndex(u, t.getNumTasks(u)-1));
-
-                MessageSender msgSender;
                 msgSender.enviarTarefa(u.getIdSocket(), msg);
             }
             //t.setTask(msg.getTask());
