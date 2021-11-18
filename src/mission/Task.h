@@ -95,6 +95,14 @@ public:
 
     }
 
+    int getWaypoints() {
+        return waypoints;
+    }
+
+    void setWaypoints(int waypoints) {
+        this->waypoints = waypoints;
+    }
+
 private:
     //Talvez calculemos o progresso num futuro próximo...
     //Se for da missão é saber quantas tarefas foram cumpridas e quantas não foram
@@ -107,6 +115,7 @@ private:
     int status = 0; //status{started, completed}
     Coordinate target;
     int repeat = 0; //TaskManager
+    int waypoints;
 };
 
 #endif

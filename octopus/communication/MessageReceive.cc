@@ -92,6 +92,7 @@ public:
                 //task.setType(FLY_AROUND);
                 cout << "SUBSTITUIR UAV[" << task.getUAV().getID() << "] type: " << task.getType() << endl;
                 cout << "Coordenadas: " << msg.getCoord().getX() << "|" << msg.getCoord().getY() << "|" << msg.getCoord().getZ() << endl;
+                cout << "Waypoint: " << task.getWaypoints() << endl;
                 task.setUAV(u);
                 //t.substituirUAV(msg); //no que tem UAVCommunication.send();
                 t.assignTask(task, u);

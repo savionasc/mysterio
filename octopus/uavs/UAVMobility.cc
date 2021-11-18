@@ -182,6 +182,7 @@ Coord UAVMobility::flyAround(int j){
         TaskMessage msg;
         msg.setCode(TASK_EMERGENCY_BATTERY_LOW);
         msg.setSource(uav.getID());
+        base[uav.getID()][itera[uav.getID()]].setWaypoints(waypoints[uav.getID()]);
         msg.setTask(base[uav.getID()][itera[uav.getID()]]);
         //targetPosition = getPosit(10, 5, 10);
         //cout << "GASTOU!" << endl;
