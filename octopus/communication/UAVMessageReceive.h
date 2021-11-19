@@ -176,6 +176,10 @@ class UAVMessageReceive {
                 memset(&tmsg, 0, sizeof(tmsg));
                 //recv(socket, (TaskMessage*)&tmsg, sizeof(tmsg), 0);
                 recv(socket, (TaskMessage*)&tmsg, sizeof(tmsg), 0);
+                if(!strcmp(tmsg.getMsg(), "SUBSTITUIR")){
+                    cout << "Ativou o Drone!" << endl;
+                    ativo[uav.getID()] = true;
+                }
                 Task x = tmsg.getTask();
                 /*TaskMessage tmsg2;
                 memset(&tmsg2, 0, sizeof(tmsg2));

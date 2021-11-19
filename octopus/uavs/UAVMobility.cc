@@ -37,7 +37,12 @@ UAVMobility::UAVMobility(){ nextMoveIsWait = false; }
 void UAVMobility::initialize(int stage) {
     LineSegmentsMobilityBase::initialize(stage);
     uav.setID(getParentModule()->getIndex());
-    ativo[uav.getID()] = true;
+    if(uav.getID() != 1){
+        ativo[uav.getID()] = true;
+    }else{
+        ativo[uav.getID()] = false;
+    }
+
     for (int i = 0; i < NUMUAVS; i++) {
         itera[i] = -1;
         waypoints[NUMUAVS] = 0;
@@ -54,8 +59,6 @@ void UAVMobility::initialize(int stage) {
 }
 
 void UAVMobility::setTargetPosition() {
-
-
     if (nextMoveIsWait) {
         simtime_t waitTime = waitTimeParameter->doubleValue()+3;
         nextChange = simTime() + waitTime;
@@ -71,7 +74,7 @@ void UAVMobility::setTargetPosition() {
             nextChange = simTime() + travelTime;
             nextMoveIsWait = hasWaitTime;
         }else{
-            simtime_t waitTime = waitTimeParameter->doubleValue()+300;
+            simtime_t waitTime = waitTimeParameter->doubleValue()+3;
             nextChange = simTime() + waitTime;
             nextMoveIsWait = false;
         }
@@ -175,19 +178,21 @@ Coord UAVMobility::flyAround(int j){
         c = this->castCoordinateToCoord(base[uav.getID()][j].getTarget());
         c.setX(c.getX()+50);
         c.setY(c.getY()+50);
-        cModule *a = getParentModule()->getParentModule()->getSubmodule("host", uav.getID())->getSubmodule("energyStorage", 0);
-        SimpleEpEnergyStorage *energySto = check_and_cast<SimpleEpEnergyStorage*>(a);
-        energySto->consumir();
-        cout << "Storage: " << energySto->getResidualEnergyCapacity() << endl;
-        TaskMessage msg;
-        msg.setCode(TASK_EMERGENCY_BATTERY_LOW);
-        msg.setSource(uav.getID());
-        base[uav.getID()][itera[uav.getID()]].setWaypoints(waypoints[uav.getID()]);
-        msg.setTask(base[uav.getID()][itera[uav.getID()]]);
-        //targetPosition = getPosit(10, 5, 10);
-        //cout << "GASTOU!" << endl;
-        msg.setCoord(this->castCoordToCoordinate(targetPosition));
-        uavs[uav.getID()].dispatchTaskMessage(msg);
+        if(uav.getID() == 0){
+            cModule *a = getParentModule()->getParentModule()->getSubmodule("host", uav.getID())->getSubmodule("energyStorage", 0);
+            SimpleEpEnergyStorage *energySto = check_and_cast<SimpleEpEnergyStorage*>(a);
+            energySto->consumir();
+            cout << "Storage: " << energySto->getResidualEnergyCapacity() << endl;
+            TaskMessage msg;
+            msg.setCode(TASK_EMERGENCY_BATTERY_LOW);
+            msg.setSource(uav.getID());
+            base[uav.getID()][itera[uav.getID()]].setWaypoints(waypoints[uav.getID()]+1);
+            msg.setTask(base[uav.getID()][itera[uav.getID()]]);
+            //targetPosition = getPosit(10, 5, 10);
+            //cout << "GASTOU!" << endl;
+            msg.setCoord(this->castCoordToCoordinate(c));
+            uavs[uav.getID()].dispatchTaskMessage(msg);
+        }
     }else if(waypoints[uav.getID()] == 3){
         c = this->castCoordinateToCoord(base[uav.getID()][j].getTarget());
         c.setX(c.getX()-50);
