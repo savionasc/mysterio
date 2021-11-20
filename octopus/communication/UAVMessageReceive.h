@@ -162,7 +162,7 @@ class UAVMessageReceive {
                 }else if(!strcmp(msg.getMsg(), "next")){
                     pular = 1;
                 }else if(!strcmp(msg.getMsg(), "drenar")){
-                    lowbattery = msg.getDestination();
+                    lowbattery[uav.getID()] = 1;
                 }else{
                     std::cout << "Received Message["<< this->uav.getID() <<"]: " << msg.getMsg() << std::endl;
                 }
@@ -175,7 +175,6 @@ class UAVMessageReceive {
                 //recv(socket, (TaskMessage*)&tmsg, sizeof(tmsg), 0);
                 recv(socket, (TaskMessage*)&tmsg, sizeof(tmsg), 0);
                 if(!strcmp(tmsg.getMsg(), "SUBSTITUIR")){
-                    cout << "Ativou o Drone!" << endl;
                     ativo[uav.getID()] = true;
                 }
                 Task x = tmsg.getTask();

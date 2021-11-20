@@ -33,9 +33,12 @@ void listenSocket(){ //Here starts the server communication
         cout << "Assigned task: Turn around the car" << endl;
         Coordinate currentP(300.0,420.0,90.0);
         UAV u(0);
+        Coordinate gotoP(800.0,620.0,90.0);
+        Task gotoa(u, GOTO, gotoP);
         Task gotoc(u, FLY_AROUND, currentP);
 
         TaskManager t;
+        t.addTask(gotoa);
         t.addTask(gotoc);
         Coordinate currentR(500.0,500.0,400.0);
         u.setID(2);
