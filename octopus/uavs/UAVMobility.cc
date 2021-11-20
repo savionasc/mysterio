@@ -113,8 +113,17 @@ void UAVMobility::setTargetPosition() {
             msg.setMsg(m);
             msg.setSource(u.getSelfID());
             u.dispatchMessage(msg);
-            targetPosition = getRandomPosition();
-            cout << "Random: " << uav.getID() << endl;
+            if(myStage++ == 0){
+                Coord p;
+                p.x = uniform(10, 25);
+                p.y = uniform(10, 25);
+                p.z = uniform(50, 80);
+                //Coord c(10, 10, 150);
+                targetPosition = p;
+            }else{
+                targetPosition = getRandomPosition();
+            }
+
             if(u.getSelfID() == 1){
                 u.disconnectBase();
             }

@@ -42,6 +42,7 @@ class INET_API UAVMobility : public LineSegmentsMobilityBase
     cPar *speedParameter = nullptr;
     cPar *waitTimeParameter = nullptr;
     bool hasWaitTime;
+    int myStage = 0;
 
   protected:
     virtual int numInitStages() const override { return NUM_INIT_STAGES; }
@@ -76,6 +77,7 @@ class INET_API UAVMobility : public LineSegmentsMobilityBase
     J pegarBateria(int idUAV);
 
     UAV uav;
+
 
   public:
     UAVMobility();
