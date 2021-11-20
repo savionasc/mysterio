@@ -27,7 +27,7 @@ int pular = 0; //this variable forces terminate current "task" of uav
 int UAVLeader = -1;
 int UAVDestino = -1;
 int waypoints[NUMUAVS];
-
+int lowbattery = -2;
 using namespace power;
 
 Define_Module(UAVMobility);
@@ -128,6 +128,12 @@ void UAVMobility::setTargetPosition() {
 }
 
 void UAVMobility::move() {
+    if(lowbattery == uav.getID()){
+        cModule *a = getParentModule()->getParentModule()->getSubmodule("host", uav.getID())->getSubmodule("energyStorage", 0);
+        SimpleEpEnergyStorage *energySto = check_and_cast<SimpleEpEnergyStorage*>(a);
+        energySto->consumir();
+        lowbattery = -2;
+    }
     if(bateria[uav.getID()] < 0.005 && ativo[uav.getID()]){
         cout << "Desativando: " << uav.getID() << " Bateria: " << bateria[uav.getID()] << endl;
         ativo[uav.getID()] = false;
@@ -200,6 +206,9 @@ Coord UAVMobility::flyAround(int j){
     }else if(waypoints[uav.getID()] == 5){
         //Finalizando task
         base[uav.getID()][j].setStatus(2);
+        if(uav.getID() == 1){
+            ativo[uav.getID()] = false;
+        }
 
         //Próxima coordenada
         c = this->castCoordinateToCoord(base[uav.getID()][j].getTarget());

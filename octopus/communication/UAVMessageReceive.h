@@ -159,12 +159,10 @@ class UAVMessageReceive {
                     for (int i = 0; i < base[this->uav.getID()].size(); i++) {
                         cout << "Status: " << base[0][i].getStatus() << endl;
                     }
-                }else if(!strcmp(msg.getMsg(), "dar-volta")){
-                }else if(!strcmp(msg.getMsg(), "retornar-base")){
                 }else if(!strcmp(msg.getMsg(), "next")){
                     pular = 1;
-                }else if(!strcmp(msg.getMsg(), "goto0")){
-                }else if(!strcmp(msg.getMsg(), "goto1")){
+                }else if(!strcmp(msg.getMsg(), "drenar")){
+                    lowbattery = msg.getDestination();
                 }else{
                     std::cout << "Received Message["<< this->uav.getID() <<"]: " << msg.getMsg() << std::endl;
                 }

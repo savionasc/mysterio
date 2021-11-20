@@ -29,6 +29,7 @@ extern int waypoints[NUMUAVS];
 extern std::vector<Task> base[NUMUAVS]; //Task
 extern bool ativo[NUMUAVS];
 extern int itera[NUMUAVS];
+extern int lowbattery;
 
 namespace mysterio {
 
