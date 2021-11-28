@@ -1,7 +1,7 @@
-package mysterio.octopus.scenarios;
+package mysterio.osborn.scenarios;
 
 import inet.node.inet.StandardHost;
-import mysterio.octopus.uavs.ModuloComunicacao;
+import mysterio.osborn.uavs.ModuloComunicacao;
 import inet.visualizer.integrated.IntegratedVisualizer;
 import inet.visualizer.integrated.IntegratedCanvasVisualizer;
 import inet.node.base.ApplicationLayerNodeBase;

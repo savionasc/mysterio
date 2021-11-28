@@ -1,5 +1,5 @@
 //
-// Generated file, do not edit! Created by nedtool 5.4 from mysterio/octopus/uavs/UAVMessage.msg.
+// Generated file, do not edit! Created by nedtool 5.4 from mysterio/osborn/uavs/UAVMessage.msg.
 //
 
 #if defined(__clang__)
@@ -37,7 +37,7 @@ class UAVMessage;
 // }}
 
 /**
- * Class generated from <tt>mysterio/octopus/uavs/UAVMessage.msg:15</tt> by nedtool.
+ * Class generated from <tt>mysterio/osborn/uavs/UAVMessage.msg:15</tt> by nedtool.
  * <pre>
  * message UAVMessage extends cMessage
  * {
