@@ -11,7 +11,7 @@ using namespace std;
 
 void listenSocket(){ //Here starts the server communication
 
-    int numeroDeUAVsEsperados = 4;
+    int numeroDeUAVsEsperados = 2;
     MysStatusManager *ms;
 
     MysCommunication comm;
@@ -25,7 +25,8 @@ void listenSocket(){ //Here starts the server communication
 
         //Atribuindo tarefas previamente (pós registro dos UAVs)
 
-        //Instanciar o planner juntamente com as tarefas
+        //Instanciar o planner
+        //instanciar tarefas
         //Atribuir as tarefas pros drones que ele quer (por meio do planner)
         //começar a missão
         //Pegar cada tarefa predefinida e dar um assync pra cada uma
@@ -33,38 +34,21 @@ void listenSocket(){ //Here starts the server communication
         cout << "Assigned task: Turn around the car" << endl;
         Coordinate currentP(300.0,420.0,90.0);
         UAV u(0);
-        Coordinate gotoP(800.0,620.0,90.0);
-        Task gotoa(u, GOTO, gotoP);
-        Task gotoc(u, FLY_AROUND, currentP);
-
+        Task gotoc(u, FLY_AROUND, currentP); // adicionar type no construtor
+        //gotoc.setType(FLY_AROUND);
         TaskManager t;
-        t.addTask(gotoa);
         t.addTask(gotoc);
-        Coordinate currentR(500.0,500.0,400.0);
-        u.setID(2);
-        Task square(u, FLY_AROUND_SQUARE, currentR);
-        t.addTask(square);
-        u.setID(3);
-        square.setUAV(u);
-        t.addTask(square);
 
         char conteudo[10] = "AAAAA";
 
-        for (int itUAV = 0; itUAV < numeroDeUAVsEsperados; itUAV++) {
-            u = ms->getUAV(itUAV);
-            int codeMessage = TASK_MESSAGE;
-            for (int itTask = 0; itTask < t.getNumTasks(u); itTask++) {
-                //Enviando tarefa
-                TaskMessage taskMessage(conteudo, TASK_MESSAGE);
-                //taskMessage.setTask(t.getTaskByIndex(u, t.getNumTasks(u)-1));
-                taskMessage.setTask(t.getTaskByIndex(u, itTask));
-                comm.sendTaskMessageToUAV(u.getIdSocket(), taskMessage);
-                cout << "Numero de tarefas do uav: " << t.getNumTasks(u) << endl;
-                cout << "Tarefa enviada: " << itTask << endl;
-                cout << "UAV: " << u.getID() << endl;
-            }
-        }
+        //Enviando tarefa
+        int codeMessage = TASK_MESSAGE;
+        TaskMessage taskMessage(conteudo, TASK_MESSAGE);
+        //taskMessage.setCoord(t.getTaskByIndex(u, t.getNumTasks(u)-1).getTarget());
+        taskMessage.setTask(t.getTaskByIndex(u, t.getNumTasks(u)-1));
 
+        u = ms->getUAV(0);
+        comm.sendTaskMessageToUAV(u.getIdSocket(), taskMessage);
 
         //Antes desse loop é onde atribui tarefas previamente
 
@@ -118,21 +102,6 @@ void listenSocket(){ //Here starts the server communication
                     comm.sendTaskMessageToUAV(ms->getUAV(u.getID()).getIdSocket(), taskMessage);
                 }
             }else if(!strcmp(msg.getMsg(), "quarteirao")){ //take off
-                Coordinate currentP(500.0,500.0,400.0);
-                UAV u(id);
-                Task gotoc(u, currentP);
-                gotoc.setType(FLY_AROUND_SQUARE);
-                TaskManager t;
-                t.addTask(gotoc);
-                //cout << "UAV["<<u.getID()<<"]-Tasks: " << t.getNumTasks(u) << endl;
-
-                //Enviando tarefa
-                int codeMessage = TASK_MESSAGE;
-                TaskMessage taskMessage(msg.getMsg(), TASK_MESSAGE);
-                //taskMessage.setCoord(t.getTaskByIndex(u, t.getNumTasks(u)-1).getTarget());
-                taskMessage.setTask(t.getTaskByIndex(u, t.getNumTasks(u)-1));
-                comm.sendTaskMessageToUAV(ms->getUAV(u.getID()).getIdSocket(), taskMessage);
-            }else if(!strcmp(msg.getMsg(), "quarteiraoT")){ //take off
                 for (int i = 0; i < ms->getSize(); i++) {
                     Coordinate currentP(500.0,500.0,400.0);
                     UAV u(i);

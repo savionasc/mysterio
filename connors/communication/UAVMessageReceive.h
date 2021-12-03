@@ -159,10 +159,12 @@ class UAVMessageReceive {
                     for (int i = 0; i < base[this->uav.getID()].size(); i++) {
                         cout << "Status: " << base[0][i].getStatus() << endl;
                     }
+                }else if(!strcmp(msg.getMsg(), "dar-volta")){
+                }else if(!strcmp(msg.getMsg(), "retornar-base")){
                 }else if(!strcmp(msg.getMsg(), "next")){
                     pular = 1;
-                }else if(!strcmp(msg.getMsg(), "drenar")){
-                    lowbattery[uav.getID()] = 1;
+                }else if(!strcmp(msg.getMsg(), "goto0")){
+                }else if(!strcmp(msg.getMsg(), "goto1")){
                 }else{
                     std::cout << "Received Message["<< this->uav.getID() <<"]: " << msg.getMsg() << std::endl;
                 }
@@ -174,9 +176,6 @@ class UAVMessageReceive {
                 memset(&tmsg, 0, sizeof(tmsg));
                 //recv(socket, (TaskMessage*)&tmsg, sizeof(tmsg), 0);
                 recv(socket, (TaskMessage*)&tmsg, sizeof(tmsg), 0);
-                if(!strcmp(tmsg.getMsg(), "SUBSTITUIR")){
-                    ativo[uav.getID()] = true;
-                }
                 Task x = tmsg.getTask();
                 /*TaskMessage tmsg2;
                 memset(&tmsg2, 0, sizeof(tmsg2));
@@ -187,7 +186,6 @@ class UAVMessageReceive {
                 int j = base[i].size()-1;
                 base[i][j].setType(x.getType());
                 base[i][j].getUAV().setID(x.getUAV().getID());
-                waypoints[i] = base[i][j].getWaypoints();
                 if(itera[i] < 0){
                     itera[i]++;
                 }

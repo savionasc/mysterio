@@ -1,7 +1,14 @@
+<<<<<<< HEAD:osborn/scenarios/MysterioCommunication1.ned
 package mysterio.osborn.scenarios;
 
 import inet.node.inet.StandardHost;
 import mysterio.osborn.uavs.example2.ModuloComunicacao2;
+=======
+package mysterio.electro.scenarios;
+
+import inet.node.inet.StandardHost;
+import mysterio.electro.uavs.example2.ModuloComunicacao2;
+>>>>>>> d56a638d1e7aadeab92e97cb76bc60a983ab954a:connors/scenarios/MysterioCommunication1.ned
 import inet.visualizer.integrated.IntegratedVisualizer;
 import inet.visualizer.integrated.IntegratedCanvasVisualizer;
 import inet.node.base.ApplicationLayerNodeBase;

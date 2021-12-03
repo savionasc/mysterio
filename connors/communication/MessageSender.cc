@@ -1,6 +1,3 @@
-#ifndef MYSTERIO_OCTOPUS_COMMUNICATION_MESSAGESENDER_H_
-#define MYSTERIO_OCTOPUS_COMMUNICATION_MESSAGESENDER_H_
-
 #include <sys/socket.h>
 #include <netinet/in.h>
 #include "../../src/communication/Message.h"
@@ -29,5 +26,3 @@ public:
         send(idUAVSocket, (TaskMessage*)&message, sizeof(message), 0);
     }
 };
-
-#endif

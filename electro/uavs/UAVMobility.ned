@@ -15,7 +15,7 @@
 // along with this program; if not, see <http://www.gnu.org/licenses/>.
 //
 
-package mysterio.electro.uavs;
+package mysterio.octopus.uavs;
 
 import inet.mobility.base.MovingMobilityBase;
 
@@ -50,7 +50,7 @@ simple UAVMobility extends MovingMobilityBase {
         volatile double changeInterval @unit(s); // frequency of changing speed and angle (can be random)
         volatile double angleDelta @unit(deg); // rotate velocity vector by this much around the rotation axis defined by the rotationAxisAngle parameter (can be random)
         volatile double rotationAxisAngle @unit(deg) = default(0deg); // defines a vector in the plane perpendicular to the velocity, where 0 deg means the Z axis when bank is zero (can be random)
-        volatile double speed @unit(mps) = default(mps); // speed (can be random, updated every changeInterval)
+        volatile double speed @unit(mps) = default(50mps); //uniform(40mps,60mps)); // speed (can be random, updated every changeInterval)
         @class(UAVMobility);
         int numeroDrones = default(0);
 }

@@ -1,5 +1,9 @@
 //
+<<<<<<< HEAD:osborn/uavs/UAVMessage_m.h
 // Generated file, do not edit! Created by nedtool 5.4 from mysterio/osborn/uavs/UAVMessage.msg.
+=======
+// Generated file, do not edit! Created by nedtool 5.4 from mysterio/electro/uavs/UAVMessage.msg.
+>>>>>>> d56a638d1e7aadeab92e97cb76bc60a983ab954a:connors/uavs/UAVMessage_m.h
 //
 
 #if defined(__clang__)
@@ -37,7 +41,11 @@ class UAVMessage;
 // }}
 
 /**
+<<<<<<< HEAD:osborn/uavs/UAVMessage_m.h
  * Class generated from <tt>mysterio/osborn/uavs/UAVMessage.msg:15</tt> by nedtool.
+=======
+ * Class generated from <tt>mysterio/electro/uavs/UAVMessage.msg:15</tt> by nedtool.
+>>>>>>> d56a638d1e7aadeab92e97cb76bc60a983ab954a:connors/uavs/UAVMessage_m.h
  * <pre>
  * message UAVMessage extends cMessage
  * {

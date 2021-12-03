@@ -8,6 +8,7 @@
 #include "../../src/communication/TaskMessage.h"
 #include "../../src/taskmanager/TaskManager.h"
 #include "../status/MysStatusManager.h"
+#include "MessageSender.cc"
 
 using namespace std;
 
@@ -68,10 +69,41 @@ public:
             recv(socket, (TaskMessage*)&msg, sizeof(msg), 0);
             cout << "<TM>Received Task - Code Message: " << msg.getCode();
             cout << " Status: " << msg.getTask().getStatus() << " Task ID: " << msg.getTask().getID() << endl;
+            cout << " Coordinate: " << msg.getCoord().getX() << "|" << msg.getCoord().getY() << "|" << msg.getCoord().getZ() << endl;
             cout << "Finished? " << (msg.getTask().isComplete() == true ? "True" : "False") << endl;
             cout << "UAV " << msg.getTask().getUAV().getID() << endl;
             TaskManager t;
-            t.setTask(msg.getTask());
+            MysStatusManager *ms;
+            if(msg.getCode() == TASK_EMERGENCY_BATTERY_LOW){
+                Task task = msg.getTask(); //Pegando informações não modificadas da tarefa
+                msg.setCode(TASK_MESSAGE);
+                UAV u = ms->getUAV(1);
+                Task gotopos(u, msg.getCoord());
+                gotopos.setType(GOTO);
+                char conteudo[12] = "SUBSTITUIR";
+                msg.setDestination(u.getID());
+                msg.setMsg(conteudo);
+                t.assignTask(gotopos, u);
+                t.addTask(gotopos);
+                msg.setTask(t.getTaskByIndex(u, t.getNumTasks(u)-1));
+                MessageSender msgSender;
+                msgSender.enviarTarefa(u.getIdSocket(), msg);
+
+                //task.setType(FLY_AROUND);
+                cout << "SUBSTITUIR UAV[" << task.getUAV().getID() << "] type: " << task.getType() << endl;
+                cout << "Coordenadas: " << msg.getCoord().getX() << "|" << msg.getCoord().getY() << "|" << msg.getCoord().getZ() << endl;
+                cout << "Waypoint: " << task.getWaypoints() << endl;
+                task.setUAV(u);
+                //t.substituirUAV(msg); //no que tem UAVCommunication.send();
+                t.assignTask(task, u);
+                t.addTask(task);
+
+                msg.setDestination(u.getID());
+                msg.setMsg(conteudo);
+                msg.setTask(t.getTaskByIndex(u, t.getNumTasks(u)-1));
+                msgSender.enviarTarefa(u.getIdSocket(), msg);
+            }
+            //t.setTask(msg.getTask());
         }else if(typeMSG == TASK_COMPLETED_MESSAGE){
             Message msg;
             memset(&msg, 0, sizeof(msg));

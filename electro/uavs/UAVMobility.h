@@ -42,6 +42,7 @@ class INET_API UAVMobility : public LineSegmentsMobilityBase
     cPar *speedParameter = nullptr;
     cPar *waitTimeParameter = nullptr;
     bool hasWaitTime;
+    int myStage = 0;
 
   protected:
     virtual int numInitStages() const override { return NUM_INIT_STAGES; }
@@ -52,8 +53,13 @@ class INET_API UAVMobility : public LineSegmentsMobilityBase
     /** @brief Overridden from LineSegmentsMobilityBase.*/
     virtual void setTargetPosition() override;
 
-    Coord CoordinateToCoord(Coordinate co){
+    Coord castCoordinateToCoord(Coordinate co){
         Coord coor(co.getX(), co.getY(), co.getZ());
+        return coor;
+    }
+
+    Coordinate castCoordToCoordinate(Coord co){
+        Coordinate coor(co.getX(), co.getY(), co.getZ());
         return coor;
     }
 
@@ -71,6 +77,7 @@ class INET_API UAVMobility : public LineSegmentsMobilityBase
     J pegarBateria(int idUAV);
 
     UAV uav;
+
 
   public:
     UAVMobility();

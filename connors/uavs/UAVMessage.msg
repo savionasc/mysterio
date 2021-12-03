@@ -1,5 +1,5 @@
 cplusplus {{
-#include "../../src/status/UAVStatus.h"
+#include "../../status/UAVStatus.h"
 #include "../../src/mission/Task.h"
 #include <string>
 }}

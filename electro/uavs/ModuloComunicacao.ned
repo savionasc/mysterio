@@ -1,4 +1,4 @@
-package mysterio.electro.uavs;
+package mysterio.octopus.uavs;
 
 import inet.node.inet.StandardHost;
 
