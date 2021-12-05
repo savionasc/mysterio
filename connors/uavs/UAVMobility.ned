@@ -15,11 +15,7 @@
 // along with this program; if not, see <http://www.gnu.org/licenses/>.
 //
 
-<<<<<<< HEAD:osborn/uavs/UAVMobility.ned
-package mysterio.osborn.uavs;
-=======
-package mysterio.electro.uavs;
->>>>>>> d56a638d1e7aadeab92e97cb76bc60a983ab954a:connors/uavs/UAVMobility.ned
+package mysterio.connors.uavs;
 
 import inet.mobility.base.MovingMobilityBase;
 

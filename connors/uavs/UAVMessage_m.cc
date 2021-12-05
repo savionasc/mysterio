@@ -1,9 +1,4 @@
-//
-<<<<<<< HEAD:osborn/uavs/UAVMessage_m.cc
-// Generated file, do not edit! Created by nedtool 5.4 from mysterio/osborn/uavs/UAVMessage.msg.
-=======
-// Generated file, do not edit! Created by nedtool 5.4 from mysterio/electro/uavs/UAVMessage.msg.
->>>>>>> d56a638d1e7aadeab92e97cb76bc60a983ab954a:connors/uavs/UAVMessage_m.cc
+// Generated file, do not edit! Created by nedtool 5.4 from mysterio/connors/uavs/UAVMessage.msg.
 //
 
 // Disable warnings about unused variables, empty switch stmts, etc:

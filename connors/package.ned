@@ -1,3 +1,3 @@
-package mysterio.electro;
+package mysterio.connors;
 
 @namespace(inet);
