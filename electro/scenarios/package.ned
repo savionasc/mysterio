@@ -1,3 +1,3 @@
-package mysterio.octopus.scenarios;
+package mysterio.electro.scenarios;
 
 //@namespace(inet);
