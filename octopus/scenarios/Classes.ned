@@ -1,4 +1,4 @@
-package mysterio.osborn.scenarios;
+package mysterio.octopus.scenarios;
 
 import inet.node.base.ApplicationLayerNodeBase;
 
