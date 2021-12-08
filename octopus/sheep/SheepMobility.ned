@@ -1,4 +1,4 @@
-package mysterio.octopus.uavs;
+package mysterio.octopus.sheep;
 
 import inet.mobility.base.MovingMobilityBase;
 

@@ -5,7 +5,7 @@
 #include "inet/mobility/base/LineSegmentsMobilityBase.h"
 #include "inet/power/base/EpEnergyStorageBase.h"
 #include "inet/power/storage/SimpleEpEnergyStorage.h"
-#include "UAVMessage_m.h"
+#include "../uavs/UAVMessage_m.h"
 
 using namespace omnetpp;
 using namespace std;
@@ -17,7 +17,7 @@ class Sheep : public cSimpleModule {
     virtual UAVMessage *generateMessage();
     virtual void forwardMessage(UAVMessage *msg);
     virtual void initialize() override;
-    virtual void handleMessage(UAVMessage *msg);
+    virtual void handleMessage(cMessage *msg) override;
 
     int ID;
 };
