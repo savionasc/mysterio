@@ -1,9 +1,12 @@
+UAVMOBILITY
 #include "../uavs/UAVMobility.h"
 #include <iostream>
+#include <queue>
 
 #include "../communication/UAVMysCommunication.h"
 #include "../scenarios/Example1Communication.h"
 #include "../../src/mission/DependentTask.h"
+#include "UAVMessage_m.h"
 
 using namespace omnetpp;
 using namespace std;
@@ -17,6 +20,7 @@ double tempoVoo[NUMUAVS];
 bool ativo[NUMUAVS];
 int itera[NUMUAVS];
 std::vector<Task> base[NUMUAVS];
+std::queue<UAVMessage> msgs;
 UAVMysCommunication uavs[NUMUAVS];
 int pular = 0; //this variable forces terminate current "task" of uav
 //1 - Tarefa: decolar (idUAV, altura)
@@ -29,6 +33,8 @@ int UAVDestino = -1;
 int waypoints[NUMUAVS];
 int lowbattery[NUMUAVS];
 using namespace power;
+
+extern int stopSheep;
 
 Define_Module(UAVMobility);
 
@@ -56,6 +62,8 @@ void UAVMobility::initialize(int stage) {
         stationary = !speedParameter->isExpression() && speedParameter->doubleValue() == 0;
     }
     this->rescueData();
+
+    stopSheep = 0; //Falando com ovelha
 }
 
 void UAVMobility::setTargetPosition() {
@@ -205,6 +213,11 @@ Coord UAVMobility::flyAround(int j){
         c.setX(c.getX()-50);
         c.setY(c.getY()-50);
     }else if(waypoints[uav.getID()] == 1){
+        UAVMessage sendMSGEvt("Stop Sheep!", 1);
+        sendMSGEvt.setDestino(-1);
+        sendMSGEvt.setOrigem(uav.getID());
+        msgs.push(sendMSGEvt);
+
         c = this->castCoordinateToCoord(base[uav.getID()][j].getTarget());
         c.setX(c.getX()+50);
         c.setY(c.getY()-50);

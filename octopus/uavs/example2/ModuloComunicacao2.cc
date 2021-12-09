@@ -3,6 +3,7 @@
 #include "../../mission/GoTo.h"
 #include "../UAVMobility.h"
 #include <iostream>
+#include <queue>
 
 #include "../../communication/UAVMysCommunication.h"
 #include "../../../src/status/UAVStatus.h"
@@ -21,6 +22,9 @@ extern double tempoVoo[NUMUAVS];
 extern UAVMysCommunication uavs[NUMUAVS];
 extern int UAVDestino;
 extern int UAVLeader;
+extern std::queue<UAVMessage> msgs;
+
+int stopSheep = -1;
 
 void ModuloComunicacao2::initialize(){
     selfID = getIndex();
@@ -30,10 +34,44 @@ void ModuloComunicacao2::initialize(){
     if(!uavs[selfID].isConnected()){
         uavs[selfID].connectBase();
     }
-    bubble("INICIANDO, Iniciando!");
+    //bubble("INICIANDO, Iniciando!");
+    cout << "Iniciou comunicação UAV!" << endl;
+
+    UAVMessage *sendMSGEvt = new UAVMessage("checking", 123);
+    sendMSGEvt->setOrigem(selfID);
+    scheduleAt(simTime()+2, sendMSGEvt);
 }
 
 void ModuloComunicacao2::handleMessage(cMessage *msg){
+    UAVMessage *mMSG = check_and_cast<UAVMessage*>(msg);
+
+    if(msgs.size() > 0){
+        UAVMessage umsg = msgs.front();
+        cout << "Mensagem recuperada: " << umsg.getDestino() << "-" << umsg.getOrigem() << "|" << umsg.getFullName() << endl;
+        msgs.pop();
+    }
+
+    if(mMSG->getKind() == 123){
+        if(stopSheep != -1 && selfID == stopSheep){
+            cout << "Enviando mensagem de... " << selfID << endl;
+            mMSG->setOrigem(selfID);
+            mMSG->setDestino(-1);
+            mMSG->setName("Gostei!");
+            mMSG->setKind(321);
+            scheduleAt(simTime()+1, mMSG);
+            stopSheep = -1;
+        }
+    }else{
+        cout << "RECEBEU MENSAGEM UAV" << endl;
+        cout << "[U2U] Executando ação: " << mMSG->getFullName() << endl;
+        cout << "[U2U] Origem: " << mMSG->getOrigem() << endl;
+        cout << "[U2U] Destino: " << mMSG->getDestino() << endl;
+        send(msg, "out", 0); //0 indicates the first link/door
+    }
+
+    UAVMessage *checkMSG = new UAVMessage("checking", 123);
+    scheduleAt(simTime()+5, checkMSG);
+
     /*UAVMessage *mMSG = check_and    _cast<UAVMessage*>(msg);
     cout << "[U2U] Executando ação: " << msg->getFullName() << endl;
 
@@ -117,6 +155,7 @@ void ModuloComunicacao2::handleMessage(cMessage *msg){
 //Depois usar bubble("CHEGOU, gostei do recebido!"); que ele mostra na interface gráfica que chegou a mensagem!
 
 void ModuloComunicacao2::forwardMessage(UAVMessage *msg){
+    cout << "AAAA" << endl;
     //Depois enviar mensagens para todos os vizinhos
     int n = gateSize("out");
     int k = intuniform(0, (n-1));
@@ -126,6 +165,7 @@ void ModuloComunicacao2::forwardMessage(UAVMessage *msg){
 }
 
 UAVMessage *ModuloComunicacao2::generateMessage(){
+    cout << "BBBB" << endl;
     int src = getIndex();
     int n = getVectorSize();
     int dest = intuniform(0, n-2);
