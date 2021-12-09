@@ -1,12 +1,15 @@
 #include "../sheep/Sheep.h"
 
 #include <iostream>
+#include <queue>
 
 using namespace omnetpp;
 using namespace std;
 using namespace inet;
 
 Define_Module(Sheep);
+
+extern std::queue<UAVMessage> msgs;
 
 int posicao;
 
@@ -19,6 +22,7 @@ void Sheep::handleMessage(cMessage *msg){
     cout << "RECEBEU MENSAGEM SHEEP" << endl;
     UAVMessage *mMSG = check_and_cast<UAVMessage*>(msg);
     cout << "[U2U] Executando ação: " << msg->getFullName() << endl;
+    delete msg;
 }
 
 void Sheep::forwardMessage(UAVMessage *msg){
