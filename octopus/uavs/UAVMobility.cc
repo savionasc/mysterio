@@ -33,8 +33,6 @@ int waypoints[NUMUAVS];
 int lowbattery[NUMUAVS];
 using namespace power;
 
-extern int stopSheep;
-
 Define_Module(UAVMobility);
 
 UAVMobility::UAVMobility(){ nextMoveIsWait = false; }
@@ -42,9 +40,9 @@ UAVMobility::UAVMobility(){ nextMoveIsWait = false; }
 void UAVMobility::initialize(int stage) {
     LineSegmentsMobilityBase::initialize(stage);
     uav.setID(getParentModule()->getIndex());
-    if(uav.getID() != 1){
+    if(uav.getID() != 1){ //Mudar esse if para verificar se tem a função de reserva...
         ativo[uav.getID()] = true;
-    }else{
+    }else{ //Caso seja reserva, fica inativo
         ativo[uav.getID()] = false;
     }
 
@@ -61,8 +59,6 @@ void UAVMobility::initialize(int stage) {
         stationary = !speedParameter->isExpression() && speedParameter->doubleValue() == 0;
     }
     this->rescueData();
-
-    stopSheep = 0; //Falando com ovelha
 }
 
 void UAVMobility::setTargetPosition() {
