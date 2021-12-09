@@ -1,4 +1,3 @@
-UAVMOBILITY
 #include "../uavs/UAVMobility.h"
 #include <iostream>
 #include <queue>

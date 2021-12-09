@@ -6,6 +6,7 @@ import inet.visualizer.integrated.IntegratedVisualizer;
 import inet.visualizer.integrated.IntegratedCanvasVisualizer;
 import inet.node.base.ApplicationLayerNodeBase;
 import mysterio.octopus.scenarios.BasestationUAVs;
+import mysterio.octopus.sheep.Sheep;
 
 
 network MysterioCommunication2 {
@@ -28,7 +29,12 @@ network MysterioCommunication2 {
             @display("p=300,420");
         }
         
+        sheep: Sheep {
+            @display("p=550,220");
+        }
+        
     connections:
+        host[0].out++ --> {  delay = 100ms; } --> sheep.in++;
         host[0].out++ --> {  delay = 100ms; } --> host[1].in++;
         host[0].in++ <-- {  delay = 100ms; } <-- host[1].out++;
         host[0].out++ --> {  delay = 100ms; } --> host[2].in++;
