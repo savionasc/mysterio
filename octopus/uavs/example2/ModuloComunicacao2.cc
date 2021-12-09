@@ -1,6 +1,5 @@
 #include "ModuloComunicacao2.h"
 
-#include "../../mission/GoTo.h"
 #include "../UAVMobility.h"
 #include <iostream>
 #include <queue>
@@ -49,8 +48,12 @@ void ModuloComunicacao2::handleMessage(cMessage *msg){
                 msgs.pop();
 
                 cout << "Enviando mensagem de... " << selfID << endl;
-                umsg->setName("Gostei!");
-                scheduleAt(simTime()+1, umsg);
+                mMSG->setName("Gostei!");
+                //scheduleAt(simTime()+1, &umsg);
+                mMSG->setKind(321);
+                mMSG->setOrigem(umsg.getOrigem());
+                mMSG->setDestino(umsg.getDestino());
+                send(mMSG, "out", 0); //0 indicates the first link/door
             }
         }
 
@@ -59,11 +62,12 @@ void ModuloComunicacao2::handleMessage(cMessage *msg){
         cout << "[U2U] Executando ação: " << mMSG->getFullName() << endl;
         cout << "[U2U] Origem: " << mMSG->getOrigem() << endl;
         cout << "[U2U] Destino: " << mMSG->getDestino() << endl;
-        send(msg, "out", 0); //0 indicates the first link/door
+        send(msg, "out", 1); //0 indicates the first link/door
     }
 
     UAVMessage *checkMSG = new UAVMessage("checking", 123);
     scheduleAt(simTime()+5, checkMSG);
+    //delete mMSG;
 }
 
 //ATENÇÃO!!

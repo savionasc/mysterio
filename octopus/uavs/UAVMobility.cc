@@ -211,6 +211,8 @@ Coord UAVMobility::flyAround(int j){
         sendMSGEvt.setOrigem(uav.getID());
         msgs.push(sendMSGEvt);
 
+        cout << "COLOQUEI UMA MENSAGEM!" << endl;
+
         c = this->castCoordinateToCoord(base[uav.getID()][j].getTarget());
         c.setX(c.getX()+50);
         c.setY(c.getY()-50);
