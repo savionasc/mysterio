@@ -10,6 +10,8 @@ using namespace omnetpp;
 using namespace std;
 using namespace inet;
 
+bool stopped = false;
+
 Define_Module(SheepMobility);
 
 SheepMobility::SheepMobility(){ nextMoveIsWait = false; }
@@ -27,14 +29,15 @@ void SheepMobility::initialize(int stage) {
 }
 
 void SheepMobility::setTargetPosition() {
-    if (nextMoveIsWait) {
+    if(stopped){
+        nextChange = simTime() + 15;
+    }else if (nextMoveIsWait) {
         simtime_t waitTime = waitTimeParameter->doubleValue();
         nextChange = simTime() + waitTime;
         nextMoveIsWait = false;
     } else {
-        targetPosition = getRandomPosition();
-        //p.y = uniform(10, 25);
-        targetPosition.z = 0;
+        //targetPosition = getRandomPosition();
+        targetPosition = getPosition();
 
         double speed = speedParameter->doubleValue();
         double distance = lastPosition.distance(targetPosition);
@@ -51,4 +54,12 @@ void SheepMobility::move() {
 
 double SheepMobility::getMaxSpeed() const {
     return speedParameter->isExpression() ? NaN : speedParameter->doubleValue();
+}
+
+Coord SheepMobility::getPosition(){
+        Coord p;
+        p.x = uniform(constraintAreaMin.x, constraintAreaMax.x) * 0.2;
+        p.y = uniform(constraintAreaMin.y, constraintAreaMax.y) * 0.2;
+        p.z = 0;
+        return p;
 }

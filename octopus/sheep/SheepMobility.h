@@ -23,6 +23,8 @@ class INET_API SheepMobility : public LineSegmentsMobilityBase
 
     virtual void setTargetPosition() override;
 
+    virtual Coord getPosition();
+
     virtual void move() override;
 
     int ID;

@@ -1,4 +1,5 @@
-#include "../sheep/Sheep.h"
+#include "Sheep.h"
+#include "SheepMobility.h"
 
 #include <iostream>
 #include <queue>
@@ -10,6 +11,7 @@ using namespace inet;
 Define_Module(Sheep);
 
 extern std::queue<UAVMessage> msgs;
+extern bool stopped;
 
 int posicao;
 
@@ -22,6 +24,7 @@ void Sheep::handleMessage(cMessage *msg){
     cout << "RECEBEU MENSAGEM SHEEP" << endl;
     UAVMessage *mMSG = check_and_cast<UAVMessage*>(msg);
     cout << "[U2U] Executando ação: " << msg->getFullName() << endl;
+    stopped = true;
     delete msg;
 }
 
