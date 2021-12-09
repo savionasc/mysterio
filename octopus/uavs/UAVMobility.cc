@@ -27,8 +27,6 @@ int pular = 0; //this variable forces terminate current "task" of uav
 //3 - Tarefa: dar uma volta sobre (idUAV, positionTarget, distanciaSobre)
 //4 - Tarefa: retornar a base (idUAV, basePosition)
 //5 - Tarefa: pousar (idUAV, chao)
-int UAVLeader = -1;
-int UAVDestino = -1;
 int waypoints[NUMUAVS];
 int lowbattery[NUMUAVS];
 using namespace power;
@@ -208,7 +206,7 @@ Coord UAVMobility::flyAround(int j){
         c.setX(c.getX()-50);
         c.setY(c.getY()-50);
     }else if(waypoints[uav.getID()] == 1){
-        UAVMessage sendMSGEvt("Stop Sheep!", 1);
+        UAVMessage sendMSGEvt("Stop Sheep!", 321);
         sendMSGEvt.setDestino(-1);
         sendMSGEvt.setOrigem(uav.getID());
         msgs.push(sendMSGEvt);

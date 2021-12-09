@@ -32,7 +32,6 @@ class ModuloComunicacao2 : public cSimpleModule {
     //Auxiliary functions
     void enviarMensagem(double tempo, int origem, int destino, char const *name, int kind);
     void rememberCheckMessage(double seconds);
-    void solicitarStatusDoUAVVizinho();
 
     int selfID = -2;
     UAVMessage* sendMSGEvt;
