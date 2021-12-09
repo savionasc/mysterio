@@ -6,11 +6,6 @@ import inet.visualizer.integrated.IntegratedVisualizer;
 import inet.visualizer.integrated.IntegratedCanvasVisualizer;
 import inet.node.base.ApplicationLayerNodeBase;
 
-module BasestationUAVs extends ApplicationLayerNodeBase {
-    parameters:
-        @display("i=block/broadcast");
-}
-
 network MysterioCommunication1 {
     parameters:
         int numHosts;

@@ -5,6 +5,8 @@ import mysterio.octopus.uavs.example2.ModuloComunicacao2;
 import inet.visualizer.integrated.IntegratedVisualizer;
 import inet.visualizer.integrated.IntegratedCanvasVisualizer;
 import inet.node.base.ApplicationLayerNodeBase;
+import mysterio.octopus.scenarios.BasestationUAVs;
+
 
 network MysterioCommunication2 {
     parameters:
