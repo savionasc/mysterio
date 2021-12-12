@@ -48,7 +48,6 @@ public:
                 MysStatusManager* status = MysStatusManager::GetInstance();
                 status->onDroneStatusMessageReceive(msg);
             }else {
-                //MysStatus *status;
                 MysStatusManager* status = MysStatusManager::GetInstance();
                 status->onDroneStatusMessageReceive(msg);
             }
