@@ -10,7 +10,9 @@
 
 class Priority {
 public:
-    Priority(int priority){}
+    Priority(){
+        setPriority(0);
+    }
 
     Priority(int priority){
         setPriority(priority);
