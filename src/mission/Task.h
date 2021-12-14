@@ -3,6 +3,7 @@
 #include "../utils/Coordinate.h"
 #include "../utils/UAV.h"
 #include "Command.h"
+#include "Priority.h"
 //States
 #define STARTED 1
 #define COMPLETED 2 //Colocar perto de completar...
@@ -116,6 +117,7 @@ private:
     Coordinate target;
     int repeat = 0; //TaskManager
     int waypoints;
+    Priority priority;
 };
 
 #endif
