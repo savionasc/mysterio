@@ -32,6 +32,7 @@ class INET_API SheepMobility : public LineSegmentsMobilityBase
   public:
     SheepMobility();
     virtual double getMaxSpeed() const override;
+    Coord posicaoAtual();
 };
 
 }

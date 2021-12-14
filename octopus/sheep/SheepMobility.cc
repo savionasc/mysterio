@@ -63,3 +63,7 @@ Coord SheepMobility::getPosition(){
         p.z = 0;
         return p;
 }
+
+Coord SheepMobility::posicaoAtual(){
+    return lastPosition;
+}

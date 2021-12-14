@@ -76,6 +76,8 @@ class INET_API UAVMobility : public LineSegmentsMobilityBase
 
     J pegarBateria(int idUAV);
 
+    Coord pegarPosicaoOvelha();
+
     UAV uav;
 
 

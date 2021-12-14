@@ -5,6 +5,7 @@
 #include "../communication/UAVMysCommunication.h"
 #include "../scenarios/Example1Communication.h"
 #include "../../src/mission/DependentTask.h"
+#include "../sheep/SheepMobility.h"
 #include "UAVMessage_m.h"
 
 using namespace omnetpp;
@@ -190,6 +191,13 @@ J UAVMobility::pegarBateria(int idUAV){
     //float res = xa * 100;
     //cout << energySto->getResidualEnergyCapacity() << "/" << energySto->getNominalEnergyCapacity() << "-" << res << endl;
     return energySto->getResidualEnergyCapacity();
+}
+
+Coord UAVMobility::pegarPosicaoOvelha(){
+    cModule *a = getParentModule()->getParentModule()->getSubmodule("sheep")->getSubmodule("mobility", 0);
+    SheepMobility *smob = check_and_cast<SheepMobility*>(a);
+
+    return smob->posicaoAtual();
 }
 
 void UAVMobility::rescueData(){
