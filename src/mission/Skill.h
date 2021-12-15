@@ -9,6 +9,9 @@
 #define MYSTERIO_SRC_MISSION_SKILL_H_
 
 #include <iostream>
+#include <cstring>
+
+using namespace std;
 
 class Skill {
 public:
@@ -23,7 +26,7 @@ public:
     }
 
     void setSkill(char *skill){
-        std::strcpy(this->skill, skill);
+        strcpy(this->skill, skill);
     }
 
 private:
