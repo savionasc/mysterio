@@ -14,17 +14,26 @@ private:
     static std::vector<std::vector<Task>> tasks;
 
 protected:
-    MissionPlanner(const std::string value): value_(value) { taskID_ = 0; }
+    //MissionPlanner(const std::string value): value_(value) { taskID_ = 0; uavs = -1; }
+    MissionPlanner(const int uavs): numUAVs_(uavs) { taskID_ = 0; createVector(numUAVs_); }
     ~MissionPlanner() {}
-    std::string value_;
+    int numUAVs_;
     int taskID_;
 
 public:
     MissionPlanner(MissionPlanner &other) = delete;
     void operator=(const MissionPlanner &) = delete;
 
+    void createVector(int n){
+        for (int i = 0; i < n; i++) {
+            std::vector<Task> v;
+            tasks.push_back(v);
+        }
+    }
 
-    static MissionPlanner *GetInstance(const std::string& value);
+    //static MissionPlanner *GetInstance(const std::string& value);
+
+    static MissionPlanner *GetInstance(const int uavs);
 
     Task addTask(Task t){
         t.setId(createNewTaskID());
@@ -62,9 +71,9 @@ public:
         return ++taskID_;
     }
 
-    std::string value() const{
-        return value_;
-    } 
+    int numUAVs() const{
+        return numUAVs_;
+    }
 
     int taskID() const{
         return taskID_;

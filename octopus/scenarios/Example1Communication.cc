@@ -37,7 +37,7 @@ void listenSocket(){ //Here starts the server communication
         Task gotoa(u, GOTO, gotoP);
         Task gotoc(u, FLY_AROUND, currentP);
 
-        TaskManager t;
+        TaskManager t(5);
         t.addTask(gotoa);
         t.addTask(gotoc);
         Coordinate currentR(500.0,500.0,400.0);
@@ -72,7 +72,7 @@ void listenSocket(){ //Here starts the server communication
             std::cout << "Select a UAV by id:" << std::endl;
             int id;
             std::cin >> id;
-            TaskManager t;
+            TaskManager t(5);
             UAV u(id);
             cout << "Number of tasks assigned to selected UAV: " << t.getNumTasks(u) << endl;
             std::cout << "Type a message:" << std::endl;
@@ -82,13 +82,13 @@ void listenSocket(){ //Here starts the server communication
 
             //Tratando mensagens ao digitar
             if(!strcmp(msg.getMsg(), "task")){
-                TaskManager t;
+                TaskManager t(5);
                 UAV u(0);
                 std::cout << "Number of UAV tasks: " << t.getNumTasks(u) << "\n";
             }
 
             if(!strcmp(msg.getMsg(), "tasks")){
-                TaskManager t;
+                TaskManager t(5);
                 UAV u(id);
                 std::cout << "UAV tasks: " << t.getNumTasks(u) << "\n";
                 vector<Task> ts = t.getTaskList(u);
@@ -105,7 +105,7 @@ void listenSocket(){ //Here starts the server communication
                     UAV u(i);
                     Task gotoc(u, currentP);
                     gotoc.setType(10);
-                    TaskManager t;
+                    TaskManager t(5);
                     t.addTask(gotoc);
                     //cout << "UAV["<<u.getID()<<"]-Tasks: " << t.getNumTasks(u) << endl;
 
@@ -122,7 +122,7 @@ void listenSocket(){ //Here starts the server communication
                 UAV u(id);
                 Task gotoc(u, currentP);
                 gotoc.setType(FLY_AROUND_SQUARE);
-                TaskManager t;
+                TaskManager t(5);
                 t.addTask(gotoc);
                 //cout << "UAV["<<u.getID()<<"]-Tasks: " << t.getNumTasks(u) << endl;
 
@@ -138,7 +138,7 @@ void listenSocket(){ //Here starts the server communication
                     UAV u(i);
                     Task gotoc(u, currentP);
                     gotoc.setType(FLY_AROUND_SQUARE);
-                    TaskManager t;
+                    TaskManager t(5);
                     t.addTask(gotoc);
                     //cout << "UAV["<<u.getID()<<"]-Tasks: " << t.getNumTasks(u) << endl;
 
@@ -156,7 +156,7 @@ void listenSocket(){ //Here starts the server communication
                 Task gotoc(u, currentP);
                 gotoc.setType(FLY_AROUND);
                 gotoc.setUAV(u);
-                TaskManager t;
+                TaskManager t(5);
                 t.addTask(gotoc);
 
                 //Enviando tarefa

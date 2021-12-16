@@ -71,7 +71,7 @@ public:
             cout << " Coordinate: " << msg.getCoord().getX() << "|" << msg.getCoord().getY() << "|" << msg.getCoord().getZ() << endl;
             cout << "Finished? " << (msg.getTask().isComplete() == true ? "True" : "False") << endl;
             cout << "UAV " << msg.getTask().getUAV().getID() << endl;
-            TaskManager t;
+            TaskManager t(5);
             MysStatusManager *ms;
             if(msg.getCode() == TASK_EMERGENCY_BATTERY_LOW){
                 Task task = msg.getTask(); //Pegando informações não modificadas da tarefa
