@@ -75,7 +75,6 @@ void ModuloComunicacao2::handleMessage(cMessage *msg){
 //Depois usar bubble("CHEGOU, gostei do recebido!"); que ele mostra na interface gráfica que chegou a mensagem!
 
 void ModuloComunicacao2::forwardMessage(UAVMessage *msg){
-    cout << "AAAA" << endl;
     //Depois enviar mensagens para todos os vizinhos
     int n = gateSize("out");
     int k = intuniform(0, (n-1));
@@ -85,7 +84,6 @@ void ModuloComunicacao2::forwardMessage(UAVMessage *msg){
 }
 
 UAVMessage *ModuloComunicacao2::generateMessage(){
-    cout << "BBBB" << endl;
     int src = getIndex();
     int n = getVectorSize();
     int dest = intuniform(0, n-2);

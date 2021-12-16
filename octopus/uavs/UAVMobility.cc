@@ -214,12 +214,15 @@ Coord UAVMobility::flyAround(int j){
         c.setX(c.getX()-50);
         c.setY(c.getY()-50);
     }else if(waypoints[uav.getID()] == 1){
-        UAVMessage sendMSGEvt("Stop Sheep!", 321);
-        sendMSGEvt.setDestino(-1);
-        sendMSGEvt.setOrigem(uav.getID());
-        msgs.push(sendMSGEvt);
+        if(uav.getID() == 0){
+            UAVMessage sendMSGEvt("Stop Sheep!", 321);
+            sendMSGEvt.setDestino(-1);
+            sendMSGEvt.setOrigem(uav.getID());
+            msgs.push(sendMSGEvt);
 
-        cout << "COLOQUEI UMA MENSAGEM!" << endl;
+            cout << "COLOQUEI UMA MENSAGEM!" << endl;
+
+        }
 
         c = this->castCoordinateToCoord(base[uav.getID()][j].getTarget());
         c.setX(c.getX()+50);

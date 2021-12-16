@@ -11,7 +11,8 @@
 
 class Competence { //Or Responsability
 public:
-    Competence(){}
+    Competence(){
+    }
     Competence(int superiority){setSuperiorityDegree(superiority);}
     virtual ~Competence(){}
 
@@ -23,9 +24,17 @@ public:
         this->superiorityDegree = superiorityDegree;
     }
 
+    /*Skill getRequirement() {
+        return requirement;
+    }
+
+    void setRequirement(Skill requirement) {
+        this->requirement = requirement;
+    }*/
+
 private:
     int superiorityDegree;
-    Skill requirements[3];
+    Skill skill;
 };
 
 #endif /* MYSTERIO_SRC_MISSION_COMPETENCE_H_ */

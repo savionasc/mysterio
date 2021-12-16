@@ -16,21 +16,31 @@ using namespace std;
 class Skill {
 public:
     Skill(){}
-    Skill(char *skill){
-        setSkill(skill);
-    }
+    //Skill(char *skill){
+        //setSkill(skill);
+    //}
     virtual ~Skill(){}
 
-    const char* getSkill() {
+    int getValue() const {
+        return value;
+    }
+
+    void setValue(int value) {
+        this->value = value;
+    }
+
+    /*const char* getSkill() {
         return skill;
     }
 
     void setSkill(char *skill){
         strcpy(this->skill, skill);
-    }
+    }*/
 
 private:
-    char skill[15];
+    int value;
+    //int a;
+    //char skill[15];
 };
 
 #endif /* MYSTERIO_SRC_MISSION_SKILL_H_ */

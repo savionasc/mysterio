@@ -34,8 +34,8 @@ public:
     virtual void setBattery(float battery);
     virtual int getFlightTime();
     virtual void setFlightTime(int flightTime);
-    virtual Competence getCompetence();
-    virtual void setCompetence(Competence competence);
+    //virtual Competence getCompetence();
+    //virtual void setCompetence(Competence competence);
 
 protected:
     int idUAV;
