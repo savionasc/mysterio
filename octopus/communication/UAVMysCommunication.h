@@ -17,6 +17,7 @@
 #include "inet/power/storage/SimpleEpEnergyStorage.h"
 #include "../mission/GoTo.h"
 #include "MysCommunication.h"
+#include "../uavs/UAVMobility.h"
 
 using namespace inet;
 using namespace std;

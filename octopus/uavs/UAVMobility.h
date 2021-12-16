@@ -26,6 +26,8 @@
 #include "../../src/utils/Coordinate.h"
 #include "../../src/utils/UAV.h"
 
+#define NUMUAVS 5
+
 namespace inet {
 
 /**

@@ -1,6 +1,5 @@
 #ifndef MYSTERIO_SRC_MISSION_MISSIONPLANNER_H_
 #define MYSTERIO_SRC_MISSION_MISSIONPLANNER_H_
-#define NUMUAVS 5
 
 #include "Task.h"
 #include <iostream>
@@ -12,7 +11,7 @@ class MissionPlanner{
 private:
     static MissionPlanner * mpinstance_;
     static std::mutex mutex_;
-    static std::vector<Task> tasks[NUMUAVS];
+    static std::vector<std::vector<Task>> tasks;
 
 protected:
     MissionPlanner(const std::string value): value_(value) { taskID_ = 0; }
