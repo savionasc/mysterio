@@ -16,7 +16,6 @@ void UAVMysCommunication::dispatchTaskMessage(TaskMessage msg){
 }
 
 void UAVMysCommunication::dispatchStatusMessage(StatusMessage msg){
-    //DroneStatusMessage* s = dynamic_cast<DroneStatusMessage*>(&msg);
     int codeMessage = STATUS_MESSAGE;
     send(this->getSocketCode(), (int*)&codeMessage, sizeof(codeMessage), 0);
     send(this->getSocketCode(), (StatusMessage*)&msg, sizeof(msg), 0);

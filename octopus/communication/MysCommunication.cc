@@ -59,11 +59,6 @@ void MysCommunication::sendTaskMessageToUAV(int idSocket, TaskMessage tmsg){
     enviar.detach();
 }
 
-//status->subscribe(newUAV);?
-/*void CommunicationSocket::listenSocket(){
-    Communication::listenSocket();
-}*/
-
 int* MysCommunication::getActiveConnections(){
     return nullptr;//Communication::conexoes; //conexoes;
 }
@@ -72,6 +67,4 @@ void MysCommunication::ReceiveMessageFromUAV(Communicable *source, Communicable 
     getActiveConnections();
     if(msg.getCode() == 11)
         dest->onMessageReceive(msg);
-
-    //SpecificClass* s = dynamic_cast<SpecificClass*>(dest);
 }

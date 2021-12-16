@@ -11,7 +11,7 @@ using namespace std;
 
 void listenSocket(){ //Here starts the server communication
 
-    int numeroDeUAVsEsperados = 4;
+    int numeroDeUAVsEsperados = 5;
     MysStatusManager *ms;
 
     MysCommunication comm;
