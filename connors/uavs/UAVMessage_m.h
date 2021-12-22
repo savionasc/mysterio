@@ -1,3 +1,4 @@
+//
 // Generated file, do not edit! Created by nedtool 5.4 from mysterio/connors/uavs/UAVMessage.msg.
 //
 
@@ -30,17 +31,13 @@
 
 class UAVMessage;
 // cplusplus {{
-#include "../../src/status/UAVStatus.h"
+#include "../../status/UAVStatus.h"
 #include "../../src/mission/Task.h"
 #include <string>
 // }}
 
 /**
-<<<<<<< HEAD:osborn/uavs/UAVMessage_m.h
- * Class generated from <tt>mysterio/osborn/uavs/UAVMessage.msg:15</tt> by nedtool.
-=======
- * Class generated from <tt>mysterio/electro/uavs/UAVMessage.msg:15</tt> by nedtool.
->>>>>>> d56a638d1e7aadeab92e97cb76bc60a983ab954a:connors/uavs/UAVMessage_m.h
+ * Class generated from <tt>mysterio/connors/uavs/UAVMessage.msg:15</tt> by nedtool.
  * <pre>
  * message UAVMessage extends cMessage
  * {
