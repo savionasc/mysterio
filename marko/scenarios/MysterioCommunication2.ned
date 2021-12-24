@@ -5,6 +5,7 @@ import mysterio.marko.uavs.example2.ModuloComunicacao2;
 import inet.visualizer.integrated.IntegratedVisualizer;
 import inet.visualizer.integrated.IntegratedCanvasVisualizer;
 import inet.node.base.ApplicationLayerNodeBase;
+import mysterio.marko.sheep.Sheep;
 
 network MysterioCommunication2 {
     parameters:
@@ -25,8 +26,12 @@ network MysterioCommunication2 {
         basestation: BasestationUAVs {
             @display("p=300,420");
         }
+        sheep: Sheep {
+            @display("p=550,220");
+        }
         
     connections:
+        host[0].out++ --> {  delay = 100ms; } --> sheep.in++;
         host[0].out++ --> {  delay = 100ms; } --> host[1].in++;
         host[0].in++ <-- {  delay = 100ms; } <-- host[1].out++;
         host[0].out++ --> {  delay = 100ms; } --> host[2].in++;
