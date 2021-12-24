@@ -3,6 +3,7 @@
 #include "../../mission/GoTo.h"
 #include "../UAVMobility.h"
 #include <iostream>
+#include <queue>
 
 #include "../../communication/UAVMysCommunication.h"
 #include "../../../src/status/UAVStatus.h"
@@ -21,6 +22,7 @@ extern double tempoVoo[NUMUAVS];
 extern UAVMysCommunication uavs[NUMUAVS];
 extern int UAVDestino;
 extern int UAVLeader;
+extern std::queue<UAVMessage> msgs;
 
 void ModuloComunicacao2::initialize(){
     selfID = getIndex();
@@ -30,10 +32,26 @@ void ModuloComunicacao2::initialize(){
     if(!uavs[selfID].isConnected()){
         uavs[selfID].connectBase();
     }
-    bubble("INICIANDO, Iniciando!");
+    cout << "Iniciou comunicação UAV!" << endl;
+    UAVMessage *sendMSGEvt = new UAVMessage("checking", 123);
+    sendMSGEvt->setOrigem(selfID);
+    scheduleAt(simTime()+2, sendMSGEvt);
 }
 
 void ModuloComunicacao2::handleMessage(cMessage *msg){
+    UAVMessage *mMSG = check_and_cast<UAVMessage*>(msg);
+    if(mMSG->getKind() == 123 && strcmp(mMSG->getName(), "checking") == 0){
+        if(msgs.size() > 0){
+            cout << "Há mensagens para enviar!" << endl;
+        }else{
+            UAVMessage *sendMSGEvt = new UAVMessage("checking", 123);
+            sendMSGEvt->setOrigem(selfID);
+            scheduleAt(simTime()+2, sendMSGEvt);
+        }
+    }
+
+    delete mMSG;
+
     /*UAVMessage *mMSG = check_and    _cast<UAVMessage*>(msg);
     cout << "[U2U] Executando ação: " << msg->getFullName() << endl;
 

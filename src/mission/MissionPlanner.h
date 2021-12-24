@@ -1,8 +1,8 @@
 #ifndef MYSTERIO_SRC_MISSION_MISSIONPLANNER_H_
 #define MYSTERIO_SRC_MISSION_MISSIONPLANNER_H_
-#define NUMUAVS 4
 
 #include "Task.h"
+#include "../utils/Utils.h"
 #include <iostream>
 #include <vector>
 #include <thread>

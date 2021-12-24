@@ -1,9 +1,11 @@
 #include "../uavs/UAVMobility.h"
 #include <iostream>
+#include <queue>
 
 #include "../communication/UAVMysCommunication.h"
 #include "../scenarios/Example1Communication.h"
 #include "../../src/mission/DependentTask.h"
+#include "UAVMessage_m.h"
 
 using namespace omnetpp;
 using namespace std;
@@ -17,6 +19,7 @@ double tempoVoo[NUMUAVS];
 bool ativo[NUMUAVS];
 int itera[NUMUAVS];
 std::vector<Task> base[NUMUAVS];
+std::queue<UAVMessage> msgs;
 UAVMysCommunication uavs[NUMUAVS];
 int pular = 0; //this variable forces terminate current "task" of uav
 //1 - Tarefa: decolar (idUAV, altura)
