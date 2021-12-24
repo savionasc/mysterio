@@ -7,7 +7,9 @@
 
 class TaskManager {
 public:
-    TaskManager(){}
+    TaskManager(int numUAVs){
+        uavs = numUAVs;
+    }
     virtual ~TaskManager(){}
 
     //return int getCurrentTaskIndex(UAV u)
@@ -42,35 +44,37 @@ public:
     }
 
     Task getTaskByID(UAV u, int id){
-        MissionPlanner* planner = MissionPlanner::GetInstance("TASK");
+        MissionPlanner* planner = MissionPlanner::GetInstance(uavs);
         return planner->getTaskByID(u, id);
     }
 
     Task getTaskByIndex(UAV u, int id){
-        MissionPlanner* planner = MissionPlanner::GetInstance("TASK");
+        MissionPlanner* planner = MissionPlanner::GetInstance(uavs);
         return planner->getTaskByIndex(u, id);
     }
 
     virtual int getNumTasks(UAV u){
-        MissionPlanner* planner = MissionPlanner::GetInstance("TASK");
+        MissionPlanner* planner = MissionPlanner::GetInstance(uavs);
         std::vector<Task> v = planner->taskList(u);
         return v.size();
     }
 
     virtual std::vector<Task> getTaskList(UAV u){
-        MissionPlanner* planner = MissionPlanner::GetInstance("TASK");
+        MissionPlanner* planner = MissionPlanner::GetInstance(uavs);
         return planner->taskList(u);
     }
 
     Task addTask(Task t){
-        MissionPlanner* planner = MissionPlanner::GetInstance("TASK");
+        MissionPlanner* planner = MissionPlanner::GetInstance(uavs);
         return planner->addTask(t);
     }
 
     void setTask(Task t){
-        MissionPlanner* planner = MissionPlanner::GetInstance("TASK");
+        MissionPlanner* planner = MissionPlanner::GetInstance(uavs);
         planner->setTask(t);
     }
+private:
+    int uavs;
 };
 
 #endif

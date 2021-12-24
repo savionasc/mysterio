@@ -8,13 +8,11 @@ public:
     StatusMessage(){}
 
     StatusMessage(char *msg, short int code){
-        //strcpy(this->msg, msg);
         this->setMsg(msg);
         this->setCode(code);
     }
 
     StatusMessage(char *msg, short int code, short int src, short int dest){
-        //strcpy(this->msg, msg);
         this->setMsg(msg);
         this->setCode(code);
         this->setSource(src);
