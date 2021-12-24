@@ -8,6 +8,7 @@
 #include <arpa/inet.h>
 #include <netinet/in.h>
 
+#include "../uavs/Utils.h"
 #include "../../src/communication/Message.h"
 #include "../../src/communication/StatusMessage.h"
 #include "../../src/communication/TaskMessage.h"

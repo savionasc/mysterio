@@ -77,15 +77,6 @@ void UAV::setFlightTime(int flightTime) {
     this->flightTime = flightTime;
 }
 
-/*Competence UAV::getCompetence() {
-    return competence;
-}
-
-void UAV::setCompetence(Competence competence) {
-    this->competence = competence;
-}*/
-
-
 /*bool UAV::operator()(UAV const &u1, UAV const &u2){
     if(u1.getID() == u2.getID())
         return true;

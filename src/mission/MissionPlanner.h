@@ -1,5 +1,6 @@
 #ifndef MYSTERIO_SRC_MISSION_MISSIONPLANNER_H_
 #define MYSTERIO_SRC_MISSION_MISSIONPLANNER_H_
+#define NUMUAVS 4
 
 #include "Task.h"
 #include <iostream>
@@ -11,29 +12,20 @@ class MissionPlanner{
 private:
     static MissionPlanner * mpinstance_;
     static std::mutex mutex_;
-    static std::vector<std::vector<Task>> tasks;
+    static std::vector<Task> tasks[NUMUAVS];
 
 protected:
-    //MissionPlanner(const std::string value): value_(value) { taskID_ = 0; uavs = -1; }
-    MissionPlanner(const int uavs): numUAVs_(uavs) { taskID_ = 0; createVector(numUAVs_); }
+    MissionPlanner(const std::string value): value_(value) { taskID_ = 0; }
     ~MissionPlanner() {}
-    int numUAVs_;
+    std::string value_;
     int taskID_;
 
 public:
     MissionPlanner(MissionPlanner &other) = delete;
     void operator=(const MissionPlanner &) = delete;
 
-    void createVector(int n){
-        for (int i = 0; i < n; i++) {
-            std::vector<Task> v;
-            tasks.push_back(v);
-        }
-    }
 
-    //static MissionPlanner *GetInstance(const std::string& value);
-
-    static MissionPlanner *GetInstance(const int uavs);
+    static MissionPlanner *GetInstance(const std::string& value);
 
     Task addTask(Task t){
         t.setId(createNewTaskID());
@@ -71,9 +63,9 @@ public:
         return ++taskID_;
     }
 
-    int numUAVs() const{
-        return numUAVs_;
-    }
+    std::string value() const{
+        return value_;
+    } 
 
     int taskID() const{
         return taskID_;

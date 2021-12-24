@@ -1,8 +1,6 @@
 #ifndef MYSTERIO_SRC_UTILS_UAV_H_
 #define MYSTERIO_SRC_UTILS_UAV_H_
 
-#include "../mission/Competence.h"
-
 //#include "../communication/Communicable.h"
 
 //Talvez extender/implementar communicable
@@ -34,8 +32,6 @@ public:
     virtual void setBattery(float battery);
     virtual int getFlightTime();
     virtual void setFlightTime(int flightTime);
-    //virtual Competence getCompetence();
-    //virtual void setCompetence(Competence competence);
 
 protected:
     int idUAV;
@@ -49,7 +45,6 @@ protected:
     int flightTime;
     //bateria
     //disponivel
-    Competence competence;
 };
 
 #endif /* MYSTERIO_SRC_UTILS_UAV_H_ */
