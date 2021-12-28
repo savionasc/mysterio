@@ -19,7 +19,7 @@ double tempoVoo[NUMUAVS];
 bool ativo[NUMUAVS];
 int itera[NUMUAVS];
 std::vector<Task> base[NUMUAVS];
-std::queue<UAVMessage> msgs;
+std::queue<int> msgs;
 UAVMysCommunication uavs[NUMUAVS];
 int pular = 0; //this variable forces terminate current "task" of uav
 //1 - Tarefa: decolar (idUAV, altura)
@@ -199,6 +199,10 @@ void UAVMobility::rescueData(){
     velocidade[uav.getID()] = speedParameter->doubleValue();
     bateria[uav.getID()] = std::stof(pegarBateria(uav.getID()).str());
     tempoVoo[uav.getID()] = simTime().dbl();
+}
+
+Coord UAVMobility::findSheep(){
+
 }
 
 Coord UAVMobility::flyAround(int j){

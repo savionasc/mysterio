@@ -22,7 +22,7 @@ extern double tempoVoo[NUMUAVS];
 extern UAVMysCommunication uavs[NUMUAVS];
 extern int UAVDestino;
 extern int UAVLeader;
-extern std::queue<UAVMessage> msgs;
+extern std::queue<int> msgs;
 
 void ModuloComunicacao2::initialize(){
     selfID = getIndex();

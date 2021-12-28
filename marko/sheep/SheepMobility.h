@@ -18,13 +18,9 @@ class INET_API SheepMobility : public LineSegmentsMobilityBase
 
   protected:
     virtual int numInitStages() const override { return NUM_INIT_STAGES; }
-
     virtual void initialize(int stage) override;
-
     virtual void setTargetPosition() override;
-
     virtual Coord getPosition();
-
     virtual void move() override;
 
     int ID;

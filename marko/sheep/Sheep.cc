@@ -10,7 +10,6 @@ using namespace inet;
 
 Define_Module(Sheep);
 
-extern std::queue<UAVMessage> msgs;
 extern bool stopped;
 
 int posicao;
