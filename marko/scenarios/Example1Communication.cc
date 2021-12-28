@@ -11,7 +11,7 @@ using namespace std;
 
 void listenSocket(){ //Here starts the server communication
 
-    int numeroDeUAVsEsperados = 4;
+    int numeroDeUAVsEsperados = 5;
     MysStatusManager *ms;
 
     MysCommunication comm;
@@ -30,32 +30,22 @@ void listenSocket(){ //Here starts the server communication
         //começar a missão
         //Pegar cada tarefa predefinida e dar um assync pra cada uma
 
-        cout << "Assigned task: Turn around the car" << endl;
-        Coordinate currentP(300.0,420.0,90.0);
+        cout << "Assigned task: Find sheep!" << endl;
+        Coordinate initialPoint(500.0,500.0,600.0);
         UAV u(0);
-        Coordinate gotoP(800.0,620.0,90.0);
-        Task gotoa(u, GOTO, gotoP);
-        Task gotoc(u, FLY_AROUND, currentP);
+        Task findsheep(u, FIND_SHEEP, initialPoint);
 
         TaskManager t;
-        t.addTask(gotoa);
-        t.addTask(gotoc);
-        Coordinate currentR(500.0,500.0,400.0);
-        u.setID(2);
-        Task square(u, FLY_AROUND_SQUARE, currentR);
-        t.addTask(square);
-        u.setID(3);
-        square.setUAV(u);
-        t.addTask(square);
+        t.addTask(findsheep);
 
-        char conteudo[10] = "AAAAA";
+        char assuntoMSG[10] = "New Task!";
 
         for (int itUAV = 0; itUAV < numeroDeUAVsEsperados; itUAV++) {
             u = ms->getUAV(itUAV);
             int codeMessage = TASK_MESSAGE;
             for (int itTask = 0; itTask < t.getNumTasks(u); itTask++) {
                 //Enviando tarefa
-                TaskMessage taskMessage(conteudo, TASK_MESSAGE);
+                TaskMessage taskMessage(assuntoMSG, TASK_MESSAGE);
                 //taskMessage.setTask(t.getTaskByIndex(u, t.getNumTasks(u)-1));
                 taskMessage.setTask(t.getTaskByIndex(u, itTask));
                 comm.sendTaskMessageToUAV(u.getIdSocket(), taskMessage);

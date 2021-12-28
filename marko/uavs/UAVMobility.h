@@ -71,14 +71,16 @@ class INET_API UAVMobility : public LineSegmentsMobilityBase
     void executeTask(int j);
     Coord flyAround(int j);
     Coord flyAroundSquare(int j);
-    Coord findSheep();
+    Coord findSheep(int j);
+    Coord pegarPosicaoOvelha();
+    void analisarDistanciaOvelha();
 
     void stop();
 
     J pegarBateria(int idUAV);
 
     UAV uav;
-
+    bool continuoustask = false;
 
   public:
     UAVMobility();

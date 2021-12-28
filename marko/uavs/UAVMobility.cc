@@ -5,6 +5,7 @@
 #include "../communication/UAVMysCommunication.h"
 #include "../scenarios/Example1Communication.h"
 #include "../../src/mission/DependentTask.h"
+#include "../sheep/SheepMobility.h"
 #include "UAVMessage_m.h"
 
 using namespace omnetpp;
@@ -40,7 +41,7 @@ UAVMobility::UAVMobility(){ nextMoveIsWait = false; }
 void UAVMobility::initialize(int stage) {
     LineSegmentsMobilityBase::initialize(stage);
     uav.setID(getParentModule()->getIndex());
-    if(uav.getID() != 1){
+    if(uav.getID() == 0){
         ativo[uav.getID()] = true;
     }else{
         ativo[uav.getID()] = false;
@@ -171,6 +172,9 @@ void UAVMobility::move() {
     }
     if(pular == 1)
         this->stop();
+    if(continuoustask){
+        analisarDistanciaOvelha();
+    }
     LineSegmentsMobilityBase::move();
     raiseErrorIfOutside();
     this->rescueData();
@@ -194,6 +198,25 @@ J UAVMobility::pegarBateria(int idUAV){
     return energySto->getResidualEnergyCapacity();
 }
 
+Coord UAVMobility::pegarPosicaoOvelha(){
+    cModule *a = getParentModule()->getParentModule()->getSubmodule("sheep")->getSubmodule("mobility", 0);
+    SheepMobility *smob = check_and_cast<SheepMobility*>(a);
+
+    return smob->posicaoAtual();
+}
+
+void UAVMobility::analisarDistanciaOvelha(){
+    Coord sheep = pegarPosicaoOvelha();
+    if(sheep.distance(lastPosition) < 300){
+        cout << "Está perto!" << endl;
+        continuoustask = false;
+        waypoints[uav.getID()] = 2;
+    }else{
+        cout << "Está longe!" << endl;
+    }
+    cout << "Distancia: " << sheep.distance(lastPosition) << " uav: " << lastPosition << " ovelha: " << sheep << endl;
+}
+
 void UAVMobility::rescueData(){
     position[uav.getID()] = lastPosition;
     velocidade[uav.getID()] = speedParameter->doubleValue();
@@ -201,8 +224,42 @@ void UAVMobility::rescueData(){
     tempoVoo[uav.getID()] = simTime().dbl();
 }
 
-Coord UAVMobility::findSheep(){
+Coord UAVMobility::findSheep(int j){
+    cout << "CHAMOU A TAREFA!" << endl;
+    Coord c;
 
+    analisarDistanciaOvelha();
+
+    //checa se a ovelha está no raio de alcance
+    //se sim, manda mensagem
+    //se não, o drone procura
+
+    if(waypoints[uav.getID()] == 0 || waypoints[uav.getID()] == 4){
+        c = this->castCoordinateToCoord(base[uav.getID()][j].getTarget());
+        waypoints[uav.getID()]++;
+        continuoustask = true;
+    }else if(waypoints[uav.getID()] == 1){
+        c = getRandomPosition();
+        c.setZ(200);
+    }else if(waypoints[uav.getID()] == 2){
+        c = pegarPosicaoOvelha();
+        c.setZ(300);
+        waypoints[uav.getID()] = 0;
+        base[uav.getID()][j].setStatus(2);
+        continuoustask = false;
+        //mandar mensagem ovelha
+        msgs.push(this->uav.getID());
+    }
+    //int j é o estagio
+    //estagio de busca
+    //estagio que manda mensagem para parar
+    //estagio que vai para uma posição específica?
+    //estagio que chama os outros drones?
+    //estagio que volta pra base com a ovelha?
+
+    //c = getRandomPosition();
+    //waypoints[uav.getID()] = (waypoints[uav.getID()] < 5) ? waypoints[uav.getID()]+1 : 0;
+    return c;
 }
 
 Coord UAVMobility::flyAround(int j){
@@ -287,11 +344,12 @@ void UAVMobility::executeTask(int j){
         targetPosition = flyAround(j);
     }else if (base[uav.getID()][j].getType() == FLY_AROUND_SQUARE){
         targetPosition = flyAroundSquare(j);
+    }else if(base[uav.getID()][j].getType() == FIND_SHEEP){
+        targetPosition = findSheep(j);
     }else{
         targetPosition = this->castCoordinateToCoord(base[uav.getID()][j].getTarget());
         itera[uav.getID()]++;
     }
-
 }
 
 void UAVMobility::stop(){ //Finaliza a atividade no Omnet

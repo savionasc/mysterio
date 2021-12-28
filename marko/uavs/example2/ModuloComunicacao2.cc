@@ -41,8 +41,12 @@ void ModuloComunicacao2::initialize(){
 void ModuloComunicacao2::handleMessage(cMessage *msg){
     UAVMessage *mMSG = check_and_cast<UAVMessage*>(msg);
     if(mMSG->getKind() == 123 && strcmp(mMSG->getName(), "checking") == 0){
-        if(msgs.size() > 0){
+        if(msgs.size() > 0 && selfID == msgs.back()){
             cout << "Há mensagens para enviar!" << endl;
+            UAVMessage *sheepAlert = new UAVMessage("STOPSHEEP", 123);
+            sheepAlert->setOrigem(selfID);
+            send(sheepAlert, "out", 0);
+            msgs.pop();
         }else{
             UAVMessage *sendMSGEvt = new UAVMessage("checking", 123);
             sendMSGEvt->setOrigem(selfID);
