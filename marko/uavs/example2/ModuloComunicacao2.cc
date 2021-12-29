@@ -60,6 +60,7 @@ void ModuloComunicacao2::handleMessage(cMessage *msg){
                 UAVMessage *uavMSG = new UAVMessage("ToU", SUBTASK_HIGH_PRIORITY);
                 uavMSG->setOrigem(selfID);
                 uavMSG->setDestino(tm.getDestination());
+                uavMSG->setTask(tm.getTask());
                 send(uavMSG, "out", uavMSG->getDestino());
                 cout << "MSG to UAV" << uavMSG->getDestino() << endl;
             }
@@ -72,6 +73,17 @@ void ModuloComunicacao2::handleMessage(cMessage *msg){
     }else if(mMSG->getKind() == SUBTASK_HIGH_PRIORITY && mMSG->getDestino() == selfID){
         cout << "EU RECEBI A MENSAGEM[" << mMSG->getDestino() << "]" << endl;
         ativo[selfID] = true;
+
+        Task x = mMSG->getTask();
+        int i = x.getUAV().getID();
+        base[i].push_back(x);
+        int j = base[i].size()-1;
+        base[i][j].setType(x.getType());
+        base[i][j].getUAV().setID(x.getUAV().getID());
+        waypoints[i] = base[i][j].getWaypoints();
+        if(itera[i] < 0){
+            itera[i]++;
+        }
     }
 
     delete mMSG;

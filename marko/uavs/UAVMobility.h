@@ -72,6 +72,7 @@ class INET_API UAVMobility : public LineSegmentsMobilityBase
     Coord flyAround(int j);
     Coord flyAroundSquare(int j);
     Coord findSheep(int j);
+    Coord surroundSheep(int j);
     Coord pegarPosicaoOvelha();
     void analisarDistanciaOvelha();
 
@@ -81,6 +82,12 @@ class INET_API UAVMobility : public LineSegmentsMobilityBase
 
     UAV uav;
     bool continuoustask = false;
+    int funcao = 0;
+
+    //0 para uav desativado
+    //1 para uav sem funcao
+    //2 para uav subordinado
+    //3 para uav leader
 
   public:
     UAVMobility();

@@ -12,6 +12,7 @@
 #define FLY_AROUND 82
 #define FLY_AROUND_SQUARE 83
 #define FIND_SHEEP 84
+#define SURROUND_SHEEP 85
 
 class Task {
 

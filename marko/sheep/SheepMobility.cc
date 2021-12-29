@@ -7,7 +7,7 @@ using namespace std;
 using namespace inet;
 
 bool stopped = false;
-
+Coord c;
 Define_Module(SheepMobility);
 
 SheepMobility::SheepMobility(){ nextMoveIsWait = false; }
@@ -25,7 +25,16 @@ void SheepMobility::initialize(int stage) {
 }
 
 void SheepMobility::setTargetPosition() {
-    if(stopped){
+    if(stopped && c.getX() != lastPosition.getX()){
+        targetPosition = c;
+
+        double speed = speedParameter->doubleValue();
+        double distance = lastPosition.distance(targetPosition);
+        simtime_t travelTime = distance / speed;
+        nextChange = simTime() + travelTime;
+        nextMoveIsWait = hasWaitTime;
+
+    }else if(stopped){
         nextChange = simTime() + 15;
     }else if (nextMoveIsWait) {
         simtime_t waitTime = waitTimeParameter->doubleValue();
@@ -43,7 +52,10 @@ void SheepMobility::setTargetPosition() {
     }
 }
 
-void SheepMobility::move() {
+void SheepMobility::move(){
+    if(c.getX() == 0 && stopped){
+        c = lastPosition;
+    }
     LineSegmentsMobilityBase::move();
     raiseErrorIfOutside();
 }

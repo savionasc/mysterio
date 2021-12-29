@@ -23,11 +23,7 @@ std::vector<Task> base[NUMUAVS];
 std::queue<TaskMessage> msgs;
 UAVMysCommunication uavs[NUMUAVS];
 int pular = 0; //this variable forces terminate current "task" of uav
-//1 - Tarefa: decolar (idUAV, altura)
-//2 - Tarefa: goto (idUAV, positionTarget)
-//3 - Tarefa: dar uma volta sobre (idUAV, positionTarget, distanciaSobre)
-//4 - Tarefa: retornar a base (idUAV, basePosition)
-//5 - Tarefa: pousar (idUAV, chao)
+
 int UAVLeader = -1;
 int UAVDestino = -1;
 int waypoints[NUMUAVS];
@@ -43,8 +39,10 @@ void UAVMobility::initialize(int stage) {
     uav.setID(getParentModule()->getIndex());
     if(uav.getID() == 0){
         ativo[uav.getID()] = true;
+        funcao = 3;
     }else{
         ativo[uav.getID()] = false;
+        funcao = 2;
     }
 
     for (int i = 0; i < NUMUAVS; i++) {
@@ -63,11 +61,17 @@ void UAVMobility::initialize(int stage) {
 }
 
 void UAVMobility::setTargetPosition() {
+
     if (nextMoveIsWait) {
         simtime_t waitTime = waitTimeParameter->doubleValue()+3;
         nextChange = simTime() + waitTime;
         nextMoveIsWait = false;
-    } else if(!ativo[uav.getID()]) {
+    }else if(funcao == 2 && !ativo[uav.getID()]){
+        simtime_t waitTime = waitTimeParameter->doubleValue()+3;
+        nextChange = simTime() + waitTime;
+        nextMoveIsWait = true;
+        //targetPosition = lastPosition;
+    }else if(funcao == 0 && !ativo[uav.getID()]) {
         Coord c(10, 5, 10);
 
         if(targetPosition != c){
@@ -86,7 +90,6 @@ void UAVMobility::setTargetPosition() {
     } else {
         if(base[uav.getID()].size() != itera[uav.getID()] && base[uav.getID()].size() > 0){ //if there are tasks not performed
             int task = itera[uav.getID()];
-
             if(base[uav.getID()][task].getStatus() == 2){ //finalizando
                 base[uav.getID()][task].setComplete();
 
@@ -118,11 +121,7 @@ void UAVMobility::setTargetPosition() {
             msg.setSource(u.getSelfID());
             u.dispatchMessage(msg);
             if(myStage++ == 0){
-                Coord p;
-                p.x = uniform(10, 25);
-                p.y = uniform(10, 25);
-                p.z = uniform(50, 80);
-                //Coord c(10, 10, 150);
+                Coord p(uniform(10, 25), uniform(10, 25), uniform(50, 80));
                 targetPosition = p;
             }else{
                 targetPosition = getRandomPosition();
@@ -240,7 +239,7 @@ Coord UAVMobility::findSheep(int j){
         c.setZ(200);
     }else if(waypoints[uav.getID()] == 2){
         c = pegarPosicaoOvelha();
-        c.setZ(300);
+        c.setZ(200);
         waypoints[uav.getID()] = 0;
         base[uav.getID()][j].setStatus(2);
 
@@ -256,7 +255,7 @@ Coord UAVMobility::findSheep(int j){
 
         TaskMessage msg;
         msg.setMsg("OLHA A MENSAGEM!");
-        msg.setCode(SUBTASK_SUBORDINATE);
+        msg.setCode(SUBORDINATE_SUBTASK);
         msg.setSource(uav.getID());
         msg.setDestination(1);
         Coord d = c;
@@ -291,6 +290,21 @@ Coord UAVMobility::findSheep(int j){
 
     //c = getRandomPosition();
     //waypoints[uav.getID()] = (waypoints[uav.getID()] < 5) ? waypoints[uav.getID()]+1 : 0;
+    return c;
+}
+
+Coord UAVMobility::surroundSheep(int j){
+    Coord c;
+    if(waypoints[uav.getID()] == 0){
+        c = this->castCoordinateToCoord(base[uav.getID()][j].getTarget());
+        waypoints[uav.getID()]++;
+    }else if(waypoints[uav.getID()] == 1){
+        base[uav.getID()][j].setStatus(2);
+        ativo[uav.getID()] = false;
+        waypoints[uav.getID()] = 0;
+        //nextMoveIsWait = true;
+        c = this->castCoordinateToCoord(base[uav.getID()][j].getTarget());
+    }
     return c;
 }
 
@@ -378,6 +392,8 @@ void UAVMobility::executeTask(int j){
         targetPosition = flyAroundSquare(j);
     }else if(base[uav.getID()][j].getType() == FIND_SHEEP){
         targetPosition = findSheep(j);
+    }else if(base[uav.getID()][j].getType() == SURROUND_SHEEP){
+        targetPosition = surroundSheep(j);
     }else{
         targetPosition = this->castCoordinateToCoord(base[uav.getID()][j].getTarget());
         itera[uav.getID()]++;
