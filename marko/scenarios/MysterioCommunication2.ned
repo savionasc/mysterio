@@ -30,6 +30,7 @@ network MysterioCommunication2 {
             @display("p=550,220");
         }
         
+    //connections allowunconnected:
     connections:
         host[0].out++ --> {  delay = 100ms; } --> sheep.in++;
         host[0].out++ --> {  delay = 100ms; } --> host[1].in++;
@@ -38,6 +39,6 @@ network MysterioCommunication2 {
         host[0].in++ <-- {  delay = 100ms; } <-- host[2].out++;
         host[0].out++ --> {  delay = 100ms; } --> host[3].in++;
         host[0].in++ <-- {  delay = 100ms; } <-- host[3].out++;
-        //host[0].out++ --> {  delay = 100ms; } --> host[4].in++;
-        //host[0].in++ <-- {  delay = 100ms; } <-- host[4].out++;
+        host[0].out++ --> {  delay = 100ms; } --> host[4].in++;
+        host[0].in++ <-- {  delay = 100ms; } <-- host[4].out++;
 }

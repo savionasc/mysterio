@@ -104,6 +104,14 @@ public:
         this->waypoints = waypoints;
     }
 
+    int getPriority() {
+        return priority;
+    }
+
+    void setPriority(int priority = 0) {
+        this->priority = priority;
+    }
+
 private:
     //Talvez calculemos o progresso num futuro próximo...
     //Se for da missão é saber quantas tarefas foram cumpridas e quantas não foram
@@ -117,6 +125,7 @@ private:
     Coordinate target;
     int repeat = 0; //TaskManager
     int waypoints;
+    int priority = 0;
 };
 
 #endif

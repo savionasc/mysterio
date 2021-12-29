@@ -20,7 +20,7 @@ double tempoVoo[NUMUAVS];
 bool ativo[NUMUAVS];
 int itera[NUMUAVS];
 std::vector<Task> base[NUMUAVS];
-std::queue<int> msgs;
+std::queue<TaskMessage> msgs;
 UAVMysCommunication uavs[NUMUAVS];
 int pular = 0; //this variable forces terminate current "task" of uav
 //1 - Tarefa: decolar (idUAV, altura)
@@ -208,13 +208,10 @@ Coord UAVMobility::pegarPosicaoOvelha(){
 void UAVMobility::analisarDistanciaOvelha(){
     Coord sheep = pegarPosicaoOvelha();
     if(sheep.distance(lastPosition) < 300){
-        cout << "Está perto!" << endl;
+        cout << "UAV perto da ovelha!" << endl;
         continuoustask = false;
         waypoints[uav.getID()] = 2;
-    }else{
-        cout << "Está longe!" << endl;
     }
-    cout << "Distancia: " << sheep.distance(lastPosition) << " uav: " << lastPosition << " ovelha: " << sheep << endl;
 }
 
 void UAVMobility::rescueData(){
@@ -246,9 +243,44 @@ Coord UAVMobility::findSheep(int j){
         c.setZ(300);
         waypoints[uav.getID()] = 0;
         base[uav.getID()][j].setStatus(2);
+
+        //Parando verificação/busca pela ovelha
         continuoustask = false;
+
+        TaskMessage tm;
+        tm.setSource(this->uav.getID());
+        tm.setDestination(-5);
         //mandar mensagem ovelha
-        msgs.push(this->uav.getID());
+        msgs.push(tm);
+
+
+        TaskMessage msg;
+        msg.setMsg("OLHA A MENSAGEM!");
+        msg.setCode(SUBTASK_SUBORDINATE);
+        msg.setSource(uav.getID());
+        msg.setDestination(1);
+        Coord d = c;
+        if(d.getX() > 50 && d.getY() > 50){
+            d.setX(d.getX()-50);
+            d.setY(d.getY()-50);
+        }
+        msg.setCoord(this->castCoordToCoordinate(d));
+        uavs[uav.getID()].dispatchTaskMessage(msg);
+
+        msg.setDestination(2);
+        d.setX(d.getX()+100);
+        msg.setCoord(this->castCoordToCoordinate(d));
+        uavs[uav.getID()].dispatchTaskMessage(msg);
+
+        msg.setDestination(3);
+        d.setY(d.getY()+100);
+        msg.setCoord(this->castCoordToCoordinate(d));
+        uavs[uav.getID()].dispatchTaskMessage(msg);
+
+        msg.setDestination(4);
+        d.setX(d.getX()-100);
+        msg.setCoord(this->castCoordToCoordinate(d));
+        uavs[uav.getID()].dispatchTaskMessage(msg);
     }
     //int j é o estagio
     //estagio de busca

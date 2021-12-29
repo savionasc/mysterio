@@ -102,6 +102,23 @@ public:
                 msg.setMsg(conteudo);
                 msg.setTask(t.getTaskByIndex(u, t.getNumTasks(u)-1));
                 msgSender.enviarTarefa(u.getIdSocket(), msg);
+            }else if(msg.getCode() == SUBTASK_SUBORDINATE){
+
+                cout << "SUBTASKS!!" << endl;
+                Coordinate targetPosition(msg.getCoord());
+                UAV uav = ms->getUAV(msg.getDestination());
+                Task subtask(uav, SUBTASK_SUBORDINATE, targetPosition); //Mudar esse código
+                subtask.setPriority(5);
+
+                char conteudo[12] = "URGENTE!";
+                msg.setMsg(conteudo);
+                t.assignTask(subtask, uav);
+                t.addTask(subtask);
+                msg.setTask(t.getTaskByIndex(uav, t.getNumTasks(uav)-1));
+                MessageSender msgSender;
+                UAV uavLeader = ms->getUAV(msg.getSource());
+                msgSender.enviarTarefa(uavLeader.getIdSocket(), msg);
+
             }
             //t.setTask(msg.getTask());
         }else if(typeMSG == TASK_COMPLETED_MESSAGE){

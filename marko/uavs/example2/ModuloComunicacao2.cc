@@ -20,9 +20,16 @@ extern double velocidade[NUMUAVS];
 extern float bateria[NUMUAVS];
 extern double tempoVoo[NUMUAVS];
 extern UAVMysCommunication uavs[NUMUAVS];
+extern bool ativo[NUMUAVS];
 extern int UAVDestino;
 extern int UAVLeader;
-extern std::queue<int> msgs;
+extern std::queue<TaskMessage> msgs;
+
+enum codesUAV{
+    CHECKING_MESSAGE = 123,
+    SHEEP_ALERT,
+    SUBTASK_HIGH_PRIORITY = 222
+};
 
 void ModuloComunicacao2::initialize(){
     selfID = getIndex();
@@ -33,25 +40,38 @@ void ModuloComunicacao2::initialize(){
         uavs[selfID].connectBase();
     }
     cout << "Iniciou comunicação UAV!" << endl;
-    UAVMessage *sendMSGEvt = new UAVMessage("checking", 123);
+    UAVMessage *sendMSGEvt = new UAVMessage("checking", CHECKING_MESSAGE);
     sendMSGEvt->setOrigem(selfID);
     scheduleAt(simTime()+2, sendMSGEvt);
 }
 
 void ModuloComunicacao2::handleMessage(cMessage *msg){
     UAVMessage *mMSG = check_and_cast<UAVMessage*>(msg);
-    if(mMSG->getKind() == 123 && strcmp(mMSG->getName(), "checking") == 0){
-        if(msgs.size() > 0 && selfID == msgs.back()){
+    if(mMSG->getKind() == CHECKING_MESSAGE && strcmp(mMSG->getName(), "checking") == 0){
+        if(msgs.size() > 0 && selfID == msgs.front().getSource()){
+            TaskMessage tm = msgs.front();
             cout << "Há mensagens para enviar!" << endl;
-            UAVMessage *sheepAlert = new UAVMessage("STOPSHEEP", 123);
-            sheepAlert->setOrigem(selfID);
-            send(sheepAlert, "out", 0);
+            if(tm.getDestination() == -5){ //Sheep
+                UAVMessage *sheepAlert = new UAVMessage("STOPSHEEP", SHEEP_ALERT);
+                sheepAlert->setOrigem(selfID);
+                send(sheepAlert, "out", 0);
+                cout << "MSG to OVELHA" << endl;
+            }else{ //Others UAVs
+                UAVMessage *uavMSG = new UAVMessage("ToU", SUBTASK_HIGH_PRIORITY);
+                uavMSG->setOrigem(selfID);
+                uavMSG->setDestino(tm.getDestination());
+                send(uavMSG, "out", uavMSG->getDestino());
+                cout << "MSG to UAV" << uavMSG->getDestino() << endl;
+            }
             msgs.pop();
-        }else{
-            UAVMessage *sendMSGEvt = new UAVMessage("checking", 123);
-            sendMSGEvt->setOrigem(selfID);
-            scheduleAt(simTime()+2, sendMSGEvt);
         }
+
+        UAVMessage *sendMSGEvt = new UAVMessage("checking", CHECKING_MESSAGE);
+        sendMSGEvt->setOrigem(selfID);
+        scheduleAt(simTime()+2, sendMSGEvt);
+    }else if(mMSG->getKind() == SUBTASK_HIGH_PRIORITY && mMSG->getDestino() == selfID){
+        cout << "EU RECEBI A MENSAGEM[" << mMSG->getDestino() << "]" << endl;
+        ativo[selfID] = true;
     }
 
     delete mMSG;

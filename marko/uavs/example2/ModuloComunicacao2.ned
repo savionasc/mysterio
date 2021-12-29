@@ -6,7 +6,8 @@ import inet.node.inet.StandardHost;
 module ModuloComunicacao2 extends StandardHost {
     parameters:
         @class(ModuloComunicacao2);
-//    gates:
-//        input in[];
-//        output out[];
+        //gates:
+       	  //input in[];
+		  //output out[];
+		  //output ovelha;
 }

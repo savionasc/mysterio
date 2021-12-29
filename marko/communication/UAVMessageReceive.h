@@ -169,29 +169,37 @@ class UAVMessageReceive {
             }else if(typeMSG == TASK_MESSAGE){
                 cout << "Task Message received" << endl;
                 //Aqui deve converter toda e qualquer mensagem e repassar pra this.OnMessageReceve
-                //TaskMessage tmsg;
+                //Recebendo a mensagem via socket
                 TaskMessage tmsg;
                 memset(&tmsg, 0, sizeof(tmsg));
-                //recv(socket, (TaskMessage*)&tmsg, sizeof(tmsg), 0);
                 recv(socket, (TaskMessage*)&tmsg, sizeof(tmsg), 0);
-                if(!strcmp(tmsg.getMsg(), "SUBSTITUIR")){
-                    ativo[uav.getID()] = true;
+                cout << "UAV QUE RECEBEU: " << this->uav.getID() << endl;
+                cout << "Origem:" << tmsg.getSource() << endl;
+                cout << "Destino:" << tmsg.getDestination() << endl;
+
+                //if ao receber mensagem destinada a outros UAVs
+                if(tmsg.getDestination() != this->uav.getID()){
+                    msgs.push(tmsg);
+                }else{ //msg pra esse UAV
+                    if(!strcmp(tmsg.getMsg(), "SUBSTITUIR")){
+                        ativo[uav.getID()] = true;
+                    }
+                    Task x = tmsg.getTask();
+                    /*TaskMessage tmsg2;
+                    memset(&tmsg2, 0, sizeof(tmsg2));
+                    recv(socket, (TaskMessage*)&tmsg2, sizeof(tmsg2), 0);
+                    cout << "Mensagem recebida2: tipo: " << tmsg2.task.type << " idUAV: " << tmsg2.task.uav.getID() << endl;*/
+                    int i = x.getUAV().getID();//idUAV;
+                    base[i].push_back(x);
+                    int j = base[i].size()-1;
+                    base[i][j].setType(x.getType());
+                    base[i][j].getUAV().setID(x.getUAV().getID());
+                    waypoints[i] = base[i][j].getWaypoints();
+                    if(itera[i] < 0){
+                        itera[i]++;
+                    }
+                    //cout << "UAV["<<i<<"]-Tasks: " << base[i].size()<< endl;
                 }
-                Task x = tmsg.getTask();
-                /*TaskMessage tmsg2;
-                memset(&tmsg2, 0, sizeof(tmsg2));
-                recv(socket, (TaskMessage*)&tmsg2, sizeof(tmsg2), 0);
-                cout << "Mensagem recebida2: tipo: " << tmsg2.task.type << " idUAV: " << tmsg2.task.uav.getID() << endl;*/
-                int i = x.getUAV().getID();//idUAV;
-                base[i].push_back(x);
-                int j = base[i].size()-1;
-                base[i][j].setType(x.getType());
-                base[i][j].getUAV().setID(x.getUAV().getID());
-                waypoints[i] = base[i][j].getWaypoints();
-                if(itera[i] < 0){
-                    itera[i]++;
-                }
-                //cout << "UAV["<<i<<"]-Tasks: " << base[i].size()<< endl;
             }
             return true;
         }

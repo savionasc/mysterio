@@ -2,6 +2,7 @@
 #define MYSTERIO_OMNET_EXCOMM1_COMMUNICATION_UAVCOMMUNICATIONSOCKET_H_
 #include <thread>
 #include <iostream>
+#include <queue>
 #include <string>
 #include <sys/socket.h>
 #include <netdb.h>
@@ -31,6 +32,7 @@ extern std::vector<Task> base[NUMUAVS]; //Task
 extern bool ativo[NUMUAVS];
 extern int itera[NUMUAVS];
 extern int lowbattery[NUMUAVS];
+extern std::queue<TaskMessage> msgs;
 
 namespace mysterio {
 
