@@ -252,7 +252,6 @@ Coord UAVMobility::findSheep(int j){
         //mandar mensagem ovelha
         msgs.push(tm);
 
-
         TaskMessage msg;
         msg.setMsg("OLHA A MENSAGEM!");
         msg.setCode(SUBORDINATE_SUBTASK);

@@ -1,6 +1,8 @@
 #ifndef MYSTERIO_SRC_UTILS_UAV_H_
 #define MYSTERIO_SRC_UTILS_UAV_H_
 
+#include "../mission/Competence.h"
+
 //#include "../communication/Communicable.h"
 
 //Talvez extender/implementar communicable
@@ -43,6 +45,8 @@ protected:
     double velocidade;
     float battery;
     int flightTime;
+
+    Competence competence;
     //bateria
     //disponivel
 };
