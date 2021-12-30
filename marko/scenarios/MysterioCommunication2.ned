@@ -1,7 +1,7 @@
 package mysterio.marko.scenarios;
 
 import inet.node.inet.StandardHost;
-import mysterio.marko.uavs.example2.ModuloComunicacao2;
+import mysterio.marko.uavs.ModuloComunicacao2;
 import inet.visualizer.integrated.IntegratedVisualizer;
 import inet.visualizer.integrated.IntegratedCanvasVisualizer;
 import inet.node.base.ApplicationLayerNodeBase;

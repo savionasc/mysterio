@@ -1,11 +1,12 @@
 #ifndef MYSTERIO_OMNET_UAVS_MODULOCOMUNICACAO_H_
 #define MYSTERIO_OMNET_UAVS_MODULOCOMUNICACAO_H_
 
-#include "../UAVMessage_m.h"
+#include "UAVMessage_m.h"
 
 using namespace omnetpp;
 using namespace std;
 
+#define testeee 5
 
 namespace inet {
 
@@ -23,6 +24,7 @@ class ModuloComunicacao2 : public cSimpleModule {
         GOTOTASK,
         TASKCOMPLETED
     };
+    static TipoMensagem tipo;
   protected:
     virtual UAVMessage *generateMessage();
     virtual void forwardMessage(UAVMessage *msg);
@@ -32,7 +34,6 @@ class ModuloComunicacao2 : public cSimpleModule {
     //Auxiliary functions
     void enviarMensagem(double tempo, int origem, int destino, char const *name, int kind);
     void rememberCheckMessage(double seconds);
-    void solicitarStatusDoUAVVizinho();
 
     int selfID = -2;
     UAVMessage* sendMSGEvt;

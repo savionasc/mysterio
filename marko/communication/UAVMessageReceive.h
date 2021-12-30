@@ -173,9 +173,6 @@ class UAVMessageReceive {
                 TaskMessage tmsg;
                 memset(&tmsg, 0, sizeof(tmsg));
                 recv(socket, (TaskMessage*)&tmsg, sizeof(tmsg), 0);
-                cout << "UAV QUE RECEBEU: " << this->uav.getID() << endl;
-                cout << "Origem:" << tmsg.getSource() << endl;
-                cout << "Destino:" << tmsg.getDestination() << endl;
 
                 //if ao receber mensagem destinada a outros UAVs
                 if(tmsg.getDestination() != this->uav.getID()){

@@ -24,8 +24,6 @@ std::queue<TaskMessage> msgs;
 UAVMysCommunication uavs[NUMUAVS];
 int pular = 0; //this variable forces terminate current "task" of uav
 
-int UAVLeader = -1;
-int UAVDestino = -1;
 int waypoints[NUMUAVS];
 int lowbattery[NUMUAVS];
 using namespace power;
@@ -187,13 +185,6 @@ double UAVMobility::getMaxSpeed() const {
 J UAVMobility::pegarBateria(int idUAV){
     cModule *a = getParentModule()->getParentModule()->getSubmodule("host", idUAV)->getSubmodule("energyStorage", 0);
     SimpleEpEnergyStorage *energySto = check_and_cast<SimpleEpEnergyStorage*>(a);
-
-    //Calculando porcentagem da bateria:
-    //float aaa = std::stof(energySto->getResidualEnergyCapacity().str());
-    //float bbb = std::stof(energySto->getNominalEnergyCapacity().str());
-    //float xa = (aaa / bbb);
-    //float res = xa * 100;
-    //cout << energySto->getResidualEnergyCapacity() << "/" << energySto->getNominalEnergyCapacity() << "-" << res << endl;
     return energySto->getResidualEnergyCapacity();
 }
 
@@ -221,13 +212,11 @@ void UAVMobility::rescueData(){
 }
 
 Coord UAVMobility::findSheep(int j){
-    cout << "CHAMOU A TAREFA!" << endl;
     Coord c;
-
     analisarDistanciaOvelha();
 
     //checa se a ovelha está no raio de alcance
-    //se sim, manda mensagem
+    //se sim, se comunica com ela
     //se não, o drone procura
 
     if(waypoints[uav.getID()] == 0 || waypoints[uav.getID()] == 4){
@@ -249,7 +238,7 @@ Coord UAVMobility::findSheep(int j){
         TaskMessage tm;
         tm.setSource(this->uav.getID());
         tm.setDestination(-5);
-        //mandar mensagem ovelha
+        //preparando comunicação com ovelha
         msgs.push(tm);
 
         TaskMessage msg;
@@ -280,15 +269,7 @@ Coord UAVMobility::findSheep(int j){
         msg.setCoord(this->castCoordToCoordinate(d));
         uavs[uav.getID()].dispatchTaskMessage(msg);
     }
-    //int j é o estagio
-    //estagio de busca
-    //estagio que manda mensagem para parar
-    //estagio que vai para uma posição específica?
-    //estagio que chama os outros drones?
-    //estagio que volta pra base com a ovelha?
 
-    //c = getRandomPosition();
-    //waypoints[uav.getID()] = (waypoints[uav.getID()] < 5) ? waypoints[uav.getID()]+1 : 0;
     return c;
 }
 

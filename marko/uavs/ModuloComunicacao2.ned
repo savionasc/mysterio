@@ -1,4 +1,4 @@
-package mysterio.marko.uavs.example2;
+package mysterio.marko.uavs;
 
 import inet.node.inet.StandardHost;
 
