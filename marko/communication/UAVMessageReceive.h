@@ -6,7 +6,6 @@
 
 using namespace std;
 
-extern int pular;
 namespace mysterio {
 
 enum codes{
@@ -125,42 +124,12 @@ class UAVMessageReceive {
                     cout << msg.getMsg() << ":" << msg.getDestination() << endl;
                 }else if(!strcmp(msg.getMsg(), "Defined Task")){ //take off
                     //receber a tarefa...
-                }/*else if(!strcmp(msg.getMsg(), "decolar")){ //take off
-                    for (int i = 0; i < NUMUAVS; i++) {
-                        Coordinate currentP(100.0,100.0,100.0);
-                        UAV u(i);
-                        Task gotoc(u, currentP);
-                        base[i].push_back(gotoc);
-                        int j = base[i].size()-1;
-                        base[i][j].type = 10;
-                        base[i][j].uav.setID(i);
-                        if(itera[i] < 0){
-                            itera[i]++;
-                        }
-                        cout << "UAV["<<i<<"]-Tasks: " << base[i].size()<< endl;
-                    }
-
-                }else if(!strcmp(msg.getMsg(), "carro")){
-                    int i = this->uav.getID();//idUAV;
-                    Coordinate currentP(300.0,420.0,90.0);
-                    UAV u(i);
-                    Task gotoc(u, currentP);
-                    base[i].push_back(gotoc);
-                    int j = base[i].size()-1;
-                    base[i][j].type = FLY_AROUND;
-                    base[i][j].uav.setID(i);
-                    if(itera[i] < 0){
-                        itera[i]++;
-                    }
-                    cout << "UAV["<<i<<"]-Tasks: " << base[i].size()<< endl;
-                }*/else if(!strcmp(msg.getMsg(), "task")){
+                }else if(!strcmp(msg.getMsg(), "task")){
                     cout << "Current Task: " << itera[this->uav.getID()] << endl;
                 }else if(!strcmp(msg.getMsg(), "d")){
                     for (int i = 0; i < base[this->uav.getID()].size(); i++) {
                         cout << "Status: " << base[0][i].getStatus() << endl;
                     }
-                }else if(!strcmp(msg.getMsg(), "next")){
-                    pular = 1;
                 }else if(!strcmp(msg.getMsg(), "drenar")){
                     lowbattery[uav.getID()] = 1;
                 }else{
@@ -182,10 +151,6 @@ class UAVMessageReceive {
                         ativo[uav.getID()] = true;
                     }
                     Task x = tmsg.getTask();
-                    /*TaskMessage tmsg2;
-                    memset(&tmsg2, 0, sizeof(tmsg2));
-                    recv(socket, (TaskMessage*)&tmsg2, sizeof(tmsg2), 0);
-                    cout << "Mensagem recebida2: tipo: " << tmsg2.task.type << " idUAV: " << tmsg2.task.uav.getID() << endl;*/
                     int i = x.getUAV().getID();//idUAV;
                     base[i].push_back(x);
                     int j = base[i].size()-1;
@@ -195,7 +160,6 @@ class UAVMessageReceive {
                     if(itera[i] < 0){
                         itera[i]++;
                     }
-                    //cout << "UAV["<<i<<"]-Tasks: " << base[i].size()<< endl;
                 }
             }
             return true;

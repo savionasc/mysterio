@@ -22,7 +22,6 @@ int itera[NUMUAVS];
 std::vector<Task> base[NUMUAVS];
 std::queue<TaskMessage> msgs;
 UAVMysCommunication uavs[NUMUAVS];
-int pular = 0; //this variable forces terminate current "task" of uav
 
 int waypoints[NUMUAVS];
 int lowbattery[NUMUAVS];
@@ -167,8 +166,6 @@ void UAVMobility::move() {
     if(bateria[uav.getID()] < 0.005 && ativo[uav.getID()]){
         ativo[uav.getID()] = false;
     }
-    if(pular == 1)
-        this->stop();
     if(continuoustask){
         analisarDistanciaOvelha();
     }
@@ -378,11 +375,4 @@ void UAVMobility::executeTask(int j){
         targetPosition = this->castCoordinateToCoord(base[uav.getID()][j].getTarget());
         itera[uav.getID()]++;
     }
-}
-
-void UAVMobility::stop(){ //Finaliza a atividade no Omnet
-    nextMoveIsWait = true;
-    nextChange = simTime() + 0.1;
-    cout << "step" << endl;
-    pular++;
 }
