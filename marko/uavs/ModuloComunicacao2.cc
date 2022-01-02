@@ -1,6 +1,6 @@
 #include "ModuloComunicacao2.h"
 
-#include "../mission/GoTo.h"
+#include "../mission/MysTask.h"
 #include "UAVMobility.h"
 #include <iostream>
 #include <queue>
