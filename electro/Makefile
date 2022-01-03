@@ -1,3 +1,5 @@
+default: go
+
 all: Example1Communication.o MysStatusManager.o RepositoryMySQL.o MysCommunication.o UAV.o MissionPlanner.o
 	g++ -pthread -o scenarios/main Example1Communication.o MysStatusManager.o RepositoryMySQL.o MysCommunication.o UAV.o MissionPlanner.o -lmysqlclient
 
@@ -24,3 +26,6 @@ clean:
 
 run:
 	./scenarios/main
+
+go:
+	make clean --no-print-directory && make all --no-print-directory && clear && make run --no-print-directory
