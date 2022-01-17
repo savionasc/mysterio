@@ -140,7 +140,7 @@ void UAVMobility::setTargetPosition() {
 void UAVMobility::move() {
     if(lowbattery[uav.getID()] == 1){ //Drenando bateria e repassando tarefa
         cout << "Drenou" << endl;
-        cModule *a = getParentModule()->getParentModule()->getSubmodule("host", uav.getID())->getSubmodule("energyStorage", 0);
+        cModule *a = getParentModule()->getParentModule()->getSubmodule("UAV", uav.getID())->getSubmodule("energyStorage", 0);
         SimpleEpEnergyStorage *energySto = check_and_cast<SimpleEpEnergyStorage*>(a);
         energySto->consumir();
         lowbattery[uav.getID()] = 2;
@@ -179,7 +179,7 @@ double UAVMobility::getMaxSpeed() const {
 }
 
 J UAVMobility::pegarBateria(int idUAV){
-    cModule *a = getParentModule()->getParentModule()->getSubmodule("host", idUAV)->getSubmodule("energyStorage", 0);
+    cModule *a = getParentModule()->getParentModule()->getSubmodule("UAV", idUAV)->getSubmodule("energyStorage", 0);
     SimpleEpEnergyStorage *energySto = check_and_cast<SimpleEpEnergyStorage*>(a);
 
     //Calculando porcentagem da bateria:
@@ -213,7 +213,7 @@ Coord UAVMobility::flyAround(int j){
         c.setX(c.getX()+50);
         c.setY(c.getY()+50);
         if(uav.getID() == 0){
-            cModule *a = getParentModule()->getParentModule()->getSubmodule("host", uav.getID())->getSubmodule("energyStorage", 0);
+            cModule *a = getParentModule()->getParentModule()->getSubmodule("UAV", uav.getID())->getSubmodule("energyStorage", 0);
             SimpleEpEnergyStorage *energySto = check_and_cast<SimpleEpEnergyStorage*>(a);
             energySto->consumir();
             TaskMessage msg;
