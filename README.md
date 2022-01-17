@@ -12,7 +12,7 @@ Para construir uma aplicação usando este framework, indicamos a nossa arquitet
 #### UAVs e [UAVCommunication](https://github.com/savionasc/mysterio/blob/main/src/communication/UAVCommunication.h)
 Para os UAVs, sejam virtuais ou reais, o software de gerenciamento interno dos UAVs tem que ser a sua maneira (desenvolvida pelo usuário), de forma que use o UAVCommunication como interface de comunicação entre o framework e os UAVs. É importante deixar claro que o framework deverá estar presente na sua estação base (central de comandos). Já nos UAVs, a comunicação com o framework se dá pelo UAVCommunication que é a interface de comunicação. Esta possui por padrão métodos que permite a conexão e a desconexão com o framework, além de envio e recebimento de mensagens.
 
-#### Communication
+#### [Communication](https://github.com/savionasc/mysterio/blob/main/src/communication/)
 Este é o componente responsável por realizar toda e qualquer comunicação do framework com os UAVs. A implementação deste componente foi quebrada em 4 classes, uma que fica nos UAVs e outras 3 no framework. Nos UAVs, a classe UAVCommunication é responsável por realizar a comunicação do UAV com os frameworks e este componente deve utilizar do mesmo protocolo de comunicação que o framework para se comunicarem. Quando um componente de comunicação recebe mensagens, ele repassa para os outros componentes que lidam com cada tipo específico de informação.
 
 #### [StatusManager](https://github.com/savionasc/mysterio/blob/main/src/status/StatusManager.h)
