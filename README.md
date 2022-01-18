@@ -9,6 +9,8 @@ Para construir uma aplicação usando este framework, indicamos a nossa arquitet
 
 ## Recomendações para construção de sistemas Multi-UAVs utilizando esta arquitetura e o Mysterio Framework:
 
+De antemão, o código base do framework Mysterio está presente na pasta src e as pastas [connors](https://github.com/savionasc/mysterio/tree/main/connors), [electro](https://github.com/savionasc/mysterio/tree/main/electro) e [marko](https://github.com/savionasc/mysterio/tree/main/marko) são instâncias do framework.
+
 #### UAVs e [UAVCommunication](https://github.com/savionasc/mysterio/blob/main/src/communication/UAVCommunication.h)
 Para os UAVs, sejam virtuais ou reais, o software de gerenciamento interno dos UAVs tem que ser a sua maneira (desenvolvida pelo usuário), de forma que use o UAVCommunication como interface de comunicação entre o framework e os UAVs. É importante deixar claro que o framework deverá estar presente na sua estação base (central de comandos). Já nos UAVs, a comunicação com o framework se dá pelo UAVCommunication que é a interface de comunicação. Esta possui por padrão métodos que permite a conexão e a desconexão com o framework, além de envio e recebimento de mensagens.
 
