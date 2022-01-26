@@ -75,3 +75,8 @@ void MysCommunication::ReceiveMessageFromUAV(Communicable *source, Communicable 
 
     //SpecificClass* s = dynamic_cast<SpecificClass*>(dest);
 }
+
+thread MysCommunication::listenForNewConnections(){
+    thread conectar(UAVRegistry(), portServer);
+    return conectar;
+}

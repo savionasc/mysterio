@@ -29,9 +29,22 @@ public:
 
     void sendTaskMessageToUAV(int idSocket, TaskMessage tmsg);
 
+    thread listenForNewConnections();
+
     void reconnect(UAV u){
     }
+
+    int getPortServer() {
+        return portServer;
+    }
+
+    void setPortServer(int portServer) {
+        this->portServer = portServer;
+    }
+
     //int conexoes[NUMUAVS];
+private:
+    int portServer;
 };
 
 #endif

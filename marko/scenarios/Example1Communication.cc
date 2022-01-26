@@ -16,8 +16,9 @@ void listenSocket(){ //Here starts the server communication
 
     MysCommunication comm;
     int serverSocket = comm.configureSocketServer(1111); //Port number
+    comm.setPortServer(serverSocket);
     if(serverSocket > 0){
-        thread conectar(UAVRegistry(), serverSocket);
+        thread conectar = comm.listenForNewConnections();
         std::cout << "Waiting for a UAV to connect..." << std::endl;
         //waiting for the first UAV
         while(ms->getSize() < numeroDeUAVsEsperados){
@@ -152,6 +153,7 @@ void listenSocket(){ //Here starts the server communication
             }
             comm.sendMessageToUAV(id, msg);
         }
+        cout << "Join" << endl;
         conectar.join();
     }else{ //when it fails enter here
         switch (serverSocket) {
