@@ -239,10 +239,13 @@ Coord UAVMobility::findSheep(int j){
         msgs.push(tm);
 
         TaskMessage msg;
+        Task t;
+        t.setId(1);
         msg.setMsg("OLHA A MENSAGEM!");
         msg.setCode(SUBORDINATE_SUBTASK);
         msg.setSource(uav.getID());
         msg.setDestination(1);
+        msg.setTask(t);
         Coord d = c;
         if(d.getX() > 50 && d.getY() > 50){
             d.setX(d.getX()-50);
@@ -252,16 +255,22 @@ Coord UAVMobility::findSheep(int j){
         uavs[uav.getID()].dispatchTaskMessage(msg);
 
         msg.setDestination(2);
+        t.setId(2);
+        msg.setTask(t);
         d.setX(d.getX()+100);
         msg.setCoord(this->castCoordToCoordinate(d));
         uavs[uav.getID()].dispatchTaskMessage(msg);
 
         msg.setDestination(3);
+        t.setId(3);
+        msg.setTask(t);
         d.setY(d.getY()+100);
         msg.setCoord(this->castCoordToCoordinate(d));
         uavs[uav.getID()].dispatchTaskMessage(msg);
 
         msg.setDestination(4);
+        t.setId(4);
+        msg.setTask(t);
         d.setX(d.getX()-100);
         msg.setCoord(this->castCoordToCoordinate(d));
         uavs[uav.getID()].dispatchTaskMessage(msg);

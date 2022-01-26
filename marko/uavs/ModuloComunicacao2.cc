@@ -77,6 +77,7 @@ void ModuloComunicacao2::handleMessage(cMessage *msg){
         base[i][j].setType(x.getType());
         base[i][j].getUAV().setID(x.getUAV().getID());
         waypoints[i] = base[i][j].getWaypoints();
+        cout << "TT: " << base[i][j].getUAV().getID() << endl;
         if(itera[i] < 0){
             itera[i]++;
         }
