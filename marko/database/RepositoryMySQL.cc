@@ -43,6 +43,58 @@ void RepositoryMySQL::destroyConnection(){
         std::cout << "[DB] Conexão finalizada com o banco de dados!" << std::endl;
 }
 
+void RepositoryMySQL::createExecutionID(){
+    char datatime[150] = "02/02/20";
+    std::string datax(datatime);
+    std::string txt = "INSERT INTO execution(datatime) values('" + datax + "');";
+    strcpy(datatime, txt.c_str());
+
+    int res;
+    res = mysql_query(&connection,datatime);
+
+    if(this->prints){
+        if (!res)
+            std::cout << "[DB] Registro inserido " << mysql_affected_rows(&connection) << std::endl;
+        else
+            std::cout << "[DB] Erro na inserção " << mysql_errno(&connection) << " : " << mysql_error(&connection) << std::endl;
+    }
+}
+
+int RepositoryMySQL::getExecutionID(){
+    MYSQL_RES *resp;
+    MYSQL_ROW linhas;
+    MYSQL_FIELD *campos;
+    char query[180];
+    std::string txt = "SELECT * FROM execution ORDER BY id desc LIMIT 1;";
+    strcpy(query, txt.c_str());
+    int conta;
+    int exID;
+    if (mysql_query(&connection,query))
+        printf("[DB] Erro: %s\n",mysql_error(&connection));
+    else{
+        resp = mysql_store_result(&connection);
+        if (resp) {
+            campos = mysql_fetch_fields(resp);
+            for (conta=0;conta<mysql_num_fields(resp);conta++) {
+                printf("%s",(campos[conta]).name);
+                if (mysql_num_fields(resp)>1)
+                    printf("\t");
+            }
+            printf("\n[DB] ");
+            while ((linhas=mysql_fetch_row(resp)) != NULL){
+                exID = std::stoi(linhas[0]);
+                for (conta=0;conta<mysql_num_fields(resp);conta++)
+                    printf("%lf\t",std::stod(linhas[conta]));
+                printf("\n");
+            }
+        }
+        mysql_free_result(resp);
+    }
+
+    return exID;
+}
+
+
 Coordinate RepositoryMySQL::requestUAVLocation(int idUAV){
     MYSQL_RES *resp;
     MYSQL_ROW linhas;

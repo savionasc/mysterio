@@ -1,6 +1,7 @@
 #include "../scenarios/Example1Communication.h"
 #include <iostream>
 #include "../communication/MysCommunication.h"
+#include "../database/RepositoryMySQL.h"
 #include "../../src/mission/MissionPlanner.h"
 #include "../../src/taskmanager/TaskManager.h"
 #include "../communication/UAVRegistry.cc"
@@ -173,7 +174,11 @@ void listenSocket(){ //Here starts the server communication
 
 int main(int argc, char const *argv[]){
 	//This number identification will be important to set database execution
-	int numExecution = 1; 
+    RepositoryMySQL rep;
+    //rep.createExecutionID();
+    int numExecution = rep.getExecutionID(); //1;
+    //int numExecution = rep.getVelocity(0);
+    cout << "EXECUTION ID: " << numExecution << endl;
 
     listenSocket();
 

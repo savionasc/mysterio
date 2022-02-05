@@ -13,6 +13,9 @@ public:
     virtual bool createConnection();
     virtual void destroyConnection();
 
+    void createExecutionID();
+    int getExecutionID();
+
     Coordinate requestUAVLocation(int idUAV);
     void saveUAVLocation(int idUAV, Coordinate coord);
     double getVelocity(int idUAV);
