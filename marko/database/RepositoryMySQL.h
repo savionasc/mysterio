@@ -13,7 +13,7 @@ public:
     virtual bool createConnection();
     virtual void destroyConnection();
 
-    void createExecutionID();
+    int createExecutionID();
     int getExecutionID();
 
     Coordinate requestUAVLocation(int idUAV);

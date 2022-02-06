@@ -43,7 +43,7 @@ void RepositoryMySQL::destroyConnection(){
         std::cout << "[DB] Conexão finalizada com o banco de dados!" << std::endl;
 }
 
-void RepositoryMySQL::createExecutionID(){
+int RepositoryMySQL::createExecutionID(){
     char datatime[150] = "02/02/20";
     std::string datax(datatime);
     std::string txt = "INSERT INTO execution(datatime) values('" + datax + "');";
@@ -58,6 +58,8 @@ void RepositoryMySQL::createExecutionID(){
         else
             std::cout << "[DB] Erro na inserção " << mysql_errno(&connection) << " : " << mysql_error(&connection) << std::endl;
     }
+
+    return this->getExecutionID();
 }
 
 int RepositoryMySQL::getExecutionID(){
@@ -75,17 +77,17 @@ int RepositoryMySQL::getExecutionID(){
         resp = mysql_store_result(&connection);
         if (resp) {
             campos = mysql_fetch_fields(resp);
-            for (conta=0;conta<mysql_num_fields(resp);conta++) {
-                printf("%s",(campos[conta]).name);
-                if (mysql_num_fields(resp)>1)
-                    printf("\t");
-            }
-            printf("\n[DB] ");
+            //for (conta=0;conta<mysql_num_fields(resp);conta++) {
+            //    printf("%s",(campos[conta]).name);
+            //    if (mysql_num_fields(resp)>1)
+            //        printf("\t");
+            //}
+            //printf("\n[DB] ");
             while ((linhas=mysql_fetch_row(resp)) != NULL){
                 exID = std::stoi(linhas[0]);
-                for (conta=0;conta<mysql_num_fields(resp);conta++)
-                    printf("%lf\t",std::stod(linhas[conta]));
-                printf("\n");
+                //for (conta=0;conta<mysql_num_fields(resp);conta++)
+                //    printf("%lf\t",std::stod(linhas[conta]));
+                //printf("\n");
             }
         }
         mysql_free_result(resp);
