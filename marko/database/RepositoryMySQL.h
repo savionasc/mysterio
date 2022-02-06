@@ -3,7 +3,6 @@
 #include <mysql/mysql.h>
 #include <string>
 #include "../../src/database/Repository.h"
-#include "../../src/utils/Coordinate.h"
 
 class RepositoryMySQL : public Repository {
 public:
@@ -28,9 +27,13 @@ public:
     void enablePrints();
     void disablePrints();
 
+    int getExecutionId();
+    void setExecutionId(int executionId);
+
 protected:
     MYSQL connection;
     bool prints = false;
+    int executionID;
 
 private:
     std::string getCurrentDate();
