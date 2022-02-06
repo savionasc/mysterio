@@ -1,8 +1,7 @@
 #include "RepositoryMySQL.h"
 #include "../../src/utils/Coordinate.h"
+#include <ctime>
 #include <iostream>
-#include <stdio.h>
-#include <string>
 #include <string.h>
 
 #define HOSTNAME "127.0.0.1"
@@ -44,9 +43,8 @@ void RepositoryMySQL::destroyConnection(){
 }
 
 int RepositoryMySQL::createExecutionID(){
-    char datatime[150] = "02/02/20";
-    std::string datax(datatime);
-    std::string txt = "INSERT INTO execution(datatime) values('" + datax + "');";
+    char datatime[150];
+    std::string txt = "INSERT INTO execution(datatime) values('" + getCurrentDate() + "');";
     strcpy(datatime, txt.c_str());
 
     int res;
@@ -309,3 +307,8 @@ void RepositoryMySQL::enablePrints(){ this->prints = true; }
 void RepositoryMySQL::disablePrints(){ this->prints = false; }
 
 RepositoryMySQL::~RepositoryMySQL() { this->destroyConnection(); }
+std::string RepositoryMySQL::getCurrentDate(){
+    time_t timetoday;
+    time(&timetoday);
+    return std::string(asctime(localtime(&timetoday)));
+}

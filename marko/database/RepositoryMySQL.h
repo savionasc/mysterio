@@ -1,6 +1,7 @@
 #ifndef MYSTERIO_OMNET_DATABASE_REPOSITORYMYSQL_H_
 #define MYSTERIO_OMNET_DATABASE_REPOSITORYMYSQL_H_
 #include <mysql/mysql.h>
+#include <string>
 #include "../../src/database/Repository.h"
 #include "../../src/utils/Coordinate.h"
 
@@ -30,6 +31,9 @@ public:
 protected:
     MYSQL connection;
     bool prints = false;
+
+private:
+    std::string getCurrentDate();
 };
 
 #endif

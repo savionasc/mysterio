@@ -175,9 +175,7 @@ void listenSocket(){ //Here starts the server communication
 int main(int argc, char const *argv[]){
 	//This number identification will be important to set database execution
     RepositoryMySQL rep;
-    //rep.createExecutionID();
-    int numExecution = rep.getExecutionID(); //1;
-    //int numExecution = rep.getVelocity(0);
+    int numExecution = rep.createExecutionID();
     cout << "EXECUTION ID: " << numExecution << endl;
 
     listenSocket();
