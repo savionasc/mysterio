@@ -177,7 +177,11 @@ int main(int argc, char const *argv[]){
     RepositoryMySQL rep(true);
     int numExecution = rep.createExecutionID();
     cout << "EXECUTION ID: " << numExecution << endl;
-    float b = rep.getBattery(1);//rep.getFlightTime(1);
+    UAVStatus us = rep.getUAVStatus(1);
+    cout << us.getBattery() << endl;
+    cout << us.getFlightTime() << endl;
+    cout << us.getVelocity() << endl;
+    cout << us.getLocationX() << "|" << us.getLocationY() << "|" << us.getLocationZ() << endl;
 
     listenSocket();
 

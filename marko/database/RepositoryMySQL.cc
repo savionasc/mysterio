@@ -1,4 +1,5 @@
 #include "RepositoryMySQL.h"
+#include "../../src/status/UAVStatus.h"
 #include <ctime>
 #include <iostream>
 #include <string.h>
@@ -175,7 +176,7 @@ double RepositoryMySQL::getVelocity(int idUAV){
             }
             std::cout << std::endl;
             while ((linhas=mysql_fetch_row(resp)) != NULL){
-                velocity = std::stod(linhas[0]);
+                velocity = std::stod(linhas[2]);
                 for (conta=0;conta<mysql_num_fields(resp);conta++)
                     std::cout << std::stod(linhas[conta]) << "\t|";
                 std::cout << std::endl;
@@ -307,6 +308,16 @@ void RepositoryMySQL::setFlightTime(int idUAV, int flightTime){
         else
             std::cout << "[DB] Erro na inserção " << mysql_errno(&connection) << " : " << mysql_error(&connection) << std::endl;
     }
+}
+
+UAVStatus RepositoryMySQL::getUAVStatus(int idUAV){
+    UAVStatus us;
+    us.setBattery(getBattery(idUAV));
+    us.setFlightTime(getFlightTime(idUAV));
+    us.setVelocity(getVelocity(idUAV));
+    Coordinate c = requestUAVLocation(idUAV);
+    us.setLocation(c.getX(), c.getY(), c.getZ());
+    return us;
 }
 
 void RepositoryMySQL::enablePrints(){ this->prints = true; }

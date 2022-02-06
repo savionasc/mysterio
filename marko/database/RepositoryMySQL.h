@@ -2,6 +2,7 @@
 #define MYSTERIO_OMNET_DATABASE_REPOSITORYMYSQL_H_
 #include <mysql/mysql.h>
 #include <string>
+#include "../../src/status/UAVStatus.h"
 #include "../../src/database/Repository.h"
 
 class RepositoryMySQL : public Repository {
@@ -24,6 +25,9 @@ public:
     void setBattery(int idUAV, float battery);
     int getFlightTime(int idUAV);
     void setFlightTime(int idUAV, int flightTime);
+
+    UAVStatus getUAVStatus(int idUAV);
+
     void enablePrints();
     void disablePrints();
 
