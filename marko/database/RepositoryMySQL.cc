@@ -57,11 +57,11 @@ int RepositoryMySQL::createExecutionID(){
             std::cout << "[DB] Erro na inserção " << mysql_errno(&connection) << " : " << mysql_error(&connection) << std::endl;
     }
 
-    setExecutionId(this->getExecutionID());
+    setExecutionId(requestExecutionID());
     return this->getExecutionId();
 }
 
-int RepositoryMySQL::getExecutionID(){
+int RepositoryMySQL::requestExecutionID(){
     MYSQL_RES *resp;
     MYSQL_ROW linhas;
     MYSQL_FIELD *campos;

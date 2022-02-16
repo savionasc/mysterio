@@ -19,7 +19,7 @@ void Sheep::initialize(){
 }
 
 void Sheep::handleMessage(cMessage *msg){
-    cout << "[SHEEP] Executando ação: " << msg->getFullName() << endl;
+    //cout << "[SHEEP] Executando ação: " << msg->getFullName() << endl;
     stopped = true;
     delete msg;
 }

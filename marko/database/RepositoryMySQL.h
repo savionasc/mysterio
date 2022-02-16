@@ -15,7 +15,7 @@ public:
     virtual void destroyConnection();
 
     int createExecutionID();
-    int getExecutionID();
+    int requestExecutionID();
 
     Coordinate requestUAVLocation(int idUAV);
     void saveUAVLocation(int idUAV, Coordinate coord);

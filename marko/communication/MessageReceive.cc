@@ -67,11 +67,11 @@ public:
             TaskMessage msg;
             memset(&msg, 0, sizeof(msg));
             recv(socket, (TaskMessage*)&msg, sizeof(msg), 0);
-            cout << "<TM>Received Task - Code Message: " << msg.getCode();
-            cout << " Status: " << msg.getTask().getStatus() << " Task ID: " << msg.getTask().getID() << endl;
-            cout << " Coordinate: " << msg.getCoord().getX() << "|" << msg.getCoord().getY() << "|" << msg.getCoord().getZ() << endl;
-            cout << "Finished? " << (msg.getTask().isComplete() == true ? "True" : "False") << endl;
-            cout << "UAV " << msg.getTask().getUAV().getID() << endl;
+            //cout << "<TM>Received Task - Code Message: " << msg.getCode();
+            //cout << " Status: " << msg.getTask().getStatus() << " Task ID: " << msg.getTask().getID() << endl;
+            //cout << " Coordinate: " << msg.getCoord().getX() << "|" << msg.getCoord().getY() << "|" << msg.getCoord().getZ() << endl;
+            //cout << "Finished? " << (msg.getTask().isComplete() == true ? "True" : "False") << endl;
+            //cout << "UAV " << msg.getTask().getUAV().getID() << endl;
             TaskManager t;
             MysStatusManager *ms;
             if(msg.getCode() == TASK_EMERGENCY_BATTERY_LOW){
@@ -103,8 +103,6 @@ public:
                 msg.setTask(t.getTaskByIndex(u, t.getNumTasks(u)-1));
                 msgSender.enviarTarefa(u.getIdSocket(), msg);
             }else if(msg.getCode() == SUBORDINATE_SUBTASK){
-
-                cout << "SUBTASKS!!" << endl;
                 Coordinate targetPosition(msg.getCoord());
                 UAV uav = ms->getUAV(msg.getDestination());
                 Task subtask(uav, SURROUND_SHEEP, targetPosition); //Mudar esse código
@@ -118,7 +116,6 @@ public:
                 MessageSender msgSender;
                 UAV uavLeader = ms->getUAV(msg.getSource());
                 msgSender.enviarTarefa(uavLeader.getIdSocket(), msg);
-
             }
             //t.setTask(msg.getTask());
         }else if(typeMSG == TASK_COMPLETED_MESSAGE){
