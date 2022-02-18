@@ -1,6 +1,7 @@
 #include "../scenarios/Example1Communication.h"
 #include <iostream>
 #include "../communication/MysCommunication.h"
+#include "../database/RepositoryMySQL.h"
 #include "../../src/mission/MissionPlanner.h"
 #include "../../src/taskmanager/TaskManager.h"
 #include "../communication/UAVRegistry.cc"
@@ -16,8 +17,9 @@ void listenSocket(){ //Here starts the server communication
 
     MysCommunication comm;
     int serverSocket = comm.configureSocketServer(1111); //Port number
+    comm.setPortServer(serverSocket);
     if(serverSocket > 0){
-        thread conectar(UAVRegistry(), serverSocket);
+        thread conectar = comm.listenForNewConnections();
         std::cout << "Waiting for a UAV to connect..." << std::endl;
         //waiting for the first UAV
         while(ms->getSize() < numeroDeUAVsEsperados){
@@ -152,6 +154,7 @@ void listenSocket(){ //Here starts the server communication
             }
             comm.sendMessageToUAV(id, msg);
         }
+        cout << "Join" << endl;
         conectar.join();
     }else{ //when it fails enter here
         switch (serverSocket) {
@@ -171,7 +174,14 @@ void listenSocket(){ //Here starts the server communication
 
 int main(int argc, char const *argv[]){
 	//This number identification will be important to set database execution
-	int numExecution = 1; 
+    RepositoryMySQL rep(true);
+    int numExecution = rep.createExecutionID();
+    cout << "EXECUTION ID: " << numExecution << endl;
+    UAVStatus us = rep.getUAVStatus(1);
+    cout << us.getBattery() << endl;
+    cout << us.getFlightTime() << endl;
+    cout << us.getVelocity() << endl;
+    cout << us.getLocationX() << "|" << us.getLocationY() << "|" << us.getLocationZ() << endl;
 
     listenSocket();
 
