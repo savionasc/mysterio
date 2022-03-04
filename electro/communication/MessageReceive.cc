@@ -87,7 +87,7 @@ public:
                 t.addTask(gotopos);
                 msg.setTask(t.getTaskByIndex(u, t.getNumTasks(u)-1));
                 MessageSender msgSender;
-                msgSender.enviarTarefa(u.getIdSocket(), msg);
+                msgSender.enviarTarefa(u.getNetworkConfigurations().getIdSocket(), msg);
 
                 //task.setType(FLY_AROUND);
                 cout << "SUBSTITUIR UAV[" << task.getUAV().getID() << "] type: " << task.getType() << endl;
@@ -101,7 +101,7 @@ public:
                 msg.setDestination(u.getID());
                 msg.setMsg(conteudo);
                 msg.setTask(t.getTaskByIndex(u, t.getNumTasks(u)-1));
-                msgSender.enviarTarefa(u.getIdSocket(), msg);
+                msgSender.enviarTarefa(u.getNetworkConfigurations().getIdSocket(), msg);
             }
             //t.setTask(msg.getTask());
         }else if(typeMSG == TASK_COMPLETED_MESSAGE){

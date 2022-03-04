@@ -58,7 +58,7 @@ void listenSocket(){ //Here starts the server communication
                 TaskMessage taskMessage(conteudo, TASK_MESSAGE);
                 //taskMessage.setTask(t.getTaskByIndex(u, t.getNumTasks(u)-1));
                 taskMessage.setTask(t.getTaskByIndex(u, itTask));
-                comm.sendTaskMessageToUAV(u.getIdSocket(), taskMessage);
+                comm.sendTaskMessageToUAV(u.getNetworkConfigurations().getIdSocket(), taskMessage);
                 cout << "Numero de tarefas do uav: " << t.getNumTasks(u) << endl;
                 cout << "Tarefa enviada: " << itTask << endl;
                 cout << "UAV: " << u.getID() << endl;
@@ -115,7 +115,7 @@ void listenSocket(){ //Here starts the server communication
                     //taskMessage.setCoord(t.getTaskByIndex(u, t.getNumTasks(u)-1).getTarget());
                     taskMessage.setTask(t.getTaskByIndex(u, t.getNumTasks(u)-1));
 
-                    comm.sendTaskMessageToUAV(ms->getUAV(u.getID()).getIdSocket(), taskMessage);
+                    comm.sendTaskMessageToUAV(ms->getUAV(u.getID()).getNetworkConfigurations().getIdSocket(), taskMessage);
                 }
             }else if(!strcmp(msg.getMsg(), "quarteirao")){ //take off
                 Coordinate currentP(500.0,500.0,400.0);
@@ -131,7 +131,7 @@ void listenSocket(){ //Here starts the server communication
                 TaskMessage taskMessage(msg.getMsg(), TASK_MESSAGE);
                 //taskMessage.setCoord(t.getTaskByIndex(u, t.getNumTasks(u)-1).getTarget());
                 taskMessage.setTask(t.getTaskByIndex(u, t.getNumTasks(u)-1));
-                comm.sendTaskMessageToUAV(ms->getUAV(u.getID()).getIdSocket(), taskMessage);
+                comm.sendTaskMessageToUAV(ms->getUAV(u.getID()).getNetworkConfigurations().getIdSocket(), taskMessage);
             }else if(!strcmp(msg.getMsg(), "quarteiraoT")){ //take off
                 for (int i = 0; i < ms->getSize(); i++) {
                     Coordinate currentP(500.0,500.0,400.0);
@@ -147,7 +147,7 @@ void listenSocket(){ //Here starts the server communication
                     TaskMessage taskMessage(msg.getMsg(), TASK_MESSAGE);
                     //taskMessage.setCoord(t.getTaskByIndex(u, t.getNumTasks(u)-1).getTarget());
                     taskMessage.setTask(t.getTaskByIndex(u, t.getNumTasks(u)-1));
-                    comm.sendTaskMessageToUAV(ms->getUAV(u.getID()).getIdSocket(), taskMessage);
+                    comm.sendTaskMessageToUAV(ms->getUAV(u.getID()).getNetworkConfigurations().getIdSocket(), taskMessage);
 
                 }
             }else if(!strcmp(msg.getMsg(), "carro")){
@@ -165,7 +165,7 @@ void listenSocket(){ //Here starts the server communication
                 //taskMessage.setCoord(t.getTaskByIndex(u, t.getNumTasks(u)-1).getTarget());
                 taskMessage.setTask(t.getTaskByIndex(u, t.getNumTasks(u)-1));
 
-                comm.sendTaskMessageToUAV(ms->getUAV(u.getID()).getIdSocket(), taskMessage);
+                comm.sendTaskMessageToUAV(ms->getUAV(u.getID()).getNetworkConfigurations().getIdSocket(), taskMessage);
             }
             comm.sendMessageToUAV(id, msg);
         }
