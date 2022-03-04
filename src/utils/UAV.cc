@@ -14,7 +14,7 @@ void UAV::setID(int id){
     this->idUAV = id;
 }
 
-int UAV::getIdSocket(){
+/*int UAV::getIdSocket(){
     return this->idSocket;
 }
 
@@ -22,7 +22,7 @@ void UAV::setIdSocket(int id){
     this->idSocket = id;
 }
 
-/*double UAV::getXAxis(){
+double UAV::getXAxis(){
     return this->xAxis;
 }
 

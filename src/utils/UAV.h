@@ -4,6 +4,7 @@
 #include "../mission/Competence.h"
 #include "../status/UAVStatus.h"
 #include "HardwareInformation.h"
+#include "NetworkConfigurations.h"
 
 //#include "../communication/Communicable.h"
 
@@ -16,8 +17,8 @@ public:
     virtual ~UAV();
     virtual int getID();
     virtual void setID(int id);
-    virtual int getIdSocket();
-    virtual void setIdSocket(int id);
+    //virtual int getIdSocket();
+    //virtual void setIdSocket(int id);
     //virtual double getXAxis();
     //virtual void setXAxis(double xAxis);
     //virtual double getYAxis();
@@ -53,9 +54,17 @@ public:
         this->hardwareInformation = hardwareInformation;
     }
 
+    NetworkConfigurations getNetworkConfigurations() {
+        return networkConfigurations;
+    }
+
+    void setNetworkConfigurations(NetworkConfigurations networkConfigurations) {
+        this->networkConfigurations = networkConfigurations;
+    }
+
 protected:
     int idUAV;
-    int idSocket;
+    //int idSocket;
     //int tempoDeVoo;
     //double xAxis;
     //double yAxis;
@@ -69,6 +78,8 @@ protected:
     UAVStatus status;
 
     HardwareInformation hardwareInformation;
+
+    NetworkConfigurations networkConfigurations;
     //bateria
     //disponivel
 };
