@@ -22,7 +22,7 @@ void UAV::setIdSocket(int id){
     this->idSocket = id;
 }
 
-double UAV::getXAxis(){
+/*double UAV::getXAxis(){
     return this->xAxis;
 }
 
@@ -75,7 +75,7 @@ int UAV::getFlightTime() {
 
 void UAV::setFlightTime(int flightTime) {
     this->flightTime = flightTime;
-}
+}*/
 
 /*bool UAV::operator()(UAV const &u1, UAV const &u2){
     if(u1.getID() == u2.getID())

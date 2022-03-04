@@ -18,24 +18,24 @@ public:
     virtual void setID(int id);
     virtual int getIdSocket();
     virtual void setIdSocket(int id);
-    virtual double getXAxis();
-    virtual void setXAxis(double xAxis);
-    virtual double getYAxis();
-    virtual void setYAxis(double yAxis);
-    virtual double getZAxis();
-    virtual void setZAxis(double zAxis);
-    virtual int getTempoDeVoo();
-    virtual void setTempoDeVoo(int tempodevoo);
-    virtual double getVelocidade();
-    virtual void setVelocidade(double velocidade);
+    //virtual double getXAxis();
+    //virtual void setXAxis(double xAxis);
+    //virtual double getYAxis();
+    //virtual void setYAxis(double yAxis);
+    //virtual double getZAxis();
+    //virtual void setZAxis(double zAxis);
+    //virtual int getTempoDeVoo();
+    //virtual void setTempoDeVoo(int tempodevoo);
+    //virtual double getVelocidade();
+    //virtual void setVelocidade(double velocidade);
 
     //Communicable
     //void onMessageReceive(Message msg);
 
-    virtual float getBattery();
-    virtual void setBattery(float battery);
-    virtual int getFlightTime();
-    virtual void setFlightTime(int flightTime);
+    //virtual float getBattery();
+    //virtual void setBattery(float battery);
+    //virtual int getFlightTime();
+    //virtual void setFlightTime(int flightTime);
 
     UAVStatus getStatus() {
         return status;
@@ -56,13 +56,13 @@ public:
 protected:
     int idUAV;
     int idSocket;
-    int tempoDeVoo;
-    double xAxis;
-    double yAxis;
-    double zAxis;
-    double velocidade;
-    float battery;
-    int flightTime;
+    //int tempoDeVoo;
+    //double xAxis;
+    //double yAxis;
+    //double zAxis;
+    //double velocidade;
+    //float battery;
+    //int flightTime;
 
     Competence competence;
 

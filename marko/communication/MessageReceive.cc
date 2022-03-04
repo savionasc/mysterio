@@ -27,17 +27,18 @@ public:
             StatusMessage msg;
             memset(&msg, 0, sizeof(msg));
             recv(socket, (StatusMessage*)&msg, sizeof(msg), 0);
-            //cout << "MensagemStatus: " << msg.getCode() << "X" << msg.getStatus().getLocationX() << msg.getMsg() << endl;
             cout << "<SM>message: " << msg.getMsg() << endl;
             if(strcmp(msg.getMsg(), "velocity") == 0){
                 MysStatusManager* status = MysStatusManager::GetInstance();
                 cout << "Number of UAVs on singleton: " << status->numeroUAVs() << endl;
+                cout << "MensagemStatus: " << msg.getCode() << " - " << msg.getStatus().getVelocity() << " - " << msg.getMsg() << endl;
             }
 
             if(strcmp(msg.getMsg(), "location") == 0){
                 cout << "Add on singleton: " << endl;
                 MysStatusManager* status = MysStatusManager::GetInstance();
                 status->addUAV();
+                cout << "MensagemStatus: " << msg.getCode() << " - " << msg.getStatus().getLocationX() << "|" << msg.getStatus().getLocationY() << "|" << msg.getStatus().getLocationZ() << " - " << msg.getMsg() << endl;
             }
 
             if(!strcmp(msg.getMsg(), "exit")){
