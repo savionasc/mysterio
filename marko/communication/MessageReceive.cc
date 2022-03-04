@@ -84,7 +84,7 @@ public:
                 t.addTask(gotopos);
                 msg.setTask(t.getTaskByIndex(u, t.getNumTasks(u)-1));
                 MessageSender msgSender;
-                msgSender.enviarTarefa(u.getIdSocket(), msg);
+                msgSender.enviarTarefa(u.getNetworkConfigurations().getIdSocket(), msg);
 
                 //task.setType(FLY_AROUND);
                 cout << "SUBSTITUIR UAV[" << task.getUAV().getID() << "] type: " << task.getType() << endl;
@@ -98,7 +98,7 @@ public:
                 msg.setDestination(u.getID());
                 msg.setMsg(conteudo);
                 msg.setTask(t.getTaskByIndex(u, t.getNumTasks(u)-1));
-                msgSender.enviarTarefa(u.getIdSocket(), msg);
+                msgSender.enviarTarefa(u.getNetworkConfigurations().getIdSocket(), msg);
             }else if(msg.getCode() == SUBORDINATE_SUBTASK){
                 Coordinate targetPosition(msg.getCoord());
                 UAV uav = ms->getUAV(msg.getDestination());
@@ -112,7 +112,7 @@ public:
                 msg.setTask(t.getTaskByIndex(uav, t.getNumTasks(uav)-1));
                 MessageSender msgSender;
                 UAV uavLeader = ms->getUAV(msg.getSource());
-                msgSender.enviarTarefa(uavLeader.getIdSocket(), msg);
+                msgSender.enviarTarefa(uavLeader.getNetworkConfigurations().getIdSocket(), msg);
             }
             //t.setTask(msg.getTask());
         }else if(typeMSG == TASK_COMPLETED_MESSAGE){

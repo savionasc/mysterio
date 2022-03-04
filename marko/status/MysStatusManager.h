@@ -75,7 +75,7 @@ public:
     }
 
     int getIDSocket(int idUAV){
-        return this->pegarUAV(idUAV).getIdSocket();
+        return this->pegarUAV(idUAV).getNetworkConfigurations().getIdSocket();
     }
 
     void setUAV(UAV u){
