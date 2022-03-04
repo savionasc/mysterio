@@ -29,11 +29,13 @@ public:
         }
         MysStatusManager *ms;
         UAV u(ms->getSize());
-        u.setIdSocket(idSocket);
+        NetworkConfigurations ntc;
+        ntc.setIdSocket(idSocket);
+        u.setNetworkConfigurations(ntc);
         ms->addUAV(u);
         std::cout << "Connected with UAV[" << u.getID() << "]" << std::endl;
         thread conectar(UAVRegistry(), serverSocket);
-        thread receber(MessageReceive(), u.getIdSocket());
+        thread receber(MessageReceive(), u.getNetworkConfigurations().getIdSocket());
         receber.join();
         return true;
     }
