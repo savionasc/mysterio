@@ -2,6 +2,8 @@
 #define MYSTERIO_SRC_UTILS_UAV_H_
 
 #include "../mission/Competence.h"
+#include "../status/UAVStatus.h"
+#include "HardwareInformation.h"
 
 //#include "../communication/Communicable.h"
 
@@ -35,6 +37,22 @@ public:
     virtual int getFlightTime();
     virtual void setFlightTime(int flightTime);
 
+    UAVStatus getStatus() {
+        return status;
+    }
+
+    virtual void setStatus(UAVStatus status) {
+        this->status = status;
+    }
+
+    HardwareInformation getHardwareInformation() {
+        return hardwareInformation;
+    }
+
+    void setHardwareInformation(HardwareInformation hardwareInformation) {
+        this->hardwareInformation = hardwareInformation;
+    }
+
 protected:
     int idUAV;
     int idSocket;
@@ -47,6 +65,10 @@ protected:
     int flightTime;
 
     Competence competence;
+
+    UAVStatus status;
+
+    HardwareInformation hardwareInformation;
     //bateria
     //disponivel
 };

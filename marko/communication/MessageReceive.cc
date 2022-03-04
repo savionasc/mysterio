@@ -67,11 +67,7 @@ public:
             TaskMessage msg;
             memset(&msg, 0, sizeof(msg));
             recv(socket, (TaskMessage*)&msg, sizeof(msg), 0);
-            //cout << "<TM>Received Task - Code Message: " << msg.getCode();
-            //cout << " Status: " << msg.getTask().getStatus() << " Task ID: " << msg.getTask().getID() << endl;
-            //cout << " Coordinate: " << msg.getCoord().getX() << "|" << msg.getCoord().getY() << "|" << msg.getCoord().getZ() << endl;
-            //cout << "Finished? " << (msg.getTask().isComplete() == true ? "True" : "False") << endl;
-            //cout << "UAV " << msg.getTask().getUAV().getID() << endl;
+
             TaskManager t;
             MysStatusManager *ms;
             if(msg.getCode() == TASK_EMERGENCY_BATTERY_LOW){
@@ -124,6 +120,8 @@ public:
             recv(socket, (Message*)&msg, sizeof(msg), 0);
             cout << "[U" << msg.getDestination() << "] Task Finished, code message: " << msg.getCode() << endl;
         }
+
+
         return true;
     }
 };
