@@ -1,7 +1,7 @@
 #include "../scenarios/Example1Communication.h"
 #include <iostream>
 #include "../communication/MysCommunication.h"
-#include "../database/RepositoryMySQL.h"
+#include "../../src/database/RepositoryMySQL.h"
 #include "../../src/mission/MissionPlanner.h"
 #include "../../src/taskmanager/TaskManager.h"
 #include "../communication/UAVRegistry.cc"

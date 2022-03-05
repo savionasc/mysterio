@@ -1,4 +1,5 @@
-#include "RepositoryMySQL.h"
+#include "../../src/database/RepositoryMySQL.h"
+
 #include "../../src/status/UAVStatus.h"
 #include <ctime>
 #include <iostream>
