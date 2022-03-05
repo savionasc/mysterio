@@ -45,11 +45,11 @@ void MysCommunication::sendMessageToUAV(int idUAV, Message msg){
         cout << "BROADCAST" << endl;
         for (int i = 0; i <= ms->getSize(); i++){
             msg.setDestination(i);
-            thread enviar(MessageSender(), ms->getUAV(i).getIdSocket(), msg);
+            thread enviar(MessageSender(), ms->getUAV(i).getNetworkConfigurations().getIdSocket(), msg);
             enviar.detach();
         }
     }else{ //unicast
-        thread enviar(MessageSender(), ms->getUAV(idUAV).getIdSocket(), msg);
+        thread enviar(MessageSender(), ms->getUAV(idUAV).getNetworkConfigurations().getIdSocket(), msg);
         enviar.join();
     }
 }

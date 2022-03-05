@@ -48,7 +48,7 @@ void listenSocket(){ //Here starts the server communication
         taskMessage.setTask(t.getTaskByIndex(u, t.getNumTasks(u)-1));
 
         u = ms->getUAV(0);
-        comm.sendTaskMessageToUAV(u.getIdSocket(), taskMessage);
+        comm.sendTaskMessageToUAV(u.getNetworkConfigurations().getIdSocket(), taskMessage);
 
         //Antes desse loop é onde atribui tarefas previamente
 
@@ -99,7 +99,7 @@ void listenSocket(){ //Here starts the server communication
                     //taskMessage.setCoord(t.getTaskByIndex(u, t.getNumTasks(u)-1).getTarget());
                     taskMessage.setTask(t.getTaskByIndex(u, t.getNumTasks(u)-1));
 
-                    comm.sendTaskMessageToUAV(ms->getUAV(u.getID()).getIdSocket(), taskMessage);
+                    comm.sendTaskMessageToUAV(ms->getUAV(u.getID()).getNetworkConfigurations().getIdSocket(), taskMessage);
                 }
             }else if(!strcmp(msg.getMsg(), "quarteirao")){ //take off
                 for (int i = 0; i < ms->getSize(); i++) {
@@ -116,7 +116,7 @@ void listenSocket(){ //Here starts the server communication
                     TaskMessage taskMessage(msg.getMsg(), TASK_MESSAGE);
                     //taskMessage.setCoord(t.getTaskByIndex(u, t.getNumTasks(u)-1).getTarget());
                     taskMessage.setTask(t.getTaskByIndex(u, t.getNumTasks(u)-1));
-                    comm.sendTaskMessageToUAV(ms->getUAV(u.getID()).getIdSocket(), taskMessage);
+                    comm.sendTaskMessageToUAV(ms->getUAV(u.getID()).getNetworkConfigurations().getIdSocket(), taskMessage);
 
                 }
             }else if(!strcmp(msg.getMsg(), "carro")){
@@ -134,7 +134,7 @@ void listenSocket(){ //Here starts the server communication
                 //taskMessage.setCoord(t.getTaskByIndex(u, t.getNumTasks(u)-1).getTarget());
                 taskMessage.setTask(t.getTaskByIndex(u, t.getNumTasks(u)-1));
 
-                comm.sendTaskMessageToUAV(ms->getUAV(u.getID()).getIdSocket(), taskMessage);
+                comm.sendTaskMessageToUAV(ms->getUAV(u.getID()).getNetworkConfigurations().getIdSocket(), taskMessage);
             }
             comm.sendMessageToUAV(id, msg);
         }

@@ -1,13 +1,13 @@
 #ifndef MYSTERIO_OMNET_STATUS_MYSSTATUSMANAGER_H_
 #define MYSTERIO_OMNET_STATUS_MYSSTATUSMANAGER_H_
 #include "../../src/communication/Communicable.h"
-#include "../database/RepositoryMySQL.h"
 #include <iostream>
 #include <map>
 #include <vector>
 #include <thread>
 #include <mutex>
 #include "../../src/communication/StatusMessage.h"
+#include "../../src/database/RepositoryMySQL.h"
 #include "../../src/status/StatusManager.h"
 
 using namespace std;
@@ -75,7 +75,7 @@ public:
     }
 
     int getIDSocket(int idUAV){
-        return this->pegarUAV(idUAV).getIdSocket();
+        return this->pegarUAV(idUAV).getNetworkConfigurations().getIdSocket();
     }
 
     void setUAV(UAV u){

@@ -13,8 +13,8 @@ MysStatusManager.o: status/MysStatusManager.cc status/MysStatusManager.h ../src/
 	g++ -c status/MysStatusManager.cc status/MysStatusManager.h ../src/status/StatusManager.h
 MissionPlanner.o: ../src/mission/MissionPlanner.cc ../src/mission/MissionPlanner.h
 	g++ -c ../src/mission/MissionPlanner.cc ../src/mission/MissionPlanner.h
-RepositoryMySQL.o: database/RepositoryMySQL.cc database/RepositoryMySQL.h ../src/utils/Coordinate.h
-	g++ -c database/RepositoryMySQL.cc database/RepositoryMySQL.h ../src/utils/Coordinate.h
+RepositoryMySQL.o: ../src/database/RepositoryMySQL.cc ../src/database/RepositoryMySQL.h ../src/utils/Coordinate.h
+	g++ -c ../src/database/RepositoryMySQL.cc ../src/database/RepositoryMySQL.h ../src/utils/Coordinate.h
 UAV.o: ../src/utils/UAV.h ../src/utils/UAV.cc
 	g++ -c ../src/utils/UAV.h ../src/utils/UAV.cc
 Coordinate.o:  ../src/utils/Coordinate.h

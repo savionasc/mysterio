@@ -65,9 +65,13 @@ void UAVMobility::setTargetPosition() {
                 base[uav.getID()][task].setComplete();
 
                 //enviando mensagem de finalizada
-                this->uav.setIdSocket(uavs[uav.getID()].getSocketCode());
+
+
+                NetworkConfigurations ntc;
+                ntc.setIdSocket(uavs[uav.getID()].getSocketCode());
+                this->uav.setNetworkConfigurations(ntc);
                 UAVMysCommunication u;
-                u.setSocketCode(this->uav.getIdSocket());
+                u.setSocketCode(this->uav.getNetworkConfigurations().getIdSocket());
                 u.setSelfID(this->uav.getID());
                 TaskMessage msg;
                 msg.setCode(273);
@@ -83,7 +87,7 @@ void UAVMobility::setTargetPosition() {
             }
         }else{
             UAVMysCommunication u;
-            u.setSocketCode(this->uav.getIdSocket());
+            u.setSocketCode(this->uav.getNetworkConfigurations().getIdSocket());
             u.setSelfID(this->uav.getID());
             Message msg;
             msg.setCode(123);

@@ -22,7 +22,9 @@ class UAVMessageReceive {
         virtual ~UAVMessageReceive(){}
         void operator()(int param, int param2, int param3){
             this->uav.setID(param2);
-            this->uav.setIdSocket(param3);
+            NetworkConfigurations ntc = this->uav.getNetworkConfigurations();
+            ntc.setIdSocket(param3);
+            this->uav.setNetworkConfigurations(ntc);
             while(esperarMensagem(param)){ }
         }
 
@@ -55,7 +57,7 @@ class UAVMessageReceive {
                     Coord coor = position[this->uav.getID()];
 
                     UAVMysCommunication u;
-                    u.setSocketCode(this->uav.getIdSocket());
+                    u.setSocketCode(this->uav.getNetworkConfigurations().getIdSocket());
                     u.setSelfID(this->uav.getID());
 
                     StatusMessage m(msg.getMsg(), LOCATION_STATUS_RESPONSE, this->uav.getID(), -1);   //MUDAR AQUI???
@@ -79,7 +81,7 @@ class UAVMessageReceive {
                     double vel = velocidade[this->uav.getID()];
 
                     UAVMysCommunication u;
-                    u.setSocketCode(this->uav.getIdSocket());
+                    u.setSocketCode(this->uav.getNetworkConfigurations().getIdSocket());
                     u.setSelfID(this->uav.getID());
 
                     StatusMessage m(msg.getMsg(), VELOCITY_STATUS_RESPONSE, this->uav.getID(), -1); //MUDAR AQUI???
@@ -93,7 +95,7 @@ class UAVMessageReceive {
                     std::cout << " Battery status " << std::endl;
 
                     UAVMysCommunication u;
-                    u.setSocketCode(this->uav.getIdSocket());
+                    u.setSocketCode(this->uav.getNetworkConfigurations().getIdSocket());
                     u.setSelfID(this->uav.getID());
 
                     char snd[150];
@@ -107,7 +109,7 @@ class UAVMessageReceive {
                     std::cout << " Flight Time Status " << std::endl;
 
                     UAVMysCommunication u;
-                    u.setSocketCode(this->uav.getIdSocket());
+                    u.setSocketCode(this->uav.getNetworkConfigurations().getIdSocket());
                     u.setSelfID(this->uav.getID());
 
                     char snd[150];
