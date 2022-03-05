@@ -29,7 +29,7 @@ public:
         }
         MysStatusManager *ms;
         UAV u(ms->getSize());
-        NetworkConfigurations ntc = u.getNetworkConfigurations();
+        NetworkConfigurations ntc;
         ntc.setIdSocket(idSocket);
         u.setNetworkConfigurations(ntc);
         ms->addUAV(u);
