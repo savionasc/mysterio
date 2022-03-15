@@ -19,7 +19,7 @@ network MysterioCommunication2 {
             @display("p=100,50");
         }
         
-        host[numHosts]: ModuloComunicacao2 {    
+        UAV[numHosts]: ModuloComunicacao2 {    
             @display("i=misc/node_vs");
             @display("t=UAV");
         }
@@ -32,13 +32,13 @@ network MysterioCommunication2 {
         
     //connections allowunconnected:
     connections:
-        host[0].out++ --> {  delay = 100ms; } --> sheep.in++;
-        host[0].out++ --> {  delay = 100ms; } --> host[1].in++;
-        host[0].in++ <-- {  delay = 100ms; } <-- host[1].out++;
-        host[0].out++ --> {  delay = 100ms; } --> host[2].in++;
-        host[0].in++ <-- {  delay = 100ms; } <-- host[2].out++;
-        host[0].out++ --> {  delay = 100ms; } --> host[3].in++;
-        host[0].in++ <-- {  delay = 100ms; } <-- host[3].out++;
-        host[0].out++ --> {  delay = 100ms; } --> host[4].in++;
-        host[0].in++ <-- {  delay = 100ms; } <-- host[4].out++;
+        UAV[0].out++ --> {  delay = 100ms; } --> sheep.in++;
+        UAV[0].out++ --> {  delay = 100ms; } --> UAV[1].in++;
+        UAV[0].in++ <-- {  delay = 100ms; } <-- UAV[1].out++;
+        UAV[0].out++ --> {  delay = 100ms; } --> UAV[2].in++;
+        UAV[0].in++ <-- {  delay = 100ms; } <-- UAV[2].out++;
+        UAV[0].out++ --> {  delay = 100ms; } --> UAV[3].in++;
+        UAV[0].in++ <-- {  delay = 100ms; } <-- UAV[3].out++;
+        UAV[0].out++ --> {  delay = 100ms; } --> UAV[4].in++;
+        UAV[0].in++ <-- {  delay = 100ms; } <-- UAV[4].out++;
 }
