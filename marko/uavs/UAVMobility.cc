@@ -3,8 +3,8 @@
 #include <queue>
 
 #include "../communication/UAVMysCommunication.h"
-#include "../scenarios/Example1Communication.h"
 #include "../../src/mission/DependentTask.h"
+#include "../scenarios/ExampleCommunication.h"
 #include "../sheep/SheepMobility.h"
 #include "UAVMessage_m.h"
 

@@ -10,7 +10,7 @@ using namespace std;
 
 namespace inet {
 
-class ModuloComunicacao2 : public cSimpleModule {
+class ModuloComunicacao : public cSimpleModule {
   public:
     enum TipoMensagem {
         SOLICITAR_LOCALIZACAO = 10,

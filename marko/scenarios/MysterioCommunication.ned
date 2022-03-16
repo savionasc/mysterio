@@ -1,13 +1,13 @@
 package mysterio.marko.scenarios;
 
 import inet.node.inet.StandardHost;
-import mysterio.marko.uavs.ModuloComunicacao2;
+import mysterio.marko.uavs.ModuloComunicacao;
 import inet.visualizer.integrated.IntegratedVisualizer;
 import inet.visualizer.integrated.IntegratedCanvasVisualizer;
 import inet.node.base.ApplicationLayerNodeBase;
 import mysterio.marko.sheep.Sheep;
 
-network MysterioCommunication2 {
+network MysterioCommunication {
     parameters:
         int numHosts;
         @display("bgb=1000,1000");
@@ -19,7 +19,7 @@ network MysterioCommunication2 {
             @display("p=100,50");
         }
         
-        UAV[numHosts]: ModuloComunicacao2 {    
+        UAV[numHosts]: ModuloComunicacao {    
             @display("i=misc/node_vs");
             @display("t=UAV");
         }
