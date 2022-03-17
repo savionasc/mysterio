@@ -23,16 +23,16 @@ network MysterioCommunication {
             @display("i=misc/node_vs");
             @display("t=UAV");
         }
-        basestation: BasestationUAVs {
+        CAR: BasestationUAVs {
             @display("p=300,420");
         }
-        sheep: Sheep {
+        SHEEP: Sheep {
             @display("p=550,220");
         }
         
     //connections allowunconnected:
     connections:
-        UAV[0].out++ --> {  delay = 100ms; } --> sheep.in++;
+        UAV[0].out++ --> {  delay = 100ms; } --> SHEEP.in++;
         UAV[0].out++ --> {  delay = 100ms; } --> UAV[1].in++;
         UAV[0].in++ <-- {  delay = 100ms; } <-- UAV[1].out++;
         UAV[0].out++ --> {  delay = 100ms; } --> UAV[2].in++;
