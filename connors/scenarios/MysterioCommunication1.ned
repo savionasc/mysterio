@@ -24,7 +24,7 @@ network MysterioCommunication1 {
             @display("p=100,50");
         }
         
-        host[numHosts]: ModuloComunicacao2 {    
+        UAV[numHosts]: ModuloComunicacao2 {    
             @display("i=misc/node_vs");
             @display("t=UAV");
         }
@@ -32,8 +32,8 @@ network MysterioCommunication1 {
             @display("p=300,420");
         }
     connections:
-        host[0].out++ --> {  delay = 100ms; } --> host[1].in++;
-        host[0].in++ <-- {  delay = 100ms; } <-- host[1].out++;
+        UAV[0].out++ --> {  delay = 100ms; } --> UAV[1].in++;
+        UAV[0].in++ <-- {  delay = 100ms; } <-- UAV[1].out++;
         //host[0].out++ --> {  delay = 100ms; } --> host[2].in++;
         //host[0].in++ <-- {  delay = 100ms; } <-- host[2].out++;
         //host[0].out++ --> {  delay = 100ms; } --> host[3].in++;
