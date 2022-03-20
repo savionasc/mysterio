@@ -2,8 +2,8 @@
 #include <iostream>
 
 #include "../communication/UAVMysCommunication.h"
-#include "../scenarios/Example1Communication.h"
 #include "../../src/mission/DependentTask.h"
+#include "../scenarios/ExampleCommunication.h"
 
 using namespace omnetpp;
 using namespace std;

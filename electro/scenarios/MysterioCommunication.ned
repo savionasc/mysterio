@@ -1,12 +1,12 @@
 package mysterio.electro.scenarios;
 
 import inet.node.inet.StandardHost;
-import mysterio.electro.uavs.example2.ModuloComunicacao2;
+import mysterio.electro.uavs.ModuloComunicacao;
 import inet.visualizer.integrated.IntegratedVisualizer;
 import inet.visualizer.integrated.IntegratedCanvasVisualizer;
 import inet.node.base.ApplicationLayerNodeBase;
 
-network MysterioCommunication2 {
+network MysterioCommunication {
     parameters:
         int numHosts;
         @display("bgb=1000,1000");
@@ -18,7 +18,7 @@ network MysterioCommunication2 {
             @display("p=100,50");
         }
         
-        UAV[numHosts]: ModuloComunicacao2 {    
+        UAV[numHosts]: ModuloComunicacao {
             @display("i=misc/node_vs");
             @display("t=UAV");
         }
@@ -33,6 +33,4 @@ network MysterioCommunication2 {
         UAV[0].in++ <-- {  delay = 100ms; } <-- UAV[2].out++;
         UAV[0].out++ --> {  delay = 100ms; } --> UAV[3].in++;
         UAV[0].in++ <-- {  delay = 100ms; } <-- UAV[3].out++;
-        //UAV[0].out++ --> {  delay = 100ms; } --> UAV[4].in++;
-        //UAV[0].in++ <-- {  delay = 100ms; } <-- UAV[4].out++;
 }
