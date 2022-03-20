@@ -28,7 +28,7 @@ network MysterioCommunication1 {
             @display("i=misc/node_vs");
             @display("t=UAV");
         }
-        basestation: BasestationUAVs {
+        CAR: BasestationUAVs {
             @display("p=300,420");
         }
     connections:
