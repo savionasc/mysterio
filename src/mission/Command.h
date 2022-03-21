@@ -48,9 +48,11 @@ public:
         }
     }
 
-private: //Add anothers attributies in this classes
+private:
+    //Add anothers attributies in this classes
     int ID;
-    char instruction[15]; //instructions like "go" or "ComebackToBaseStation"
+    //instructions like "go" or "ComebackToBaseStation"
+    char instruction[15];
 
     //Para os args,
     //Criar um toString no coordinate

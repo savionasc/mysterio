@@ -7,7 +7,8 @@
 
 //States
 #define STARTED 1
-#define COMPLETED 2 //Colocar perto de completar...
+#define COMPLETED 2
+//Colocar perto de completar...
 //Types
 #define GOTO 80
 #define COMEBACK_BASESTATION 81
@@ -20,11 +21,13 @@ class Task {
 
 public:
     Task(){}
-    Task(UAV uav, Coordinate targetPosition) { // adicionar type no construtor
+    Task(UAV uav, Coordinate targetPosition) {
+        // adicionar type no construtor
         this->uav = uav;
         this->target = targetPosition;
     }
-    Task(UAV uav, int type, Coordinate targetPosition) { // adicionar type no construtor
+    Task(UAV uav, int type, Coordinate targetPosition) {
+        // adicionar type no construtor
         this->uav = uav;
         this->type = type;
         this->target = targetPosition;
@@ -122,10 +125,13 @@ private:
     int id;
     UAV uav;
     int type;
-    Command cmd; //Criar uma lista/fila de comandos..
-    int status = 0; //status{started, completed}
+    //Criar uma lista/fila de comandos..
+    Command cmd;
+    //status{started, completed}
+    int status = 0;
     Coordinate target;
-    int repeat = 0; //TaskManager
+    //TaskManager
+    int repeat = 0;
     int waypoints;
     int priority = 0;
     Priority pri;
