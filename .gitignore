@@ -4,3 +4,4 @@
 *.vci
 *.vec
 UAVMessage_m.cc
+UAVMessage_m.h
