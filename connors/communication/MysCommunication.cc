@@ -60,12 +60,13 @@ void MysCommunication::sendTaskMessageToUAV(int idSocket, TaskMessage tmsg){
 }
 
 //status->subscribe(newUAV);?
-/*void CommunicationSocket::listenSocket(){
-    Communication::listenSocket();
-}*/
+// void CommunicationSocket::listenSocket(){
+//     Communication::listenSocket();
+// }
 
 int* MysCommunication::getActiveConnections(){
-    return nullptr;//Communication::conexoes; //conexoes;
+    //Communication::conexoes; //conexoes;
+    return nullptr;
 }
 
 void MysCommunication::ReceiveMessageFromUAV(Communicable *source, Communicable *dest, Message msg){

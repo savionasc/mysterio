@@ -45,7 +45,8 @@ void ModuloComunicacao::handleMessage(cMessage *msg){
         if(msg->getKind() == SOLICITAR_LOCALIZACAO){
             cout << "[U2U] Enviando status(localizacao) de " << selfID << " para " << mMSG->getOrigem() << endl;
             enviarMensagem(1.0, selfID, mMSG->getOrigem(), "Enviando localizacao", RESPONDER_LOCALIZACAO);
-        }else if(msg->getKind() == RESPONDER_LOCALIZACAO){ //Chegou no leader
+        }else if(msg->getKind() == RESPONDER_LOCALIZACAO){
+            //Chegou no leader
             UAVStatus s = mMSG->getStatus();
             cout << "[U" << selfID << "] Localização de [" << mMSG->getOrigem() << "]:\n   X: " << s.getLocationX() << " Y: " << s.getLocationX() << " Z: " << s.getLocationX() << endl;
             this->solicitarStatusDoUAVVizinho();
@@ -106,7 +107,8 @@ void ModuloComunicacao::handleMessage(cMessage *msg){
             case RESPONDER_TEMPOVOO:
                 s.setFlightTime(tempoVoo[selfID]);
                 break;
-            default: /*Nao identificou o tipo da mensagem*/
+            default:
+                //Nao identificou o tipo da mensagem
                 break;
         }
         mMSG->setStatus(s);
