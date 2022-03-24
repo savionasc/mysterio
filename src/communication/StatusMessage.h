@@ -34,7 +34,8 @@ public:
 private:
     UAVStatus status;
     char msg[1500];
-    short int code; //This variable must identify the request type of the message
+    //This variable must identify the request type of the message
+    short int code;
     short int source;
     short int destination;
 };

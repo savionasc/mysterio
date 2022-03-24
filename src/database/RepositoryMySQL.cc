@@ -82,7 +82,8 @@ int RepositoryMySQL::requestExecutionID(){
             //    if (mysql_num_fields(resp)>1)
             //        std::cout << "\t|";
             //}
-            std::cout << "\n";//
+            std::cout << "\n";
+            //
             while ((linhas=mysql_fetch_row(resp)) != NULL){
                 exID = std::stoi(linhas[0]);
                 //for (conta=0;conta<mysql_num_fields(resp);conta++)

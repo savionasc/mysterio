@@ -1,26 +1,24 @@
 #include "ModuloComunicacao.h"
 
 #include "../mission/GoTo.h"
-#include "../uavs/UAVMobility.h"
+#include "UAVMobility.h"
 #include <iostream>
 
-#include "../../src/communication/Message.h"
 #include "../communication/UAVMysCommunication.h"
 #include "../../src/status/UAVStatus.h"
 
 using namespace omnetpp;
 using namespace inet;
+using namespace mysterio;
 
 Define_Module(ModuloComunicacao);
 
 //shared variables
-using namespace mysterio;
-extern UAVMysCommunication uavs[NUMUAVS];
 extern Coord position[NUMUAVS];
 extern double velocidade[NUMUAVS];
 extern float bateria[NUMUAVS];
 extern double tempoVoo[NUMUAVS];
-
+extern UAVMysCommunication uavs[NUMUAVS];
 extern int UAVDestino;
 extern int UAVLeader;
 
@@ -32,12 +30,11 @@ void ModuloComunicacao::initialize(){
     if(!uavs[selfID].isConnected()){
         uavs[selfID].connectBase();
     }
-
-    solicitarStatusDoUAVVizinho();
+    bubble("INICIANDO, Iniciando!");
 }
 
 void ModuloComunicacao::handleMessage(cMessage *msg){
-    UAVMessage *mMSG = check_and_cast<UAVMessage*>(msg);
+    /*UAVMessage *mMSG = check_and    _cast<UAVMessage*>(msg);
     cout << "[U2U] Executando ação: " << msg->getFullName() << endl;
 
     if(selfID == mMSG->getDestino()){
@@ -46,38 +43,38 @@ void ModuloComunicacao::handleMessage(cMessage *msg){
             cout << "[U2U] Enviando status(localizacao) de " << selfID << " para " << mMSG->getOrigem() << endl;
             enviarMensagem(1.0, selfID, mMSG->getOrigem(), "Enviando localizacao", RESPONDER_LOCALIZACAO);
         }else if(msg->getKind() == RESPONDER_LOCALIZACAO){ //Chegou no leader
-            UAVStatus s = mMSG->getStatus();
+            DroneStatus s = mMSG->getStatus();
             cout << "[U" << selfID << "] Localização de [" << mMSG->getOrigem() << "]:\n   X: " << s.getLocationX() << " Y: " << s.getLocationX() << " Z: " << s.getLocationX() << endl;
             this->solicitarStatusDoUAVVizinho();
         }else if(msg->getKind() == SOLICITAR_VELOCIDADE){
             cout << "[U2U] Enviando status(velocidade) de " << selfID << " para " << mMSG->getOrigem() << endl;
             enviarMensagem(1.0, selfID, mMSG->getOrigem(), "Enviando velocidade", RESPONDER_VELOCIDADE);
         }else if(mMSG->getKind() == RESPONDER_VELOCIDADE){
-            UAVStatus s = mMSG->getStatus();
+            DroneStatus s = mMSG->getStatus();
             cout << "[U" << selfID << "] Velocidade de ["<< mMSG->getOrigem() << "]: " << s.getVelocity() << " m/s" << endl << endl;
             this->solicitarStatusDoUAVVizinho();
         }else if(msg->getKind() == SOLICITAR_BATERIA){
             cout << "[U2U] Enviando status(bateria) de " << selfID << " para " << mMSG->getOrigem() << endl;
             enviarMensagem(1.0, selfID, mMSG->getOrigem(), "Enviando bateria", RESPONDER_BATERIA);
         }else if(mMSG->getKind() == RESPONDER_BATERIA){
-            UAVStatus s = mMSG->getStatus();
+            DroneStatus s = mMSG->getStatus();
             cout << "[U" << selfID << "] Bateria de ["<< mMSG->getOrigem() << "]: " << s.getBattery() << " J" << endl << endl;
             this->solicitarStatusDoUAVVizinho();
         }else if(msg->getKind() == SOLICITAR_TEMPOVOO){
             cout << "[U2U] Enviando status(tempo de voo) de " << selfID << " para " << mMSG->getOrigem() << endl;
             enviarMensagem(1.0, selfID, mMSG->getOrigem(), "Enviando tempo de voo", RESPONDER_TEMPOVOO);
         }else if(mMSG->getKind() == RESPONDER_TEMPOVOO){
-            UAVStatus s = mMSG->getStatus();
+            DroneStatus s = mMSG->getStatus();
             cout << "[U" << selfID << "] Tempo de voo de ["<< mMSG->getOrigem() << "]: " << s.getFlightTime() << " s" << endl << endl;
             this->solicitarStatusDoUAVVizinho();
         }else if(mMSG->getKind() == GOTOTASK){
             cout << "Atribuindo tarefa ao drone [" << selfID << "]" << endl;
             Coordinate c(100.0, 100.0, 100.0);
-            //minhasTarefas[selfID][0].started = true;
-            //minhasTarefas[selfID][0].assignTask(selfID, c);
+            minhasTarefas[selfID].started = true;
+            minhasTarefas[selfID].setTask(c);
         }else if(mMSG->getKind() == TASKCOMPLETED){
             Coordinate currentPosition(100.0, 100.0, 100.0);
-            //cout << "Resultado da tarefa pro drone [" << selfID << "]: " << minhasTarefas[selfID][0].isComplete(currentPosition) << endl;
+            cout << "Resultado da tarefa pro drone [" << selfID << "]: " << minhasTarefas[selfID].isComplete(currentPosition) << endl;
         }
     } else {
         if(UAVDestino == -1 && selfID == UAVLeader){
@@ -92,7 +89,7 @@ void ModuloComunicacao::handleMessage(cMessage *msg){
             mMSG->setTitulo(mMSG->getFullName());
         }
 
-        UAVStatus s;
+        DroneStatus s;
         switch (msg->getKind()){
             case RESPONDER_LOCALIZACAO:
                 s.setLocation(position[selfID].x, position[selfID].y, position[selfID].z);
@@ -106,15 +103,16 @@ void ModuloComunicacao::handleMessage(cMessage *msg){
             case RESPONDER_TEMPOVOO:
                 s.setFlightTime(tempoVoo[selfID]);
                 break;
-            default: /*Nao identificou o tipo da mensagem*/
+            default: //Nao identificou o tipo da mensagem
                 break;
         }
         mMSG->setStatus(s);
         forwardMessage(mMSG);
-    }
+    }*/
 
 }
 
+//ATENÇÃO!!
 //Acho que sprintf(msgname, "msg-%d-para-%d", src, dest); mostra na tela um texto na mensagem
 //Depois usar bubble("CHEGOU, gostei do recebido!"); que ele mostra na interface gráfica que chegou a mensagem!
 
@@ -155,7 +153,7 @@ void ModuloComunicacao::enviarMensagem(double tempo, int origem, int destino, ch
 }
 
 void ModuloComunicacao::solicitarStatusDoUAVVizinho(){
-    UAVDestino = -1;
+    /*UAVDestino = -1;
     //Call in the first moments of the application to select a UAV
     if (selfID == 0) {
         do{
@@ -224,5 +222,5 @@ void ModuloComunicacao::solicitarStatusDoUAVVizinho(){
         }else{
             //no else escalonar uma mensagem para lembrar de perguntar alguma coisa...
         }
-    }
+    }*/
 }

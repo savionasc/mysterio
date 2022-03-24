@@ -9,7 +9,8 @@
 //#include "../communication/Communicable.h"
 
 //Talvez extender/implementar communicable
-class UAV{ //: public Communicable { //Aqui eu pensei que seria um exemplo simples duma instância dum uav, tipo isso
+class UAV{
+    //: public Communicable { //Aqui eu pensei que seria um exemplo simples duma instância dum uav, tipo isso
     // MOVER PARA UTILS E MUDAR PARA UAV
 public:
     UAV();
@@ -84,4 +85,5 @@ protected:
     //disponivel
 };
 
-#endif /* MYSTERIO_SRC_UTILS_UAV_H_ */
+#endif
+//MYSTERIO_SRC_UTILS_UAV_H_

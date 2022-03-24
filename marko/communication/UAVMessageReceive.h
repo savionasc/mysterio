@@ -149,12 +149,14 @@ class UAVMessageReceive {
                 //if ao receber mensagem destinada a outros UAVs
                 if(tmsg.getDestination() != this->uav.getID()){
                     msgs.push(tmsg);
-                }else{ //msg pra esse UAV
+                }else{
+                    //msg pra esse UAV
                     if(!strcmp(tmsg.getMsg(), "SUBSTITUIR")){
                         ativo[uav.getID()] = true;
                     }
                     Task x = tmsg.getTask();
-                    int i = x.getUAV().getID();//idUAV;
+                    //idUAV;
+                    int i = x.getUAV().getID();
                     base[i].push_back(x);
                     int j = base[i].size()-1;
                     base[i][j].setType(x.getType());

@@ -17,7 +17,8 @@ public:
     //EXPLICATIVO
     //Task(Command command(int *args[]))
     //TaskManager(Task, idUAV)
-    virtual void assignTask(Task t, UAV u){ ///TESTAR
+    virtual void assignTask(Task t, UAV u){
+        ///TESTAR
         t.setUAV(u);
         //t = this->addTask(t);
         TaskMessage tm;
@@ -35,7 +36,8 @@ public:
     //}
 
     //TaskManager
-    virtual void markAsComplete(Coordinate c){//Task
+    virtual void markAsComplete(Coordinate c){
+        //Task
         //Task.uav.get
         //if(c.getX() == target.getX() && c.getY() == target.getY() && c.getZ() == target.getZ())
         //    this->status = COMPLETED;
