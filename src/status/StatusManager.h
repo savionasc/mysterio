@@ -12,8 +12,10 @@ public:
     virtual double getUAVVelocity(int idUAV) = 0;
     virtual void updateUAVVelocity(double velocity, int idUAV) = 0;
     virtual int getFlightTime(int idUAV) = 0;
-    virtual int CountActiveUAVs() = 0;
+    virtual void updateFlightTime(int time, int idUAV) = 0;
     virtual float getBattery(int idUAV) = 0;
+    virtual void updateBattery(float level, int idUAV) = 0;
+    virtual int CountActiveUAVs() = 0;
 };
 
 #endif
