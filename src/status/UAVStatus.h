@@ -45,6 +45,14 @@ public:
         this->flightTime = flightTime;
     }
 
+    bool isAvailable() const {
+        return available;
+    }
+
+    void setAvailable(bool available) {
+        this->available = available;
+    }
+
 private:
     double locationX;
     double locationY;
@@ -52,6 +60,7 @@ private:
     double velocity;
     float battery;
     int flightTime;
+    bool available;
 };
 
 #endif
