@@ -15,6 +15,10 @@ public:
     virtual void updateFlightTime(int time, int idUAV) = 0;
     virtual float getBattery(int idUAV) = 0;
     virtual void updateBattery(float level, int idUAV) = 0;
+    virtual float getBattery(int idUAV) = 0;
+    virtual void updateBattery(float level, int idUAV) = 0;
+    virtual bool getAvailable(int idUAV) = 0;
+    virtual bool isAvailable(bool available, int idUAV) = 0;
     virtual int CountActiveUAVs() = 0;
 };
 
