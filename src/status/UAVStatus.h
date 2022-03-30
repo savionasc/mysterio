@@ -45,7 +45,7 @@ public:
         this->flightTime = flightTime;
     }
 
-    bool isAvailable() const {
+    bool isAvailable() {
         return available;
     }
 
