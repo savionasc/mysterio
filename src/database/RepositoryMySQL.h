@@ -25,6 +25,8 @@ public:
     void setBattery(int idUAV, float battery);
     int getFlightTime(int idUAV);
     void setFlightTime(int idUAV, int flightTime);
+    bool isAvailable(int idUAV);
+    void setAvailable(int idUAV, bool available);
 
     UAVStatus getUAVStatus(int idUAV);
 

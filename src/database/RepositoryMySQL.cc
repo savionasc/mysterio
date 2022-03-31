@@ -312,6 +312,59 @@ void RepositoryMySQL::setFlightTime(int idUAV, int flightTime){
     }
 }
 
+bool RepositoryMySQL::isAvailable(int idUAV){
+    MYSQL_RES *resp;
+    MYSQL_ROW linhas;
+    MYSQL_FIELD *campos;
+    char query[180];
+    std::string txt = "SELECT * FROM uav_available where id_uav = '" + std::to_string(idUAV)+"' ORDER BY id desc LIMIT 1;";
+    strcpy(query, txt.c_str());
+    int conta;
+    bool available;
+    if (mysql_query(&connection,query))
+        std::cout << "Erro: " << mysql_error(&connection) << std::endl;
+    else{
+        resp = mysql_store_result(&connection);
+        if (resp) {
+            campos = mysql_fetch_fields(resp);
+            for (conta=0;conta<mysql_num_fields(resp);conta++) {
+                std::cout << (campos[conta]).name;
+                if (mysql_num_fields(resp)>1)
+                    std::cout << "\t|";
+            }
+            std::cout << "\n";
+            while ((linhas=mysql_fetch_row(resp)) != NULL){
+                //Mudar aqui para bool
+                available = std::stoi(linhas[2]);
+                for (conta=0;conta<mysql_num_fields(resp);conta++)
+                    std::cout << linhas[conta] << "\t|";
+                std::cout << std::endl;
+            }
+        }
+        mysql_free_result(resp);
+    }
+
+    return available;
+}
+
+void RepositoryMySQL::setAvailable(int idUAV, bool available){
+    char snd[150];
+    std::string txt = "INSERT INTO uav_available(id_uav, available, time) values('" + std::to_string(idUAV);
+    txt += "', '" + std::to_string(available);
+    txt += "', '" + std::to_string(1) + "');";
+    strcpy(snd, txt.c_str());
+
+    int res;
+    res = mysql_query(&connection,snd);
+
+    if(this->prints){
+        if (!res)
+            std::cout << "[DB] Registro inserido " << mysql_affected_rows(&connection) << std::endl;
+        else
+            std::cout << "[DB] Erro na inserção " << mysql_errno(&connection) << " : " << mysql_error(&connection) << std::endl;
+    }
+}
+
 UAVStatus RepositoryMySQL::getUAVStatus(int idUAV){
     UAVStatus us;
     us.setBattery(getBattery(idUAV));
