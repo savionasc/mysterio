@@ -178,3 +178,18 @@ void MysStatusManager::updateBattery(float level, int idUAV){
     this->uavs[idUAV] = s; //Substituir
     this->r.setBattery(1, level);
 }
+
+void MysStatusManager::updateAvailable(bool available, int idUAV){
+    UAV u = pegarUAV(idUAV);
+    UAVStatus us = u.getStatus();
+    us.setAvailable(available);
+    u.setStatus(us);
+    this->uavs[idUAV] = u; //Substituir
+    this->r.setAvailable(idUAV, available);
+}
+
+bool MysStatusManager::isAvailable(int idUAV){
+    UAV u = pegarUAV(idUAV);
+    this->r.isAvailable(idUAV);
+    return u.getStatus().isAvailable();
+}
