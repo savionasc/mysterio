@@ -14,8 +14,7 @@ public:
     //Communication
     void ReceiveMessageFromUAV(Communicable *source, Communicable *dest, Message msg);
 
-    //Criar uma classe Conexões para guardar o ID do UAV e o Socket
-    int* getActiveConnections();
+    int* getActiveConnections(); //Criar uma classe Conexões para guardar o ID do UAV e o Socket
     //void listenSocket();
     void sendMessageToUAV(int id, Message msg);
 

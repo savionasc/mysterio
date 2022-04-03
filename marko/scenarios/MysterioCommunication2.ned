@@ -1,13 +1,13 @@
 package mysterio.marko.scenarios;
 
 import inet.node.inet.StandardHost;
-import mysterio.marko.uavs.ModuloComunicacao;
+import mysterio.marko.uavs.ModuloComunicacao2;
 import inet.visualizer.integrated.IntegratedVisualizer;
 import inet.visualizer.integrated.IntegratedCanvasVisualizer;
 import inet.node.base.ApplicationLayerNodeBase;
 import mysterio.marko.sheep.Sheep;
 
-network MysterioCommunication {
+network MysterioCommunication2 {
     parameters:
         int numHosts;
         @display("bgb=1000,1000");
@@ -19,26 +19,26 @@ network MysterioCommunication {
             @display("p=100,50");
         }
         
-        UAV[numHosts]: ModuloComunicacao {    
+        host[numHosts]: ModuloComunicacao2 {    
             @display("i=misc/node_vs");
             @display("t=UAV");
         }
-        CAR: BasestationUAVs {
+        basestation: BasestationUAVs {
             @display("p=300,420");
         }
-        SHEEP: Sheep {
+        sheep: Sheep {
             @display("p=550,220");
         }
         
     //connections allowunconnected:
     connections:
-        UAV[0].out++ --> {  delay = 100ms; } --> SHEEP.in++;
-        UAV[0].out++ --> {  delay = 100ms; } --> UAV[1].in++;
-        UAV[0].in++ <-- {  delay = 100ms; } <-- UAV[1].out++;
-        UAV[0].out++ --> {  delay = 100ms; } --> UAV[2].in++;
-        UAV[0].in++ <-- {  delay = 100ms; } <-- UAV[2].out++;
-        UAV[0].out++ --> {  delay = 100ms; } --> UAV[3].in++;
-        UAV[0].in++ <-- {  delay = 100ms; } <-- UAV[3].out++;
-        UAV[0].out++ --> {  delay = 100ms; } --> UAV[4].in++;
-        UAV[0].in++ <-- {  delay = 100ms; } <-- UAV[4].out++;
+        host[0].out++ --> {  delay = 100ms; } --> sheep.in++;
+        host[0].out++ --> {  delay = 100ms; } --> host[1].in++;
+        host[0].in++ <-- {  delay = 100ms; } <-- host[1].out++;
+        host[0].out++ --> {  delay = 100ms; } --> host[2].in++;
+        host[0].in++ <-- {  delay = 100ms; } <-- host[2].out++;
+        host[0].out++ --> {  delay = 100ms; } --> host[3].in++;
+        host[0].in++ <-- {  delay = 100ms; } <-- host[3].out++;
+        host[0].out++ --> {  delay = 100ms; } --> host[4].in++;
+        host[0].in++ <-- {  delay = 100ms; } <-- host[4].out++;
 }

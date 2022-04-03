@@ -41,16 +41,14 @@ int MysCommunication::configureSocketServer(int portServer){
 
 void MysCommunication::sendMessageToUAV(int idUAV, Message msg){
     MysStatusManager *ms;
-    if(idUAV == -1){
-        //Broadcast
+    if(idUAV == -1){ //Broadcast
         cout << "BROADCAST" << endl;
         for (int i = 0; i <= ms->getSize(); i++){
             msg.setDestination(i);
             thread enviar(MessageSender(), ms->getUAV(i).getNetworkConfigurations().getIdSocket(), msg);
             enviar.detach();
         }
-    }else{
-        //unicast
+    }else{ //unicast
         thread enviar(MessageSender(), ms->getUAV(idUAV).getNetworkConfigurations().getIdSocket(), msg);
         enviar.join();
     }
@@ -67,8 +65,7 @@ void MysCommunication::sendTaskMessageToUAV(int idSocket, TaskMessage tmsg){
 }*/
 
 int* MysCommunication::getActiveConnections(){
-    //Communication::conexoes; //conexoes;
-    return nullptr;
+    return nullptr;//Communication::conexoes; //conexoes;
 }
 
 void MysCommunication::ReceiveMessageFromUAV(Communicable *source, Communicable *dest, Message msg){

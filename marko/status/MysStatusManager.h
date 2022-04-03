@@ -35,14 +35,19 @@ public:
     //Status
     virtual int CountActiveUAVs();
 
-    virtual Coordinate getUAVLocation(int idUAV);  //rescues from the repository
-    virtual void updateUAVLocation(Coordinate coord, int idUAV); //send to repository
-    virtual double getUAVVelocity(int idUAV);      //rescues from the repository
-    virtual void updateUAVVelocity(double velocity, int idUAV);  //send to repository
-    virtual int getFlightTime(int idUAV);          //rescues from the repository
-    virtual void updateFlightTime(int time, int idUAV);          //send to repository
-    virtual float getBattery(int idUAV);           //rescues from the repository
-    virtual void updateBattery(float level, int idUAV);          //send to repository
+    //rescues from the repository
+    virtual Coordinate getUAVLocation(int idUAV);
+    virtual double getUAVVelocity(int idUAV);
+    virtual int getFlightTime(int idUAV);
+    virtual float getBattery(int idUAV);
+    virtual bool isAvailable(int idUAV);
+
+    //send to repository
+    virtual void updateUAVLocation(Coordinate coord, int idUAV);
+    virtual void updateUAVVelocity(double velocity, int idUAV);
+    virtual void updateFlightTime(int time, int idUAV);
+    virtual void updateBattery(float level, int idUAV);
+    virtual void updateAvailable(bool available, int idUAV);
 
     static MysStatusManager *GetInstance();
 
