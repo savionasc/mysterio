@@ -3,6 +3,7 @@
 
 #include "Task.h"
 #include "../utils/Utils.h"
+#include "../../marko/status/MysStatusManager.h"
 #include <iostream>
 #include <vector>
 #include <thread>
@@ -74,6 +75,29 @@ public:
     std::vector<Task> taskList(UAV u) const{
         return tasks[u.getID()];
     }
+
+//    void assignAllTasks(){
+//        char assuntoMSG[10] = "New Task!";
+//
+//        for (int itUAV = 0; itUAV < NUMUAVS; itUAV++) {
+//            MysStatusManager *ms;
+//
+//            UAV u = ms->getUAV(itUAV);
+//
+//            int codeMessage = TASK_MESSAGE;
+//            for (int itTask = 0; itTask < this->tasks[itUAV].size(); itTask++) {
+//                //Enviando tarefa
+//                TaskMessage taskMessage(assuntoMSG, TASK_MESSAGE);
+//                //taskMessage.setTask(t.getTaskByIndex(u, t.getNumTasks(u)-1));
+//                taskMessage.setTask(this->getTaskByIndex(u, itTask));
+//
+//                comm.sendTaskMessageToUAV(u.getNetworkConfigurations().getIdSocket(), taskMessage);
+//                cout << "ID of assigned task: " << itTask << endl;
+//                cout << "ID of UAV: " << u.getID() << endl;
+//                cout << "Number of uav tasks: " << t.getNumTasks(u) << endl;
+//            }
+//        }
+//    }
 
 };
 #endif
