@@ -1,4 +1,4 @@
-#include "../scenarios/Example1Communication.h"
+#include "../scenarios/ExampleCommunication.h"
 #include <iostream>
 #include "../communication/MysCommunication.h"
 #include "../../src/database/RepositoryMySQL.h"
