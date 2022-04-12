@@ -6,7 +6,7 @@ typedef struct message_t {
     uint32_t idMessage;
     uint32_t typeMessage;
     uint32_t idUAV;
-    float speed;
+    float velocity;
     float battery;
     float location_x;
     float location_y;

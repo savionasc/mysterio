@@ -30,6 +30,13 @@ public:
         cout << "Recebido " << stmsg.typeMessage << endl;
         if(stmsg.typeMessage == STRUCTSTATUS){
             cout << "Mensagem instancia 4: " << stmsg.typeMessage << endl;
+            if(stmsg.typeMessage == 11){
+                cout << "location: " << stmsg.location_x << endl;
+            }else if(stmsg.typeMessage == 12){
+                cout << "velocity: " << stmsg.velocity << endl;
+            }else if(stmsg.typeMessage == 13){
+                cout << "battery: " << stmsg.battery << endl;
+            }
         }/*else if(typeMSG == STATUS_MESSAGE){
             StatusMessage msg;
             memset(&msg, 0, sizeof(msg));

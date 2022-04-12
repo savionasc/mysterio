@@ -75,7 +75,13 @@ void listenSocket(){ //Here starts the server communication
                 message *a = (message*) buff;
                 a->idMessage = 3;
                 a->typeMessage = typeMSG;
-                a->speed  = 356.789;
+                if(typeMSG == 11){
+                    a->location_x  = 123;
+                }else if(typeMSG == 12){
+                    a->velocity  = 356.789;
+                }else if(typeMSG == 13){
+                    a->battery = 32.1;
+                }
 		        comm.sendMessagestkToUAV(0, a);
                 //sendMsg(csock, a, sizeof(message));
             }
