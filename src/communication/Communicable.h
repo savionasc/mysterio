@@ -8,7 +8,7 @@
 // deve ser implementado em todos os objetos comunicaveis (Componentes ou UAVs)
 //This interface is important to create Communicables classes
 //Communication Receive?
-class Communicable { //Abstract Class?
+class Communicable {
 public:
     virtual void onMessageReceive(Message msg){ }
 
