@@ -36,9 +36,6 @@ public:
     }
 
     bool enviarmsgstruct(int idUAVSocket, message msg){
-        //int codeMessage = TASK_MESSAGE;
-        //send(idUAVSocket, (int*)&codeMessage, sizeof(codeMessage), 0);
-        //send(idUAVSocket, (message*)&message, sizeof(msg));
         send(idUAVSocket, (message*)&msg, sizeof(msg), 0);
     }
 };
