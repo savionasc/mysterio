@@ -25,10 +25,10 @@ class UAVMessageReceive {
             NetworkConfigurations ntc = this->uav.getNetworkConfigurations();
             ntc.setIdSocket(param3);
             this->uav.setNetworkConfigurations(ntc);
-            while(esperarMensagem(param)){ }
+            while(waitMessage(param)){ }
         }
 
-        bool esperarMensagem(int socket){
+        bool waitMessage(int socket){
             int typeMSG;
             memset(&typeMSG, 0, sizeof(typeMSG));
             recv(socket, (int*)&typeMSG, sizeof(typeMSG), 0);
