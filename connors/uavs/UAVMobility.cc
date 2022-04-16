@@ -18,7 +18,7 @@ bool ativo[NUMUAVS];
 int itera[NUMUAVS];
 std::vector<Task> base[NUMUAVS];
 UAVMysCommunication uavs[NUMUAVS];
-int pular = 0; //this variable forces terminate current "task" of uav
+int step = 0; //this variable forces terminate current "task" of uav
 //1 - Tarefa: decolar (idUAV, altura)
 //2 - Tarefa: goto (idUAV, positionTarget)
 //3 - Tarefa: dar uma volta sobre (idUAV, positionTarget, distanciaSobre)
@@ -110,7 +110,7 @@ void UAVMobility::setTargetPosition() {
 }
 
 void UAVMobility::move() {
-    if(pular == 1)
+    if(step == 1)
         this->stop();
     LineSegmentsMobilityBase::move();
     raiseErrorIfOutside();
@@ -205,5 +205,5 @@ void UAVMobility::stop(){ //Finaliza a atividade no Omnet
     nextMoveIsWait = true;
     nextChange = simTime() + 0.1;
     cout << "step" << endl;
-    pular++;
+    step++;
 }

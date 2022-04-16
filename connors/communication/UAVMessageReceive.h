@@ -6,7 +6,7 @@
 
 using namespace std;
 
-extern int pular;
+extern int step;
 namespace mysterio {
 
 enum codes{
@@ -175,8 +175,8 @@ class UAVMessageReceive {
                     }
                 }else if(!strcmp(msg.getMsg(), "dar-volta")){
                 }else if(!strcmp(msg.getMsg(), "retornar-base")){
-                }else if(!strcmp(msg.getMsg(), "next")){
-                    pular = 1;
+                }else if(!strcmp(msg.getMsg(), "nextStep")){
+                    step = 1;
                 }else if(!strcmp(msg.getMsg(), "goto0")){
                 }else if(!strcmp(msg.getMsg(), "goto1")){
                 }else{
