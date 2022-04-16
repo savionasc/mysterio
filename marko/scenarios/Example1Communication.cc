@@ -1,5 +1,4 @@
-#include "ExampleCommunication.h"
-
+#include "../scenarios/Example1Communication.h"
 #include <iostream>
 #include "../communication/MysCommunication.h"
 #include "../../src/database/RepositoryMySQL.h"
@@ -156,6 +155,11 @@ void assignPreprogrammedTasks(int n, MysStatusManager *ms, MysCommunication comm
 
     TaskManager t;
     t.addTask(findsheep);
+
+    //MissionPlanner *mp;
+    //mp->assignAllTasks();
+
+    //Enviando para os UAVs
 
     char assuntoMSG[10] = "New Task!";
 

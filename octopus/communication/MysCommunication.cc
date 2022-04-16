@@ -1,6 +1,5 @@
 #include "MysCommunication.h"
 
-//#include <socket>
 #include "UAVRegistry.cc"
 #include "../status/MysStatusManager.h"
 #include <thread>
@@ -41,14 +40,16 @@ int MysCommunication::configureSocketServer(int portServer){
 
 void MysCommunication::sendMessageToUAV(int idUAV, Message msg){
     MysStatusManager *ms;
-    if(idUAV == -1){ //Broadcast
+    //Broadcast
+    if(idUAV == -1){
         cout << "BROADCAST" << endl;
         for (int i = 0; i <= ms->getSize(); i++){
             msg.setDestination(i);
             thread enviar(MessageSender(), ms->getUAV(i).getNetworkConfigurations().getIdSocket(), msg);
             enviar.detach();
         }
-    }else{ //unicast
+    }else{
+        //unicast
         thread enviar(MessageSender(), ms->getUAV(idUAV).getNetworkConfigurations().getIdSocket(), msg);
         enviar.join();
     }
@@ -59,21 +60,21 @@ void MysCommunication::sendTaskMessageToUAV(int idSocket, TaskMessage tmsg){
     enviar.detach();
 }
 
-//status->subscribe(newUAV);?
-/*void CommunicationSocket::listenSocket(){
-    Communication::listenSocket();
-}*/
-
 int* MysCommunication::getActiveConnections(){
-    return nullptr;//Communication::conexoes; //conexoes;
+    //Communication::conexoes; //conexoes;
+    return nullptr;
+}
+
+void MysCommunication::sendMessagestkToUAV(int idUAV, message *msg){
+    MysStatusManager *ms;
+    thread enviarmsgstruct(MessageSender(), ms->getUAV(idUAV).getNetworkConfigurations().getIdSocket(), msg);
+    enviarmsgstruct.join();
 }
 
 void MysCommunication::ReceiveMessageFromUAV(Communicable *source, Communicable *dest, Message msg){
     getActiveConnections();
     if(msg.getCode() == 11)
         dest->onMessageReceive(msg);
-
-    //SpecificClass* s = dynamic_cast<SpecificClass*>(dest);
 }
 
 thread MysCommunication::listenForNewConnections(){
