@@ -6,6 +6,7 @@
 #include "../../src/communication/Communicable.h"
 #include "../../src/communication/Message.h"
 #include "../status/MysStatusManager.h"
+#include "messagestruct.h"
 
 // componente de comunicação do framework com os drones
 class MysCommunication : public Communication {
@@ -14,7 +15,8 @@ public:
     //Communication
     void ReceiveMessageFromUAV(Communicable *source, Communicable *dest, Message msg);
 
-    int* getActiveConnections(); //Criar uma classe Conexões para guardar o ID do UAV e o Socket
+    int* getActiveConnections();
+    //Criar uma classe Conexões para guardar o ID do UAV e o Socket
     //void listenSocket();
     void sendMessageToUAV(int id, Message msg);
 
@@ -28,6 +30,7 @@ public:
     int configureSocketServer(int port);
 
     void sendTaskMessageToUAV(int idSocket, TaskMessage tmsg);
+    void sendMessagestkToUAV(int idUAV, message *msg);
 
     thread listenForNewConnections();
 
