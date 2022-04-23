@@ -9,13 +9,15 @@
 
 using namespace std;
 
-void listenSocket(){ //Here starts the server communication
+//Here starts the server communication
+void listenSocket(){
 
     int numeroDeUAVsEsperados = 2;
     MysStatusManager *ms;
 
     MysCommunication comm;
-    int serverSocket = comm.configureSocketServer(1111); //Port number
+    //Port number
+    int serverSocket = comm.configureSocketServer(1111);
     if(serverSocket > 0){
         thread conectar(UAVRegistry(), serverSocket);
         std::cout << "Waiting for a UAV to connect..." << std::endl;
@@ -34,7 +36,8 @@ void listenSocket(){ //Here starts the server communication
         cout << "Assigned task: Turn around the car" << endl;
         Coordinate currentP(300.0,420.0,90.0);
         UAV u(0);
-        Task gotoc(u, FLY_AROUND, currentP); // adicionar type no construtor
+        // adicionar type no construtor
+        Task gotoc(u, FLY_AROUND, currentP);
         //gotoc.setType(FLY_AROUND);
         TaskManager t;
         t.addTask(gotoc);
@@ -83,7 +86,8 @@ void listenSocket(){ //Here starts the server communication
                 }
             }
 
-            if(!strcmp(msg.getMsg(), "decolar")){ //take off
+            //take off
+            if(!strcmp(msg.getMsg(), "decolar")){
                 for (int i = 0; i < ms->getSize(); i++) {
                     Coordinate currentP(50.0,50.0,100.0);
                     UAV u(i);
@@ -101,7 +105,9 @@ void listenSocket(){ //Here starts the server communication
 
                     comm.sendTaskMessageToUAV(ms->getUAV(u.getID()).getNetworkConfigurations().getIdSocket(), taskMessage);
                 }
-            }else if(!strcmp(msg.getMsg(), "quarteirao")){ //take off
+            }
+            //take off
+            else if(!strcmp(msg.getMsg(), "quarteirao")){
                 for (int i = 0; i < ms->getSize(); i++) {
                     Coordinate currentP(500.0,500.0,400.0);
                     UAV u(i);
@@ -139,7 +145,9 @@ void listenSocket(){ //Here starts the server communication
             comm.sendMessageToUAV(id, msg);
         }
         conectar.join();
-    }else{ //when it fails enter here
+    }
+    //when it fails enter here
+    else{
         switch (serverSocket) {
             case -1:
                 std::cerr << "Inaccessible ports" << std::endl;
