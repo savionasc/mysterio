@@ -10,7 +10,7 @@
 using namespace std;
 
 //Here starts the server communication
-void listenSocket(){
+void listenCommunication(){
 
     int numeroDeUAVsEsperados = 2;
     MysStatusManager *ms;
@@ -167,7 +167,7 @@ int main(int argc, char const *argv[]){
 	//This number identification will be important to set database execution
 	int numExecution = 1; 
 
-    listenSocket();
+    listenCommunication();
 
     std::cout << "Fim da execução" << std::endl;
     return 0;
