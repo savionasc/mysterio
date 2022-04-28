@@ -6,7 +6,7 @@
 
 using namespace std;
 
-extern int pular;
+extern int step;
 namespace mysterio {
 
 enum codes{
@@ -26,10 +26,10 @@ class UAVMessageReceive {
             ntc.setIdSocket(param3);
             this->uav.setNetworkConfigurations(ntc);
             //this->uav.setIdSocket(param3);
-            while(esperarMensagem(param)){ }
+            while(waitMessage(param)){ }
         }
 
-        bool esperarMensagem(int socket){
+        bool waitMessage(int socket){
             int typeMSG;
             memset(&typeMSG, 0, sizeof(typeMSG));
             recv(socket, (int*)&typeMSG, sizeof(typeMSG), 0);
@@ -162,8 +162,8 @@ class UAVMessageReceive {
                     for (int i = 0; i < base[this->uav.getID()].size(); i++) {
                         cout << "Status: " << base[0][i].getStatus() << endl;
                     }
-                }else if(!strcmp(msg.getMsg(), "next")){
-                    pular = 1;
+                }else if(!strcmp(msg.getMsg(), "nextStep")){
+                    step = 1;
                 }else if(!strcmp(msg.getMsg(), "drenar")){
                     lowbattery[uav.getID()] = 1;
                 }else{

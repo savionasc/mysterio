@@ -111,8 +111,9 @@ int MysStatusManager::CountActiveUAVs(){
     return numeroDeUAVs;
 }
 
-//Getters and updaters
-Coordinate MysStatusManager::getUAVLocation(int idUAV){ //Request?
+//Request?
+Coordinate MysStatusManager::getUAVLocation(int idUAV){
+    //Getters and updaters
     UAV u = pegarUAV(idUAV);
     UAVStatus us = u.getStatus();
     Coordinate c(us.getLocationX(), us.getLocationY(), us.getLocationZ());
@@ -123,13 +124,15 @@ Coordinate MysStatusManager::getUAVLocation(int idUAV){ //Request?
     return c;
 }
 
-void MysStatusManager::updateUAVLocation(Coordinate coord, int idUAV){ //saveUAVCurrentPosition?
+//saveUAVCurrentPosition?
+void MysStatusManager::updateUAVLocation(Coordinate coord, int idUAV){
     //Não usar aqui Essa responsabilidade é para que tipo de classe? /ok
     UAV u = pegarUAV(idUAV);
     UAVStatus us;
     us.setLocation(coord.getX(), coord.getY(), coord.getZ());
     u.setStatus(us);
-    this->uavs[idUAV] = u; //Substituir
+    //Substituir
+    this->uavs[idUAV] = u;
     this->r.saveUAVLocation(1, coord);
 }
 
@@ -144,7 +147,8 @@ void MysStatusManager::updateUAVVelocity(double velocity, int idUAV){
     UAVStatus us = u.getStatus();
     us.setVelocity(velocity);
     u.setStatus(us);
-    this->uavs[idUAV] = u; //Substituir
+    //Substituir
+    this->uavs[idUAV] = u;
     this->r.setVelocity(idUAV, velocity);
 }
 
@@ -176,7 +180,8 @@ void MysStatusManager::updateBattery(float level, int idUAV){
     UAVStatus us = u.getStatus();
     us.setBattery(level);
     u.setStatus(us);
-    this->uavs[idUAV] = u; //Substituir
+    //Substituir
+    this->uavs[idUAV] = u;
     this->r.setBattery(1, level);
 }
 
@@ -185,14 +190,14 @@ void MysStatusManager::updateAvailable(bool available, int idUAV){
     UAVStatus us = u.getStatus();
     us.setAvailable(available);
     u.setStatus(us);
-    this->uavs[idUAV] = u; //Substituir
-    //this->r.setFlightTime(idUAV, time);
+    //Substituir
+    this->uavs[idUAV] = u;
+    this->r.setAvailable(idUAV, available);
 }
 
 bool MysStatusManager::isAvailable(int idUAV){
     UAV u = pegarUAV(idUAV);
-    //this->r.getBattery(idUAV);
-    //return u.getStatus().getBattery();
-    return true;
+    this->r.isAvailable(idUAV);
+    return u.getStatus().isAvailable();
 }
 

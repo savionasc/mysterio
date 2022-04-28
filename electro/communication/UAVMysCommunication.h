@@ -40,7 +40,8 @@ public:
     void connectBase();
     void dispatchTaskMessage(TaskMessage msg);
     void dispatchStatusMessage(StatusMessage msg);
-    void dispatchMessage(Message msg); //Aqui ele deve enviar mensagem pro Communication
+    //Aqui ele deve enviar mensagem pro Communication
+    void dispatchMessage(Message msg);
     void disconnectBase();
     void reconnect();
 
