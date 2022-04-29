@@ -9,8 +9,10 @@
 #include "../../src/mission/Command.h"
 
 #include <sys/socket.h>
-#include <arpa/inet.h> //inet_addr
-#include <unistd.h>    //write
+//inet_addr
+#include <arpa/inet.h>
+//write
+#include <unistd.h>
 
 #include <stdio.h>
 #include <stdlib.h>
@@ -35,13 +37,15 @@ typedef struct message_t {
 
 void assignPreprogrammedTasks(int, MysStatusManager*, MysCommunication);
 
-void listenCommunication(){ //Here starts the server communication
+//Here starts the server communication
+void listenCommunication(){
 
     int conexoesEsperadas = 1;
     MysStatusManager *ms;
 
     MysCommunication comm;
-    int serverSocket = comm.configureSocketServer(1111); //Port number
+    //Port number
+    int serverSocket = comm.configureSocketServer(1111);
     comm.setPortServer(serverSocket);
     if(serverSocket > 0){
         thread conectar = comm.listenForNewConnections();
@@ -120,7 +124,9 @@ void listenCommunication(){ //Here starts the server communication
         }
         cout << "Join" << endl;
         conectar.join();
-    }else{ //when it fails enter here
+    }
+    //when it fails enter here
+    else{
         switch (serverSocket) {
             case -1:
                 std::cerr << "Inaccessible ports" << std::endl;
