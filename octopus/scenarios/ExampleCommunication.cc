@@ -89,38 +89,6 @@ void listenCommunication(){
 		        comm.sendMessagestkToUAV(0, a);
                 //sendMsg(csock, a, sizeof(message));
             }
-
-            /*if(!strcmp(msg.getMsg(), "decolar")){ //take off
-                for (int i = 0; i < ms->getSize(); i++) {
-                    Coordinate currentP(50.0,50.0,100.0);
-                    UAV u(i);
-                    Task gotoc(u, currentP);
-                    gotoc.setType(10);
-                    TaskManager t;
-                    t.addTask(gotoc);
-
-                    //Enviando tarefa
-                    int codeMessage = TASK_MESSAGE;
-                    TaskMessage taskMessage(msg.getMsg(), TASK_MESSAGE);
-                    taskMessage.setTask(t.getTaskByIndex(u, t.getNumTasks(u)-1));
-
-                    comm.sendTaskMessageToUAV(ms->getUAV(u.getID()).getNetworkConfigurations().getIdSocket(), taskMessage);
-                }
-            }else if(!strcmp(msg.getMsg(), "quarteirao")){ //take off
-                Coordinate currentP(500.0,500.0,400.0);
-                UAV u(id);
-                Task gotoc(u, currentP);
-                gotoc.setType(FLY_AROUND_SQUARE);
-                TaskManager t;
-                t.addTask(gotoc);
-
-                //Enviando tarefa
-                int codeMessage = TASK_MESSAGE;
-                TaskMessage taskMessage(msg.getMsg(), TASK_MESSAGE);
-                taskMessage.setTask(t.getTaskByIndex(u, t.getNumTasks(u)-1));
-                comm.sendTaskMessageToUAV(ms->getUAV(u.getID()).getNetworkConfigurations().getIdSocket(), taskMessage);
-            }*/
-            //comm.sendMessageToUAV(id, msg);
         }
         cout << "Join" << endl;
         conectar.join();
@@ -161,6 +129,6 @@ int main(int argc, char const *argv[]){
 
     listenCommunication();
 
-    std::cout << "Fim da execução" << std::endl;
+    std::cout << "End execution" << std::endl;
     return 0;
 }
