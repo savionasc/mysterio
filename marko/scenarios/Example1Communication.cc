@@ -12,7 +12,7 @@ using namespace std;
 
 void assignPreprogrammedTasks(int, MysStatusManager*, MysCommunication);
 
-void listenSocket(){ //Here starts the server communication
+void listenCommunication(){ //Here starts the server communication
 
     int numeroDeUAVsEsperados = 5;
     MysStatusManager *ms;
@@ -185,7 +185,7 @@ int main(int argc, char const *argv[]){
     int numExecution = rep.createExecutionID();
     cout << "EXECUTION ID: " << numExecution << endl;
 
-    listenSocket();
+    listenCommunication();
 
     std::cout << "Fim da execução" << std::endl;
     return 0;
