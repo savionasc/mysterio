@@ -8,7 +8,8 @@ public:
     FlyAround(UAV uav, Coordinate point, int laps=1);
     virtual ~FlyAround();
 
-    bool isComplete(); //For GoTo Task, Current Coordinate is a parameter necessary to check this
+    //For GoTo Task, Current Coordinate is a parameter necessary to check this
+    bool isComplete();
     void assignTask(UAV uav, Command command, int *args[]);
 private:
     Coordinate point;

@@ -15,7 +15,8 @@ public:
     void assignTask(UAV uav, Command command, int *args[]);
     bool started = false;
 //protected:
-    char objetivo[150]; //Definir um tipo Objetivo
+    //Definir um tipo Objetivo
+    char objective[150];
     Coordinate target;
     Coordinate initialPosition;
 };
