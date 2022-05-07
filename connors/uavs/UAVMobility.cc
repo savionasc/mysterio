@@ -201,7 +201,8 @@ void UAVMobility::executeTask(int j){
     }
 }
 
-void UAVMobility::stop(){ //Finaliza a atividade no Omnet
+void UAVMobility::stop(){
+    //Finaliza a atividade no Omnet
     nextMoveIsWait = true;
     nextChange = simTime() + 0.1;
     cout << "step" << endl;

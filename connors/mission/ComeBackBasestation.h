@@ -8,7 +8,8 @@ public:
     virtual ~ComeBackBasestation();
     bool isComplete();
     void assignTask();
-    void assignTask(UAV uav, Coordinate target); //Mudar para command em vez de void?
+    //Mudar para command em vez de void?
+    void assignTask(UAV uav, Coordinate target);
     Coordinate base;
 };
 

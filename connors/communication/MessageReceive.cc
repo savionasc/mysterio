@@ -42,8 +42,10 @@ public:
             if(!strcmp(msg.getMsg(), "exit")){
                 std::cout << "UAV has quit the session" << std::endl;
                 return false;
-            }//else if(!strcmp(msg.msg, "status")){ //Mudar isso aqui e chamar o OnMessageReceve
-            else if(msg.getCode() > 10 && msg.getCode() < 21){ //Ideia de definir tipos por intervalos
+            }
+            //else if(!strcmp(msg.msg, "status")){ //Mudar isso aqui e chamar o OnMessageReceve
+            else if(msg.getCode() > 10 && msg.getCode() < 21){
+                //Ideia de definir tipos por intervalos
                 MysStatusManager* status = MysStatusManager::GetInstance();
                 status->onDroneStatusMessageReceive(msg);
             }else {

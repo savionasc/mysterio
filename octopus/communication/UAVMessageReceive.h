@@ -25,10 +25,10 @@ class UAVMessageReceive {
             ntc.setIdSocket(param3);
             this->uav.setNetworkConfigurations(ntc);
             //this->uav.setIdSocket(param3);
-            while(esperarMensagem(param)){ }
+            while(waitMessage(param)){ }
         }
 
-        bool esperarMensagem(int socket){
+        bool waitMessage(int socket){
             int typeMSG;
             memset(&typeMSG, 0, sizeof(typeMSG));
             recv(socket, (int*)&typeMSG, sizeof(typeMSG), 0);
@@ -52,7 +52,8 @@ class UAVMessageReceive {
                     //Aí no OnMessageReceve ele trata tudo e fica mais organizado
 
 
-                }else if(!strcmp(msg.getMsg(), "location")){ //Mudar isso aqui e chamar o OnMessageReceve
+                }else if(!strcmp(msg.getMsg(), "location")){
+                    //Mudar isso aqui e chamar o OnMessageReceve
                     std::cout << "[U" << this->uav.getID() << "] Sending status " << std::endl;
                     Coord coor = position[this->uav.getID()];
 
@@ -76,7 +77,8 @@ class UAVMessageReceive {
 
                     cout << "MSG: " << m.getStatus().getLocationX() << "|" << m.getStatus().getLocationY() << "|" << m.getStatus().getLocationZ() << endl;
                     u.dispatchStatusMessage(m);
-                }else if(!strcmp(msg.getMsg(), "velocity")){ //Mudar isso aqui e chamar o OnMessageReceve
+                }else if(!strcmp(msg.getMsg(), "velocity")){
+                    //Mudar isso aqui e chamar o OnMessageReceve
                     std::cout << "[U" << this->uav.getID() << "] Sending status " << std::endl;
                     double vel = velocidade[this->uav.getID()];
 
@@ -91,7 +93,8 @@ class UAVMessageReceive {
                     m.setSource(u.getSelfID());
 
                     u.dispatchStatusMessage(m);
-                }else if(!strcmp(msg.getMsg(), "battery")){ //Mudar isso aqui e chamar o OnMessageReceve
+                }else if(!strcmp(msg.getMsg(), "battery")){
+                    //Mudar isso aqui e chamar o OnMessageReceve
                     std::cout << " Battery status " << std::endl;
 
                     UAVMysCommunication u;
@@ -105,7 +108,8 @@ class UAVMessageReceive {
                     m.getStatus().setBattery(bateria[this->uav.getID()]);
                     cout << txt << endl;
                     u.dispatchStatusMessage(m);
-                }else if(!strcmp(msg.getMsg(), "flight-time")){ //Mudar isso aqui e chamar o OnMessageReceve
+                }else if(!strcmp(msg.getMsg(), "flight-time")){
+                    //Mudar isso aqui e chamar o OnMessageReceve
                     std::cout << " Flight Time Status " << std::endl;
 
                     UAVMysCommunication u;
@@ -125,7 +129,8 @@ class UAVMessageReceive {
                 }else if(!strcmp(msg.getMsg(), "stop")){
                     ativo[msg.getDestination()] = false;
                     cout << msg.getMsg() << ":" << msg.getDestination() << endl;
-                }else if(!strcmp(msg.getMsg(), "Defined Task")){ //take off
+                }else if(!strcmp(msg.getMsg(), "Defined Task")){
+                    //take off
                     //receber a tarefa...
                 }else if(!strcmp(msg.getMsg(), "task")){
                     cout << "Current Task: " << itera[this->uav.getID()] << endl;
@@ -149,12 +154,14 @@ class UAVMessageReceive {
                 //if ao receber mensagem destinada a outros UAVs
                 if(tmsg.getDestination() != this->uav.getID()){
                     msgs.push(tmsg);
-                }else{ //msg pra esse UAV
+                }else{
+                    //msg pra esse UAV
                     if(!strcmp(tmsg.getMsg(), "SUBSTITUIR")){
                         ativo[uav.getID()] = true;
                     }
                     Task x = tmsg.getTask();
-                    int i = x.getUAV().getID();//idUAV;
+                    //idUAV;
+                    int i = x.getUAV().getID();
                     base[i].push_back(x);
                     int j = base[i].size()-1;
                     base[i][j].setType(x.getType());

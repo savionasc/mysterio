@@ -164,7 +164,8 @@ void MysStatusManager::updateFlightTime(int time, int idUAV){
     UAVStatus us = u.getStatus();
     us.setFlightTime(time);
     u.setStatus(us);
-    this->uavs[idUAV] = u; //Substituir
+    //Substituir
+    this->uavs[idUAV] = u;
     this->r.setFlightTime(idUAV, time);
 }
 
