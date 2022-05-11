@@ -43,8 +43,10 @@ public:
             if(!strcmp(msg.getMsg(), "exit")){
                 std::cout << "UAV has quit the session" << std::endl;
                 return false;
-            }//else if(!strcmp(msg.msg, "status")){ //Mudar isso aqui e chamar o OnMessageReceve
-            else if(msg.getCode() > 10 && msg.getCode() < 21){ //Ideia de definir tipos por intervalos
+            }
+            //else if(!strcmp(msg.msg, "status")){ //Mudar isso aqui e chamar o OnMessageReceve
+            //Ideia de definir tipos por intervalos
+            else if(msg.getCode() > 10 && msg.getCode() < 21){
                 MysStatusManager* status = MysStatusManager::GetInstance();
                 status->onDroneStatusMessageReceive(msg);
             }else {
@@ -75,7 +77,8 @@ public:
             TaskManager t;
             MysStatusManager *ms;
             if(msg.getCode() == TASK_EMERGENCY_BATTERY_LOW){
-                Task task = msg.getTask(); //Pegando informações não modificadas da tarefa
+                //Pegando informações não modificadas da tarefa
+                Task task = msg.getTask();
                 msg.setCode(TASK_MESSAGE);
                 UAV u = ms->getUAV(1);
                 Task gotopos(u, msg.getCoord());
