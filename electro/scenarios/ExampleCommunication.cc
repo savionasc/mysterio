@@ -10,7 +10,7 @@
 
 using namespace std;
 
-void listenSocket(){ //Here starts the server communication
+void listenCommunication(){ //Here starts the server communication
 
     int numeroDeUAVsEsperados = 4;
     MysStatusManager *ms;
@@ -60,8 +60,8 @@ void listenSocket(){ //Here starts the server communication
                 //taskMessage.setTask(t.getTaskByIndex(u, t.getNumTasks(u)-1));
                 taskMessage.setTask(t.getTaskByIndex(u, itTask));
                 comm.sendTaskMessageToUAV(u.getNetworkConfigurations().getIdSocket(), taskMessage);
-                cout << "Numero de tarefas do uav: " << t.getNumTasks(u) << endl;
-                cout << "Tarefa enviada: " << itTask << endl;
+                cout << "Number of UAV tasks: " << t.getNumTasks(u) << endl;
+                cout << "Task sended: " << itTask << endl;
                 cout << "UAV: " << u.getID() << endl;
             }
         }
@@ -191,7 +191,7 @@ int main(int argc, char const *argv[]){
 	//This number identification will be important to set database execution
 	int numExecution = 1; 
 
-    listenSocket();
+    listenCommunication();
 
     std::cout << "Fim da execução" << std::endl;
     return 0;
