@@ -25,7 +25,8 @@ extern Coord position[NUMUAVS];
 extern double velocidade[NUMUAVS];
 extern float bateria[NUMUAVS];
 extern double tempoVoo[NUMUAVS];
-extern std::vector<Task> base[NUMUAVS]; //Task
+//Tasks
+extern std::vector<Task> base[NUMUAVS];
 extern bool ativo[NUMUAVS];
 extern int itera[NUMUAVS];
 
@@ -38,7 +39,8 @@ public:
     void connectBase();
     void dispatchTaskMessage(TaskMessage msg);
     void dispatchStatusMessage(StatusMessage msg);
-    void dispatchMessage(Message msg); //Aqui ele deve enviar mensagem pro Communication
+    //Aqui ele deve enviar mensagem pro Communication
+    void dispatchMessage(Message msg);
     void disconnectBase();
     void reconnect();
 

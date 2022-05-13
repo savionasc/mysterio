@@ -188,7 +188,8 @@ void ModuloComunicacao::solicitarStatusDoUAVVizinho(){
 
 
             if (scanf("%d", &continuar) == 1) {
-                switch(continuar){ //Creating Message to communication between UAVs without our framework
+                switch(continuar){
+                    //Creating Message to communication between UAVs without our framework
                     case 1:
                         sendMSGEvt = new UAVMessage("Solicitando localizacao", SOLICITAR_LOCALIZACAO);
                         break;

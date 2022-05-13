@@ -9,8 +9,10 @@
 #include "../../src/mission/Command.h"
 
 #include <sys/socket.h>
-#include <arpa/inet.h> //inet_addr
-#include <unistd.h>    //write
+//inet_addr
+#include <arpa/inet.h>
+//write
+#include <unistd.h>
 
 #include <stdio.h>
 #include <stdlib.h>
@@ -35,13 +37,15 @@ typedef struct message_t {
 
 void assignPreprogrammedTasks(int, MysStatusManager*, MysCommunication);
 
-void listenSocket(){ //Here starts the server communication
+//Here starts the server communication
+void listenCommunication(){
 
     int conexoesEsperadas = 1;
     MysStatusManager *ms;
 
     MysCommunication comm;
-    int serverSocket = comm.configureSocketServer(1111); //Port number
+    //Port number
+    int serverSocket = comm.configureSocketServer(1111);
     comm.setPortServer(serverSocket);
     if(serverSocket > 0){
         thread conectar = comm.listenForNewConnections();
@@ -85,42 +89,12 @@ void listenSocket(){ //Here starts the server communication
 		        comm.sendMessagestkToUAV(0, a);
                 //sendMsg(csock, a, sizeof(message));
             }
-
-            /*if(!strcmp(msg.getMsg(), "decolar")){ //take off
-                for (int i = 0; i < ms->getSize(); i++) {
-                    Coordinate currentP(50.0,50.0,100.0);
-                    UAV u(i);
-                    Task gotoc(u, currentP);
-                    gotoc.setType(10);
-                    TaskManager t;
-                    t.addTask(gotoc);
-
-                    //Enviando tarefa
-                    int codeMessage = TASK_MESSAGE;
-                    TaskMessage taskMessage(msg.getMsg(), TASK_MESSAGE);
-                    taskMessage.setTask(t.getTaskByIndex(u, t.getNumTasks(u)-1));
-
-                    comm.sendTaskMessageToUAV(ms->getUAV(u.getID()).getNetworkConfigurations().getIdSocket(), taskMessage);
-                }
-            }else if(!strcmp(msg.getMsg(), "quarteirao")){ //take off
-                Coordinate currentP(500.0,500.0,400.0);
-                UAV u(id);
-                Task gotoc(u, currentP);
-                gotoc.setType(FLY_AROUND_SQUARE);
-                TaskManager t;
-                t.addTask(gotoc);
-
-                //Enviando tarefa
-                int codeMessage = TASK_MESSAGE;
-                TaskMessage taskMessage(msg.getMsg(), TASK_MESSAGE);
-                taskMessage.setTask(t.getTaskByIndex(u, t.getNumTasks(u)-1));
-                comm.sendTaskMessageToUAV(ms->getUAV(u.getID()).getNetworkConfigurations().getIdSocket(), taskMessage);
-            }*/
-            //comm.sendMessageToUAV(id, msg);
         }
         cout << "Join" << endl;
         conectar.join();
-    }else{ //when it fails enter here
+    }
+    //when it fails enter here
+    else{
         switch (serverSocket) {
             case -1:
                 std::cerr << "Inaccessible ports" << std::endl;
@@ -153,8 +127,8 @@ int main(int argc, char const *argv[]){
     int numExecution = rep.createExecutionID();
     cout << "EXECUTION ID: " << numExecution << endl;
 
-    listenSocket();
+    listenCommunication();
 
-    std::cout << "Fim da execução" << std::endl;
+    std::cout << "End execution" << std::endl;
     return 0;
 }

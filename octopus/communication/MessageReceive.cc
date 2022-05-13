@@ -15,10 +15,10 @@ using namespace std;
 class MessageReceive{
 public:
     void operator()(int param){
-        while(esperarMensagem(param)){ }
+        while(waitMessage(param)){ }
     }
 
-    bool esperarMensagem(int socket){
+    bool waitMessage(int socket){
         message stmsg;
         memset(&stmsg, 0, sizeof(stmsg));
         recv(socket, (message*)&stmsg, sizeof(stmsg), 0);

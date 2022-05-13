@@ -6,7 +6,6 @@ simple SheepMobility extends MovingMobilityBase {
     parameters:
         double initialX @unit(m) = default(uniform(constraintAreaMinX, constraintAreaMaxX));
         double initialY @unit(m) = default(uniform(constraintAreaMinY, constraintAreaMaxY));
-        //double initialZ @unit(m) = default(nanToZero(uniform(constraintAreaMinZ, constraintAreaMaxZ)));
         double initialZ @unit(m) = default(1m);
         double initialMovementHeading @unit(deg) = default(uniform(0deg, 360deg)); // initial heading
         double initialMovementElevation @unit(deg) = default(0deg); // initial elevation
