@@ -92,7 +92,8 @@ protected:
     int numeroDeUAVs;
 
 private:
-    int tempoDeFuncionamento; //do sistema
+    //do sistema
+    int tempoDeFuncionamento;
 
     //singleton
     static MysStatusManager * mpinstance_;

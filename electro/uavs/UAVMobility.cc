@@ -18,7 +18,8 @@ bool ativo[NUMUAVS];
 int itera[NUMUAVS];
 std::vector<Task> base[NUMUAVS];
 UAVMysCommunication uavs[NUMUAVS];
-int step = 0; //this variable forces terminate current "task" of uav
+int step = 0;
+//this variable forces terminate current "task" of uav
 //1 - Tarefa: decolar (idUAV, altura)
 //2 - Tarefa: goto (idUAV, positionTarget)
 //3 - Tarefa: dar uma volta sobre (idUAV, positionTarget, distanciaSobre)
@@ -80,10 +81,12 @@ void UAVMobility::setTargetPosition() {
         }
 
     } else {
-        if(base[uav.getID()].size() != itera[uav.getID()] && base[uav.getID()].size() > 0){ //if there are tasks not performed
+        if(base[uav.getID()].size() != itera[uav.getID()] && base[uav.getID()].size() > 0){
+            //if there are tasks not performed
             int task = itera[uav.getID()];
 
-            if(base[uav.getID()][task].getStatus() == 2){ //finalizando
+            if(base[uav.getID()][task].getStatus() == 2){
+                //finalizando
                 base[uav.getID()][task].setComplete();
 
                 //enviando mensagem de finalizada
@@ -141,7 +144,8 @@ void UAVMobility::setTargetPosition() {
 }
 
 void UAVMobility::move() {
-    if(lowbattery[uav.getID()] == 1){ //Drenando bateria e repassando tarefa
+    if(lowbattery[uav.getID()] == 1){
+        //Drenando bateria e repassando tarefa
         cout << "Drenou" << endl;
         cModule *a = getParentModule()->getParentModule()->getSubmodule("UAV", uav.getID())->getSubmodule("energyStorage", 0);
         SimpleEpEnergyStorage *energySto = check_and_cast<SimpleEpEnergyStorage*>(a);
@@ -290,7 +294,8 @@ void UAVMobility::executeTask(int j){
 
 }
 
-void UAVMobility::stop(){ //Finaliza a atividade no Omnet
+void UAVMobility::stop(){
+    //Finaliza a atividade no Omnet
     nextMoveIsWait = true;
     nextChange = simTime() + 0.1;
     cout << "step" << endl;

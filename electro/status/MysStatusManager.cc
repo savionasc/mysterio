@@ -112,7 +112,8 @@ int MysStatusManager::CountActiveUAVs(){
 }
 
 //Getters and updaters
-Coordinate MysStatusManager::getUAVLocation(int idUAV){ //Request?
+Coordinate MysStatusManager::getUAVLocation(int idUAV){
+    //Request?
     UAV s = pegarUAV(idUAV);
     Coordinate c(s.getStatus().getLocationX(), s.getStatus().getLocationY(), s.getStatus().getLocationZ());
 
@@ -122,13 +123,15 @@ Coordinate MysStatusManager::getUAVLocation(int idUAV){ //Request?
     return c;
 }
 
-void MysStatusManager::updateUAVLocation(Coordinate coord, int idUAV){ //saveUAVCurrentPosition?
+void MysStatusManager::updateUAVLocation(Coordinate coord, int idUAV){
+    //saveUAVCurrentPosition?
     //Não usar aqui Essa responsabilidade é para que tipo de classe? /ok
     UAV s = pegarUAV(idUAV);
     UAVStatus us;
     us.setLocation(coord.getX(),coord.getY(),coord.getZ());
     s.setStatus(us);
-    this->uavs[idUAV] = s; //Substituir
+    //Substituir
+    this->uavs[idUAV] = s;
     this->r.saveUAVLocation(1, coord);
 }
 
@@ -143,7 +146,8 @@ void MysStatusManager::updateUAVVelocity(double velocity, int idUAV){
     UAVStatus us = s.getStatus();
     us.setVelocity(velocity);
     s.setStatus(us);
-    this->uavs[idUAV] = s; //Substituir
+    //Substituir
+    this->uavs[idUAV] = s;
     this->r.setVelocity(idUAV, velocity);
 }
 
@@ -159,7 +163,8 @@ void MysStatusManager::updateFlightTime(int time, int idUAV){
     UAVStatus us = s.getStatus();
     us.setFlightTime(time);
     s.setStatus(us);
-    this->uavs[idUAV] = s; //Substituir
+    //Substituir
+    this->uavs[idUAV] = s;
     this->r.setFlightTime(idUAV, time);
 }
 
@@ -175,7 +180,8 @@ void MysStatusManager::updateBattery(float level, int idUAV){
     UAVStatus us = s.getStatus();
     us.setBattery(level);
     s.setStatus(us);
-    this->uavs[idUAV] = s; //Substituir
+    //Substituir
+    this->uavs[idUAV] = s;
     this->r.setBattery(1, level);
 }
 
@@ -184,7 +190,8 @@ void MysStatusManager::updateAvailable(bool available, int idUAV){
     UAVStatus us = u.getStatus();
     us.setAvailable(available);
     u.setStatus(us);
-    this->uavs[idUAV] = u; //Substituir
+    //Substituir
+    this->uavs[idUAV] = u;
     this->r.setAvailable(idUAV, available);
 }
 
