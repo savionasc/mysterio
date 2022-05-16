@@ -14,15 +14,15 @@ using namespace std;
 
 enum codes{
     //300 - UAV Request
-        LOCATION_STATUS_REQUEST = 300,
-        VELOCITY_STATUS_REQUEST,
-        BATTERY_STATUS_REQUEST,
-        FLIGHTTIME_STATUS_REQUEST,
+    LOCATION_STATUS_REQUEST = 300,
+    VELOCITY_STATUS_REQUEST,
+    BATTERY_STATUS_REQUEST,
+    FLIGHTTIME_STATUS_REQUEST,
 
-        LOCATION_STATUS_RESPONSE = 310,
-        VELOCITY_STATUS_RESPONSE,
-        BATTERY_STATUS_RESPONSE,
-        FLIGHTTIME_STATUS_RESPONSE,
+    LOCATION_STATUS_RESPONSE = 310,
+    VELOCITY_STATUS_RESPONSE,
+    BATTERY_STATUS_RESPONSE,
+    FLIGHTTIME_STATUS_RESPONSE,
 };
 
 class MysStatusManager : public StatusManager, public Communicable{
@@ -92,7 +92,8 @@ protected:
     int numeroDeUAVs;
 
 private:
-    int tempoDeFuncionamento; //do sistema
+    //do sistema ou do UAV
+    int tempoDeFuncionamento;
 
     //singleton
     static MysStatusManager * mpinstance_;
@@ -108,7 +109,8 @@ private:
         return u;
     }
 
-    RepositoryMySQL r; //Deixar de solicitar diretamente pro banco para pedir pro UAV
+    //Deixar de solicitar diretamente pro banco para pedir pro UAV
+    RepositoryMySQL r;
 };
 
 #endif

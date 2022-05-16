@@ -10,13 +10,15 @@
 
 using namespace std;
 
-void listenCommunication(){ //Here starts the server communication
+void listenCommunication(){
+    //Here starts the server communication
 
     int numeroDeUAVsEsperados = 4;
     MysStatusManager *ms;
 
     MysCommunication comm;
-    int serverSocket = comm.configureSocketServer(1111); //Port number
+    //Port number
+    int serverSocket = comm.configureSocketServer(1111);
     if(serverSocket > 0){
         thread conectar(UAVRegistry(), serverSocket);
         std::cout << "Waiting for a UAV to connect..." << std::endl;
@@ -100,7 +102,8 @@ void listenCommunication(){ //Here starts the server communication
                 }
             }
 
-            if(!strcmp(msg.getMsg(), "decolar")){ //take off
+            if(!strcmp(msg.getMsg(), "decolar")){
+                //take off
                 for (int i = 0; i < ms->getSize(); i++) {
                     Coordinate currentP(50.0,50.0,100.0);
                     UAV u(i);
@@ -118,7 +121,8 @@ void listenCommunication(){ //Here starts the server communication
 
                     comm.sendTaskMessageToUAV(ms->getUAV(u.getID()).getNetworkConfigurations().getIdSocket(), taskMessage);
                 }
-            }else if(!strcmp(msg.getMsg(), "quarteirao")){ //take off
+            }else if(!strcmp(msg.getMsg(), "quarteirao")){
+                //take off
                 Coordinate currentP(500.0,500.0,400.0);
                 UAV u(id);
                 Task gotoc(u, currentP);
@@ -133,7 +137,8 @@ void listenCommunication(){ //Here starts the server communication
                 //taskMessage.setCoord(t.getTaskByIndex(u, t.getNumTasks(u)-1).getTarget());
                 taskMessage.setTask(t.getTaskByIndex(u, t.getNumTasks(u)-1));
                 comm.sendTaskMessageToUAV(ms->getUAV(u.getID()).getNetworkConfigurations().getIdSocket(), taskMessage);
-            }else if(!strcmp(msg.getMsg(), "quarteiraoT")){ //take off
+            }else if(!strcmp(msg.getMsg(), "quarteiraoT")){
+                //take off
                 for (int i = 0; i < ms->getSize(); i++) {
                     Coordinate currentP(500.0,500.0,400.0);
                     UAV u(i);
@@ -171,7 +176,8 @@ void listenCommunication(){ //Here starts the server communication
             comm.sendMessageToUAV(id, msg);
         }
         conectar.join();
-    }else{ //when it fails enter here
+    }else{
+        //when it fails enter here
         switch (serverSocket) {
             case -1:
                 std::cerr << "Inaccessible ports" << std::endl;

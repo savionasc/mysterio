@@ -1,5 +1,5 @@
-#ifndef MYSTERIO_OMNET_UAVS_SHEEP_H_
-#define MYSTERIO_OMNET_UAVS_SHEEP_H_
+#ifndef MYSTERIO_MARKO_SHEEP_H_
+#define MYSTERIO_MARKO_SHEEP_H_
 
 #include "inet/common/INETDefs.h"
 #include "inet/mobility/base/LineSegmentsMobilityBase.h"

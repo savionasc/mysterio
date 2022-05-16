@@ -4,7 +4,8 @@ ComeBackBasestation::ComeBackBasestation() { base = Coordinate(200,200,200); }
 
 ComeBackBasestation::~ComeBackBasestation() { }
 
-bool ComeBackBasestation::isComplete(){ } //Passar coordenate
+//Passar coordenate
+bool ComeBackBasestation::isComplete(){ }
 
 void ComeBackBasestation::assignTask(){}
 
