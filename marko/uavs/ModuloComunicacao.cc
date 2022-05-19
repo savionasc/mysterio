@@ -1,4 +1,4 @@
-#include "ModuloComunicacao2.h"
+#include "ModuloComunicacao.h"
 
 #include "../mission/MysTask.h"
 #include "UAVMobility.h"
@@ -12,7 +12,7 @@ using namespace omnetpp;
 using namespace inet;
 using namespace mysterio;
 
-Define_Module(ModuloComunicacao2);
+Define_Module(ModuloComunicacao);
 
 //shared variables
 extern Coord position[NUMUAVS];
@@ -29,11 +29,11 @@ enum codesUAV{
     SUBTASK_HIGH_PRIORITY = 222
 };
 
-void ModuloComunicacao2::initialize(){
+void ModuloComunicacao::initialize(){
     selfID = getIndex();
 
     //Mudar as flags e usar assim...
-    int x = ModuloComunicacao2::RESPONDER_LOCALIZACAO;
+    int x = ModuloComunicacao::RESPONDER_LOCALIZACAO;
 
     uavs[selfID].setSelfID(selfID);
 
@@ -46,7 +46,7 @@ void ModuloComunicacao2::initialize(){
     scheduleAt(simTime()+2, sendMSGEvt);
 }
 
-void ModuloComunicacao2::handleMessage(cMessage *msg){
+void ModuloComunicacao::handleMessage(cMessage *msg){
     UAVMessage *mMSG = check_and_cast<UAVMessage*>(msg);
     if(mMSG->getKind() == CHECKING_MESSAGE && strcmp(mMSG->getName(), "checking") == 0){
         if(msgs.size() > 0 && selfID == msgs.front().getSource()){
@@ -90,7 +90,7 @@ void ModuloComunicacao2::handleMessage(cMessage *msg){
 //Acho que sprintf(msgname, "msg-%d-para-%d", src, dest); mostra na tela um texto na mensagem
 //Depois usar bubble("CHEGOU, gostei do recebido!"); que ele mostra na interface gráfica que chegou a mensagem!
 
-void ModuloComunicacao2::forwardMessage(UAVMessage *msg){
+void ModuloComunicacao::forwardMessage(UAVMessage *msg){
     //Depois enviar mensagens para todos os vizinhos
     int n = gateSize("out");
     int k = intuniform(0, (n-1));
@@ -99,7 +99,7 @@ void ModuloComunicacao2::forwardMessage(UAVMessage *msg){
     send(msg, "out", k);
 }
 
-UAVMessage *ModuloComunicacao2::generateMessage(){
+UAVMessage *ModuloComunicacao::generateMessage(){
     int src = getIndex();
     int n = getVectorSize();
     int dest = intuniform(0, n-2);
@@ -119,7 +119,7 @@ UAVMessage *ModuloComunicacao2::generateMessage(){
 //Para usar com a mensagem //sprintf(msgname, "msg-%d-para-%d", src, dest);
 
 //Auxiliary functions
-void ModuloComunicacao2::enviarMensagem(double tempo, int origem, int destino, char const *name, int kind){
+void ModuloComunicacao::enviarMensagem(double tempo, int origem, int destino, char const *name, int kind){
     sendMSGEvt = new UAVMessage(name, kind);
     sendMSGEvt->setDestino(destino);
     sendMSGEvt->setOrigem(origem);
