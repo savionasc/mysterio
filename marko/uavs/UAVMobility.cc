@@ -3,7 +3,6 @@
 #include <queue>
 
 #include "../communication/UAVMysCommunication.h"
-#include "../scenarios/Example1Communication.h"
 #include "../../src/mission/DependentTask.h"
 #include "../sheep/SheepMobility.h"
 #include "UAVMessage_m.h"
@@ -148,7 +147,7 @@ void UAVMobility::move() {
         lowbattery[uav.getID()] = 2;
 
         TaskMessage msg;
-        msg.setCode(TASK_EMERGENCY_BATTERY_LOW);
+        msg.setCode(Message::TASK_EMERGENCY_BATTERY_LOW);
         msg.setSource(uav.getID());
         base[uav.getID()][itera[uav.getID()]].setWaypoints(waypoints[uav.getID()]);
         cout << "MEU WAYPOINT: " << base[uav.getID()][itera[uav.getID()]].getWaypoints() << endl;
@@ -244,7 +243,7 @@ Coord UAVMobility::findSheep(int j){
         Task t;
         t.setId(1);
         msg.setMsg("OLHA A MENSAGEM!");
-        msg.setCode(SUBORDINATE_SUBTASK);
+        msg.setCode(Message::SUBORDINATE_SUBTASK);
         msg.setSource(uav.getID());
         msg.setDestination(1);
         msg.setTask(t);
@@ -315,7 +314,7 @@ Coord UAVMobility::flyAround(int j){
             SimpleEpEnergyStorage *energySto = check_and_cast<SimpleEpEnergyStorage*>(a);
             energySto->consumir();
             TaskMessage msg;
-            msg.setCode(TASK_EMERGENCY_BATTERY_LOW);
+            msg.setCode(Message::TASK_EMERGENCY_BATTERY_LOW);
             msg.setSource(uav.getID());
             base[uav.getID()][itera[uav.getID()]].setWaypoints(waypoints[uav.getID()]+1);
             msg.setTask(base[uav.getID()][itera[uav.getID()]]);

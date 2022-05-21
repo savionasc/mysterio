@@ -75,8 +75,8 @@ void listenCommunication(){
                     t.addTask(gotoc);
 
                     //Enviando tarefa
-                    int codeMessage = TASK_MESSAGE;
-                    TaskMessage taskMessage(msg.getMsg(), TASK_MESSAGE);
+                    int codeMessage = Message::TASK_MESSAGE;
+                    TaskMessage taskMessage(msg.getMsg(), Message::TASK_MESSAGE);
                     taskMessage.setTask(t.getTaskByIndex(u, t.getNumTasks(u)-1));
 
                     comm.sendTaskMessageToUAV(ms->getUAV(u.getID()).getNetworkConfigurations().getIdSocket(), taskMessage);
@@ -91,8 +91,8 @@ void listenCommunication(){
                 t.addTask(gotoc);
 
                 //Enviando tarefa
-                int codeMessage = TASK_MESSAGE;
-                TaskMessage taskMessage(msg.getMsg(), TASK_MESSAGE);
+                int codeMessage = Message::TASK_MESSAGE;
+                TaskMessage taskMessage(msg.getMsg(), Message::TASK_MESSAGE);
                 taskMessage.setTask(t.getTaskByIndex(u, t.getNumTasks(u)-1));
                 comm.sendTaskMessageToUAV(ms->getUAV(u.getID()).getNetworkConfigurations().getIdSocket(), taskMessage);
             }else if(!strcmp(msg.getMsg(), "quarteiraoT")){
@@ -106,8 +106,8 @@ void listenCommunication(){
                     t.addTask(gotoc);
 
                     //Enviando tarefa
-                    int codeMessage = TASK_MESSAGE;
-                    TaskMessage taskMessage(msg.getMsg(), TASK_MESSAGE);
+                    int codeMessage = Message::TASK_MESSAGE;
+                    TaskMessage taskMessage(msg.getMsg(), Message::TASK_MESSAGE);
                     taskMessage.setTask(t.getTaskByIndex(u, t.getNumTasks(u)-1));
                     comm.sendTaskMessageToUAV(ms->getUAV(u.getID()).getNetworkConfigurations().getIdSocket(), taskMessage);
 
@@ -122,8 +122,8 @@ void listenCommunication(){
                 t.addTask(gotoc);
 
                 //Enviando tarefa
-                int codeMessage = TASK_MESSAGE;
-                TaskMessage taskMessage(msg.getMsg(), TASK_MESSAGE);
+                int codeMessage = Message::TASK_MESSAGE;
+                TaskMessage taskMessage(msg.getMsg(), Message::TASK_MESSAGE);
                 taskMessage.setTask(t.getTaskByIndex(u, t.getNumTasks(u)-1));
 
                 comm.sendTaskMessageToUAV(ms->getUAV(u.getID()).getNetworkConfigurations().getIdSocket(), taskMessage);
@@ -172,10 +172,10 @@ void assignPreprogrammedTasks(int n, MysStatusManager *ms, MysCommunication comm
 
     for (int itUAV = 0; itUAV < n; itUAV++) {
         u = ms->getUAV(itUAV);
-        int codeMessage = TASK_MESSAGE;
+        int codeMessage = Message::TASK_MESSAGE;
         for (int itTask = 0; itTask < t.getNumTasks(u); itTask++) {
             //Enviando tarefa
-            TaskMessage taskMessage(assuntoMSG, TASK_MESSAGE);
+            TaskMessage taskMessage(assuntoMSG, Message::TASK_MESSAGE);
             //taskMessage.setTask(t.getTaskByIndex(u, t.getNumTasks(u)-1));
             taskMessage.setTask(t.getTaskByIndex(u, itTask));
             comm.sendTaskMessageToUAV(u.getNetworkConfigurations().getIdSocket(), taskMessage);

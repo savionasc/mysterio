@@ -23,7 +23,7 @@ public:
         memset(&typeMSG, 0, sizeof(typeMSG));
         recv(socket, (int*)&typeMSG, sizeof(typeMSG), 0);
 
-        if(typeMSG == STATUS_MESSAGE){
+        if(typeMSG == Message::STATUS_MESSAGE){
             StatusMessage msg;
             memset(&msg, 0, sizeof(msg));
             recv(socket, (StatusMessage*)&msg, sizeof(msg), 0);
@@ -55,7 +55,7 @@ public:
                 MysStatusManager* status = MysStatusManager::GetInstance();
                 status->onDroneStatusMessageReceive(msg);
             }
-        }else if(typeMSG == MESSAGE){
+        }else if(typeMSG == Message::MESSAGE){
             Message msg;
             memset(&msg, 0, sizeof(msg));
             recv(socket, (Message*)&msg, sizeof(msg), 0);
@@ -66,17 +66,17 @@ public:
                 cout << "[U" << msg.getSource() << "] Received Message: " << msg.getMsg() << endl;
             }
             cout << "<M>MSG: " << msg.getMsg() << endl;
-        }else if(typeMSG == TASK_MESSAGE){
+        }else if(typeMSG == Message::TASK_MESSAGE){
             TaskMessage msg;
             memset(&msg, 0, sizeof(msg));
             recv(socket, (TaskMessage*)&msg, sizeof(msg), 0);
 
             TaskManager t;
             MysStatusManager *ms;
-            if(msg.getCode() == TASK_EMERGENCY_BATTERY_LOW){
+            if(msg.getCode() == Message::TASK_EMERGENCY_BATTERY_LOW){
                 Task task = msg.getTask();
                 //Pegando informações não modificadas da tarefa
-                msg.setCode(TASK_MESSAGE);
+                msg.setCode(Message::TASK_MESSAGE);
                 UAV u = ms->getUAV(1);
                 Task gotopos(u, msg.getCoord());
                 gotopos.setType(GOTO);
@@ -102,7 +102,7 @@ public:
                 msg.setMsg(conteudo);
                 msg.setTask(t.getTaskByIndex(u, t.getNumTasks(u)-1));
                 msgSender.enviarTarefa(u.getNetworkConfigurations().getIdSocket(), msg);
-            }else if(msg.getCode() == SUBORDINATE_SUBTASK){
+            }else if(msg.getCode() == Message::SUBORDINATE_SUBTASK){
                 Coordinate targetPosition(msg.getCoord());
                 UAV uav = ms->getUAV(msg.getDestination());
                 Task subtask(uav, SURROUND_SHEEP, targetPosition);
@@ -119,7 +119,7 @@ public:
                 msgSender.enviarTarefa(uavLeader.getNetworkConfigurations().getIdSocket(), msg);
             }
             //t.setTask(msg.getTask());
-        }else if(typeMSG == TASK_COMPLETED_MESSAGE){
+        }else if(typeMSG == Message::TASK_COMPLETED_MESSAGE){
             Message msg;
             memset(&msg, 0, sizeof(msg));
             recv(socket, (Message*)&msg, sizeof(msg), 0);

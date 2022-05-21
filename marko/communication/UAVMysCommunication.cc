@@ -10,21 +10,21 @@ using namespace std;
 namespace mysterio {
 
 void UAVMysCommunication::dispatchTaskMessage(TaskMessage msg){
-    int codeMessage = TASK_MESSAGE;
+    int codeMessage = Message::TASK_MESSAGE;
     send(this->getSocketCode(), (int*)&codeMessage, sizeof(codeMessage), 0);
     send(this->getSocketCode(), (TaskMessage*)&msg, sizeof(msg), 0);
 }
 
 void UAVMysCommunication::dispatchStatusMessage(StatusMessage msg){
     //DroneStatusMessage* s = dynamic_cast<DroneStatusMessage*>(&msg);
-    int codeMessage = STATUS_MESSAGE;
+    int codeMessage = Message::STATUS_MESSAGE;
     send(this->getSocketCode(), (int*)&codeMessage, sizeof(codeMessage), 0);
     send(this->getSocketCode(), (StatusMessage*)&msg, sizeof(msg), 0);
 }
 
 void UAVMysCommunication::dispatchMessage(Message msg){
     //send(this->getSocketCode(), msg.getMsg(), strlen(msg.getMsg()), 0);
-    int codeMessage = MESSAGE;
+    int codeMessage = Message::MESSAGE;
     send(this->getSocketCode(), (int*)&codeMessage, sizeof(codeMessage), 0);
     send(this->getSocketCode(), (Message*)&msg, sizeof(msg), 0);
 }
