@@ -18,6 +18,19 @@ public:
     virtual bool isAvailable(int idUAV) = 0;
     virtual void updateAvailable(bool available, int idUAV) = 0;
     virtual int CountActiveUAVs() = 0;
+
+    enum statuscode{
+        //300 - UAV Request
+        LOCATION_STATUS_REQUEST = 300,
+        VELOCITY_STATUS_REQUEST,
+        BATTERY_STATUS_REQUEST,
+        FLIGHTTIME_STATUS_REQUEST,
+
+        LOCATION_STATUS_RESPONSE = 310,
+        VELOCITY_STATUS_RESPONSE,
+        BATTERY_STATUS_RESPONSE,
+        FLIGHTTIME_STATUS_RESPONSE
+    };
 };
 
 #endif

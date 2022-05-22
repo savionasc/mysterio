@@ -8,13 +8,6 @@ using namespace std;
 
 namespace mysterio {
 
-enum codes{
-    LOCATION_STATUS_RESPONSE = 310,
-    VELOCITY_STATUS_RESPONSE,
-    BATTERY_STATUS_RESPONSE,
-    FLIGHTTIME_STATUS_RESPONSE,
-};
-
 class UAVMessageReceive {
     public:
         UAVMessageReceive(){}

@@ -12,19 +12,6 @@
 
 using namespace std;
 
-enum codes{
-    //300 - UAV Request
-    LOCATION_STATUS_REQUEST = 300,
-    VELOCITY_STATUS_REQUEST,
-    BATTERY_STATUS_REQUEST,
-    FLIGHTTIME_STATUS_REQUEST,
-
-    LOCATION_STATUS_RESPONSE = 310,
-    VELOCITY_STATUS_RESPONSE,
-    BATTERY_STATUS_RESPONSE,
-    FLIGHTTIME_STATUS_RESPONSE,
-};
-
 class MysStatusManager : public StatusManager, public Communicable{
 public:
 
