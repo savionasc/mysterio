@@ -86,7 +86,7 @@ void listenCommunication(){
                 Coordinate currentP(500.0,500.0,400.0);
                 UAV u(id);
                 Task gotoc(u, currentP);
-                gotoc.setType(FLY_AROUND_SQUARE);
+                gotoc.setType(Task::FLY_AROUND_SQUARE);
                 TaskManager t;
                 t.addTask(gotoc);
 
@@ -101,7 +101,7 @@ void listenCommunication(){
                     Coordinate currentP(500.0,500.0,400.0);
                     UAV u(i);
                     Task gotoc(u, currentP);
-                    gotoc.setType(FLY_AROUND_SQUARE);
+                    gotoc.setType(Task::FLY_AROUND_SQUARE);
                     TaskManager t;
                     t.addTask(gotoc);
 
@@ -116,7 +116,7 @@ void listenCommunication(){
                 Coordinate currentP(300.0,420.0,90.0);
                 UAV u(id);
                 Task gotoc(u, currentP);
-                gotoc.setType(FLY_AROUND);
+                gotoc.setType(Task::FLY_AROUND);
                 gotoc.setUAV(u);
                 TaskManager t;
                 t.addTask(gotoc);
@@ -158,7 +158,7 @@ void assignPreprogrammedTasks(int n, MysStatusManager *ms, MysCommunication comm
     cout << "Assigned task: Find sheep!" << endl;
     Coordinate initialPoint(500.0,500.0,600.0);
     UAV u(0);
-    Task findsheep(u, FIND_SHEEP, initialPoint);
+    Task findsheep(u, Task::FIND_SHEEP, initialPoint);
 
     TaskManager t;
     t.addTask(findsheep);

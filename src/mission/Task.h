@@ -5,18 +5,6 @@
 #include "Command.h"
 #include "Priority.h"
 
-//States
-#define STARTED 1
-#define COMPLETED 2
-//Colocar perto de completar...
-//Types
-#define GOTO 80
-#define COMEBACK_BASESTATION 81
-#define FLY_AROUND 82
-#define FLY_AROUND_SQUARE 83
-#define FIND_SHEEP 84
-#define SURROUND_SHEEP 85
-
 class Task {
 
 public:
@@ -33,6 +21,20 @@ public:
         this->target = targetPosition;
     }
     virtual ~Task(){}
+
+    enum statestasks{
+        STARTED = 1,
+        COMPLETED
+    };
+
+    enum typetasks{
+        GOTO = 80,
+        COMEBACK_BASESTATION,
+        FLY_AROUND,
+        FLY_AROUND_SQUARE,
+        FIND_SHEEP,
+        SURROUND_SHEEP
+    };
 
     int getID() {
         return id;

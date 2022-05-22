@@ -86,7 +86,8 @@ void UAVMobility::setTargetPosition() {
     } else {
         if(base[uav.getID()].size() != itera[uav.getID()] && base[uav.getID()].size() > 0){ //if there are tasks not performed
             int task = itera[uav.getID()];
-            if(base[uav.getID()][task].getStatus() == 2){ //finalizando
+            //finalizando
+            if(base[uav.getID()][task].getStatus() == 2){
                 base[uav.getID()][task].setComplete();
 
                 //enviando mensagem de finalizada
@@ -139,7 +140,8 @@ void UAVMobility::setTargetPosition() {
 }
 
 void UAVMobility::move() {
-    if(lowbattery[uav.getID()] == 1){ //Drenando bateria e repassando tarefa
+    //Drenando bateria e repassando tarefa
+    if(lowbattery[uav.getID()] == 1){
         cout << "Drenou" << endl;
         cModule *a = getParentModule()->getParentModule()->getSubmodule("host", uav.getID())->getSubmodule("energyStorage", 0);
         SimpleEpEnergyStorage *energySto = check_and_cast<SimpleEpEnergyStorage*>(a);
@@ -156,7 +158,7 @@ void UAVMobility::move() {
 
         //aqui
         //msg.setCoord(this->castCoordToCoordinate(position[uav.getID()]));
-        if(base[uav.getID()][itera[uav.getID()]].getType() == FLY_AROUND_SQUARE){
+        if(base[uav.getID()][itera[uav.getID()]].getType() == Task::FLY_AROUND_SQUARE){
             waypoints[uav.getID()]--;
             msg.setCoord(castCoordToCoordinate(flyAroundSquare(itera[uav.getID()])));
         }else{
@@ -373,13 +375,13 @@ Coord UAVMobility::flyAroundSquare(int j){
 }
 
 void UAVMobility::executeTask(int j){
-    if(base[uav.getID()][j].getType() == FLY_AROUND){
+    if(base[uav.getID()][j].getType() == Task::FLY_AROUND){
         targetPosition = flyAround(j);
-    }else if (base[uav.getID()][j].getType() == FLY_AROUND_SQUARE){
+    }else if (base[uav.getID()][j].getType() == Task::FLY_AROUND_SQUARE){
         targetPosition = flyAroundSquare(j);
-    }else if(base[uav.getID()][j].getType() == FIND_SHEEP){
+    }else if(base[uav.getID()][j].getType() == Task::FIND_SHEEP){
         targetPosition = findSheep(j);
-    }else if(base[uav.getID()][j].getType() == SURROUND_SHEEP){
+    }else if(base[uav.getID()][j].getType() == Task::SURROUND_SHEEP){
         targetPosition = surroundSheep(j);
     }else{
         targetPosition = this->castCoordinateToCoord(base[uav.getID()][j].getTarget());

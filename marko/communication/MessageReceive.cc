@@ -79,7 +79,7 @@ public:
                 msg.setCode(Message::TASK_MESSAGE);
                 UAV u = ms->getUAV(1);
                 Task gotopos(u, msg.getCoord());
-                gotopos.setType(GOTO);
+                gotopos.setType(Task::GOTO);
                 char conteudo[12] = "SUBSTITUIR";
                 msg.setDestination(u.getID());
                 msg.setMsg(conteudo);
@@ -105,7 +105,7 @@ public:
             }else if(msg.getCode() == Message::SUBORDINATE_SUBTASK){
                 Coordinate targetPosition(msg.getCoord());
                 UAV uav = ms->getUAV(msg.getDestination());
-                Task subtask(uav, SURROUND_SHEEP, targetPosition);
+                Task subtask(uav, Task::SURROUND_SHEEP, targetPosition);
                 //Mudar esse código
                 subtask.setPriority(5);
 
