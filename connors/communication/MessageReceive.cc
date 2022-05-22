@@ -22,7 +22,7 @@ public:
         memset(&typeMSG, 0, sizeof(typeMSG));
         recv(socket, (int*)&typeMSG, sizeof(typeMSG), 0);
 
-        if(typeMSG == STATUS_MESSAGE){
+        if(typeMSG == Message::STATUS_MESSAGE){
             StatusMessage msg;
             memset(&msg, 0, sizeof(msg));
             recv(socket, (StatusMessage*)&msg, sizeof(msg), 0);
@@ -53,7 +53,7 @@ public:
                 MysStatusManager* status = MysStatusManager::GetInstance();
                 status->onDroneStatusMessageReceive(msg);
             }
-        }else if(typeMSG == MESSAGE){
+        }else if(typeMSG == Message::MESSAGE){
             Message msg;
             memset(&msg, 0, sizeof(msg));
             recv(socket, (Message*)&msg, sizeof(msg), 0);
@@ -64,7 +64,7 @@ public:
                 cout << "[U" << msg.getSource() << "] Received Message: " << msg.getMsg() << endl;
             }
             cout << "<M>MSG: " << msg.getMsg() << endl;
-        }else if(typeMSG == TASK_MESSAGE){
+        }else if(typeMSG == Message::TASK_MESSAGE){
             TaskMessage msg;
             memset(&msg, 0, sizeof(msg));
             recv(socket, (TaskMessage*)&msg, sizeof(msg), 0);
@@ -74,7 +74,7 @@ public:
             cout << "UAV " << msg.getTask().getUAV().getID() << endl;
             TaskManager t;
             t.setTask(msg.getTask());
-        }else if(typeMSG == TASK_COMPLETED_MESSAGE){
+        }else if(typeMSG == Message::TASK_COMPLETED_MESSAGE){
             Message msg;
             memset(&msg, 0, sizeof(msg));
             recv(socket, (Message*)&msg, sizeof(msg), 0);

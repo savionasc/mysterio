@@ -3,10 +3,10 @@
 #include "../communication/MysCommunication.h"
 #include "../status/MysStatusManager.h"
 
-class Example1Communication {
+class ExampleCommunication {
 public:
-    Example1Communication(){}
-    virtual ~Example1Communication(){}
+    ExampleCommunication(){}
+    virtual ~ExampleCommunication(){}
     MysCommunication conn;
     MysStatusManager* status;
 };
