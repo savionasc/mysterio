@@ -37,15 +37,15 @@ void listenCommunication(){
         Coordinate currentP(300.0,420.0,90.0);
         UAV u(0);
         Coordinate gotoP(800.0,620.0,90.0);
-        Task gotoa(u, GOTO, gotoP);
-        Task gotoc(u, FLY_AROUND, currentP);
+        Task gotoa(u, Task::GOTO, gotoP);
+        Task gotoc(u, Task::FLY_AROUND, currentP);
 
         TaskManager t;
         t.addTask(gotoa);
         t.addTask(gotoc);
         Coordinate currentR(500.0,500.0,400.0);
         u.setID(2);
-        Task square(u, FLY_AROUND_SQUARE, currentR);
+        Task square(u, Task::FLY_AROUND_SQUARE, currentR);
         t.addTask(square);
         u.setID(3);
         square.setUAV(u);
@@ -55,10 +55,10 @@ void listenCommunication(){
 
         for (int itUAV = 0; itUAV < numeroDeUAVsEsperados; itUAV++) {
             u = ms->getUAV(itUAV);
-            int codeMessage = TASK_MESSAGE;
+            int codeMessage = Message::TASK_MESSAGE;
             for (int itTask = 0; itTask < t.getNumTasks(u); itTask++) {
                 //Enviando tarefa
-                TaskMessage taskMessage(conteudo, TASK_MESSAGE);
+                TaskMessage taskMessage(conteudo, Message::TASK_MESSAGE);
                 //taskMessage.setTask(t.getTaskByIndex(u, t.getNumTasks(u)-1));
                 taskMessage.setTask(t.getTaskByIndex(u, itTask));
                 comm.sendTaskMessageToUAV(u.getNetworkConfigurations().getIdSocket(), taskMessage);
@@ -114,8 +114,8 @@ void listenCommunication(){
                     //cout << "UAV["<<u.getID()<<"]-Tasks: " << t.getNumTasks(u) << endl;
 
                     //Enviando tarefa
-                    int codeMessage = TASK_MESSAGE;
-                    TaskMessage taskMessage(msg.getMsg(), TASK_MESSAGE);
+                    int codeMessage = Message::TASK_MESSAGE;
+                    TaskMessage taskMessage(msg.getMsg(), Message::TASK_MESSAGE);
                     //taskMessage.setCoord(t.getTaskByIndex(u, t.getNumTasks(u)-1).getTarget());
                     taskMessage.setTask(t.getTaskByIndex(u, t.getNumTasks(u)-1));
 
@@ -126,14 +126,14 @@ void listenCommunication(){
                 Coordinate currentP(500.0,500.0,400.0);
                 UAV u(id);
                 Task gotoc(u, currentP);
-                gotoc.setType(FLY_AROUND_SQUARE);
+                gotoc.setType(Task::FLY_AROUND_SQUARE);
                 TaskManager t;
                 t.addTask(gotoc);
                 //cout << "UAV["<<u.getID()<<"]-Tasks: " << t.getNumTasks(u) << endl;
 
                 //Enviando tarefa
-                int codeMessage = TASK_MESSAGE;
-                TaskMessage taskMessage(msg.getMsg(), TASK_MESSAGE);
+                int codeMessage = Message::TASK_MESSAGE;
+                TaskMessage taskMessage(msg.getMsg(), Message::TASK_MESSAGE);
                 //taskMessage.setCoord(t.getTaskByIndex(u, t.getNumTasks(u)-1).getTarget());
                 taskMessage.setTask(t.getTaskByIndex(u, t.getNumTasks(u)-1));
                 comm.sendTaskMessageToUAV(ms->getUAV(u.getID()).getNetworkConfigurations().getIdSocket(), taskMessage);
@@ -143,14 +143,14 @@ void listenCommunication(){
                     Coordinate currentP(500.0,500.0,400.0);
                     UAV u(i);
                     Task gotoc(u, currentP);
-                    gotoc.setType(FLY_AROUND_SQUARE);
+                    gotoc.setType(Task::FLY_AROUND_SQUARE);
                     TaskManager t;
                     t.addTask(gotoc);
                     //cout << "UAV["<<u.getID()<<"]-Tasks: " << t.getNumTasks(u) << endl;
 
                     //Enviando tarefa
-                    int codeMessage = TASK_MESSAGE;
-                    TaskMessage taskMessage(msg.getMsg(), TASK_MESSAGE);
+                    int codeMessage = Message::TASK_MESSAGE;
+                    TaskMessage taskMessage(msg.getMsg(), Message::TASK_MESSAGE);
                     //taskMessage.setCoord(t.getTaskByIndex(u, t.getNumTasks(u)-1).getTarget());
                     taskMessage.setTask(t.getTaskByIndex(u, t.getNumTasks(u)-1));
                     comm.sendTaskMessageToUAV(ms->getUAV(u.getID()).getNetworkConfigurations().getIdSocket(), taskMessage);
@@ -160,14 +160,14 @@ void listenCommunication(){
                 Coordinate currentP(300.0,420.0,90.0);
                 UAV u(id);
                 Task gotoc(u, currentP);
-                gotoc.setType(FLY_AROUND);
+                gotoc.setType(Task::FLY_AROUND);
                 gotoc.setUAV(u);
                 TaskManager t;
                 t.addTask(gotoc);
 
                 //Enviando tarefa
-                int codeMessage = TASK_MESSAGE;
-                TaskMessage taskMessage(msg.getMsg(), TASK_MESSAGE);
+                int codeMessage = Message::TASK_MESSAGE;
+                TaskMessage taskMessage(msg.getMsg(), Message::TASK_MESSAGE);
                 //taskMessage.setCoord(t.getTaskByIndex(u, t.getNumTasks(u)-1).getTarget());
                 taskMessage.setTask(t.getTaskByIndex(u, t.getNumTasks(u)-1));
 
