@@ -43,7 +43,7 @@ void UAVMobility::initialize(int stage) {
 
     for (int i = 0; i < NUMUAVS; i++) {
         itera[i] = -1;
-        waypoints[NUMUAVS] = 0;
+        waypoints[i] = 0;
     }
 
     if (stage == INITSTAGE_LOCAL) {
@@ -66,12 +66,15 @@ void UAVMobility::setTargetPosition() {
         simtime_t waitTime = waitTimeParameter->doubleValue()+3;
         nextChange = simTime() + waitTime;
         nextMoveIsWait = true;
-        //targetPosition = lastPosition;
-    }else if(funcao == 0 && !ativo[uav.getID()]) {
-        Coord c(10, 5, 10);
 
-        if(targetPosition != c){
-            targetPosition = c;
+//        Coord inicialPosition(500, 500, 500);
+        targetPosition = lastPosition;
+    }else if(funcao == 0 && !ativo[uav.getID()]) {
+
+        Coord inicialPosition(10, 0, 10);
+
+        if(targetPosition != inicialPosition){
+            targetPosition = inicialPosition;
             double speed = speedParameter->doubleValue();
             double distance = lastPosition.distance(targetPosition);
             simtime_t travelTime = distance / speed;
@@ -143,7 +146,7 @@ void UAVMobility::move() {
     //Drenando bateria e repassando tarefa
     if(lowbattery[uav.getID()] == 1){
         cout << "Drenou" << endl;
-        cModule *a = getParentModule()->getParentModule()->getSubmodule("host", uav.getID())->getSubmodule("energyStorage", 0);
+        cModule *a = getParentModule()->getParentModule()->getSubmodule("UAV", uav.getID())->getSubmodule("energyStorage", 0);
         SimpleEpEnergyStorage *energySto = check_and_cast<SimpleEpEnergyStorage*>(a);
         energySto->consumir();
         lowbattery[uav.getID()] = 2;
@@ -183,7 +186,7 @@ double UAVMobility::getMaxSpeed() const {
 }
 
 J UAVMobility::pegarBateria(int idUAV){
-    cModule *a = getParentModule()->getParentModule()->getSubmodule("host", idUAV)->getSubmodule("energyStorage", 0);
+    cModule *a = getParentModule()->getParentModule()->getSubmodule("UAV", idUAV)->getSubmodule("energyStorage", 0);
     SimpleEpEnergyStorage *energySto = check_and_cast<SimpleEpEnergyStorage*>(a);
     return energySto->getResidualEnergyCapacity();
 }
@@ -312,7 +315,7 @@ Coord UAVMobility::flyAround(int j){
         c.setX(c.getX()+50);
         c.setY(c.getY()+50);
         if(uav.getID() == 0){
-            cModule *a = getParentModule()->getParentModule()->getSubmodule("host", uav.getID())->getSubmodule("energyStorage", 0);
+            cModule *a = getParentModule()->getParentModule()->getSubmodule("UAV", uav.getID())->getSubmodule("energyStorage", 0);
             SimpleEpEnergyStorage *energySto = check_and_cast<SimpleEpEnergyStorage*>(a);
             energySto->consumir();
             TaskMessage msg;
