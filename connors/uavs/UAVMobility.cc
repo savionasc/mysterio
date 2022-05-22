@@ -2,8 +2,8 @@
 #include <iostream>
 
 #include "../communication/UAVMysCommunication.h"
-#include "../scenarios/Example1Communication.h"
 #include "../../src/mission/DependentTask.h"
+#include "../scenarios/ExampleCommunication.h"
 
 using namespace omnetpp;
 using namespace std;
@@ -191,9 +191,9 @@ Coord UAVMobility::flyAroundSquare(int j){
 }
 
 void UAVMobility::executeTask(int j){
-    if(base[uav.getID()][j].getType() == FLY_AROUND){
+    if(base[uav.getID()][j].getType() == Task::FLY_AROUND){
         targetPosition = flyAround(j);
-    }else if (base[uav.getID()][j].getType() == FLY_AROUND_SQUARE){
+    }else if (base[uav.getID()][j].getType() == Task::FLY_AROUND_SQUARE){
         targetPosition = flyAroundSquare(j);
     }else{
         targetPosition = this->CoordinateToCoord(base[uav.getID()][j].getTarget());

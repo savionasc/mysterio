@@ -32,7 +32,7 @@ class UAVMessageReceive {
             int typeMSG;
             memset(&typeMSG, 0, sizeof(typeMSG));
             recv(socket, (int*)&typeMSG, sizeof(typeMSG), 0);
-            if(typeMSG == MESSAGE){
+            if(typeMSG == Message::MESSAGE){
                 //Aqui deve converter toda e qualquer mensagem e repassar pra this.OnMessageReceve
                 Message msg;
                 memset(&msg, 0, sizeof(msg));
@@ -182,7 +182,7 @@ class UAVMessageReceive {
                 }else{
                     std::cout << "Received Message["<< this->uav.getID() <<"]: " << msg.getMsg() << std::endl;
                 }
-            }else if(typeMSG == TASK_MESSAGE){
+            }else if(typeMSG == Message::TASK_MESSAGE){
                 cout << "Task Message received" << endl;
                 //Aqui deve converter toda e qualquer mensagem e repassar pra this.OnMessageReceve
                 //TaskMessage tmsg;
