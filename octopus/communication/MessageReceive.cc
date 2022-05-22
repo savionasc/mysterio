@@ -24,7 +24,7 @@ public:
         recv(socket, (message*)&stmsg, sizeof(stmsg), 0);
 
         cout << "Recebido " << stmsg.typeMessage << endl;
-        if(stmsg.typeMessage == STRUCTSTATUS){
+        if(stmsg.typeMessage == Message::STRUCTSTATUS){
             cout << "Mensagem instancia 4: " << stmsg.typeMessage << endl;
             if(stmsg.typeMessage == 11){
                 cout << "location: " << stmsg.location_x << endl;

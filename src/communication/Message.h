@@ -7,17 +7,6 @@
 class Message {
 public:
 
-    enum codemessages{
-        MESSAGE = 270,
-        STATUS_MESSAGE,
-        TASK_MESSAGE,
-        TASK_COMPLETED_MESSAGE,
-        TASK_EMERGENCY_BATTERY_LOW,
-        SUBORDINATE_SUBTASK,
-        STRUCTSTATUS = 11
-    };
-
-
     Message(){ }
 
     Message(char *msg, short int code){
@@ -33,6 +22,16 @@ public:
     }
 
     virtual ~Message(){ }
+
+    enum codemessages{
+        MESSAGE = 270,
+        STATUS_MESSAGE,
+        TASK_MESSAGE,
+        TASK_COMPLETED_MESSAGE,
+        TASK_EMERGENCY_BATTERY_LOW,
+        SUBORDINATE_SUBTASK,
+        STRUCTSTATUS = 11
+    };
 
     char* getMsg() { return msg; }
 
