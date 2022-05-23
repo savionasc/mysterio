@@ -2,7 +2,7 @@
 
 #include <iostream>
 #include "../communication/MysCommunication.h"
-#include "../../src/database/RepositoryMySQL.h"
+#include "../../src/database/RepositoryBase.h"
 #include "../../src/mission/MissionPlanner.h"
 #include "../../src/taskmanager/TaskManager.h"
 #include "../communication/UAVRegistry.cc"
@@ -188,7 +188,7 @@ void assignPreprogrammedTasks(int n, MysStatusManager *ms, MysCommunication comm
 
 int main(int argc, char const *argv[]){
 	//This number identification will be important to set database execution
-    RepositoryMySQL rep;
+    RepositoryBase rep;
     int numExecution = rep.createExecutionID();
     cout << "EXECUTION ID: " << numExecution << endl;
 

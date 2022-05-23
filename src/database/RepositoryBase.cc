@@ -1,4 +1,4 @@
-#include "../../src/database/RepositoryMySQL.h"
+#include "../../src/database/RepositoryBase.h"
 
 #include "../../src/status/UAVStatus.h"
 #include <ctime>
@@ -10,11 +10,11 @@
 #define PASSWORD "root"
 #define DATABASE "mestrado"
 
-RepositoryMySQL::RepositoryMySQL() {
+RepositoryBase::RepositoryBase() {
     this->createConnection();
 }
 
-RepositoryMySQL::RepositoryMySQL(bool prints) {
+RepositoryBase::RepositoryBase(bool prints) {
     this->prints = prints;
     this->createConnection();
 }
@@ -23,7 +23,7 @@ RepositoryMySQL::RepositoryMySQL(bool prints) {
 
 //Depois trocar printf por cout
 
-bool RepositoryMySQL::createConnection(){
+bool RepositoryBase::createConnection(){
     mysql_init(&connection);
     if (mysql_real_connect(&connection,HOSTNAME,USERNAME,PASSWORD,DATABASE,0,NULL,0)){
         if(this->prints)
@@ -37,13 +37,13 @@ bool RepositoryMySQL::createConnection(){
     }
 }
 
-void RepositoryMySQL::destroyConnection(){
+void RepositoryBase::destroyConnection(){
     mysql_close(&connection);
     if(this->prints)
         std::cout << "[DB] Conexão finalizada com o banco de dados!" << std::endl;
 }
 
-int RepositoryMySQL::createExecutionID(){
+int RepositoryBase::createExecutionID(){
     char datatime[150];
     std::string txt = "INSERT INTO execution(datatime) values('" + getCurrentDate() + "');";
     strcpy(datatime, txt.c_str());
@@ -62,7 +62,7 @@ int RepositoryMySQL::createExecutionID(){
     return this->getExecutionId();
 }
 
-int RepositoryMySQL::requestExecutionID(){
+int RepositoryBase::requestExecutionID(){
     MYSQL_RES *resp;
     MYSQL_ROW linhas;
     MYSQL_FIELD *campos;
@@ -98,7 +98,7 @@ int RepositoryMySQL::requestExecutionID(){
 }
 
 
-Coordinate RepositoryMySQL::requestUAVLocation(int idUAV){
+Coordinate RepositoryBase::requestUAVLocation(int idUAV){
     MYSQL_RES *resp;
     MYSQL_ROW linhas;
     MYSQL_FIELD *campos;
@@ -135,7 +135,7 @@ Coordinate RepositoryMySQL::requestUAVLocation(int idUAV){
     return c;
 }
 
-void RepositoryMySQL::saveUAVLocation(int idUAV, Coordinate coord){
+void RepositoryBase::saveUAVLocation(int idUAV, Coordinate coord){
 
     char snd[150];
     std::string txt = "INSERT INTO uav_location(id_uav, location_x, location_y, location_z, time) values('" + std::to_string(idUAV);
@@ -156,7 +156,7 @@ void RepositoryMySQL::saveUAVLocation(int idUAV, Coordinate coord){
     }
 }
 
-double RepositoryMySQL::getVelocity(int idUAV){
+double RepositoryBase::getVelocity(int idUAV){
     MYSQL_RES *resp;
     MYSQL_ROW linhas;
     MYSQL_FIELD *campos;
@@ -190,7 +190,7 @@ double RepositoryMySQL::getVelocity(int idUAV){
     return velocity;
 }
 
-void RepositoryMySQL::setVelocity(int idUAV, double velocity){
+void RepositoryBase::setVelocity(int idUAV, double velocity){
     char snd[150];
     std::string txt = "INSERT INTO uav_velocity(id_uav, velocity, time) values('" + std::to_string(idUAV);
     txt += "', '" + std::to_string(velocity);
@@ -208,7 +208,7 @@ void RepositoryMySQL::setVelocity(int idUAV, double velocity){
     }
 }
 
-float RepositoryMySQL::getBattery(int idUAV){
+float RepositoryBase::getBattery(int idUAV){
     MYSQL_RES *resp;
     MYSQL_ROW linhas;
     MYSQL_FIELD *campos;
@@ -242,7 +242,7 @@ float RepositoryMySQL::getBattery(int idUAV){
     return battery;
 }
 
-void RepositoryMySQL::setBattery(int idUAV, float battery){
+void RepositoryBase::setBattery(int idUAV, float battery){
     char snd[150];
     std::string txt = "INSERT INTO uav_battery(id_uav, battery, time) values('" + std::to_string(idUAV);
     txt += "', '" + std::to_string(battery);
@@ -260,7 +260,7 @@ void RepositoryMySQL::setBattery(int idUAV, float battery){
     }
 }
 
-int RepositoryMySQL::getFlightTime(int idUAV){
+int RepositoryBase::getFlightTime(int idUAV){
     MYSQL_RES *resp;
     MYSQL_ROW linhas;
     MYSQL_FIELD *campos;
@@ -294,7 +294,7 @@ int RepositoryMySQL::getFlightTime(int idUAV){
     return flightTime;
 }
 
-void RepositoryMySQL::setFlightTime(int idUAV, int flightTime){
+void RepositoryBase::setFlightTime(int idUAV, int flightTime){
     char snd[150];
     std::string txt = "INSERT INTO uav_flight_time(id_uav, flight_time, time) values('" + std::to_string(idUAV);
     txt += "', '" + std::to_string(flightTime);
@@ -312,7 +312,7 @@ void RepositoryMySQL::setFlightTime(int idUAV, int flightTime){
     }
 }
 
-bool RepositoryMySQL::isAvailable(int idUAV){
+bool RepositoryBase::isAvailable(int idUAV){
     MYSQL_RES *resp;
     MYSQL_ROW linhas;
     MYSQL_FIELD *campos;
@@ -347,7 +347,7 @@ bool RepositoryMySQL::isAvailable(int idUAV){
     return available;
 }
 
-void RepositoryMySQL::setAvailable(int idUAV, bool available){
+void RepositoryBase::setAvailable(int idUAV, bool available){
     char snd[150];
     std::string txt = "INSERT INTO uav_available(id_uav, available, time) values('" + std::to_string(idUAV);
     txt += "', '" + std::to_string(available);
@@ -365,7 +365,7 @@ void RepositoryMySQL::setAvailable(int idUAV, bool available){
     }
 }
 
-UAVStatus RepositoryMySQL::getUAVStatus(int idUAV){
+UAVStatus RepositoryBase::getUAVStatus(int idUAV){
     UAVStatus us;
     us.setBattery(getBattery(idUAV));
     us.setFlightTime(getFlightTime(idUAV));
@@ -375,21 +375,21 @@ UAVStatus RepositoryMySQL::getUAVStatus(int idUAV){
     return us;
 }
 
-void RepositoryMySQL::enablePrints(){ this->prints = true; }
-void RepositoryMySQL::disablePrints(){ this->prints = false; }
+void RepositoryBase::enablePrints(){ this->prints = true; }
+void RepositoryBase::disablePrints(){ this->prints = false; }
 
-RepositoryMySQL::~RepositoryMySQL() { this->destroyConnection(); }
-std::string RepositoryMySQL::getCurrentDate(){
+RepositoryBase::~RepositoryBase() { this->destroyConnection(); }
+std::string RepositoryBase::getCurrentDate(){
     time_t timetoday;
     time(&timetoday);
     return std::string(asctime(localtime(&timetoday)));
 }
 
-int RepositoryMySQL::getExecutionId() {
+int RepositoryBase::getExecutionId() {
     return executionID;
 }
 
-void RepositoryMySQL::setExecutionId(int executionId) {
+void RepositoryBase::setExecutionId(int executionId) {
     executionID = executionId;
 }
 

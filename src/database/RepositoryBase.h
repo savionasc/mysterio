@@ -5,11 +5,11 @@
 #include "../../src/status/UAVStatus.h"
 #include "../../src/database/Repository.h"
 
-class RepositoryMySQL : public Repository {
+class RepositoryBase : public Repository {
 public:
-    RepositoryMySQL();
-    RepositoryMySQL(bool prints);
-    virtual ~RepositoryMySQL();
+    RepositoryBase();
+    RepositoryBase(bool prints);
+    virtual ~RepositoryBase();
 
     virtual bool createConnection();
     virtual void destroyConnection();
