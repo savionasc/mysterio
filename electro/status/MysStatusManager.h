@@ -1,7 +1,7 @@
 #ifndef MYSTERIO_OMNET_STATUS_MYSSTATUSMANAGER_H_
 #define MYSTERIO_OMNET_STATUS_MYSSTATUSMANAGER_H_
 #include "../../src/communication/Communicable.h"
-#include "../../src/database/RepositoryMySQL.h"
+#include "../../src/database/RepositoryBase.h"
 #include <iostream>
 #include <map>
 #include <vector>
@@ -109,7 +109,8 @@ private:
         return u;
     }
 
-    RepositoryMySQL r; //Deixar de solicitar diretamente pro banco para pedir pro UAV
+    //Deixar de solicitar diretamente pro banco para pedir pro UAV
+    RepositoryBase r;
 };
 
 #endif
