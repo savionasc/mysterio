@@ -20,7 +20,7 @@ void MysStatusManager::onMessageReceive(Message msg){
     StatusMessage* mMSG = dynamic_cast<StatusMessage*>(&msg);
     cout << mMSG->getMsg() << endl;
     switch (mMSG->getCode()) {
-        case LOCATION_STATUS_REQUEST:{
+        case StatusManager::LOCATION_STATUS_REQUEST:{
             Coordinate cc = this->getUAVLocation(1);
             cout << "Posicao Geografica recuperada pelo banco." << endl;
             cout << "X: " << cc.getX() << " Y: " << cc.getY() << " Z: " << cc.getZ() << endl;
@@ -28,32 +28,32 @@ void MysStatusManager::onMessageReceive(Message msg){
             //Aqui eu devo enviar para alguém...
             break;
         }
-        case LOCATION_STATUS_RESPONSE:{
+        case StatusManager::LOCATION_STATUS_RESPONSE:{
             Coordinate c(mMSG->getStatus().getLocationX(), mMSG->getStatus().getLocationY(), mMSG->getStatus().getLocationZ());
             this->updateUAVLocation(c, mMSG->getSource());
             break;
         }
-        case VELOCITY_STATUS_REQUEST:{
+        case StatusManager::VELOCITY_STATUS_REQUEST:{
             cout << "Velocidade recuperada pelo banco: " << this->getUAVVelocity(mMSG->getSource()) << endl;
             break;
         }
-        case VELOCITY_STATUS_RESPONSE:{
+        case StatusManager::VELOCITY_STATUS_RESPONSE:{
             this->updateUAVVelocity(mMSG->getStatus().getVelocity(), mMSG->getSource());
             break;
         }
-        case BATTERY_STATUS_REQUEST:{
+        case StatusManager::BATTERY_STATUS_REQUEST:{
             cout << "Bateria recuperada pelo banco: " << this->getBattery(mMSG->getSource()) << endl;
             break;
         }
-        case BATTERY_STATUS_RESPONSE:{
+        case StatusManager::BATTERY_STATUS_RESPONSE:{
             this->updateBattery(mMSG->getStatus().getBattery(), mMSG->getSource());
             break;
         }
-        case FLIGHTTIME_STATUS_REQUEST:{
+        case StatusManager::FLIGHTTIME_STATUS_REQUEST:{
             cout << "Tempo de voo recuperado pelo banco: " << this->getFlightTime(mMSG->getSource()) << endl;
             break;
         }
-        case FLIGHTTIME_STATUS_RESPONSE:{
+        case StatusManager::FLIGHTTIME_STATUS_RESPONSE:{
             this->updateFlightTime(mMSG->getStatus().getFlightTime(), mMSG->getSource());
             break;
         }
@@ -65,7 +65,7 @@ void MysStatusManager::onMessageReceive(Message msg){
 void MysStatusManager::onDroneStatusMessageReceive(StatusMessage msg){
     cout << msg.getMsg() << endl;
     switch (msg.getCode()) {
-        case LOCATION_STATUS_REQUEST:{
+        case StatusManager::LOCATION_STATUS_REQUEST:{
             Coordinate cc = this->getUAVLocation(1);
             cout << "Posicao Geografica recuperada pelo banco." << endl;
             cout << "X: " << cc.getX() << " Y: " << cc.getY() << " Z: " << cc.getZ() << endl;
@@ -73,32 +73,32 @@ void MysStatusManager::onDroneStatusMessageReceive(StatusMessage msg){
             //Aqui eu devo enviar para alguém...
             break;
         }
-        case LOCATION_STATUS_RESPONSE:{
+        case StatusManager::LOCATION_STATUS_RESPONSE:{
             Coordinate c(msg.getStatus().getLocationX(), msg.getStatus().getLocationY(), msg.getStatus().getLocationZ());
             this->updateUAVLocation(c, msg.getSource());
             break;
         }
-        case VELOCITY_STATUS_REQUEST:{
+        case StatusManager::VELOCITY_STATUS_REQUEST:{
             cout << "Velocidade recuperada pelo banco: " << this->getUAVVelocity(msg.getSource()) << endl;
             break;
         }
-        case VELOCITY_STATUS_RESPONSE:{
+        case StatusManager::VELOCITY_STATUS_RESPONSE:{
             this->updateUAVVelocity(msg.getStatus().getVelocity(), msg.getSource());
             break;
         }
-        case BATTERY_STATUS_REQUEST:{
+        case StatusManager::BATTERY_STATUS_REQUEST:{
             cout << "Bateria recuperada pelo banco: " << this->getBattery(msg.getSource()) << endl;
             break;
         }
-        case BATTERY_STATUS_RESPONSE:{
+        case StatusManager::BATTERY_STATUS_RESPONSE:{
             this->updateBattery(msg.getStatus().getBattery(), msg.getSource());
             break;
         }
-        case FLIGHTTIME_STATUS_REQUEST:{
+        case StatusManager::FLIGHTTIME_STATUS_REQUEST:{
             cout << "Tempo de voo recuperado pelo banco: " << this->getFlightTime(msg.getSource()) << endl;
             break;
         }
-        case FLIGHTTIME_STATUS_RESPONSE:{
+        case StatusManager::FLIGHTTIME_STATUS_RESPONSE:{
             this->updateFlightTime(msg.getStatus().getFlightTime(), msg.getSource());
             break;
         }
