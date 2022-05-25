@@ -1,4 +1,4 @@
-#include "ExampleCommunication.h"
+#include "MysterioCommander.h"
 
 #include <iostream>
 #include "../communication/MysCommunication.h"
@@ -10,10 +10,10 @@
 
 using namespace std;
 
+//Here starts the server communication
 void listenCommunication(){
-    //Here starts the server communication
 
-    int numeroDeUAVsEsperados = 4;
+    int numeroDeUAVsEsperados = 2;
     MysStatusManager *ms;
 
     MysCommunication comm;
@@ -28,7 +28,8 @@ void listenCommunication(){
 
         //Atribuindo tarefas previamente (pós registro dos UAVs)
 
-        //Instanciar o planner juntamente com as tarefas
+        //Instanciar o planner
+        //instanciar tarefas
         //Atribuir as tarefas pros drones que ele quer (por meio do planner)
         //começar a missão
         //Pegar cada tarefa predefinida e dar um assync pra cada uma
@@ -36,38 +37,22 @@ void listenCommunication(){
         cout << "Assigned task: Turn around the car" << endl;
         Coordinate currentP(300.0,420.0,90.0);
         UAV u(0);
-        Coordinate gotoP(800.0,620.0,90.0);
-        Task gotoa(u, Task::GOTO, gotoP);
+        // adicionar type no construtor
         Task gotoc(u, Task::FLY_AROUND, currentP);
-
+        //gotoc.setType(FLY_AROUND);
         TaskManager t;
-        t.addTask(gotoa);
         t.addTask(gotoc);
-        Coordinate currentR(500.0,500.0,400.0);
-        u.setID(2);
-        Task square(u, Task::FLY_AROUND_SQUARE, currentR);
-        t.addTask(square);
-        u.setID(3);
-        square.setUAV(u);
-        t.addTask(square);
 
         char conteudo[10] = "AAAAA";
 
-        for (int itUAV = 0; itUAV < numeroDeUAVsEsperados; itUAV++) {
-            u = ms->getUAV(itUAV);
-            int codeMessage = Message::TASK_MESSAGE;
-            for (int itTask = 0; itTask < t.getNumTasks(u); itTask++) {
-                //Enviando tarefa
-                TaskMessage taskMessage(conteudo, Message::TASK_MESSAGE);
-                //taskMessage.setTask(t.getTaskByIndex(u, t.getNumTasks(u)-1));
-                taskMessage.setTask(t.getTaskByIndex(u, itTask));
-                comm.sendTaskMessageToUAV(u.getNetworkConfigurations().getIdSocket(), taskMessage);
-                cout << "Number of UAV tasks: " << t.getNumTasks(u) << endl;
-                cout << "Task sended: " << itTask << endl;
-                cout << "UAV: " << u.getID() << endl;
-            }
-        }
+        //Enviando tarefa
+        int codeMessage = Message::TASK_MESSAGE;
+        TaskMessage taskMessage(conteudo, Message::TASK_MESSAGE);
+        //taskMessage.setCoord(t.getTaskByIndex(u, t.getNumTasks(u)-1).getTarget());
+        taskMessage.setTask(t.getTaskByIndex(u, t.getNumTasks(u)-1));
 
+        u = ms->getUAV(0);
+        comm.sendTaskMessageToUAV(u.getNetworkConfigurations().getIdSocket(), taskMessage);
 
         //Antes desse loop é onde atribui tarefas previamente
 
@@ -102,8 +87,8 @@ void listenCommunication(){
                 }
             }
 
+            //take off
             if(!strcmp(msg.getMsg(), "decolar")){
-                //take off
                 for (int i = 0; i < ms->getSize(); i++) {
                     Coordinate currentP(50.0,50.0,100.0);
                     UAV u(i);
@@ -121,24 +106,9 @@ void listenCommunication(){
 
                     comm.sendTaskMessageToUAV(ms->getUAV(u.getID()).getNetworkConfigurations().getIdSocket(), taskMessage);
                 }
-            }else if(!strcmp(msg.getMsg(), "quarteirao")){
-                //take off
-                Coordinate currentP(500.0,500.0,400.0);
-                UAV u(id);
-                Task gotoc(u, currentP);
-                gotoc.setType(Task::FLY_AROUND_SQUARE);
-                TaskManager t;
-                t.addTask(gotoc);
-                //cout << "UAV["<<u.getID()<<"]-Tasks: " << t.getNumTasks(u) << endl;
-
-                //Enviando tarefa
-                int codeMessage = Message::TASK_MESSAGE;
-                TaskMessage taskMessage(msg.getMsg(), Message::TASK_MESSAGE);
-                //taskMessage.setCoord(t.getTaskByIndex(u, t.getNumTasks(u)-1).getTarget());
-                taskMessage.setTask(t.getTaskByIndex(u, t.getNumTasks(u)-1));
-                comm.sendTaskMessageToUAV(ms->getUAV(u.getID()).getNetworkConfigurations().getIdSocket(), taskMessage);
-            }else if(!strcmp(msg.getMsg(), "quarteiraoT")){
-                //take off
+            }
+            //take off
+            else if(!strcmp(msg.getMsg(), "quarteirao")){
                 for (int i = 0; i < ms->getSize(); i++) {
                     Coordinate currentP(500.0,500.0,400.0);
                     UAV u(i);
@@ -176,8 +146,9 @@ void listenCommunication(){
             comm.sendMessageToUAV(id, msg);
         }
         conectar.join();
-    }else{
-        //when it fails enter here
+    }
+    //when it fails enter here
+    else{
         switch (serverSocket) {
             case -1:
                 std::cerr << "Inaccessible ports" << std::endl;
