@@ -7,7 +7,7 @@
 #include <thread>
 #include <mutex>
 #include "../../src/communication/StatusMessage.h"
-#include "../../src/database/RepositoryMySQL.h"
+#include "../../src/database/RepositoryBase.h"
 #include "../../src/status/StatusManager.h"
 
 using namespace std;
@@ -108,7 +108,7 @@ private:
         return u;
     }
 
-    RepositoryMySQL r; //Deixar de solicitar diretamente pro banco para pedir pro UAV
+    RepositoryBase r; //Deixar de solicitar diretamente pro banco para pedir pro UAV
 };
 
 #endif
