@@ -1,4 +1,4 @@
-#include "ExampleCommunication.h"
+#include "MysterioCommander.h"
 
 #include <iostream>
 #include "../communication/MysCommunication.h"

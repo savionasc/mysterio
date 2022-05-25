@@ -3,7 +3,7 @@
 
 #include "../communication/UAVMysCommunication.h"
 #include "../../src/mission/DependentTask.h"
-#include "../scenarios/ExampleCommunication.h"
+#include "../scenarios/MysterioCommander.h"
 
 using namespace omnetpp;
 using namespace std;

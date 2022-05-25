@@ -1,0 +1,14 @@
+#ifndef MYSTERIO_ELECTRO_MYSTERIOCOMMANDER_H_
+#define MYSTERIO_ELECTRO_MYSTERIOCOMMANDER_H_
+#include "../communication/MysCommunication.h"
+#include "../status/MysStatusManager.h"
+
+class MysterioCommander {
+public:
+    MysterioCommander(){}
+    virtual ~MysterioCommander(){}
+    MysCommunication conn;
+    MysStatusManager* status;
+};
+
+#endif
