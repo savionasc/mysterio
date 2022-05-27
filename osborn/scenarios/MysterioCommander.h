@@ -1,5 +1,5 @@
-#ifndef MYSTERIO_MARKO_SCENARIOS_MYSTERIOCOMMANDER_H_
-#define MYSTERIO_MARKO_SCENARIOS_MYSTERIOCOMMANDER_H_
+#ifndef MYSTERIO_osborn_SCENARIOS_MYSTERIOCOMMANDER_H_
+#define MYSTERIO_osborn_SCENARIOS_MYSTERIOCOMMANDER_H_
 #include "../communication/MysCommunication.h"
 #include "../status/MysStatusManager.h"
 

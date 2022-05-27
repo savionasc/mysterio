@@ -1,3 +1,3 @@
-package mysterio.marko;
+package mysterio.osborn;
 
 @namespace(inet);

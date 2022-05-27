@@ -1,4 +1,4 @@
-package mysterio.marko.scenarios;
+package mysterio.osborn.scenarios;
 
 import inet.node.base.ApplicationLayerNodeBase;
 

@@ -1,3 +1,3 @@
-package mysterio.marko.scenarios;
+package mysterio.osborn.scenarios;
 
 //@namespace(inet);

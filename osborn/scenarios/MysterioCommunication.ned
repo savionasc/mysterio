@@ -1,11 +1,11 @@
-package mysterio.marko.scenarios;
+package mysterio.osborn.scenarios;
 
 import inet.node.inet.StandardHost;
-import mysterio.marko.uavs.ModuloComunicacao;
+import mysterio.osborn.uavs.ModuloComunicacao;
 import inet.visualizer.integrated.IntegratedVisualizer;
 import inet.visualizer.integrated.IntegratedCanvasVisualizer;
 import inet.node.base.ApplicationLayerNodeBase;
-import mysterio.marko.sheep.Sheep;
+import mysterio.osborn.sheep.Sheep;
 
 network MysterioCommunication {
     parameters:

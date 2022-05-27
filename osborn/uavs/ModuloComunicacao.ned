@@ -1,4 +1,4 @@
-package mysterio.marko.uavs;
+package mysterio.osborn.uavs;
 
 import inet.node.inet.StandardHost;
 

@@ -15,7 +15,7 @@
 // along with this program; if not, see <http://www.gnu.org/licenses/>.
 //
 
-package mysterio.marko.uavs;
+package mysterio.osborn.uavs;
 
 import inet.mobility.base.MovingMobilityBase;
 
