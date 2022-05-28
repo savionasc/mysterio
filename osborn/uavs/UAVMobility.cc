@@ -4,7 +4,6 @@
 
 #include "../communication/UAVMysCommunication.h"
 #include "../../src/mission/DependentTask.h"
-#include "../sheep/SheepMobility.h"
 #include "UAVMessage_m.h"
 
 using namespace omnetpp;
@@ -172,9 +171,6 @@ void UAVMobility::move() {
     if(bateria[uav.getID()] < 0.005 && ativo[uav.getID()]){
         ativo[uav.getID()] = false;
     }
-    if(continuoustask){
-        analisarDistanciaOvelha();
-    }
     LineSegmentsMobilityBase::move();
     raiseErrorIfOutside();
     this->rescueData();
@@ -191,113 +187,11 @@ J UAVMobility::pegarBateria(int idUAV){
     return energySto->getResidualEnergyCapacity();
 }
 
-Coord UAVMobility::pegarPosicaoOvelha(){
-    cModule *a = getParentModule()->getParentModule()->getSubmodule("sheep")->getSubmodule("mobility", 0);
-    SheepMobility *smob = check_and_cast<SheepMobility*>(a);
-
-    return smob->posicaoAtual();
-}
-
-void UAVMobility::analisarDistanciaOvelha(){
-    Coord sheep = pegarPosicaoOvelha();
-    if(sheep.distance(lastPosition) < 300){
-        cout << "UAV perto da ovelha!" << endl;
-        continuoustask = false;
-        waypoints[uav.getID()] = 2;
-    }
-}
-
 void UAVMobility::rescueData(){
     position[uav.getID()] = lastPosition;
     velocidade[uav.getID()] = speedParameter->doubleValue();
     bateria[uav.getID()] = std::stof(pegarBateria(uav.getID()).str());
     tempoVoo[uav.getID()] = simTime().dbl();
-}
-
-Coord UAVMobility::findSheep(int j){
-    Coord c;
-    analisarDistanciaOvelha();
-
-    //checa se a ovelha está no raio de alcance
-    //se sim, se comunica com ela
-    //se não, o drone procura
-
-    if(waypoints[uav.getID()] == 0 || waypoints[uav.getID()] == 4){
-        c = this->castCoordinateToCoord(base[uav.getID()][j].getTarget());
-        waypoints[uav.getID()]++;
-        continuoustask = true;
-    }else if(waypoints[uav.getID()] == 1){
-        c = getRandomPosition();
-        c.setZ(200);
-    }else if(waypoints[uav.getID()] == 2){
-        c = pegarPosicaoOvelha();
-        c.setZ(200);
-        waypoints[uav.getID()] = 0;
-        base[uav.getID()][j].setStatus(2);
-
-        //Parando verificação/busca pela ovelha
-        continuoustask = false;
-
-        TaskMessage tm;
-        tm.setSource(this->uav.getID());
-        tm.setDestination(-5);
-        //preparando comunicação com ovelha
-        msgs.push(tm);
-
-        TaskMessage msg;
-        Task t;
-        t.setId(1);
-        msg.setMsg("OLHA A MENSAGEM!");
-        msg.setCode(Message::SUBORDINATE_SUBTASK);
-        msg.setSource(uav.getID());
-        msg.setDestination(1);
-        msg.setTask(t);
-        Coord d = c;
-        if(d.getX() > 50 && d.getY() > 50){
-            d.setX(d.getX()-50);
-            d.setY(d.getY()-50);
-        }
-        msg.setCoord(this->castCoordToCoordinate(d));
-        uavs[uav.getID()].dispatchTaskMessage(msg);
-
-        msg.setDestination(2);
-        t.setId(2);
-        msg.setTask(t);
-        d.setX(d.getX()+100);
-        msg.setCoord(this->castCoordToCoordinate(d));
-        uavs[uav.getID()].dispatchTaskMessage(msg);
-
-        msg.setDestination(3);
-        t.setId(3);
-        msg.setTask(t);
-        d.setY(d.getY()+100);
-        msg.setCoord(this->castCoordToCoordinate(d));
-        uavs[uav.getID()].dispatchTaskMessage(msg);
-
-        msg.setDestination(4);
-        t.setId(4);
-        msg.setTask(t);
-        d.setX(d.getX()-100);
-        msg.setCoord(this->castCoordToCoordinate(d));
-        uavs[uav.getID()].dispatchTaskMessage(msg);
-    }
-
-    return c;
-}
-
-Coord UAVMobility::surroundSheep(int j){
-    Coord c;
-    if(waypoints[uav.getID()] == 0){
-        c = this->castCoordinateToCoord(base[uav.getID()][j].getTarget());
-        waypoints[uav.getID()]++;
-    }else if(waypoints[uav.getID()] == 1){
-        base[uav.getID()][j].setStatus(2);
-        ativo[uav.getID()] = false;
-        waypoints[uav.getID()] = 0;
-        //nextMoveIsWait = true;
-        c = this->castCoordinateToCoord(base[uav.getID()][j].getTarget());
-    }
-    return c;
 }
 
 Coord UAVMobility::flyAround(int j){
@@ -382,10 +276,6 @@ void UAVMobility::executeTask(int j){
         targetPosition = flyAround(j);
     }else if (base[uav.getID()][j].getType() == Task::FLY_AROUND_SQUARE){
         targetPosition = flyAroundSquare(j);
-    }else if(base[uav.getID()][j].getType() == Task::FIND_SHEEP){
-        targetPosition = findSheep(j);
-    }else if(base[uav.getID()][j].getType() == Task::SURROUND_SHEEP){
-        targetPosition = surroundSheep(j);
     }else{
         targetPosition = this->castCoordinateToCoord(base[uav.getID()][j].getTarget());
         itera[uav.getID()]++;

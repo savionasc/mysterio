@@ -5,7 +5,6 @@ import mysterio.osborn.uavs.ModuloComunicacao;
 import inet.visualizer.integrated.IntegratedVisualizer;
 import inet.visualizer.integrated.IntegratedCanvasVisualizer;
 import inet.node.base.ApplicationLayerNodeBase;
-import mysterio.osborn.sheep.Sheep;
 
 network MysterioCommunication {
     parameters:
@@ -26,13 +25,9 @@ network MysterioCommunication {
         CAR: BasestationUAVs {
             @display("p=300,420");
         }
-        sheep: Sheep {
-            @display("p=550,220");
-        }
         
     //connections allowunconnected:
     connections:
-        UAV[0].out++ --> {  delay = 100ms; } --> sheep.in++;
         UAV[0].out++ --> {  delay = 100ms; } --> UAV[1].in++;
         UAV[0].in++ <-- {  delay = 100ms; } <-- UAV[1].out++;
         UAV[0].out++ --> {  delay = 100ms; } --> UAV[2].in++;
