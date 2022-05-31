@@ -1,12 +1,12 @@
-#include "MysterioCommander.h"
+#include "../../osborn/scenarios/MysterioCommander.h"
 
 #include <iostream>
+
+#include "../../osborn/communication/UAVRegistry.cc"
 #include "../communication/MysCommunication.h"
 #include "../../src/database/RepositoryBase.h"
 #include "../../src/mission/MissionPlanner.h"
 #include "../../src/taskmanager/TaskManager.h"
-#include "../communication/UAVRegistry.cc"
-
 #include "../../src/mission/Command.h"
 
 using namespace std;

@@ -1,7 +1,7 @@
 #ifndef MYSTERIO_OMNET_UAVS_MODULOCOMUNICACAO_H_
 #define MYSTERIO_OMNET_UAVS_MODULOCOMUNICACAO_H_
 
-#include "UAVMessage_m.h"
+#include "../../osborn/uavs/UAVMessage_m.h"
 
 using namespace omnetpp;
 using namespace std;

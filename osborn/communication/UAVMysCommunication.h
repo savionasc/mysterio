@@ -9,6 +9,8 @@
 #include <arpa/inet.h>
 #include <netinet/in.h>
 
+#include "../../osborn/communication/MysCommunication.h"
+#include "../../osborn/mission/MysTask.h"
 #include "../../src/communication/Message.h"
 #include "../../src/communication/StatusMessage.h"
 #include "../../src/communication/TaskMessage.h"
@@ -17,8 +19,6 @@
 #include "inet/common/geometry/common/Coord.h"
 #include "inet/power/base/EpEnergyStorageBase.h"
 #include "inet/power/storage/SimpleEpEnergyStorage.h"
-#include "../mission/MysTask.h"
-#include "MysCommunication.h"
 
 using namespace inet;
 using namespace std;

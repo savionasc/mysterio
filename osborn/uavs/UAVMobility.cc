@@ -1,10 +1,11 @@
-#include "../uavs/UAVMobility.h"
+#include "../../osborn/uavs/UAVMobility.h"
+
 #include <iostream>
 #include <queue>
 
-#include "../communication/UAVMysCommunication.h"
+#include "../../osborn/communication/UAVMysCommunication.h"
+#include "../../osborn/uavs/UAVMessage_m.h"
 #include "../../src/mission/DependentTask.h"
-#include "UAVMessage_m.h"
 
 using namespace omnetpp;
 using namespace std;
@@ -170,6 +171,9 @@ void UAVMobility::move() {
     }
     if(bateria[uav.getID()] < 0.005 && ativo[uav.getID()]){
         ativo[uav.getID()] = false;
+    }
+    if(continuoustask){
+        //analisarDistanciaOvelha();
     }
     LineSegmentsMobilityBase::move();
     raiseErrorIfOutside();

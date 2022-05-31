@@ -1,11 +1,11 @@
 #ifndef MYSTERIO_OMNET_EXCOMM1_COMMUNICATION_COMMUNICATIONSOCKET_H_
 #define MYSTERIO_OMNET_EXCOMM1_COMMUNICATION_COMMUNICATIONSOCKET_H_
 
+#include "../../osborn/status/MysStatusManager.h"
 #include "../../src/utils/Coordinate.h"
 #include "../../src/communication/Communication.h"
 #include "../../src/communication/Communicable.h"
 #include "../../src/communication/Message.h"
-#include "../status/MysStatusManager.h"
 
 // componente de comunicação do framework com os drones
 class MysCommunication : public Communication {

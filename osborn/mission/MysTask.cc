@@ -1,4 +1,4 @@
-#include "MysTask.h"
+#include "../../osborn/mission/MysTask.h"
 
 MysTask::MysTask() { }
 

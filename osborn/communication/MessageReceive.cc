@@ -3,12 +3,12 @@
 #include <netinet/in.h>
 #include <string.h>
 
+#include "../../osborn/communication/MessageSender.cc"
 #include "../../src/communication/Message.h"
 #include "../../src/communication/StatusMessage.h"
 #include "../../src/communication/TaskMessage.h"
 #include "../../src/taskmanager/TaskManager.h"
 #include "../status/MysStatusManager.h"
-#include "MessageSender.cc"
 
 using namespace std;
 

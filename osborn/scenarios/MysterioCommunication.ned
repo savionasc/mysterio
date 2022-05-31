@@ -22,9 +22,6 @@ network MysterioCommunication {
             @display("i=misc/node_vs");
             @display("t=UAV");
         }
-        CAR: BasestationUAVs {
-            @display("p=300,420");
-        }
         
     //connections allowunconnected:
     connections:
@@ -36,4 +33,10 @@ network MysterioCommunication {
         UAV[0].in++ <-- {  delay = 100ms; } <-- UAV[3].out++;
         UAV[0].out++ --> {  delay = 100ms; } --> UAV[4].in++;
         UAV[0].in++ <-- {  delay = 100ms; } <-- UAV[4].out++;
+        UAV[0].out++ --> {  delay = 100ms; } --> UAV[5].in++;
+        UAV[0].in++ <-- {  delay = 100ms; } <-- UAV[5].out++;
+        UAV[0].out++ --> {  delay = 100ms; } --> UAV[6].in++;
+        UAV[0].in++ <-- {  delay = 100ms; } <-- UAV[6].out++;
+        UAV[0].out++ --> {  delay = 100ms; } --> UAV[7].in++;
+        UAV[0].in++ <-- {  delay = 100ms; } <-- UAV[7].out++;
 }

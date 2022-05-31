@@ -1,6 +1,6 @@
-#ifndef MYSTERIO_osborn_SCENARIOS_MYSTERIOCOMMANDER_H_
-#define MYSTERIO_osborn_SCENARIOS_MYSTERIOCOMMANDER_H_
-#include "../communication/MysCommunication.h"
+#ifndef MYSTERIO_OSBORN_SCENARIOS_MYSTERIOCOMMANDER_H_
+#define MYSTERIO_OSBORN_SCENARIOS_MYSTERIOCOMMANDER_H_
+#include "../../osborn/communication/MysCommunication.h"
 #include "../status/MysStatusManager.h"
 
 class MysterioCommander {

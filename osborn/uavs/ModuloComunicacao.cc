@@ -1,11 +1,12 @@
-#include "ModuloComunicacao.h"
+#include "../../osborn/uavs/ModuloComunicacao.h"
 
 #include "../mission/MysTask.h"
-#include "UAVMobility.h"
 #include <iostream>
 #include <queue>
 
-#include "../communication/UAVMysCommunication.h"
+#include "../../osborn/communication/UAVMysCommunication.h"
+#include "../../osborn/mission/MysTask.h"
+#include "../../osborn/uavs/UAVMobility.h"
 #include "../../src/status/UAVStatus.h"
 
 using namespace omnetpp;

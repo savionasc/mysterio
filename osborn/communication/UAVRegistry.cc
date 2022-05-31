@@ -6,8 +6,8 @@
 #include <netinet/in.h>
 #include <thread>
 
-#include "MessageReceive.cc"
-#include "MessageSender.cc"
+#include "../../osborn/communication/MessageReceive.cc"
+#include "../../osborn/communication/MessageSender.cc"
 #include "../status/MysStatusManager.h"
 
 using namespace std;

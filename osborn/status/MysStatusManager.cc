@@ -1,6 +1,7 @@
-#include "MysStatusManager.h"
-
 #include "../communication/MysCommunication.h"
+#include "../../osborn/status/MysStatusManager.h"
+
+#include "../../osborn/communication/MysCommunication.h"
 
 using namespace std;
 
