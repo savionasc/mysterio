@@ -42,13 +42,13 @@ void ModuloComunicacao::initialize(){
         uavs[selfID].connectBase();
     }
     cout << "Iniciou comunicação UAV!" << endl;
-    UAVMessage *sendMSGEvt = new UAVMessage("checking", CHECKING_MESSAGE);
-    sendMSGEvt->setOrigem(selfID);
-    scheduleAt(simTime()+2, sendMSGEvt);
+    //UAVMessage *sendMSGEvt = new UAVMessage("checking", CHECKING_MESSAGE);
+    //sendMSGEvt->setOrigem(selfID);
+    //scheduleAt(simTime()+2, sendMSGEvt);
 }
 
 void ModuloComunicacao::handleMessage(cMessage *msg){
-    UAVMessage *mMSG = check_and_cast<UAVMessage*>(msg);
+    /*UAVMessage *mMSG = check_and_cast<UAVMessage*>(msg);
     if(mMSG->getKind() == CHECKING_MESSAGE && strcmp(mMSG->getName(), "checking") == 0){
         if(msgs.size() > 0 && selfID == msgs.front().getSource()){
             TaskMessage tm = msgs.front();
@@ -84,7 +84,7 @@ void ModuloComunicacao::handleMessage(cMessage *msg){
         }
     }
 
-    delete mMSG;
+    delete mMSG;*/
 }
 
 //ATENÇÃO!!

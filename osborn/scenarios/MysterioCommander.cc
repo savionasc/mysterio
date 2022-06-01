@@ -69,6 +69,7 @@ void listenCommunication(){
                 for (int i = 0; i < ms->getSize(); i++) {
                     Coordinate currentP(50.0,50.0,100.0);
                     UAV u(i);
+                    cout << "i: " << i << endl;
                     Task gotoc(u, currentP);
                     gotoc.setType(10);
                     TaskManager t;
