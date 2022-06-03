@@ -64,7 +64,26 @@ void listenCommunication(){
                 }
             }
 
-            if(!strcmp(msg.getMsg(), "decolar")){
+            cout << "Antes " << endl;
+            if(!strcmp(msg.getMsg(), "goto")){
+                cout << "Entrou GOTO" << endl;
+                //take off
+                Coordinate currentP(30.0,30.0,30.0);
+                UAV u(id);
+                Task gotoc(u, currentP);
+                //gotoc.setType(Task::GOTO);
+                gotoc.setType(10);
+                TaskManager t;
+                t.addTask(gotoc);
+
+                //Enviando tarefa
+                int codeMessage = Message::TASK_MESSAGE;
+                TaskMessage taskMessage(msg.getMsg(), Message::TASK_MESSAGE);
+                taskMessage.setTask(t.getTaskByIndex(u, t.getNumTasks(u)-1));
+
+                comm.sendTaskMessageToUAV(ms->getUAV(u.getID()).getNetworkConfigurations().getIdSocket(), taskMessage);
+
+            }else if(!strcmp(msg.getMsg(), "decolar")){
                 //take off
                 for (int i = 0; i < ms->getSize(); i++) {
                     Coordinate currentP(50.0,50.0,100.0);
@@ -156,13 +175,16 @@ void assignPreprogrammedTasks(int n, MysStatusManager *ms, MysCommunication comm
     //começar a missão
     //Pegar cada tarefa predefinida e dar um assync pra cada uma
 
-    cout << "Assigned task: Find sheep!" << endl;
+    TaskManager t;
+    //Building find sheep task
+    /*cout << "Assigned task: Find sheep!" << endl;
     Coordinate initialPoint(500.0,500.0,600.0);
     UAV u(0);
     Task findsheep(u, Task::FIND_SHEEP, initialPoint);
 
-    TaskManager t;
-    t.addTask(findsheep);
+
+    t.addTask(findsheep);*/
+
 
     //MissionPlanner *mp;
     //mp->assignAllTasks();
@@ -172,7 +194,7 @@ void assignPreprogrammedTasks(int n, MysStatusManager *ms, MysCommunication comm
     char assuntoMSG[10] = "New Task!";
 
     for (int itUAV = 0; itUAV < n; itUAV++) {
-        u = ms->getUAV(itUAV);
+        UAV u = ms->getUAV(itUAV);
         int codeMessage = Message::TASK_MESSAGE;
         for (int itTask = 0; itTask < t.getNumTasks(u); itTask++) {
             //Enviando tarefa

@@ -66,7 +66,7 @@ class INET_API UAVMobility : public LineSegmentsMobilityBase
     /** @brief Overridden from LineSegmentsMobilityBase.*/
     virtual void move() override;
 
-    void rescueData();
+    void rescueDataAndStoreVariables();
 
     void executeTask(int j);
     Coord flyAround(int j);
@@ -78,7 +78,7 @@ class INET_API UAVMobility : public LineSegmentsMobilityBase
 
     UAV uav;
     bool continuoustask = false;
-    int funcao = 0;
+    int funcao = ROLE_DISABLED;
 
     //0 para uav desativado
     //1 para uav sem funcao
@@ -88,6 +88,16 @@ class INET_API UAVMobility : public LineSegmentsMobilityBase
   public:
     UAVMobility();
     virtual double getMaxSpeed() const override;
+
+    enum ROLES{
+        ROLE_DISABLED = 0,
+        ROLE_SLAVE = 2,
+        ROLE_LEADER = 3
+    };
+
+private:
+    void initStoppedUAVs();
+    void initAuxiliarTasksVariables();
 };
 
 }
