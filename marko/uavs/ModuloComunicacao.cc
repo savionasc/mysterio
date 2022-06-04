@@ -73,11 +73,11 @@ void ModuloComunicacao::handleMessage(cMessage *msg){
 
         Task x = mMSG->getTask();
         int i = x.getUAV().getID();
-        base[i].push_back(x);
-        int j = base[i].size()-1;
-        base[i][j].setType(x.getType());
-        base[i][j].getUAV().setID(x.getUAV().getID());
-        waypoints[i] = base[i][j].getWaypoints();
+        tasksVector[i].push_back(x);
+        int j = tasksVector[i].size()-1;
+        tasksVector[i][j].setType(x.getType());
+        tasksVector[i][j].getUAV().setID(x.getUAV().getID());
+        waypoints[i] = tasksVector[i][j].getWaypoints();
         if(itera[i] < 0){
             itera[i]++;
         }
