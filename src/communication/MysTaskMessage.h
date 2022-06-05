@@ -1,8 +1,8 @@
 #ifndef MYSTERIO_OMNET_COMMUNICATION_MYSTASKMESSAGE_H_
 #define MYSTERIO_OMNET_COMMUNICATION_MYSTASKMESSAGE_H_
 
+#include "../../osborn/mission/MysTask.h"
 #include "../../src/communication/Message.h"
-#include "../mission/MysTask.h"
 
 class MysTaskMessage : public Message{
 public:
