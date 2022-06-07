@@ -1,11 +1,11 @@
-#include "../uavs/UAVMobility.h"
+#include "../../osborn/uavs/UAVMobility.h"
+
 #include <iostream>
 #include <queue>
 
-#include "../communication/UAVMysCommunication.h"
+#include "../../osborn/communication/UAVMysCommunication.h"
+#include "../../osborn/uavs/UAVMessage_m.h"
 #include "../../src/mission/DependentTask.h"
-#include "../sheep/SheepMobility.h"
-#include "UAVMessage_m.h"
 
 using namespace omnetpp;
 using namespace std;
@@ -30,46 +30,42 @@ Define_Module(UAVMobility);
 
 UAVMobility::UAVMobility(){ nextMoveIsWait = false; }
 
+//Base Method
 void UAVMobility::initialize(int stage) {
     LineSegmentsMobilityBase::initialize(stage);
     uav.setID(getParentModule()->getIndex());
-    if(uav.getID() == 0){
-        ativo[uav.getID()] = true;
-        funcao = 3;
-    }else{
-        ativo[uav.getID()] = false;
-        funcao = 2;
-    }
 
-    for (int i = 0; i < NUMUAVS; i++) {
-        itera[i] = -1;
-        waypoints[i] = 0;
-    }
+    initStoppedUAVs();
+
+    initAuxiliarTasksVariables();
 
     if (stage == INITSTAGE_LOCAL) {
         waitTimeParameter = &par("waitTime");
         hasWaitTime = waitTimeParameter->isExpression() || waitTimeParameter->doubleValue() != 0;
         speedParameter = &par("speed");
-        velocidade[uav.getID()] = par("speed").operator double();
+        //velocidade[uav.getID()] = par("speed").operator double();
         stationary = !speedParameter->isExpression() && speedParameter->doubleValue() == 0;
     }
     this->rescueDataAndStoreVariables();
 }
 
+//Base Method
 void UAVMobility::setTargetPosition() {
+    std::cout << "setTargetPosition!" << std::endl;
 
     if (nextMoveIsWait) {
         simtime_t waitTime = waitTimeParameter->doubleValue()+3;
         nextChange = simTime() + waitTime;
         nextMoveIsWait = false;
-    }else if(funcao == 2 && !ativo[uav.getID()]){
+    }else if(funcao == UAVMobility::ROLE_LEADER && !ativo[uav.getID()]){
         simtime_t waitTime = waitTimeParameter->doubleValue()+3;
         nextChange = simTime() + waitTime;
         nextMoveIsWait = true;
 
 //        Coord inicialPosition(500, 500, 500);
         targetPosition = lastPosition;
-    }else if(funcao == 0 && !ativo[uav.getID()]) {
+        std::cout << "mandou posicao aleatória!" << std::endl;
+    }else if(funcao == UAVMobility::ROLE_SLAVE && !ativo[uav.getID()]) {
 
         Coord inicialPosition(10, 0, 10);
 
@@ -88,6 +84,7 @@ void UAVMobility::setTargetPosition() {
 
     } else {
         if(tasksVector[uav.getID()].size() != itera[uav.getID()] && tasksVector[uav.getID()].size() > 0){ //if there are tasks not performed
+            std::cout << "TEM TAREFA!" << std::endl;
             int task = itera[uav.getID()];
             //finalizando
             if(tasksVector[uav.getID()][task].getStatus() == 2){
@@ -127,6 +124,7 @@ void UAVMobility::setTargetPosition() {
                 targetPosition = p;
             }else{
                 targetPosition = getRandomPosition();
+                std::cout << "ALEATÓRIA" << std::endl;
             }
 
             if(u.getSelfID() == 1){
@@ -142,10 +140,11 @@ void UAVMobility::setTargetPosition() {
     this->rescueDataAndStoreVariables();
 }
 
+//Base Method
 void UAVMobility::move() {
     //Drenando bateria e repassando tarefa
     if(lowbattery[uav.getID()] == 1){
-        cout << "Drenou" << endl;
+        std::cout << "Drenou" << std::endl;
         cModule *a = getParentModule()->getParentModule()->getSubmodule("UAV", uav.getID())->getSubmodule("energyStorage", 0);
         SimpleEpEnergyStorage *energySto = check_and_cast<SimpleEpEnergyStorage*>(a);
         energySto->consumir();
@@ -173,7 +172,7 @@ void UAVMobility::move() {
         ativo[uav.getID()] = false;
     }
     if(continuoustask){
-        analisarDistanciaOvelha();
+        //analisarDistanciaOvelha();
     }
     LineSegmentsMobilityBase::move();
     raiseErrorIfOutside();
@@ -181,32 +180,38 @@ void UAVMobility::move() {
 
 }
 
+//Base Method
 double UAVMobility::getMaxSpeed() const {
     return speedParameter->isExpression() ? NaN : speedParameter->doubleValue();
 }
 
+//Auxiliar Method
+void UAVMobility::initStoppedUAVs() {
+    if (uav.getID() == 0) {
+        ativo[uav.getID()] = true;
+        funcao = UAVMobility::ROLE_LEADER;
+    } else {
+        ativo[uav.getID()] = false;
+        funcao = UAVMobility::ROLE_SLAVE;
+    }
+}
+
+//Auxiliar Method
+void UAVMobility::initAuxiliarTasksVariables() {
+    for (int i = 0; i < NUMUAVS; i++) {
+        itera[i] = -1;
+        waypoints[i] = 0;
+    }
+}
+
+//Auxiliar Method
 J UAVMobility::pegarBateria(int idUAV){
     cModule *a = getParentModule()->getParentModule()->getSubmodule("UAV", idUAV)->getSubmodule("energyStorage", 0);
     SimpleEpEnergyStorage *energySto = check_and_cast<SimpleEpEnergyStorage*>(a);
     return energySto->getResidualEnergyCapacity();
 }
 
-Coord UAVMobility::pegarPosicaoOvelha(){
-    cModule *a = getParentModule()->getParentModule()->getSubmodule("sheep")->getSubmodule("mobility", 0);
-    SheepMobility *smob = check_and_cast<SheepMobility*>(a);
-
-    return smob->posicaoAtual();
-}
-
-void UAVMobility::analisarDistanciaOvelha(){
-    Coord sheep = pegarPosicaoOvelha();
-    if(sheep.distance(lastPosition) < 300){
-        cout << "UAV perto da ovelha!" << endl;
-        continuoustask = false;
-        waypoints[uav.getID()] = 2;
-    }
-}
-
+//Auxiliar Method
 void UAVMobility::rescueDataAndStoreVariables(){
     position[uav.getID()] = lastPosition;
     velocidade[uav.getID()] = speedParameter->doubleValue();
@@ -214,92 +219,7 @@ void UAVMobility::rescueDataAndStoreVariables(){
     tempoVoo[uav.getID()] = simTime().dbl();
 }
 
-Coord UAVMobility::findSheep(int j){
-    Coord c;
-    analisarDistanciaOvelha();
-
-    //checa se a ovelha está no raio de alcance
-    //se sim, se comunica com ela
-    //se não, o drone procura
-
-    if(waypoints[uav.getID()] == 0 || waypoints[uav.getID()] == 4){
-        c = this->castCoordinateToCoord(tasksVector[uav.getID()][j].getTarget());
-        waypoints[uav.getID()]++;
-        continuoustask = true;
-    }else if(waypoints[uav.getID()] == 1){
-        c = getRandomPosition();
-        c.setZ(200);
-    }else if(waypoints[uav.getID()] == 2){
-        c = pegarPosicaoOvelha();
-        c.setZ(200);
-        waypoints[uav.getID()] = 0;
-        tasksVector[uav.getID()][j].setStatus(2);
-
-        //Parando verificação/busca pela ovelha
-        continuoustask = false;
-
-        TaskMessage tm;
-        tm.setSource(this->uav.getID());
-        tm.setDestination(-5);
-        //preparando comunicação com ovelha
-        msgs.push(tm);
-
-        TaskMessage msg;
-        Task t;
-        t.setId(1);
-        msg.setMsg("OLHA A MENSAGEM!");
-        msg.setCode(Message::SUBORDINATE_SUBTASK);
-        msg.setSource(uav.getID());
-        msg.setDestination(1);
-        msg.setTask(t);
-        Coord d = c;
-        if(d.getX() > 50 && d.getY() > 50){
-            d.setX(d.getX()-50);
-            d.setY(d.getY()-50);
-        }
-        msg.setCoord(this->castCoordToCoordinate(d));
-        uavs[uav.getID()].dispatchTaskMessage(msg);
-
-        msg.setDestination(2);
-        t.setId(2);
-        msg.setTask(t);
-        d.setX(d.getX()+100);
-        msg.setCoord(this->castCoordToCoordinate(d));
-        uavs[uav.getID()].dispatchTaskMessage(msg);
-
-        msg.setDestination(3);
-        t.setId(3);
-        msg.setTask(t);
-        d.setY(d.getY()+100);
-        msg.setCoord(this->castCoordToCoordinate(d));
-        uavs[uav.getID()].dispatchTaskMessage(msg);
-
-        msg.setDestination(4);
-        t.setId(4);
-        msg.setTask(t);
-        d.setX(d.getX()-100);
-        msg.setCoord(this->castCoordToCoordinate(d));
-        uavs[uav.getID()].dispatchTaskMessage(msg);
-    }
-
-    return c;
-}
-
-Coord UAVMobility::surroundSheep(int j){
-    Coord c;
-    if(waypoints[uav.getID()] == 0){
-        c = this->castCoordinateToCoord(tasksVector[uav.getID()][j].getTarget());
-        waypoints[uav.getID()]++;
-    }else if(waypoints[uav.getID()] == 1){
-        tasksVector[uav.getID()][j].setStatus(2);
-        ativo[uav.getID()] = false;
-        waypoints[uav.getID()] = 0;
-        //nextMoveIsWait = true;
-        c = this->castCoordinateToCoord(tasksVector[uav.getID()][j].getTarget());
-    }
-    return c;
-}
-
+//Auxiliar Method
 Coord UAVMobility::flyAround(int j){
     Coord c;
     if(waypoints[uav.getID()] == 0 || waypoints[uav.getID()] == 4){
@@ -347,6 +267,7 @@ Coord UAVMobility::flyAround(int j){
     return c;
 }
 
+//Auxiliar Method
 Coord UAVMobility::flyAroundSquare(int j){
     Coord c;
     if(waypoints[uav.getID()] == 0 || waypoints[uav.getID()] == 4){
@@ -377,15 +298,18 @@ Coord UAVMobility::flyAroundSquare(int j){
     return c;
 }
 
+//Auxiliar Method
 void UAVMobility::executeTask(int j){
-    if(tasksVector[uav.getID()][j].getType() == Task::FLY_AROUND){
+    cout << "Executando tarefa ";
+    if(tasksVector[uav.getID()][j].getType() == Task::GOTO){
+        cout << "GOTO" << endl;
+        targetPosition = this->castCoordinateToCoord(tasksVector[uav.getID()][j].getTarget());
+    }else if(tasksVector[uav.getID()][j].getType() == Task::FLY_AROUND){
+        cout << "FLY_AROUND" << endl;
         targetPosition = flyAround(j);
     }else if (tasksVector[uav.getID()][j].getType() == Task::FLY_AROUND_SQUARE){
+        cout << "FLY_AROUND_SQUARE" << endl;
         targetPosition = flyAroundSquare(j);
-    }else if(tasksVector[uav.getID()][j].getType() == Task::FIND_SHEEP){
-        targetPosition = findSheep(j);
-    }else if(tasksVector[uav.getID()][j].getType() == Task::SURROUND_SHEEP){
-        targetPosition = surroundSheep(j);
     }else{
         targetPosition = this->castCoordinateToCoord(tasksVector[uav.getID()][j].getTarget());
         itera[uav.getID()]++;
