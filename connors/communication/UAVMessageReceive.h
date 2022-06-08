@@ -170,8 +170,8 @@ class UAVMessageReceive {
                 else if(!strcmp(msg.getMsg(), "task")){
                     cout << "Current Task: " << itera[this->uav.getID()] << endl;
                 }else if(!strcmp(msg.getMsg(), "d")){
-                    for (int i = 0; i < base[this->uav.getID()].size(); i++) {
-                        cout << "Status: " << base[0][i].getStatus() << endl;
+                    for (int i = 0; i < tasksVector[this->uav.getID()].size(); i++) {
+                        cout << "Status: " << tasksVector[0][i].getStatus() << endl;
                     }
                 }else if(!strcmp(msg.getMsg(), "dar-volta")){
                 }else if(!strcmp(msg.getMsg(), "retornar-base")){
@@ -196,10 +196,10 @@ class UAVMessageReceive {
                 // recv(socket, (TaskMessage*)&tmsg2, sizeof(tmsg2), 0);
                 // cout << "Mensagem recebida2: tipo: " << tmsg2.task.type << " idUAV: " << tmsg2.task.uav.getID() << endl;
                 int i = x.getUAV().getID();//idUAV;
-                base[i].push_back(x);
-                int j = base[i].size()-1;
-                base[i][j].setType(x.getType());
-                base[i][j].getUAV().setID(x.getUAV().getID());
+                tasksVector[i].push_back(x);
+                int j = tasksVector[i].size()-1;
+                tasksVector[i][j].setType(x.getType());
+                tasksVector[i][j].getUAV().setID(x.getUAV().getID());
                 if(itera[i] < 0){
                     itera[i]++;
                 }

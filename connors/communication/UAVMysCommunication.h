@@ -26,7 +26,7 @@ extern double velocidade[NUMUAVS];
 extern float bateria[NUMUAVS];
 extern double tempoVoo[NUMUAVS];
 //Tasks
-extern std::vector<Task> base[NUMUAVS];
+extern std::vector<Task> tasksVector[NUMUAVS];
 extern bool ativo[NUMUAVS];
 extern int itera[NUMUAVS];
 
