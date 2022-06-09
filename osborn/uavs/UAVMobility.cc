@@ -51,20 +51,26 @@ void UAVMobility::initialize(int stage) {
 
 //Base Method
 void UAVMobility::setTargetPosition() {
+
+    //caso tenha esperado
     if (nextMoveIsWait) {
         simtime_t waitTime = waitTimeParameter->doubleValue()+3;
         nextChange = simTime() + waitTime;
         nextMoveIsWait = false;
-    }else if(funcao == UAVMobility::ROLE_SLAVE && !ativo[uav.getID()]){
+    }
+
+    //Caso seja slave inativo, fique parado
+    else if(funcao == UAVMobility::ROLE_SLAVE && !ativo[uav.getID()]){
         simtime_t waitTime = waitTimeParameter->doubleValue()+3;
         nextChange = simTime() + waitTime;
         nextMoveIsWait = true;
 
 //        Coord inicialPosition(500, 500, 500);
         targetPosition = lastPosition;
-        std::cout << "mandou posicao aleatória!" << std::endl;
-    }else if(funcao == UAVMobility::ROLE_DISABLED && !ativo[uav.getID()]) {
+    }
 
+    //Caso seja lider inativo
+    else if(funcao == UAVMobility::ROLE_DISABLED && !ativo[uav.getID()]) {
         Coord inicialPosition(10, 0, 10);
 
         if(targetPosition != inicialPosition){
@@ -80,12 +86,16 @@ void UAVMobility::setTargetPosition() {
             nextMoveIsWait = false;
         }
 
-    } else {
+    }
+
+    //Caso contrário
+    else {
+        //Se tiver tarefas para fazer
         if(tasksVector[uav.getID()].size() != itera[uav.getID()] && tasksVector[uav.getID()].size() > 0){ //if there are tasks not performed
             std::cout << "TEM TAREFA!" << std::endl;
             int task = itera[uav.getID()];
             //finalizando
-            if(tasksVector[uav.getID()][task].getStatus() == 2){
+            if(tasksVector[uav.getID()][task].getStatus() == Task::COMPLETED){
                 tasksVector[uav.getID()][task].setComplete();
 
                 //enviando mensagem de finalizada
@@ -105,9 +115,35 @@ void UAVMobility::setTargetPosition() {
                 itera[uav.getID()]++;
 
             }else{
-                executeTask(task);
+                //Goto para sincronizado
+                if((tasksVector[uav.getID()][itera[uav.getID()]].getType() == Task::GOTO) && (tasksVector[uav.getID()][itera[uav.getID()]].getStatus() == Task::STARTED)){
+                    //nunca entra aqui por enquanto
+                    cout << "executando tarefa > ";
+                    if(!(true)){
+                        cout << "entrou no infinito > ";
+                        if(tasksVector[uav.getID()][itera[uav.getID()]].getAssincrono() == 1){
+                            //Se é assincrono, esperar que todos se posicionem na posição
+                            //Esperar comando para pular para próxima tarefa...
+                            cout << "if > ";
+                        }
+                        cout << "fora > ";
+                        //finaliza a tarefa e passa para outra
+                        tasksVector[uav.getID()][itera[uav.getID()]].setStatus(Task::COMPLETED);
+                        itera[uav.getID()]++;
+                    }else{
+                        cout << "entrou no else " << uav.getID() << endl;
+                        //esperar mais um pouco
+                        inativarUAV(uav.getID());
+                    }
+                }else{
+                    cout << "para executar tarefa > ";
+                    executeTask(task);
+                }
             }
-        }else{
+        }
+        //Se não tiver tarefas para fazer
+        else{
+            cout << "não tem tarefa! " << uav.getID() << endl;
             UAVMysCommunication u;
             u.setSocketCode(this->uav.getNetworkConfigurations().getIdSocket());
             u.setSelfID(this->uav.getID());
@@ -122,13 +158,14 @@ void UAVMobility::setTargetPosition() {
                 targetPosition = p;
             }else{
                 targetPosition = getRandomPosition();
-                std::cout << "ALEATÓRIA" << std::endl;
             }
 
             if(u.getSelfID() == 1){
                 u.disconnectBase();
             }
         }
+
+        //Default values to assign for UAV movements
         double speed = speedParameter->doubleValue();
         double distance = lastPosition.distance(targetPosition);
         simtime_t travelTime = distance / speed;
@@ -167,7 +204,7 @@ void UAVMobility::move() {
         uavs[uav.getID()].dispatchTaskMessage(msg);
     }
     if(bateria[uav.getID()] < 0.005 && ativo[uav.getID()]){
-        ativo[uav.getID()] = false;
+        inativarUAV(uav.getID());
     }
     if(continuoustask){
         //analisarDistanciaOvelha();
@@ -186,10 +223,10 @@ double UAVMobility::getMaxSpeed() const {
 //Auxiliar Method
 void UAVMobility::initStoppedUAVs() {
     if (uav.getID() == 0) {
-        ativo[uav.getID()] = true;
+        ativarUAV(uav.getID());
         funcao = UAVMobility::ROLE_LEADER;
     } else {
-        ativo[uav.getID()] = false;
+        inativarUAV(uav.getID());
         funcao = UAVMobility::ROLE_SLAVE;
     }
 }
@@ -252,9 +289,9 @@ Coord UAVMobility::flyAround(int j){
         c.setY(c.getY()+50);
     }else if(waypoints[uav.getID()] == 5){
         //Finalizando task
-        tasksVector[uav.getID()][j].setStatus(2);
+        tasksVector[uav.getID()][j].setStatus(Task::COMPLETED);
         if(uav.getID() == 1){
-            ativo[uav.getID()] = false;
+            inativarUAV(uav.getID());
         }
 
         //Próxima coordenada
@@ -271,9 +308,9 @@ Coord UAVMobility::flyAroundSquare(int j){
     if(waypoints[uav.getID()] == 0 || waypoints[uav.getID()] == 4){
         //Finalizando task
         if(waypoints[uav.getID()] == 4){
-            tasksVector[uav.getID()][j].setStatus(2);
+            tasksVector[uav.getID()][j].setStatus(Task::COMPLETED);
             if(uav.getID() == 1){
-                ativo[uav.getID()] = false;
+                inativarUAV(uav.getID());
             }
         }
         c = this->castCoordinateToCoord(tasksVector[uav.getID()][j].getTarget());
@@ -298,10 +335,11 @@ Coord UAVMobility::flyAroundSquare(int j){
 
 //Auxiliar Method
 void UAVMobility::executeTask(int j){
-    cout << "Executando tarefa ";
+    cout << "ExecuteTask" << endl;
     if(tasksVector[uav.getID()][j].getType() == Task::GOTO){
         cout << "GOTO" << endl;
         targetPosition = this->castCoordinateToCoord(tasksVector[uav.getID()][j].getTarget());
+        tasksVector[uav.getID()][j].setStatus(Task::STARTED);
     }else if(tasksVector[uav.getID()][j].getType() == Task::FLY_AROUND){
         cout << "FLY_AROUND" << endl;
         targetPosition = flyAround(j);
@@ -311,5 +349,14 @@ void UAVMobility::executeTask(int j){
     }else{
         targetPosition = this->castCoordinateToCoord(tasksVector[uav.getID()][j].getTarget());
         itera[uav.getID()]++;
+        cout << "Else executeTask" << endl;
     }
 }
+
+void UAVMobility::inativarUAV(int idUAV){
+    ativo[idUAV] = false;
+}
+void UAVMobility::ativarUAV(int idUAV){
+    ativo[idUAV] = true;
+}
+
