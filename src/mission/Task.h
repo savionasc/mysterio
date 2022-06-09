@@ -120,6 +120,14 @@ public:
         this->priority = priority;
     }
 
+    int getAssincrono() const {
+        return assincrono;
+    }
+
+    void setAssincrono(int assincrono = 0) {
+        this->assincrono = assincrono;
+    }
+
 private:
     //Talvez calculemos o progresso num futuro próximo...
     //Se for da missão é saber quantas tarefas foram cumpridas e quantas não foram
@@ -136,6 +144,7 @@ private:
     int repeat = 0;
     int waypoints;
     int priority = 0;
+    int assincrono = 0;
     Priority pri;
 };
 
