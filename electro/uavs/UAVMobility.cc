@@ -16,7 +16,7 @@ float bateria[NUMUAVS];
 double tempoVoo[NUMUAVS];
 bool ativo[NUMUAVS];
 int itera[NUMUAVS];
-std::vector<Task> base[NUMUAVS];
+std::vector<Task> tasksVector[NUMUAVS];
 UAVMysCommunication uavs[NUMUAVS];
 int step = 0;
 //this variable forces terminate current "task" of uav
@@ -56,7 +56,7 @@ void UAVMobility::initialize(int stage) {
         velocidade[uav.getID()] = par("speed").operator double();
         stationary = !speedParameter->isExpression() && speedParameter->doubleValue() == 0;
     }
-    this->rescueData();
+    this->rescueDataAndStoreVariables();
 }
 
 void UAVMobility::setTargetPosition() {
@@ -81,13 +81,13 @@ void UAVMobility::setTargetPosition() {
         }
 
     } else {
-        if(base[uav.getID()].size() != itera[uav.getID()] && base[uav.getID()].size() > 0){
+        if(tasksVector[uav.getID()].size() != itera[uav.getID()] && tasksVector[uav.getID()].size() > 0){
             //if there are tasks not performed
             int task = itera[uav.getID()];
 
-            if(base[uav.getID()][task].getStatus() == 2){
+            if(tasksVector[uav.getID()][task].getStatus() == 2){
                 //finalizando
-                base[uav.getID()][task].setComplete();
+                tasksVector[uav.getID()][task].setComplete();
 
                 //enviando mensagem de finalizada
 
@@ -100,7 +100,7 @@ void UAVMobility::setTargetPosition() {
                 TaskMessage msg;
                 msg.setCode(273);
                 msg.setSource(u.getSelfID());
-                msg.setTask(base[uav.getID()][task]);
+                msg.setTask(tasksVector[uav.getID()][task]);
                 u.dispatchTaskMessage(msg);
 
                 //next task
@@ -140,7 +140,7 @@ void UAVMobility::setTargetPosition() {
         nextChange = simTime() + travelTime;
         nextMoveIsWait = hasWaitTime;
     }
-    this->rescueData();
+    this->rescueDataAndStoreVariables();
 }
 
 void UAVMobility::move() {
@@ -155,18 +155,18 @@ void UAVMobility::move() {
         TaskMessage msg;
         msg.setCode(Message::TASK_EMERGENCY_BATTERY_LOW);
         msg.setSource(uav.getID());
-        base[uav.getID()][itera[uav.getID()]].setWaypoints(waypoints[uav.getID()]);
-        cout << "MEU WAYPOINT: " << base[uav.getID()][itera[uav.getID()]].getWaypoints() << endl;
-        msg.setTask(base[uav.getID()][itera[uav.getID()]]);
+        tasksVector[uav.getID()][itera[uav.getID()]].setWaypoints(waypoints[uav.getID()]);
+        cout << "MEU WAYPOINT: " << tasksVector[uav.getID()][itera[uav.getID()]].getWaypoints() << endl;
+        msg.setTask(tasksVector[uav.getID()][itera[uav.getID()]]);
         //targetPosition = getPosit(10, 5, 10);
 
         //aqui
         //msg.setCoord(this->castCoordToCoordinate(position[uav.getID()]));
-        if(base[uav.getID()][itera[uav.getID()]].getType() == Task::FLY_AROUND_SQUARE){
+        if(tasksVector[uav.getID()][itera[uav.getID()]].getType() == Task::FLY_AROUND_SQUARE){
             waypoints[uav.getID()]--;
             msg.setCoord(castCoordToCoordinate(flyAroundSquare(itera[uav.getID()])));
         }else{
-            msg.setCoord(base[uav.getID()][itera[uav.getID()]].getTarget());
+            msg.setCoord(tasksVector[uav.getID()][itera[uav.getID()]].getTarget());
         }
         uavs[uav.getID()].dispatchTaskMessage(msg);
     }
@@ -177,7 +177,7 @@ void UAVMobility::move() {
         this->stop();
     LineSegmentsMobilityBase::move();
     raiseErrorIfOutside();
-    this->rescueData();
+    this->rescueDataAndStoreVariables();
 
 }
 
@@ -198,7 +198,7 @@ J UAVMobility::pegarBateria(int idUAV){
     return energySto->getResidualEnergyCapacity();
 }
 
-void UAVMobility::rescueData(){
+void UAVMobility::rescueDataAndStoreVariables(){
     position[uav.getID()] = lastPosition;
     velocidade[uav.getID()] = speedParameter->doubleValue();
     bateria[uav.getID()] = std::stof(pegarBateria(uav.getID()).str());
@@ -208,15 +208,15 @@ void UAVMobility::rescueData(){
 Coord UAVMobility::flyAround(int j){
     Coord c;
     if(waypoints[uav.getID()] == 0 || waypoints[uav.getID()] == 4){
-        c = this->castCoordinateToCoord(base[uav.getID()][j].getTarget());
+        c = this->castCoordinateToCoord(tasksVector[uav.getID()][j].getTarget());
         c.setX(c.getX()-50);
         c.setY(c.getY()-50);
     }else if(waypoints[uav.getID()] == 1){
-        c = this->castCoordinateToCoord(base[uav.getID()][j].getTarget());
+        c = this->castCoordinateToCoord(tasksVector[uav.getID()][j].getTarget());
         c.setX(c.getX()+50);
         c.setY(c.getY()-50);
     }else if(waypoints[uav.getID()] == 2){
-        c = this->castCoordinateToCoord(base[uav.getID()][j].getTarget());
+        c = this->castCoordinateToCoord(tasksVector[uav.getID()][j].getTarget());
         c.setX(c.getX()+50);
         c.setY(c.getY()+50);
         if(uav.getID() == 0){
@@ -226,26 +226,26 @@ Coord UAVMobility::flyAround(int j){
             TaskMessage msg;
             msg.setCode(Message::TASK_EMERGENCY_BATTERY_LOW);
             msg.setSource(uav.getID());
-            base[uav.getID()][itera[uav.getID()]].setWaypoints(waypoints[uav.getID()]+1);
-            msg.setTask(base[uav.getID()][itera[uav.getID()]]);
+            tasksVector[uav.getID()][itera[uav.getID()]].setWaypoints(waypoints[uav.getID()]+1);
+            msg.setTask(tasksVector[uav.getID()][itera[uav.getID()]]);
             //targetPosition = getPosit(10, 5, 10);
             //cout << "GASTOU!" << endl;
             msg.setCoord(this->castCoordToCoordinate(c));
             uavs[uav.getID()].dispatchTaskMessage(msg);
         }
     }else if(waypoints[uav.getID()] == 3){
-        c = this->castCoordinateToCoord(base[uav.getID()][j].getTarget());
+        c = this->castCoordinateToCoord(tasksVector[uav.getID()][j].getTarget());
         c.setX(c.getX()-50);
         c.setY(c.getY()+50);
     }else if(waypoints[uav.getID()] == 5){
         //Finalizando task
-        base[uav.getID()][j].setStatus(2);
+        tasksVector[uav.getID()][j].setStatus(2);
         if(uav.getID() == 1){
             ativo[uav.getID()] = false;
         }
 
         //Próxima coordenada
-        c = this->castCoordinateToCoord(base[uav.getID()][j].getTarget());
+        c = this->castCoordinateToCoord(tasksVector[uav.getID()][j].getTarget());
 
     }
     waypoints[uav.getID()] = (waypoints[uav.getID()] < 5) ? waypoints[uav.getID()]+1 : 0;
@@ -257,24 +257,24 @@ Coord UAVMobility::flyAroundSquare(int j){
     if(waypoints[uav.getID()] == 0 || waypoints[uav.getID()] == 4){
         //Finalizando task
         if(waypoints[uav.getID()] == 4){
-            base[uav.getID()][j].setStatus(2);
+            tasksVector[uav.getID()][j].setStatus(2);
             if(uav.getID() == 1){
                 ativo[uav.getID()] = false;
             }
         }
-        c = this->castCoordinateToCoord(base[uav.getID()][j].getTarget());
+        c = this->castCoordinateToCoord(tasksVector[uav.getID()][j].getTarget());
         c.setX(c.getX()-400);
         c.setY(c.getY()-400);
     }else if(waypoints[uav.getID()] == 1){
-        c = this->castCoordinateToCoord(base[uav.getID()][j].getTarget());
+        c = this->castCoordinateToCoord(tasksVector[uav.getID()][j].getTarget());
         c.setX(c.getX()+400);
         c.setY(c.getY()-400);
     }else if(waypoints[uav.getID()] == 2){
-        c = this->castCoordinateToCoord(base[uav.getID()][j].getTarget());
+        c = this->castCoordinateToCoord(tasksVector[uav.getID()][j].getTarget());
         c.setX(c.getX()+400);
         c.setY(c.getY()+400);
     }else if(waypoints[uav.getID()] == 3){
-        c = this->castCoordinateToCoord(base[uav.getID()][j].getTarget());
+        c = this->castCoordinateToCoord(tasksVector[uav.getID()][j].getTarget());
         c.setX(c.getX()-400);
         c.setY(c.getY()+400);
     }
@@ -283,12 +283,12 @@ Coord UAVMobility::flyAroundSquare(int j){
 }
 
 void UAVMobility::executeTask(int j){
-    if(base[uav.getID()][j].getType() == Task::FLY_AROUND){
+    if(tasksVector[uav.getID()][j].getType() == Task::FLY_AROUND){
         targetPosition = flyAround(j);
-    }else if (base[uav.getID()][j].getType() == Task::FLY_AROUND_SQUARE){
+    }else if (tasksVector[uav.getID()][j].getType() == Task::FLY_AROUND_SQUARE){
         targetPosition = flyAroundSquare(j);
     }else{
-        targetPosition = this->castCoordinateToCoord(base[uav.getID()][j].getTarget());
+        targetPosition = this->castCoordinateToCoord(tasksVector[uav.getID()][j].getTarget());
         itera[uav.getID()]++;
     }
 

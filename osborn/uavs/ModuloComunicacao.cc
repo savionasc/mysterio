@@ -1,11 +1,12 @@
-#include "ModuloComunicacao.h"
+#include "../../osborn/uavs/ModuloComunicacao.h"
 
 #include "../mission/MysTask.h"
-#include "UAVMobility.h"
 #include <iostream>
 #include <queue>
 
-#include "../communication/UAVMysCommunication.h"
+#include "../../osborn/communication/UAVMysCommunication.h"
+#include "../../osborn/mission/MysTask.h"
+#include "../../osborn/uavs/UAVMobility.h"
 #include "../../src/status/UAVStatus.h"
 
 using namespace omnetpp;
@@ -41,13 +42,13 @@ void ModuloComunicacao::initialize(){
         uavs[selfID].connectBase();
     }
     cout << "Iniciou comunicação UAV!" << endl;
-    UAVMessage *sendMSGEvt = new UAVMessage("checking", CHECKING_MESSAGE);
-    sendMSGEvt->setOrigem(selfID);
-    scheduleAt(simTime()+2, sendMSGEvt);
+    //UAVMessage *sendMSGEvt = new UAVMessage("checking", CHECKING_MESSAGE);
+    //sendMSGEvt->setOrigem(selfID);
+    //scheduleAt(simTime()+2, sendMSGEvt);
 }
 
 void ModuloComunicacao::handleMessage(cMessage *msg){
-    UAVMessage *mMSG = check_and_cast<UAVMessage*>(msg);
+    /*UAVMessage *mMSG = check_and_cast<UAVMessage*>(msg);
     if(mMSG->getKind() == CHECKING_MESSAGE && strcmp(mMSG->getName(), "checking") == 0){
         if(msgs.size() > 0 && selfID == msgs.front().getSource()){
             TaskMessage tm = msgs.front();
@@ -73,17 +74,17 @@ void ModuloComunicacao::handleMessage(cMessage *msg){
 
         Task x = mMSG->getTask();
         int i = x.getUAV().getID();
-        tasksVector[i].push_back(x);
-        int j = tasksVector[i].size()-1;
-        tasksVector[i][j].setType(x.getType());
-        tasksVector[i][j].getUAV().setID(x.getUAV().getID());
-        waypoints[i] = tasksVector[i][j].getWaypoints();
+        base[i].push_back(x);
+        int j = base[i].size()-1;
+        base[i][j].setType(x.getType());
+        base[i][j].getUAV().setID(x.getUAV().getID());
+        waypoints[i] = base[i][j].getWaypoints();
         if(itera[i] < 0){
             itera[i]++;
         }
     }
 
-    delete mMSG;
+    delete mMSG;*/
 }
 
 //ATENÇÃO!!

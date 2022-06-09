@@ -1,0 +1,10 @@
+#status
+#id UAV
+#Nick
+#status
+#fuel
+#velocidade
+#Localização
+#Orientação
+#Quantidade de tarefas
+#target?

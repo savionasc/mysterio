@@ -127,8 +127,8 @@ class UAVMessageReceive {
                 }else if(!strcmp(msg.getMsg(), "task")){
                     cout << "Current Task: " << itera[this->uav.getID()] << endl;
                 }else if(!strcmp(msg.getMsg(), "d")){
-                    for (int i = 0; i < base[this->uav.getID()].size(); i++) {
-                        cout << "Status: " << base[0][i].getStatus() << endl;
+                    for (int i = 0; i < tasksVector[this->uav.getID()].size(); i++) {
+                        cout << "Status: " << tasksVector[0][i].getStatus() << endl;
                     }
                 }else if(!strcmp(msg.getMsg(), "drenar")){
                     lowbattery[uav.getID()] = 1;
@@ -154,11 +154,11 @@ class UAVMessageReceive {
                     Task x = tmsg.getTask();
                     //idUAV;
                     int i = x.getUAV().getID();
-                    base[i].push_back(x);
-                    int j = base[i].size()-1;
-                    base[i][j].setType(x.getType());
-                    base[i][j].getUAV().setID(x.getUAV().getID());
-                    waypoints[i] = base[i][j].getWaypoints();
+                    tasksVector[i].push_back(x);
+                    int j = tasksVector[i].size()-1;
+                    tasksVector[i][j].setType(x.getType());
+                    tasksVector[i][j].getUAV().setID(x.getUAV().getID());
+                    waypoints[i] = tasksVector[i][j].getWaypoints();
                     if(itera[i] < 0){
                         itera[i]++;
                     }

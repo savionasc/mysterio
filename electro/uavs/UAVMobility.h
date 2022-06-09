@@ -66,7 +66,7 @@ class INET_API UAVMobility : public LineSegmentsMobilityBase
     /** @brief Overridden from LineSegmentsMobilityBase.*/
     virtual void move() override;
 
-    void rescueData();
+    void rescueDataAndStoreVariables();
 
     void executeTask(int j);
     Coord flyAround(int j);
