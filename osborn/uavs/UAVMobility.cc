@@ -43,7 +43,7 @@ void UAVMobility::initialize(int stage) {
         waitTimeParameter = &par("waitTime");
         hasWaitTime = waitTimeParameter->isExpression() || waitTimeParameter->doubleValue() != 0;
         speedParameter = &par("speed");
-        //velocidade[uav.getID()] = par("speed").operator double();
+        velocidade[uav.getID()] = par("speed").operator double();
         stationary = !speedParameter->isExpression() && speedParameter->doubleValue() == 0;
     }
     this->rescueDataAndStoreVariables();
@@ -51,13 +51,11 @@ void UAVMobility::initialize(int stage) {
 
 //Base Method
 void UAVMobility::setTargetPosition() {
-    std::cout << "setTargetPosition!" << std::endl;
-
     if (nextMoveIsWait) {
         simtime_t waitTime = waitTimeParameter->doubleValue()+3;
         nextChange = simTime() + waitTime;
         nextMoveIsWait = false;
-    }else if(funcao == UAVMobility::ROLE_LEADER && !ativo[uav.getID()]){
+    }else if(funcao == UAVMobility::ROLE_SLAVE && !ativo[uav.getID()]){
         simtime_t waitTime = waitTimeParameter->doubleValue()+3;
         nextChange = simTime() + waitTime;
         nextMoveIsWait = true;
@@ -65,7 +63,7 @@ void UAVMobility::setTargetPosition() {
 //        Coord inicialPosition(500, 500, 500);
         targetPosition = lastPosition;
         std::cout << "mandou posicao aleatória!" << std::endl;
-    }else if(funcao == UAVMobility::ROLE_SLAVE && !ativo[uav.getID()]) {
+    }else if(funcao == UAVMobility::ROLE_DISABLED && !ativo[uav.getID()]) {
 
         Coord inicialPosition(10, 0, 10);
 
