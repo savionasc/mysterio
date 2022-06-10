@@ -6,6 +6,7 @@
 #include "../../osborn/communication/UAVMysCommunication.h"
 #include "../../osborn/uavs/UAVMessage_m.h"
 #include "../../src/mission/DependentTask.h"
+#include "TaskAssistant.h"
 
 using namespace omnetpp;
 using namespace std;
@@ -38,6 +39,12 @@ void UAVMobility::initialize(int stage) {
     initStoppedUAVs();
 
     initAuxiliarTasksVariables();
+
+    if(uav.getID() == 0){
+        TaskAssistant t;
+        Coordinate coord(600, 300, 800);
+        t.splitCoordinate(coord);
+    }
 
     if (stage == INITSTAGE_LOCAL) {
         waitTimeParameter = &par("waitTime");

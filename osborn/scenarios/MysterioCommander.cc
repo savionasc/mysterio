@@ -13,6 +13,11 @@ using namespace std;
 
 void assignPreprogrammedTasks(int, MysStatusManager*, MysCommunication);
 
+void testee(Message *msg){
+    cout << "Esta é a mensagem: " << msg->getMsg() << endl;
+    cout << "Destino: " << msg->getDestination() << endl;
+}
+
 void listenCommunication(){
     //Here starts the server communication
 
@@ -86,6 +91,7 @@ void listenCommunication(){
                 comm.sendTaskMessageToUAV(ms->getUAV(u.getID()).getNetworkConfigurations().getIdSocket(), taskMessage);
 
             }else if(!strcmp(msg.getMsg(), "pos1")){
+                testee(&msg);
                 cout << "Entrou GOTO" << endl;
                 //take off
                 Coordinate currentP(200.0,200.0,70.0);
