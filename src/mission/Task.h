@@ -33,7 +33,8 @@ public:
         FLY_AROUND,
         FLY_AROUND_SQUARE,
         FIND_SHEEP,
-        SURROUND_SHEEP
+        SURROUND_SHEEP,
+        SPLITTEDGOTO
     };
 
     int getID() {

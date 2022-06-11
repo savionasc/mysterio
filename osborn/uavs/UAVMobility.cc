@@ -20,6 +20,7 @@ double tempoVoo[NUMUAVS];
 bool ativo[NUMUAVS];
 int itera[NUMUAVS];
 std::vector<Task> tasksVector[NUMUAVS];
+std::vector<Coordinate> splitGoTos[NUMUAVS];
 std::queue<TaskMessage> msgs;
 UAVMysCommunication uavs[NUMUAVS];
 
@@ -40,11 +41,17 @@ void UAVMobility::initialize(int stage) {
 
     initAuxiliarTasksVariables();
 
-    if(uav.getID() == 0){
+    /*if(uav.getID() == 0 && myStage++ == 0){
         TaskAssistant t;
         Coordinate coord(600, 300, 800);
-        t.splitCoordinate(coord);
-    }
+        splitGoTos[uav.getID()] = t.splitCoordinate(coord);
+        cout << "Vai ler" << endl;
+        for (int var = 0; var < splitGoTos[uav.getID()].size(); var++) {
+            cout << "x: " << splitGoTos[uav.getID()][var].getX();
+            cout << " y: " << splitGoTos[uav.getID()][var].getY();
+            cout << " z: " << splitGoTos[uav.getID()][var].getZ() << endl;
+        }
+    }*/
 
     if (stage == INITSTAGE_LOCAL) {
         waitTimeParameter = &par("waitTime");
@@ -160,7 +167,7 @@ void UAVMobility::setTargetPosition() {
             msg.setMsg(m);
             msg.setSource(u.getSelfID());
             u.dispatchMessage(msg);
-            if(myStage++ == 0){
+            if(myStage++ == 1){
                 Coord p(uniform(10, 25), uniform(10, 25), uniform(50, 80));
                 targetPosition = p;
             }else{
@@ -262,6 +269,66 @@ void UAVMobility::rescueDataAndStoreVariables(){
 }
 
 //Auxiliar Method
+Coord UAVMobility::splittedGoTo(int j){
+    Coord c;
+    if(waypoints[uav.getID()] < splitGoTos[uav.getID()].size()){
+        c = this->castCoordinateToCoord(splitGoTos[uav.getID()][waypoints[uav.getID()]]);
+        cout << "Split: " << waypoints[uav.getID()] << endl;
+        cout << "QTD Splits: " << splitGoTos[uav.getID()].size() << endl;
+        cout << "x: " << splitGoTos[uav.getID()][waypoints[uav.getID()]].getX();
+        cout << " y: " << splitGoTos[uav.getID()][waypoints[uav.getID()]].getY();
+        cout << " z: " << splitGoTos[uav.getID()][waypoints[uav.getID()]].getZ() << endl;
+
+    }
+    waypoints[uav.getID()] = (waypoints[uav.getID()] < splitGoTos[uav.getID()].size()) ? waypoints[uav.getID()]+1 : 0;
+    return c;
+
+    /*if(waypoints[uav.getID()] == 0 || waypoints[uav.getID()] == 4){
+        c = this->castCoordinateToCoord(tasksVector[uav.getID()][j].getTarget());
+        c.setX(c.getX()-50);
+        c.setY(c.getY()-50);
+    }else if(waypoints[uav.getID()] == 1){
+        c = this->castCoordinateToCoord(tasksVector[uav.getID()][j].getTarget());
+        c.setX(c.getX()+50);
+        c.setY(c.getY()-50);
+    }else if(waypoints[uav.getID()] == 2){
+        c = this->castCoordinateToCoord(tasksVector[uav.getID()][j].getTarget());
+        c.setX(c.getX()+50);
+        c.setY(c.getY()+50);
+        if(uav.getID() == 0){
+            cModule *a = getParentModule()->getParentModule()->getSubmodule("UAV", uav.getID())->getSubmodule("energyStorage", 0);
+            SimpleEpEnergyStorage *energySto = check_and_cast<SimpleEpEnergyStorage*>(a);
+            energySto->consumir();
+            TaskMessage msg;
+            msg.setCode(Message::TASK_EMERGENCY_BATTERY_LOW);
+            msg.setSource(uav.getID());
+            tasksVector[uav.getID()][itera[uav.getID()]].setWaypoints(waypoints[uav.getID()]+1);
+            msg.setTask(tasksVector[uav.getID()][itera[uav.getID()]]);
+            //targetPosition = getPosit(10, 5, 10);
+            //cout << "GASTOU!" << endl;
+            msg.setCoord(this->castCoordToCoordinate(c));
+            uavs[uav.getID()].dispatchTaskMessage(msg);
+        }
+    }else if(waypoints[uav.getID()] == 3){
+        c = this->castCoordinateToCoord(tasksVector[uav.getID()][j].getTarget());
+        c.setX(c.getX()-50);
+        c.setY(c.getY()+50);
+    }else if(waypoints[uav.getID()] == 5){
+        //Finalizando task
+        tasksVector[uav.getID()][j].setStatus(Task::COMPLETED);
+        if(uav.getID() == 1){
+            inativarUAV(uav.getID());
+        }
+
+        //Próxima coordenada
+        c = this->castCoordinateToCoord(tasksVector[uav.getID()][j].getTarget());
+
+    }
+    waypoints[uav.getID()] = (waypoints[uav.getID()] < 5) ? waypoints[uav.getID()]+1 : 0;
+    return c;*/
+}
+
+//Auxiliar Method
 Coord UAVMobility::flyAround(int j){
     Coord c;
     if(waypoints[uav.getID()] == 0 || waypoints[uav.getID()] == 4){
@@ -344,9 +411,18 @@ Coord UAVMobility::flyAroundSquare(int j){
 void UAVMobility::executeTask(int j){
     cout << "ExecuteTask" << endl;
     if(tasksVector[uav.getID()][j].getType() == Task::GOTO){
-        cout << "GOTO" << endl;
+    /*    cout << "GOTO" << endl;
         targetPosition = this->castCoordinateToCoord(tasksVector[uav.getID()][j].getTarget());
         tasksVector[uav.getID()][j].setStatus(Task::STARTED);
+    }else if(tasksVector[uav.getID()][j].getType() == Task::SPLITTEDGOTO){*/
+        if(waypoints[uav.getID()] == 0){
+            TaskAssistant t;
+            Coordinate coord = tasksVector[uav.getID()][j].getTarget();
+            splitGoTos[uav.getID()] = t.splitCoordinate(coord);
+        }
+
+        cout << "SPLITTEDGOTO" << endl;
+        targetPosition = splittedGoTo(j);
     }else if(tasksVector[uav.getID()][j].getType() == Task::FLY_AROUND){
         cout << "FLY_AROUND" << endl;
         targetPosition = flyAround(j);
