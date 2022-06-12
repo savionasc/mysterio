@@ -151,6 +151,11 @@ void UAVMobility::setTargetPosition() {
                     }
                 }else{
                     cout << "para executar tarefa > ";
+                    TaskMessage tm("checking", 123);
+                    tm.setDestination(0);
+                    msgs.push(tm);
+                    //if(verificarSeTemUAVProximo() == true)
+                        //ChamarAlgoritmoDoConsenso Que lá vai chamar função de adicionarCoordenadaNoVetorParaEvitarColisao 
                     executeTask(task);
                 }
             }
