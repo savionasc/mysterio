@@ -59,14 +59,6 @@ class UAVMessageReceive {
                     d.setLocation(coor.x, coor.y, coor.z);
                     m.setStatus(d);
 
-                    //Nao usado mais
-                    char snd[1500];
-                    std::string txt = "MSG - Coordenates (" + to_string(coor.x);
-                    txt += "," + to_string(coor.y);
-                    txt += "," + to_string(coor.z) + ")";
-                    strcpy(snd, txt.c_str());
-                    cout << "TXT: " << snd << endl;
-
                     cout << "MSG: " << m.getStatus().getLocationX() << "|" << m.getStatus().getLocationY() << "|" << m.getStatus().getLocationZ() << endl;
                     u.dispatchStatusMessage(m);
                 }else if(!strcmp(msg.getMsg(), "velocity")){
@@ -144,9 +136,9 @@ class UAVMessageReceive {
                 //if ao receber mensagem destinada a outros UAVs
                 if(tmsg.getDestination() != this->uav.getID()){
                     msgs.push(tmsg);
-                    cout << "Para outro UAV";
+                    cout << "For other UAV";
                 }else{
-                    cout << "Para este UAV";
+                    cout << "For this UAV";
                     //msg pra esse UAV
                     if(!strcmp(tmsg.getMsg(), "SUBSTITUIR")){
                         ativo[uav.getID()] = true;

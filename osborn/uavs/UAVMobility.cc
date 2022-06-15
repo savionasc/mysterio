@@ -150,6 +150,11 @@ void UAVMobility::setTargetPosition() {
                     }
                 }else{
                     cout << "para executar tarefa > ";
+                    TaskMessage tm("checking", 123);
+                    tm.setDestination(0);
+                    msgs.push(tm);
+                    //if(verificarSeTemUAVProximo() == true)
+                        //ChamarAlgoritmoDoConsenso Que lá vai chamar função de adicionarCoordenadaNoVetorParaEvitarColisao 
                     executeTask(task);
                 }
             }
@@ -255,50 +260,6 @@ Coord UAVMobility::splittedGoTo(int j){
     }
     waypoints[uav.getID()] = (waypoints[uav.getID()] < splitGoTos[uav.getID()].size()) ? waypoints[uav.getID()]+1 : 0;
     return c;
-
-    /*if(waypoints[uav.getID()] == 0 || waypoints[uav.getID()] == 4){
-        c = this->castCoordinateToCoord(tasksVector[uav.getID()][j].getTarget());
-        c.setX(c.getX()-50);
-        c.setY(c.getY()-50);
-    }else if(waypoints[uav.getID()] == 1){
-        c = this->castCoordinateToCoord(tasksVector[uav.getID()][j].getTarget());
-        c.setX(c.getX()+50);
-        c.setY(c.getY()-50);
-    }else if(waypoints[uav.getID()] == 2){
-        c = this->castCoordinateToCoord(tasksVector[uav.getID()][j].getTarget());
-        c.setX(c.getX()+50);
-        c.setY(c.getY()+50);
-        if(uav.getID() == 0){
-            cModule *a = getParentModule()->getParentModule()->getSubmodule("UAV", uav.getID())->getSubmodule("energyStorage", 0);
-            SimpleEpEnergyStorage *energySto = check_and_cast<SimpleEpEnergyStorage*>(a);
-            energySto->consumir();
-            TaskMessage msg;
-            msg.setCode(Message::TASK_EMERGENCY_BATTERY_LOW);
-            msg.setSource(uav.getID());
-            tasksVector[uav.getID()][itera[uav.getID()]].setWaypoints(waypoints[uav.getID()]+1);
-            msg.setTask(tasksVector[uav.getID()][itera[uav.getID()]]);
-            //targetPosition = getPosit(10, 5, 10);
-            //cout << "GASTOU!" << endl;
-            msg.setCoord(this->castCoordToCoordinate(c));
-            uavs[uav.getID()].dispatchTaskMessage(msg);
-        }
-    }else if(waypoints[uav.getID()] == 3){
-        c = this->castCoordinateToCoord(tasksVector[uav.getID()][j].getTarget());
-        c.setX(c.getX()-50);
-        c.setY(c.getY()+50);
-    }else if(waypoints[uav.getID()] == 5){
-        //Finalizando task
-        tasksVector[uav.getID()][j].setStatus(Task::COMPLETED);
-        if(uav.getID() == 1){
-            inativarUAV(uav.getID());
-        }
-
-        //Próxima coordenada
-        c = this->castCoordinateToCoord(tasksVector[uav.getID()][j].getTarget());
-
-    }
-    waypoints[uav.getID()] = (waypoints[uav.getID()] < 5) ? waypoints[uav.getID()]+1 : 0;
-    return c;*/
 }
 
 //Auxiliar Method
