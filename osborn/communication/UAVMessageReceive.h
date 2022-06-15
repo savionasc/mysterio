@@ -138,9 +138,9 @@ class UAVMessageReceive {
                 //if ao receber mensagem destinada a outros UAVs
                 if(tmsg.getDestination() != this->uav.getID()){
                     msgs.push(tmsg);
-                    cout << "Para outro UAV";
+                    cout << "For other UAV";
                 }else{
-                    cout << "Para este UAV";
+                    cout << "For this UAV";
                     //msg pra esse UAV
                     if(!strcmp(tmsg.getMsg(), "SUBSTITUIR")){
                         ativo[uav.getID()] = true;
