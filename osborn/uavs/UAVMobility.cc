@@ -25,7 +25,6 @@ std::queue<TaskMessage> msgs;
 UAVMysCommunication uavs[NUMUAVS];
 
 int waypoints[NUMUAVS];
-int lowbattery[NUMUAVS];
 using namespace power;
 
 Define_Module(UAVMobility);
@@ -191,32 +190,6 @@ void UAVMobility::setTargetPosition() {
 
 //Base Method
 void UAVMobility::move() {
-    //Drenando bateria e repassando tarefa
-    if(lowbattery[uav.getID()] == 1){
-        std::cout << "Drenou" << std::endl;
-        cModule *a = getParentModule()->getParentModule()->getSubmodule("UAV", uav.getID())->getSubmodule("energyStorage", 0);
-        SimpleEpEnergyStorage *energySto = check_and_cast<SimpleEpEnergyStorage*>(a);
-        energySto->consumir();
-        lowbattery[uav.getID()] = 2;
-
-        TaskMessage msg;
-        msg.setCode(Message::TASK_EMERGENCY_BATTERY_LOW);
-        msg.setSource(uav.getID());
-        tasksVector[uav.getID()][itera[uav.getID()]].setWaypoints(waypoints[uav.getID()]);
-        cout << "MEU WAYPOINT: " << tasksVector[uav.getID()][itera[uav.getID()]].getWaypoints() << endl;
-        msg.setTask(tasksVector[uav.getID()][itera[uav.getID()]]);
-        //targetPosition = getPosit(10, 5, 10);
-
-        //aqui
-        //msg.setCoord(this->castCoordToCoordinate(position[uav.getID()]));
-        if(tasksVector[uav.getID()][itera[uav.getID()]].getType() == Task::FLY_AROUND_SQUARE){
-            waypoints[uav.getID()]--;
-            msg.setCoord(castCoordToCoordinate(flyAroundSquare(itera[uav.getID()])));
-        }else{
-            msg.setCoord(tasksVector[uav.getID()][itera[uav.getID()]].getTarget());
-        }
-        uavs[uav.getID()].dispatchTaskMessage(msg);
-    }
     if(bateria[uav.getID()] < 0.005 && ativo[uav.getID()]){
         inativarUAV(uav.getID());
     }

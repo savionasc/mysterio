@@ -31,7 +31,6 @@ extern int waypoints[NUMUAVS];
 extern std::vector<Task> tasksVector[NUMUAVS]; //Task
 extern bool ativo[NUMUAVS];
 extern int itera[NUMUAVS];
-extern int lowbattery[NUMUAVS];
 extern std::queue<TaskMessage> msgs;
 
 namespace mysterio {
