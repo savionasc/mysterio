@@ -72,8 +72,13 @@ void UAVMobility::setTargetPosition() {
         nextMoveIsWait = false;
     }
 
-    //Caso seja slave inativo, fique parado
-    else if(funcao == UAVMobility::ROLE_SLAVE && !ativo[uav.getID()]){
+    //Para Slave
+    //Caso esteja na posição inicial, fica inativo e posicionado
+    //Caso já tenha iniciado, fique pairando
+    else if((UAVRole == UAVMobility::ROLE_SLAVE || UAVRole == UAVMobility::ROLE_LEADER) && !ativo[uav.getID()]){
+        if(uav.getID() == 0){
+            cout << "SLAVE PARADÃO " << uav.getID() << " Type: " << UAVRole << endl;
+        }
         simtime_t waitTime = waitTimeParameter->doubleValue()+3;
         nextChange = simTime() + waitTime;
         nextMoveIsWait = true;
@@ -83,7 +88,7 @@ void UAVMobility::setTargetPosition() {
     }
 
     //Caso seja lider inativo
-    else if(funcao == UAVMobility::ROLE_DISABLED && !ativo[uav.getID()]) {
+    else if(UAVRole == UAVMobility::ROLE_DISABLED && !ativo[uav.getID()]) {
         Coord inicialPosition(10, 0, 10);
 
         if(targetPosition != inicialPosition){
@@ -129,7 +134,7 @@ void UAVMobility::setTargetPosition() {
 
             }else{
                 //Goto para sincronizado
-                if((tasksVector[uav.getID()][itera[uav.getID()]].getType() == Task::GOTO) && (tasksVector[uav.getID()][itera[uav.getID()]].getStatus() == Task::STARTED)){
+                /*if((tasksVector[uav.getID()][itera[uav.getID()]].getType() == Task::GOTO) && (tasksVector[uav.getID()][itera[uav.getID()]].getStatus() == Task::STARTED)){
                     //nunca entra aqui por enquanto
                     cout << "executando tarefa > ";
                     if(!(true)){
@@ -148,7 +153,7 @@ void UAVMobility::setTargetPosition() {
                         //esperar mais um pouco
                         inativarUAV(uav.getID());
                     }
-                }else{
+                }else{*/
                     cout << "para executar tarefa > ";
                     TaskMessage tm("checking", 123);
                     tm.setDestination(0);
@@ -156,7 +161,7 @@ void UAVMobility::setTargetPosition() {
                     //if(verificarSeTemUAVProximo() == true)
                         //ChamarAlgoritmoDoConsenso Que lá vai chamar função de adicionarCoordenadaNoVetorParaEvitarColisao 
                     executeTask(task);
-                }
+                //}
             }
         }
         //Se não tiver tarefas para fazer
@@ -216,10 +221,10 @@ double UAVMobility::getMaxSpeed() const {
 void UAVMobility::initStoppedUAVs() {
     if (uav.getID() == 0) {
         ativarUAV(uav.getID());
-        funcao = UAVMobility::ROLE_LEADER;
+        UAVRole = UAVMobility::ROLE_LEADER;
     } else {
         inativarUAV(uav.getID());
-        funcao = UAVMobility::ROLE_SLAVE;
+        UAVRole = UAVMobility::ROLE_SLAVE;
     }
 }
 
@@ -248,17 +253,36 @@ void UAVMobility::rescueDataAndStoreVariables(){
 
 //Auxiliar Method
 Coord UAVMobility::splittedGoTo(int j){
-    Coord c;
+    //Fazer um if para posição inicial para cada UAV (0,0,0) para UAV[0]
+    Coord c(0,0,0);
+
     if(waypoints[uav.getID()] < splitGoTos[uav.getID()].size()){
+        //Initial status
+        if(waypoints[uav.getID()] == 0){
+            //Update status
+            tasksVector[uav.getID()][j].setStatus(Task::STARTED);
+        }
+
         c = this->castCoordinateToCoord(splitGoTos[uav.getID()][waypoints[uav.getID()]]);
         cout << "Split: " << waypoints[uav.getID()] << endl;
         cout << "QTD Splits: " << splitGoTos[uav.getID()].size() << endl;
         cout << "x: " << splitGoTos[uav.getID()][waypoints[uav.getID()]].getX();
         cout << " y: " << splitGoTos[uav.getID()][waypoints[uav.getID()]].getY();
         cout << " z: " << splitGoTos[uav.getID()][waypoints[uav.getID()]].getZ() << endl;
-
+        waypoints[uav.getID()]++;
+    }else{
+        cout << "Else do splittedGoTo > ";
+        if(tasksVector[uav.getID()][j].getStatus() == Task::STARTED){
+            //Update status
+            tasksVector[uav.getID()][j].setStatus(Task::WAITING_FOR_SIGN);
+            inativarUAV(uav.getID());
+        }
+        else if(tasksVector[uav.getID()][j].getStatus() == Task::SIGNNED){
+            waypoints[uav.getID()] = 0;
+            tasksVector[uav.getID()][j].setStatus(Task::COMPLETED);
+        }
+        c = lastPosition;
     }
-    waypoints[uav.getID()] = (waypoints[uav.getID()] < splitGoTos[uav.getID()].size()) ? waypoints[uav.getID()]+1 : 0;
     return c;
 }
 
@@ -266,10 +290,6 @@ Coord UAVMobility::splittedGoTo(int j){
 void UAVMobility::executeTask(int j){
     cout << "ExecuteTask" << endl;
     if(tasksVector[uav.getID()][j].getType() == Task::GOTO){
-    /*    cout << "GOTO" << endl;
-        targetPosition = this->castCoordinateToCoord(tasksVector[uav.getID()][j].getTarget());
-        tasksVector[uav.getID()][j].setStatus(Task::STARTED);
-    }else if(tasksVector[uav.getID()][j].getType() == Task::SPLITTEDGOTO){*/
         if(waypoints[uav.getID()] == 0){
             TaskAssistant t;
             Coordinate coord = tasksVector[uav.getID()][j].getTarget();
@@ -287,6 +307,7 @@ void UAVMobility::executeTask(int j){
 
 void UAVMobility::inativarUAV(int idUAV){
     ativo[idUAV] = false;
+    cout << "Inativando UAV[" << idUAV << "]" << endl;
 }
 void UAVMobility::ativarUAV(int idUAV){
     ativo[idUAV] = true;

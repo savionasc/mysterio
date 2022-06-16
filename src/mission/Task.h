@@ -24,7 +24,9 @@ public:
 
     enum statestasks{
         STARTED = 1,
-        COMPLETED
+        COMPLETED,
+        WAITING_FOR_SIGN,
+        SIGNNED
     };
 
     enum typetasks{

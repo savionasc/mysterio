@@ -78,7 +78,7 @@ class INET_API UAVMobility : public LineSegmentsMobilityBase
 
     UAV uav;
     bool continuoustask = false;
-    int funcao = ROLE_DISABLED;
+    int UAVRole = ROLE_DISABLED;
 
     //0 para uav desativado
     //1 para uav sem funcao
