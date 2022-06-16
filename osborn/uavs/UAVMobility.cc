@@ -263,37 +263,6 @@ Coord UAVMobility::splittedGoTo(int j){
 }
 
 //Auxiliar Method
-Coord UAVMobility::flyAroundSquare(int j){
-    Coord c;
-    if(waypoints[uav.getID()] == 0 || waypoints[uav.getID()] == 4){
-        //Finalizando task
-        if(waypoints[uav.getID()] == 4){
-            tasksVector[uav.getID()][j].setStatus(Task::COMPLETED);
-            if(uav.getID() == 1){
-                inativarUAV(uav.getID());
-            }
-        }
-        c = this->castCoordinateToCoord(tasksVector[uav.getID()][j].getTarget());
-        c.setX(c.getX()-400);
-        c.setY(c.getY()-400);
-    }else if(waypoints[uav.getID()] == 1){
-        c = this->castCoordinateToCoord(tasksVector[uav.getID()][j].getTarget());
-        c.setX(c.getX()+400);
-        c.setY(c.getY()-400);
-    }else if(waypoints[uav.getID()] == 2){
-        c = this->castCoordinateToCoord(tasksVector[uav.getID()][j].getTarget());
-        c.setX(c.getX()+400);
-        c.setY(c.getY()+400);
-    }else if(waypoints[uav.getID()] == 3){
-        c = this->castCoordinateToCoord(tasksVector[uav.getID()][j].getTarget());
-        c.setX(c.getX()-400);
-        c.setY(c.getY()+400);
-    }
-    waypoints[uav.getID()] = (waypoints[uav.getID()] < 4) ? waypoints[uav.getID()]+1 : 0;
-    return c;
-}
-
-//Auxiliar Method
 void UAVMobility::executeTask(int j){
     cout << "ExecuteTask" << endl;
     if(tasksVector[uav.getID()][j].getType() == Task::GOTO){
@@ -309,9 +278,6 @@ void UAVMobility::executeTask(int j){
 
         cout << "SPLITTEDGOTO" << endl;
         targetPosition = splittedGoTo(j);
-    }else if (tasksVector[uav.getID()][j].getType() == Task::FLY_AROUND_SQUARE){
-        cout << "FLY_AROUND_SQUARE" << endl;
-        targetPosition = flyAroundSquare(j);
     }else{
         targetPosition = this->castCoordinateToCoord(tasksVector[uav.getID()][j].getTarget());
         itera[uav.getID()]++;
