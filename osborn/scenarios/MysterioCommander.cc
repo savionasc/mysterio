@@ -72,6 +72,28 @@ void listenCommunication(){
 
             cout << "Antes " << endl;
             if(!strcmp(msg.getMsg(), "three")){
+                Formation fUAVs(3);
+                Coordinate coord1(200.0,200.0,70.0);
+                Coordinate coord2(400.0,400.0,70.0);
+                Coordinate coord3(600.0,600.0,70.0);
+                fUAVs.addPosition(coord1);
+                fUAVs.addPosition(coord2);
+                fUAVs.addPosition(coord3);
+                for (int i = 0; i < fUAVs.getNumberOfUAVs(); i++) {
+                    UAV u(i);
+                    Task gotoc(u, fUAVs.getPosition(i));
+                    gotoc.setType(Task::GOTO);
+                    TaskManager t;
+                    t.addTask(gotoc);
+
+                    //Enviando tarefa
+                    int codeMessage = Message::TASK_MESSAGE;
+                    TaskMessage taskMessage(msg.getMsg(), Message::TASK_MESSAGE);
+                    taskMessage.setDestination(msg.getDestination());
+                    taskMessage.setTask(t.getTaskByIndex(u, t.getNumTasks(u)-1));
+
+                    comm.sendTaskMessageToUAV(ms->getUAV(u.getID()).getNetworkConfigurations().getIdSocket(), taskMessage);
+                }
 
             }else if(!strcmp(msg.getMsg(), "goto")){
                 cout << "Entrou GOTO" << endl;

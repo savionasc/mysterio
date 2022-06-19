@@ -1,6 +1,9 @@
 #include "Formation.h"
 
 Formation::Formation() { }
+Formation::Formation(int numberOfUAVs) {
+    this->numberOfUAVs = numberOfUAVs;
+}
 
 Formation::~Formation() { }
 

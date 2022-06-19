@@ -6,6 +6,7 @@
 class Formation {
 public:
     Formation();
+    Formation(int numberOfUAVs);
     virtual ~Formation();
 
     int getNumberOfUAVs();
