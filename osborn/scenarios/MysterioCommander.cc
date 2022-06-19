@@ -2,12 +2,13 @@
 
 #include <iostream>
 
-#include "../../osborn/communication/UAVRegistry.cc"
+#include "../communication/UAVRegistry.cc"
 #include "../communication/MysCommunication.h"
 #include "../../src/database/RepositoryBase.h"
 #include "../../src/mission/MissionPlanner.h"
 #include "../../src/taskmanager/TaskManager.h"
 #include "../../src/mission/Command.h"
+#include "../mission/Formation.h"
 
 using namespace std;
 
@@ -70,7 +71,9 @@ void listenCommunication(){
             }
 
             cout << "Antes " << endl;
-            if(!strcmp(msg.getMsg(), "goto")){
+            if(!strcmp(msg.getMsg(), "three")){
+
+            }else if(!strcmp(msg.getMsg(), "goto")){
                 cout << "Entrou GOTO" << endl;
                 //take off
                 Coordinate currentP(0.0,100.0,70.0);
