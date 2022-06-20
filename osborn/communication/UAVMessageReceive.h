@@ -59,14 +59,6 @@ class UAVMessageReceive {
                     d.setLocation(coor.x, coor.y, coor.z);
                     m.setStatus(d);
 
-                    //Nao usado mais
-                    char snd[1500];
-                    std::string txt = "MSG - Coordenates (" + to_string(coor.x);
-                    txt += "," + to_string(coor.y);
-                    txt += "," + to_string(coor.z) + ")";
-                    strcpy(snd, txt.c_str());
-                    cout << "TXT: " << snd << endl;
-
                     cout << "MSG: " << m.getStatus().getLocationX() << "|" << m.getStatus().getLocationY() << "|" << m.getStatus().getLocationZ() << endl;
                     u.dispatchStatusMessage(m);
                 }else if(!strcmp(msg.getMsg(), "velocity")){
@@ -130,8 +122,6 @@ class UAVMessageReceive {
                     for (int i = 0; i < tasksVector[this->uav.getID()].size(); i++) {
                         cout << "Status: " << tasksVector[0][i].getStatus() << endl;
                     }
-                }else if(!strcmp(msg.getMsg(), "drenar")){
-                    lowbattery[uav.getID()] = 1;
                 }else{
                     std::cout << "Received Message["<< this->uav.getID() <<"]: " << msg.getMsg() << std::endl;
                 }
@@ -146,7 +136,9 @@ class UAVMessageReceive {
                 //if ao receber mensagem destinada a outros UAVs
                 if(tmsg.getDestination() != this->uav.getID()){
                     msgs.push(tmsg);
+                    cout << "For other UAV";
                 }else{
+                    cout << "For this UAV";
                     //msg pra esse UAV
                     if(!strcmp(tmsg.getMsg(), "SUBSTITUIR")){
                         ativo[uav.getID()] = true;
