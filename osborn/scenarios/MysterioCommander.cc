@@ -89,7 +89,7 @@ void listenCommunication(){
                     //Enviando tarefa
                     int codeMessage = Message::TASK_MESSAGE;
                     TaskMessage taskMessage(msg.getMsg(), Message::TASK_MESSAGE);
-                    taskMessage.setDestination(msg.getDestination());
+                    taskMessage.setDestination(i);
                     taskMessage.setTask(t.getTaskByIndex(u, t.getNumTasks(u)-1));
 
                     comm.sendTaskMessageToUAV(ms->getUAV(u.getID()).getNetworkConfigurations().getIdSocket(), taskMessage);
