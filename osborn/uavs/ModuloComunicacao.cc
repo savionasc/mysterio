@@ -42,21 +42,35 @@ void ModuloComunicacao::initialize(){
         uavs[selfID].connectBase();
     }
     cout << "Iniciou comunicação UAV!" << endl;
-    //UAVMessage *sendMSGEvt = new UAVMessage("checking", CHECKING_MESSAGE);
-    //sendMSGEvt->setOrigem(selfID);
-    //scheduleAt(simTime()+2, sendMSGEvt);
+
+    //Iniciando procura por novas mensagens
+    UAVMessage *sendMSGEvt = new UAVMessage("checking", CHECKING_MESSAGE);
+    sendMSGEvt->setOrigem(selfID);
+    scheduleAt(simTime()+2, sendMSGEvt);
 }
 
 void ModuloComunicacao::handleMessage(cMessage *msg){
-    /*UAVMessage *mMSG = check_and_cast<UAVMessage*>(msg);
+    if(selfID == 0){
+
+    }
+
+    UAVMessage *mMSG = check_and_cast<UAVMessage*>(msg);
     if(mMSG->getKind() == CHECKING_MESSAGE && strcmp(mMSG->getName(), "checking") == 0){
+        if(selfID == 0)
+            cout << "Primeiro if do HANDLE" << endl;
         if(msgs.size() > 0 && selfID == msgs.front().getSource()){
+            if(selfID == 0)
+                cout << "Segundo if" << endl;
             TaskMessage tm = msgs.front();
             if(tm.getDestination() == -5){ //Sheep
+                if(selfID == 0)
+                    cout << "Terceiro if" << endl;
                 UAVMessage *sheepAlert = new UAVMessage("STOPSHEEP", SHEEP_ALERT);
                 sheepAlert->setOrigem(selfID);
                 send(sheepAlert, "out", 0);
             }else{ //Others UAVs
+                if(selfID == 0)
+                    cout << "Else no if" << endl;
                 UAVMessage *uavMSG = new UAVMessage("ToU", SUBTASK_HIGH_PRIORITY);
                 uavMSG->setOrigem(selfID);
                 uavMSG->setDestino(tm.getDestination());
@@ -74,17 +88,17 @@ void ModuloComunicacao::handleMessage(cMessage *msg){
 
         Task x = mMSG->getTask();
         int i = x.getUAV().getID();
-        base[i].push_back(x);
-        int j = base[i].size()-1;
-        base[i][j].setType(x.getType());
-        base[i][j].getUAV().setID(x.getUAV().getID());
-        waypoints[i] = base[i][j].getWaypoints();
+        tasksVector[i].push_back(x);
+        int j = tasksVector[i].size()-1;
+        tasksVector[i][j].setType(x.getType());
+        tasksVector[i][j].getUAV().setID(x.getUAV().getID());
+        waypoints[i] = tasksVector[i][j].getWaypoints();
         if(itera[i] < 0){
             itera[i]++;
         }
     }
 
-    delete mMSG;*/
+    delete mMSG;
 }
 
 //ATENÇÃO!!
