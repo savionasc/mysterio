@@ -1,7 +1,7 @@
 default: go
 
-all: MysterioCommander.o MysStatusManager.o RepositoryBase.o MysCommunication.o UAV.o MissionPlanner.o
-	g++ -I ./bi -pthread -o scenarios/main MysterioCommander.o MysStatusManager.o RepositoryBase.o MysCommunication.o UAV.o MissionPlanner.o -lmysqlclient
+all: MysterioCommander.o MysStatusManager.o RepositoryBase.o MysCommunication.o UAV.o MissionPlanner.o Formation.o
+	g++ -I ./bi -pthread -o scenarios/main MysterioCommander.o MysStatusManager.o RepositoryBase.o MysCommunication.o UAV.o MissionPlanner.o Formation.o -lmysqlclient
 
 MysCommunication.o: communication/MysCommunication.cc communication/MysCommunication.h communication/UAVRegistry.cc
 	g++ -c communication/MysCommunication.cc communication/MysCommunication.h communication/UAVRegistry.cc
@@ -21,6 +21,8 @@ Coordinate.o:  ../src/utils/Coordinate.h
 	g++ -c ../src/utils/Coordinate.h
 UAVStatus.o: ../src/status/UAVStatus.h
 	g++ -c ../src/status/UAVStatus.h
+Formation.o: mission/Formation.h mission/Formation.cc
+	g++ -c mission/Formation.h mission/Formation.cc
 clean:
 	rm -rf *.o scenarios/main
 

@@ -1,8 +1,8 @@
 #include "../uavs/UAVMobility.h"
 #include <iostream>
 
-#include "../communication/UAVMysCommunication.h"
 #include "../../src/mission/DependentTask.h"
+#include "../communication/UAV/UAVMysCommunication.h"
 #include "../scenarios/MysterioCommander.h"
 
 using namespace omnetpp;

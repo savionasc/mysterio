@@ -69,16 +69,16 @@ class INET_API UAVMobility : public LineSegmentsMobilityBase
     void rescueDataAndStoreVariables();
 
     void executeTask(int j);
-    Coord flyAround(int j);
-    Coord flyAroundSquare(int j);
-
+    Coord splittedGoTo(int j);
+    void ativarUAV(int idUAV);
+    void inativarUAV(int idUAV);
     void stop();
 
     J pegarBateria(int idUAV);
 
     UAV uav;
     bool continuoustask = false;
-    int funcao = ROLE_DISABLED;
+    int UAVRole = ROLE_DISABLED;
 
     //0 para uav desativado
     //1 para uav sem funcao
