@@ -2,16 +2,22 @@
 
 #include <iostream>
 
-#include "../../osborn/communication/UAVRegistry.cc"
+#include "../communication/UAVRegistry.cc"
 #include "../communication/MysCommunication.h"
 #include "../../src/database/RepositoryBase.h"
 #include "../../src/mission/MissionPlanner.h"
 #include "../../src/taskmanager/TaskManager.h"
 #include "../../src/mission/Command.h"
+#include "../mission/Formation.h"
 
 using namespace std;
 
 void assignPreprogrammedTasks(int, MysStatusManager*, MysCommunication);
+
+void testee(Message *msg){
+    cout << "Esta é a mensagem: " << msg->getMsg() << endl;
+    cout << "Destino: " << msg->getDestination() << endl;
+}
 
 void listenCommunication(){
     //Here starts the server communication
@@ -43,7 +49,7 @@ void listenCommunication(){
             std::cout << "Type a message:" << std::endl;
             char m[1500];
             std::cin >> m;
-            Message msg(m, 10, -1, id);
+            Message msg(m, Task::GOTO, -1, id);
 
             //Tratando mensagens ao digitar
             if(!strcmp(msg.getMsg(), "task")){
@@ -65,20 +71,141 @@ void listenCommunication(){
             }
 
             cout << "Antes " << endl;
-            if(!strcmp(msg.getMsg(), "goto")){
+            if(!strcmp(msg.getMsg(), "three")){
+                Formation fUAVs(3);
+                /*Coordinate coord1(200.0,200.0,70.0);
+                Coordinate coord2(400.0,400.0,70.0);
+                Coordinate coord3(600.0,600.0,70.0);
+                fUAVs.addPosition(coord1);
+                fUAVs.addPosition(coord2);
+                fUAVs.addPosition(coord3);*/
+                fUAVs.addPosition(Coordinate(200.0,200.0,70.0));
+                fUAVs.addPosition(Coordinate(400.0,400.0,70.0));
+                fUAVs.addPosition(Coordinate(600.0,600.0,70.0));
+                for (int i = 0; i < fUAVs.getNumberOfUAVs(); i++) {
+                    //FALTA SÓ ALTOMATIZAR ESTE FOR
+
+
+                    UAV u(i);
+                    Task gotoc(u, fUAVs.getPosition(i));
+                    gotoc.setType(Task::GOTO);
+                    TaskManager t;
+                    t.addTask(gotoc);
+
+
+                    //OU AUTOMATIZAR ESTE ENVIO DE MENSAGENS QUE ESTÁ REPETITIVO DEMAIS...
+                    //Enviando tarefa
+                    int codeMessage = Message::TASK_MESSAGE;
+                    TaskMessage taskMessage(msg.getMsg(), Message::TASK_MESSAGE);
+                    taskMessage.setDestination(i);
+                    taskMessage.setTask(t.getTaskByIndex(u, t.getNumTasks(u)-1));
+
+                    comm.sendTaskMessageToUAV(ms->getUAV(u.getID()).getNetworkConfigurations().getIdSocket(), taskMessage);
+                }
+
+            }else if(!strcmp(msg.getMsg(), "square")){
+                Formation fUAVs(4);
+                fUAVs.addPosition(Coordinate(250.0,250.0,70.0));
+                fUAVs.addPosition(Coordinate(250.0,500.0,70.0));
+                fUAVs.addPosition(Coordinate(500.0,250.0,70.0));
+                fUAVs.addPosition(Coordinate(500.0,500.0,70.0));
+
+                for (int i = 0; i < fUAVs.getNumberOfUAVs(); i++) {
+                    //FALTA SÓ ALTOMATIZAR ESTE FOR
+
+                    UAV u(i);
+                    Task gotoc(u, fUAVs.getPosition(i));
+                    gotoc.setType(Task::GOTO);
+                    TaskManager t;
+                    t.addTask(gotoc);
+
+
+                    //OU AUTOMATIZAR ESTE ENVIO DE MENSAGENS QUE ESTÁ REPETITIVO DEMAIS...
+                    //Enviando tarefa
+                    int codeMessage = Message::TASK_MESSAGE;
+                    TaskMessage taskMessage(msg.getMsg(), Message::TASK_MESSAGE);
+                    taskMessage.setDestination(i);
+                    taskMessage.setTask(t.getTaskByIndex(u, t.getNumTasks(u)-1));
+
+                    comm.sendTaskMessageToUAV(ms->getUAV(u.getID()).getNetworkConfigurations().getIdSocket(), taskMessage);
+                }
+            }else if(!strcmp(msg.getMsg(), "goto")){
                 cout << "Entrou GOTO" << endl;
                 //take off
-                Coordinate currentP(30.0,30.0,30.0);
+                Coordinate currentP(0.0,100.0,70.0);
                 UAV u(id);
                 Task gotoc(u, currentP);
                 //gotoc.setType(Task::GOTO);
-                gotoc.setType(10);
+
+                gotoc.setType(Task::GOTO);
                 TaskManager t;
                 t.addTask(gotoc);
 
                 //Enviando tarefa
                 int codeMessage = Message::TASK_MESSAGE;
                 TaskMessage taskMessage(msg.getMsg(), Message::TASK_MESSAGE);
+                taskMessage.setDestination(msg.getDestination());
+                taskMessage.setTask(t.getTaskByIndex(u, t.getNumTasks(u)-1));
+
+                comm.sendTaskMessageToUAV(ms->getUAV(u.getID()).getNetworkConfigurations().getIdSocket(), taskMessage);
+
+            }else if(!strcmp(msg.getMsg(), "pos1")){
+                testee(&msg);
+                cout << "Entrou GOTO" << endl;
+                //take off
+                Coordinate currentP(200.0,200.0,70.0);
+                UAV u(id);
+                Task gotoc(u, currentP);
+                //gotoc.setType(Task::GOTO);
+
+                gotoc.setType(Task::GOTO);
+                TaskManager t;
+                t.addTask(gotoc);
+
+                //Enviando tarefa
+                int codeMessage = Message::TASK_MESSAGE;
+                TaskMessage taskMessage(msg.getMsg(), Message::TASK_MESSAGE);
+                taskMessage.setDestination(msg.getDestination());
+                taskMessage.setTask(t.getTaskByIndex(u, t.getNumTasks(u)-1));
+
+                comm.sendTaskMessageToUAV(ms->getUAV(u.getID()).getNetworkConfigurations().getIdSocket(), taskMessage);
+
+            }else if(!strcmp(msg.getMsg(), "pos2")){
+                cout << "Entrou GOTO" << endl;
+                //take off
+                Coordinate currentP(400.0,400.0,70.0);
+                UAV u(id);
+                Task gotoc(u, currentP);
+                //gotoc.setType(Task::GOTO);
+
+                gotoc.setType(Task::GOTO);
+                TaskManager t;
+                t.addTask(gotoc);
+
+                //Enviando tarefa
+                int codeMessage = Message::TASK_MESSAGE;
+                TaskMessage taskMessage(msg.getMsg(), Message::TASK_MESSAGE);
+                taskMessage.setDestination(msg.getDestination());
+                taskMessage.setTask(t.getTaskByIndex(u, t.getNumTasks(u)-1));
+
+                comm.sendTaskMessageToUAV(ms->getUAV(u.getID()).getNetworkConfigurations().getIdSocket(), taskMessage);
+
+            }else if(!strcmp(msg.getMsg(), "pos3")){
+                cout << "Entrou GOTO" << endl;
+                //take off
+                Coordinate currentP(600.0,600.0,70.0);
+                UAV u(id);
+                Task gotoc(u, currentP);
+                //gotoc.setType(Task::GOTO);
+
+                gotoc.setType(Task::GOTO);
+                TaskManager t;
+                t.addTask(gotoc);
+
+                //Enviando tarefa
+                int codeMessage = Message::TASK_MESSAGE;
+                TaskMessage taskMessage(msg.getMsg(), Message::TASK_MESSAGE);
+                taskMessage.setDestination(msg.getDestination());
                 taskMessage.setTask(t.getTaskByIndex(u, t.getNumTasks(u)-1));
 
                 comm.sendTaskMessageToUAV(ms->getUAV(u.getID()).getNetworkConfigurations().getIdSocket(), taskMessage);
@@ -97,6 +224,7 @@ void listenCommunication(){
                     //Enviando tarefa
                     int codeMessage = Message::TASK_MESSAGE;
                     TaskMessage taskMessage(msg.getMsg(), Message::TASK_MESSAGE);
+                    taskMessage.setDestination(msg.getDestination());
                     taskMessage.setTask(t.getTaskByIndex(u, t.getNumTasks(u)-1));
 
                     comm.sendTaskMessageToUAV(ms->getUAV(u.getID()).getNetworkConfigurations().getIdSocket(), taskMessage);
@@ -113,6 +241,7 @@ void listenCommunication(){
                 //Enviando tarefa
                 int codeMessage = Message::TASK_MESSAGE;
                 TaskMessage taskMessage(msg.getMsg(), Message::TASK_MESSAGE);
+                taskMessage.setDestination(msg.getDestination());
                 taskMessage.setTask(t.getTaskByIndex(u, t.getNumTasks(u)-1));
                 comm.sendTaskMessageToUAV(ms->getUAV(u.getID()).getNetworkConfigurations().getIdSocket(), taskMessage);
             }else if(!strcmp(msg.getMsg(), "quarteiraoT")){
@@ -128,6 +257,7 @@ void listenCommunication(){
                     //Enviando tarefa
                     int codeMessage = Message::TASK_MESSAGE;
                     TaskMessage taskMessage(msg.getMsg(), Message::TASK_MESSAGE);
+                    taskMessage.setDestination(msg.getDestination());
                     taskMessage.setTask(t.getTaskByIndex(u, t.getNumTasks(u)-1));
                     comm.sendTaskMessageToUAV(ms->getUAV(u.getID()).getNetworkConfigurations().getIdSocket(), taskMessage);
 
@@ -144,6 +274,7 @@ void listenCommunication(){
                 //Enviando tarefa
                 int codeMessage = Message::TASK_MESSAGE;
                 TaskMessage taskMessage(msg.getMsg(), Message::TASK_MESSAGE);
+                taskMessage.setDestination(msg.getDestination());
                 taskMessage.setTask(t.getTaskByIndex(u, t.getNumTasks(u)-1));
 
                 comm.sendTaskMessageToUAV(ms->getUAV(u.getID()).getNetworkConfigurations().getIdSocket(), taskMessage);
