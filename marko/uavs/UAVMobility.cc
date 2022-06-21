@@ -2,7 +2,7 @@
 #include <iostream>
 #include <queue>
 
-#include "../communication/UAVMysCommunication.h"
+#include "../communication/uav/UAVMysCommunication.h"
 #include "../../src/mission/DependentTask.h"
 #include "../sheep/SheepMobility.h"
 #include "UAVMessage_m.h"
