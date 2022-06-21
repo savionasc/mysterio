@@ -1,9 +1,9 @@
-#include "../../osborn/communication/UAVMysCommunication.h"
+#include "UAVMysCommunication.h"
 
 #include <iostream>
 
-#include "../../osborn/communication/UAVMessageReceive.h"
-#include "../../src/communication/StatusMessage.h"
+#include "UAVMessageReceive.h"
+#include "../../../src/communication/StatusMessage.h"
 #define HOSTNAME "127.0.0.1"
 
 using namespace std;

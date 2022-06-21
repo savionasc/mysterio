@@ -1,8 +1,8 @@
 #ifndef MYSTERIO_OMNET_COMMUNICATION_UAVMESSAGERECEIVE_H_
 #define MYSTERIO_OMNET_COMMUNICATION_UAVMESSAGERECEIVE_H_
-#include "../../osborn/communication/UAVMysCommunication.h"
-#include "../../osborn/uavs/UAVMobility.h"
-#include "../../src/utils/UAV.h"
+#include "UAVMysCommunication.h"
+#include "../../uavs/UAVMobility.h"
+#include "../../../src/utils/UAV.h"
 
 using namespace std;
 

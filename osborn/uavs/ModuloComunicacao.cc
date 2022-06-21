@@ -4,10 +4,10 @@
 #include <iostream>
 #include <queue>
 
-#include "../../osborn/communication/UAVMysCommunication.h"
 #include "../../osborn/mission/MysTask.h"
 #include "../../osborn/uavs/UAVMobility.h"
 #include "../../src/status/UAVStatus.h"
+#include "../communication/uav/UAVMysCommunication.h"
 
 using namespace omnetpp;
 using namespace inet;

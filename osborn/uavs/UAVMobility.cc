@@ -3,9 +3,9 @@
 #include <iostream>
 #include <queue>
 
-#include "../../osborn/communication/UAVMysCommunication.h"
 #include "../../osborn/uavs/UAVMessage_m.h"
 #include "../../src/mission/DependentTask.h"
+#include "../communication/uav/UAVMysCommunication.h"
 #include "TaskAssistant.h"
 
 using namespace omnetpp;
