@@ -1,19 +1,12 @@
-#ifndef MYSTERIO_OCTOPUS_COMMUNICATION_UAVMESSAGERECEIVE_H_
-#define MYSTERIO_OCTOPUS_COMMUNICATION_UAVMESSAGERECEIVE_H_
-#include "../../src/utils/UAV.h"
+#ifndef MYSTERIO_MARKO_COMMUNICATION_UAV_UAVMESSAGERECEIVE_H_
+#define MYSTERIO_MARKO_COMMUNICATION_UAV_UAVMESSAGERECEIVE_H_
+#include "../../../src/utils/UAV.h"
 #include "UAVMysCommunication.h"
-#include "../uavs/UAVMobility.h"
+#include "../../uavs/UAVMobility.h"
 
 using namespace std;
 
 namespace mysterio {
-
-enum codes{
-    LOCATION_STATUS_RESPONSE = 310,
-    VELOCITY_STATUS_RESPONSE,
-    BATTERY_STATUS_RESPONSE,
-    FLIGHTTIME_STATUS_RESPONSE,
-};
 
 class UAVMessageReceive {
     public:
@@ -25,10 +18,10 @@ class UAVMessageReceive {
             ntc.setIdSocket(param3);
             this->uav.setNetworkConfigurations(ntc);
             //this->uav.setIdSocket(param3);
-            while(waitMessage(param)){ }
+            while(esperarMensagem(param)){ }
         }
 
-        bool waitMessage(int socket){
+        bool esperarMensagem(int socket){
             int typeMSG;
             memset(&typeMSG, 0, sizeof(typeMSG));
             recv(socket, (int*)&typeMSG, sizeof(typeMSG), 0);
@@ -52,8 +45,7 @@ class UAVMessageReceive {
                     //Aí no OnMessageReceve ele trata tudo e fica mais organizado
 
 
-                }else if(!strcmp(msg.getMsg(), "location")){
-                    //Mudar isso aqui e chamar o OnMessageReceve
+                }else if(!strcmp(msg.getMsg(), "location")){ //Mudar isso aqui e chamar o OnMessageReceve
                     std::cout << "[U" << this->uav.getID() << "] Sending status " << std::endl;
                     Coord coor = position[this->uav.getID()];
 
@@ -61,7 +53,7 @@ class UAVMessageReceive {
                     u.setSocketCode(this->uav.getNetworkConfigurations().getIdSocket());
                     u.setSelfID(this->uav.getID());
 
-                    StatusMessage m(msg.getMsg(), LOCATION_STATUS_RESPONSE, this->uav.getID(), -1);   //MUDAR AQUI???
+                    StatusMessage m(msg.getMsg(), StatusManager::LOCATION_STATUS_RESPONSE, this->uav.getID(), -1);   //MUDAR AQUI???
                     m.setSource(u.getSelfID());
                     UAVStatus d = m.getStatus();
                     d.setLocation(coor.x, coor.y, coor.z);
@@ -86,7 +78,7 @@ class UAVMessageReceive {
                     u.setSocketCode(this->uav.getNetworkConfigurations().getIdSocket());
                     u.setSelfID(this->uav.getID());
 
-                    StatusMessage m(msg.getMsg(), VELOCITY_STATUS_RESPONSE, this->uav.getID(), -1); //MUDAR AQUI???
+                    StatusMessage m(msg.getMsg(), StatusManager::VELOCITY_STATUS_RESPONSE, this->uav.getID(), -1); //MUDAR AQUI???
                     UAVStatus d = m.getStatus();
                     d.setVelocity(vel);
                     m.setStatus(d);
@@ -104,7 +96,7 @@ class UAVMessageReceive {
                     char snd[150];
                     std::string txt = "MSG battery[" + to_string(this->uav.getID()) + "]: " + to_string(bateria[this->uav.getID()]);
                     strcpy(snd, txt.c_str());
-                    StatusMessage m(snd, BATTERY_STATUS_RESPONSE, this->uav.getID(), -1);
+                    StatusMessage m(snd, StatusManager::BATTERY_STATUS_RESPONSE, this->uav.getID(), -1);
                     m.getStatus().setBattery(bateria[this->uav.getID()]);
                     cout << txt << endl;
                     u.dispatchStatusMessage(m);
@@ -119,7 +111,7 @@ class UAVMessageReceive {
                     char snd[150];
                     std::string txt = "MSG flight time[" + to_string(this->uav.getID()) + "]: " + to_string(tempoVoo[this->uav.getID()]);
                     strcpy(snd, txt.c_str());
-                    StatusMessage m(snd, FLIGHTTIME_STATUS_RESPONSE, this->uav.getID(), -1);
+                    StatusMessage m(snd, StatusManager::FLIGHTTIME_STATUS_RESPONSE, this->uav.getID(), -1);
                     m.getStatus().setFlightTime((int) tempoVoo[this->uav.getID()]);
                     cout << txt << endl;
                     u.dispatchStatusMessage(m);
@@ -135,8 +127,8 @@ class UAVMessageReceive {
                 }else if(!strcmp(msg.getMsg(), "task")){
                     cout << "Current Task: " << itera[this->uav.getID()] << endl;
                 }else if(!strcmp(msg.getMsg(), "d")){
-                    for (int i = 0; i < base[this->uav.getID()].size(); i++) {
-                        cout << "Status: " << base[0][i].getStatus() << endl;
+                    for (int i = 0; i < tasksVector[this->uav.getID()].size(); i++) {
+                        cout << "Status: " << tasksVector[0][i].getStatus() << endl;
                     }
                 }else if(!strcmp(msg.getMsg(), "drenar")){
                     lowbattery[uav.getID()] = 1;
@@ -162,11 +154,11 @@ class UAVMessageReceive {
                     Task x = tmsg.getTask();
                     //idUAV;
                     int i = x.getUAV().getID();
-                    base[i].push_back(x);
-                    int j = base[i].size()-1;
-                    base[i][j].setType(x.getType());
-                    base[i][j].getUAV().setID(x.getUAV().getID());
-                    waypoints[i] = base[i][j].getWaypoints();
+                    tasksVector[i].push_back(x);
+                    int j = tasksVector[i].size()-1;
+                    tasksVector[i][j].setType(x.getType());
+                    tasksVector[i][j].getUAV().setID(x.getUAV().getID());
+                    waypoints[i] = tasksVector[i][j].getWaypoints();
                     if(itera[i] < 0){
                         itera[i]++;
                     }
