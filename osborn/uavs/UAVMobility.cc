@@ -7,6 +7,7 @@
 #include "../../src/mission/DependentTask.h"
 #include "../communication/uav/UAVMysCommunication.h"
 #include "TaskAssistant.h"
+#include "consensus/ConsensusAlgorithm.h"
 
 using namespace omnetpp;
 using namespace std;
@@ -39,6 +40,53 @@ void UAVMobility::initialize(int stage) {
     initStoppedUAVs();
 
     initAuxiliarTasksVariables();
+
+    if(uav.getID() == 0){
+        //Variáveis para o consensus
+        Coordinate uav0(0,0,25);
+        Coordinate uav1(1,1,1);
+        Coordinate uav2(2,2,2);
+        Coordinate uav3(7,50,150);
+        std::vector<UAV> testeUAVs;
+        UAV u1(1);
+        u1.setStatus(UAVStatus(uav1));
+        UAV u2(2);
+        u2.setStatus(UAVStatus(uav2));
+        UAV u3(3);
+        u3.setStatus(UAVStatus(uav3));
+        testeUAVs.push_back(u1);
+        testeUAVs.push_back(u2);
+        testeUAVs.push_back(u3);
+
+        //Consensus do UAV0
+        ConsensusAlgorithm consensus(uav0, testeUAVs);
+        consensus.run();
+
+        Collision collisionWithUAV1;
+
+        cout << "Colisões: " << consensus.getNumberOfCollisions() << endl;
+        for(Collision c : consensus.getCollisions()){
+            cout << "UAV a colidir: " << c.getUAV().getID() << " escapar por: " << c.getUAVCase() << endl;
+            if(c.getUAV().getID() == 1)
+                collisionWithUAV1 = c;
+        }
+
+        //Instanciando o consensus do outro UAV
+        std::vector<UAV> testeUAVs1;
+        ConsensusAlgorithm consensus1(uav1, testeUAVs1);
+        cout << "Decisão do UAV1: " << endl;
+        consensus1.makeDecision(collisionWithUAV1);
+        cout << "Minha coordenada - X: "<< uav1.getX() << " Y: " << uav1.getY() << " Z: " << uav1.getZ() << endl;
+        Coordinate ec = consensus1.escapeCoordinate();
+        cout << "Escape coordinate - X: "<< ec.getX() << " Y: " << ec.getY() << " Z: " << ec.getZ() << endl;
+
+        //O UAV QUE VAI RECEBER A MENSAGEM COM A COLISÃO DEVE FAZER:
+        //AO RECEBER A MENSAGEM DE COLISÃO, MANDAR MENSAGEM PARA TODOS OS UAVS PARA SABER SUAS POSIÇÕES
+        //RODAR O ALGORITMO DE CONSENSUS.RUN()
+        //COM AS VARIÁVEIS CALCULADAS, EXCLUIR A COLISÃO OBVIA COM O UAV QUE RECEBEU A MENSAGME DE COLISÃO
+        //RODAR O .MAKEDECISION(COLISAO) E RETORNAR A DECISÃO PRO UAV QUE IA COLIDIR
+        //E DEPOIS GETESCAPE() PARA RECEBER A NOVA COORDENADA PARA SEGUIR...
+    }
 
     /*if(uav.getID() == 0 && myStage++ == 0){
         TaskAssistant t;
@@ -160,6 +208,8 @@ void UAVMobility::setTargetPosition() {
                     msgs.push(tm);
                     //if(verificarSeTemUAVProximo() == true)
                         //ChamarAlgoritmoDoConsenso Que lá vai chamar função de adicionarCoordenadaNoVetorParaEvitarColisao 
+                    cout << "VERIFICAR SE TEM UAV PRÓXIMO! > ";
+
                     executeTask(task);
                 //}
             }
