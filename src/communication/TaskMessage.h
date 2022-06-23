@@ -21,6 +21,10 @@ public:
 
     virtual ~TaskMessage(){}
 
+    char* getMsg() { return msg; }
+
+    void setMsg(char* msg) { strcpy(this->msg, msg); }
+
     Task getTask() {
         return task;
     }
