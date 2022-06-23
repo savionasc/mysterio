@@ -32,6 +32,7 @@ class ModuloComunicacao : public cSimpleModule {
 
     //Auxiliary functions
     void enviarMensagem(double tempo, int origem, int destino, char const *name, int kind);
+    void enviarMensagemParaTodosOsUAVs(UAVMessage *msg);
     void rememberCheckMessage(double seconds);
 
     Coord castCoordinateToCoord(Coordinate co){

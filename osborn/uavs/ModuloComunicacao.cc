@@ -26,8 +26,8 @@ extern std::queue<TaskMessage> msgs;
 
 enum codesUAV{
     CHECKING_MESSAGE = 123,
-    SHEEP_ALERT,
-    SUBTASK_HIGH_PRIORITY = 222
+    REQUEST_POSITION_UAV = 234,
+    RESPONSE_POSITION_UAV
 };
 
 void ModuloComunicacao::initialize(){
@@ -53,21 +53,18 @@ void ModuloComunicacao::handleMessage(cMessage *msg){
     UAVMessage *mMSG = check_and_cast<UAVMessage*>(msg);
 
     //SE MENSAGEM RECEBIDA POR OUTRO UAV
-    if(mMSG->getKind() == 234 && strcmp(mMSG->getName(), "location") == 0){
-        cout << "IF" << endl;
-        if(selfID != 0){
-            cout << "ELSE != 0 || 1" << endl;
-            cout << "Mensagem recebida em: " << selfID << " de: " << mMSG->getDestino();
-            cout << " Tipo: " << mMSG->getKind() << endl;
+    if(mMSG->getKind() == REQUEST_POSITION_UAV && strcmp(mMSG->getName(), "location") == 0){
+        cout << "ELSE != 0 || 1" << endl;
+        cout << "Mensagem recebida em: " << selfID << " de: " << mMSG->getDestino();
+        cout << " Tipo: " << mMSG->getKind() << endl;
 
-            //RESPONDENDO
-            UAVMessage *uavMSG = new UAVMessage("location", 235);
-            uavMSG->setOrigem(selfID);
-            uavMSG->setDestino(mMSG->getOrigem());
-            uavMSG->setStatus(UAVStatus(castCoordToCoordinate(position[selfID])));
-            send(uavMSG, "out", uavMSG->getDestino());
-        }
-    }else if(mMSG->getKind() == 235){
+        //RESPONDENDO
+        UAVMessage *uavMSG = new UAVMessage("location", RESPONSE_POSITION_UAV);
+        uavMSG->setOrigem(selfID);
+        uavMSG->setDestino(mMSG->getOrigem());
+        uavMSG->setStatus(UAVStatus(castCoordToCoordinate(position[selfID])));
+        send(uavMSG, "out", uavMSG->getDestino());
+    }else if(mMSG->getKind() == RESPONSE_POSITION_UAV){
         UAVStatus us = mMSG->getStatus();
         cout << "[UAV"<< mMSG->getOrigem() <<"-STATUS] Status recebido: x:" << us.getLocationX();
         cout << " y: " << us.getLocationY();
@@ -79,12 +76,12 @@ void ModuloComunicacao::handleMessage(cMessage *msg){
         if(msgs.size() > 0 && selfID == msgs.front().getSource()){
             TaskMessage tm = msgs.front();
             cout << "[MxM] " << tm.getMsg() << " | " << tm.getSource() << endl;
-            if(strcmp(tm.getMsg(), "location") == 0 && tm.getCode() == 234){
+            if(strcmp(tm.getMsg(), "location") == 0 && tm.getCode() == REQUEST_POSITION_UAV){
                 cout << "[MM] ESTÁ QUERENDO SABER LOCATION: " << tm.getSource() << endl;
                 cout << "IF" << endl;
-                if(selfID == 0){
+                //if(selfID == 0){
                     cout << "IF == 0" << endl;
-                    for (int i = 0; i < 2; i++) {
+                    /*for (int i = 0; i < 2; i++) {
                         cout << "FOR" << endl;
                         //UAVMessage *uavMSG = new UAVMessage("ToU", SUBTASK_HIGH_PRIORITY);
                         UAVMessage *uavMSG = new UAVMessage(tm.getMsg(), tm.getCode());
@@ -93,12 +90,20 @@ void ModuloComunicacao::handleMessage(cMessage *msg){
                         send(uavMSG, "out", uavMSG->getDestino()-1);
 
                         cout << "Mensagem enviada para: " << i+1 << endl;
-                    }
-                }else{
+                    }*/
+
+                    cout << "FOR" << endl;
+                    UAVMessage *uavMSG = new UAVMessage(tm.getMsg(), tm.getCode());
+                    uavMSG->setOrigem(selfID);
+                    //uavMSG->setDestino(i+1);
+                    //send(uavMSG, "out", uavMSG->getDestino()-1);
+
+                    enviarMensagemParaTodosOsUAVs(uavMSG);
+                /*}else{
                     cout << "ELSE != 0 || 2" << endl;
                     cout << "Mensagem recebida em: " << selfID << " de: " << mMSG->getOrigem();
                     cout << " Tipo: " << mMSG->getKind() << endl;
-                }
+                }*/
             }
 
             /*if(tm.getDestination() == -5){ //Sheep
@@ -152,6 +157,27 @@ void ModuloComunicacao::forwardMessage(UAVMessage *msg){
 
     EV << "[meu]Forwarding message " << msg << " on port out[" << k << "]\n";
     send(msg, "out", k);
+}
+
+void ModuloComunicacao::enviarMensagemParaTodosOsUAVs(UAVMessage *msg){
+    //Depois enviar mensagens para todos os vizinhos
+    int n = gateSize("out");
+
+    cout << "UAV" << selfID << " N: " << n << endl;
+
+    int id = 0;
+    for (int i = 0; i < n; i++) {
+
+        if(selfID == id){
+            id += 1;
+        }
+
+        msg->setDestino(id);
+        send(msg->dup(), "out", i);
+        cout << "I: " << i << " ID: " << id << endl;
+        id++;
+    }
+
 }
 
 UAVMessage *ModuloComunicacao::generateMessage(){
