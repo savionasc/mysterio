@@ -41,7 +41,7 @@ void UAVMobility::initialize(int stage) {
 
     initAuxiliarTasksVariables();
 
-    if(uav.getID() == 0){
+    if(uav.getID() == -2){
         //Variáveis para o consensus
         Coordinate uav0(0,0,25);
         Coordinate uav1(1,1,1);
@@ -88,18 +88,6 @@ void UAVMobility::initialize(int stage) {
         //E DEPOIS GETESCAPE() PARA RECEBER A NOVA COORDENADA PARA SEGUIR...
     }
 
-    /*if(uav.getID() == 0 && myStage++ == 0){
-        TaskAssistant t;
-        Coordinate coord(600, 300, 800);
-        splitGoTos[uav.getID()] = t.splitCoordinate(coord);
-        cout << "Vai ler" << endl;
-        for (int var = 0; var < splitGoTos[uav.getID()].size(); var++) {
-            cout << "x: " << splitGoTos[uav.getID()][var].getX();
-            cout << " y: " << splitGoTos[uav.getID()][var].getY();
-            cout << " z: " << splitGoTos[uav.getID()][var].getZ() << endl;
-        }
-    }*/
-
     if (stage == INITSTAGE_LOCAL) {
         waitTimeParameter = &par("waitTime");
         hasWaitTime = waitTimeParameter->isExpression() || waitTimeParameter->doubleValue() != 0;
@@ -131,7 +119,6 @@ void UAVMobility::setTargetPosition() {
         nextChange = simTime() + waitTime;
         nextMoveIsWait = true;
 
-//        Coord inicialPosition(500, 500, 500);
         targetPosition = lastPosition;
     }
 
@@ -203,9 +190,13 @@ void UAVMobility::setTargetPosition() {
                     }
                 }else{*/
                     cout << "para executar tarefa > ";
-                    TaskMessage tm("checking", 123);
-                    tm.setDestination(0);
-                    msgs.push(tm);
+                    //TaskMessage tm("checking", 123);
+
+                    if(uav.getID() == 0){
+                        TaskMessage tm("location", 234);
+                        tm.setSource(uav.getID());
+                        msgs.push(tm);
+                    }
                     //if(verificarSeTemUAVProximo() == true)
                         //ChamarAlgoritmoDoConsenso Que lá vai chamar função de adicionarCoordenadaNoVetorParaEvitarColisao 
                     cout << "VERIFICAR SE TEM UAV PRÓXIMO! > ";

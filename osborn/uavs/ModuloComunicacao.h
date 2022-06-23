@@ -2,6 +2,7 @@
 #define MYSTERIO_OMNET_UAVS_MODULOCOMUNICACAO_H_
 
 #include "../../osborn/uavs/UAVMessage_m.h"
+#include "inet/common/geometry/common/Coord.h"
 
 using namespace omnetpp;
 using namespace std;
@@ -32,6 +33,16 @@ class ModuloComunicacao : public cSimpleModule {
     //Auxiliary functions
     void enviarMensagem(double tempo, int origem, int destino, char const *name, int kind);
     void rememberCheckMessage(double seconds);
+
+    Coord castCoordinateToCoord(Coordinate co){
+        Coord coor(co.getX(), co.getY(), co.getZ());
+        return coor;
+    }
+
+    Coordinate castCoordToCoordinate(Coord co){
+        Coordinate coor(co.getX(), co.getY(), co.getZ());
+        return coor;
+    }
 
     int selfID = -2;
     UAVMessage* sendMSGEvt;

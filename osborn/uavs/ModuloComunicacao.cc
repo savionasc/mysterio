@@ -50,19 +50,58 @@ void ModuloComunicacao::initialize(){
 }
 
 void ModuloComunicacao::handleMessage(cMessage *msg){
-    if(selfID == 0){
+    UAVMessage *mMSG = check_and_cast<UAVMessage*>(msg);
 
+    //SE MENSAGEM RECEBIDA POR OUTRO UAV
+    if(mMSG->getKind() == 234 && strcmp(mMSG->getName(), "location") == 0){
+        cout << "IF" << endl;
+        if(selfID != 0){
+            cout << "ELSE != 0 || 1" << endl;
+            cout << "Mensagem recebida em: " << selfID << " de: " << mMSG->getDestino();
+            cout << " Tipo: " << mMSG->getKind() << endl;
+
+            //RESPONDENDO
+            UAVMessage *uavMSG = new UAVMessage("location", 235);
+            uavMSG->setOrigem(selfID);
+            uavMSG->setDestino(mMSG->getOrigem());
+            uavMSG->setStatus(UAVStatus(castCoordToCoordinate(position[selfID])));
+            send(uavMSG, "out", uavMSG->getDestino());
+        }
+    }else if(mMSG->getKind() == 235){
+        UAVStatus us = mMSG->getStatus();
+        cout << "[UAV"<< mMSG->getOrigem() <<"-STATUS] Status recebido: x:" << us.getLocationX();
+        cout << " y: " << us.getLocationY();
+        cout << " z: " << us.getLocationZ() << endl;
     }
 
-    UAVMessage *mMSG = check_and_cast<UAVMessage*>(msg);
+    //SE MENSAGEM FOR CHECKING OU HOUVER MENSAGEM VINDA DO MOBILITY
     if(mMSG->getKind() == CHECKING_MESSAGE && strcmp(mMSG->getName(), "checking") == 0){
-        if(selfID == 0)
-            cout << "Primeiro if do HANDLE" << endl;
         if(msgs.size() > 0 && selfID == msgs.front().getSource()){
-            if(selfID == 0)
-                cout << "Segundo if" << endl;
             TaskMessage tm = msgs.front();
-            if(tm.getDestination() == -5){ //Sheep
+            cout << "[MxM] " << tm.getMsg() << " | " << tm.getSource() << endl;
+            if(strcmp(tm.getMsg(), "location") == 0 && tm.getCode() == 234){
+                cout << "[MM] ESTÁ QUERENDO SABER LOCATION: " << tm.getSource() << endl;
+                cout << "IF" << endl;
+                if(selfID == 0){
+                    cout << "IF == 0" << endl;
+                    for (int i = 0; i < 2; i++) {
+                        cout << "FOR" << endl;
+                        //UAVMessage *uavMSG = new UAVMessage("ToU", SUBTASK_HIGH_PRIORITY);
+                        UAVMessage *uavMSG = new UAVMessage(tm.getMsg(), tm.getCode());
+                        uavMSG->setOrigem(selfID);
+                        uavMSG->setDestino(i+1);
+                        send(uavMSG, "out", uavMSG->getDestino()-1);
+
+                        cout << "Mensagem enviada para: " << i+1 << endl;
+                    }
+                }else{
+                    cout << "ELSE != 0 || 2" << endl;
+                    cout << "Mensagem recebida em: " << selfID << " de: " << mMSG->getOrigem();
+                    cout << " Tipo: " << mMSG->getKind() << endl;
+                }
+            }
+
+            /*if(tm.getDestination() == -5){ //Sheep
                 if(selfID == 0)
                     cout << "Terceiro if" << endl;
                 UAVMessage *sheepAlert = new UAVMessage("STOPSHEEP", SHEEP_ALERT);
@@ -76,14 +115,15 @@ void ModuloComunicacao::handleMessage(cMessage *msg){
                 uavMSG->setDestino(tm.getDestination());
                 uavMSG->setTask(tm.getTask());
                 send(uavMSG, "out", uavMSG->getDestino());
-            }
+            }*/
+
             msgs.pop();
         }
 
         UAVMessage *sendMSGEvt = new UAVMessage("checking", CHECKING_MESSAGE);
         sendMSGEvt->setOrigem(selfID);
         scheduleAt(simTime()+2, sendMSGEvt);
-    }else if(mMSG->getKind() == SUBTASK_HIGH_PRIORITY && mMSG->getDestino() == selfID){
+    }/*else if(mMSG->getKind() == SUBTASK_HIGH_PRIORITY && mMSG->getDestino() == selfID){
         ativo[selfID] = true;
 
         Task x = mMSG->getTask();
@@ -96,7 +136,7 @@ void ModuloComunicacao::handleMessage(cMessage *msg){
         if(itera[i] < 0){
             itera[i]++;
         }
-    }
+    }*/
 
     delete mMSG;
 }
