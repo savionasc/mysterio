@@ -47,7 +47,25 @@ class ModuloComunicacao : public cSimpleModule {
         return coor;
     }
 
+    ModuleMessage castUAVMessageToModuleMessage(UAVMessage uavMessage){
+        ModuleMessage mMessage(strdup(uavMessage.getName()), uavMessage.getKind());
+        mMessage.setDestination(uavMessage.getDestino());
+        mMessage.setSource(uavMessage.getOrigem());
+        mMessage.setStatus(uavMessage.getStatus());
+        mMessage.setTask(uavMessage.getTask());
 
+        return mMessage;
+    }
+
+    UAVMessage castModuleMessageToUAVMessage(ModuleMessage moduleMessage){
+        UAVMessage uMessage(strdup(moduleMessage.getMsg()), moduleMessage.getCode());
+        uMessage.setOrigem(moduleMessage.getSource());
+        uMessage.setDestino(moduleMessage.getDestination());
+        uMessage.setStatus(moduleMessage.getStatus());
+        uMessage.setTask(moduleMessage.getTask());
+
+        return uMessage;
+    }
 
     int selfID = -2;
     UAVMessage* sendMSGEvt;
