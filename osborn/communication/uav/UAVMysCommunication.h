@@ -12,6 +12,7 @@
 #include "../MysCommunication.h"
 #include "../../mission/MysTask.h"
 #include "../../../src/communication/Message.h"
+#include "../../../src/communication/ModuleMessage.h"
 #include "../../../src/communication/StatusMessage.h"
 #include "../../../src/communication/TaskMessage.h"
 #include "../../../src/communication/UAVCommunication.h"
@@ -31,7 +32,7 @@ extern int waypoints[NUMUAVS];
 extern std::vector<Task> tasksVector[NUMUAVS]; //Task
 extern bool ativo[NUMUAVS];
 extern int itera[NUMUAVS];
-extern std::queue<TaskMessage> msgs;
+extern std::vector<ModuleMessage> msgs[NUMUAVS];
 
 namespace mysterio {
 

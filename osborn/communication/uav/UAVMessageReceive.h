@@ -135,7 +135,11 @@ class UAVMessageReceive {
 
                 //if ao receber mensagem destinada a outros UAVs
                 if(tmsg.getDestination() != this->uav.getID()){
-                    msgs.push(tmsg);
+                    ModuleMessage mMsg(tmsg.getMsg(), tmsg.getCode());
+                    mMsg.setDestination(tmsg.getDestination());
+                    mMsg.setSource(tmsg.getSource());
+                    mMsg.setTask(tmsg.getTask());
+                    msgs[this->uav.getID()].push_back(mMsg);
                     cout << "For other UAV";
                 }else{
                     cout << "For this UAV";
