@@ -89,6 +89,7 @@ class INET_API UAVMobility : public LineSegmentsMobilityBase
     int height = 20;
     int radius = 50;
   public:
+    const int MODULE_ID = 2;
     UAVMobility();
     virtual double getMaxSpeed() const override;
 

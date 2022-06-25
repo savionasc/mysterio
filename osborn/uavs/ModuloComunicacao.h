@@ -2,6 +2,7 @@
 #define MYSTERIO_OMNET_UAVS_MODULOCOMUNICACAO_H_
 
 #include "../../osborn/uavs/UAVMessage_m.h"
+#include "../../src/communication/ModuleMessage.h"
 #include "inet/common/geometry/common/Coord.h"
 
 using namespace omnetpp;
@@ -11,6 +12,7 @@ namespace inet {
 
 class ModuloComunicacao : public cSimpleModule {
   public:
+    const int MODULE_ID = 1;
     enum TipoMensagem {
         SOLICITAR_LOCALIZACAO = 10,
         RESPONDER_LOCALIZACAO,
@@ -44,6 +46,8 @@ class ModuloComunicacao : public cSimpleModule {
         Coordinate coor(co.getX(), co.getY(), co.getZ());
         return coor;
     }
+
+
 
     int selfID = -2;
     UAVMessage* sendMSGEvt;
