@@ -7,6 +7,7 @@
 #include "../../osborn/mission/MysTask.h"
 #include "../../osborn/uavs/UAVMobility.h"
 #include "../../src/status/UAVStatus.h"
+#include "../../src/communication/ModuleMessage.h"
 #include "../communication/uav/UAVMysCommunication.h"
 
 using namespace omnetpp;
@@ -22,7 +23,7 @@ extern float bateria[NUMUAVS];
 extern double tempoVoo[NUMUAVS];
 extern UAVMysCommunication uavs[NUMUAVS];
 extern bool ativo[NUMUAVS];
-extern std::queue<TaskMessage> msgs;
+extern std::vector<ModuleMessage> msgs[NUMUAVS];
 
 enum codesUAV{
     CHECKING_MESSAGE = 123,
@@ -52,96 +53,64 @@ void ModuloComunicacao::initialize(){
 void ModuloComunicacao::handleMessage(cMessage *msg){
     UAVMessage *mMSG = check_and_cast<UAVMessage*>(msg);
 
+    //if(selfID == 1 && mMSG->getOrigem() != 1){
+    if(mMSG->getKind() == 234){
+        cout << "[XXX] Mensagem recebida em: " << selfID << " de: " << mMSG->getOrigem();
+        cout << "Para: " << mMSG->getDestino() << " Tipo: " << mMSG->getKind() << endl;
+    }
+
     //SE MENSAGEM RECEBIDA POR OUTRO UAV
     if(mMSG->getKind() == REQUEST_POSITION_UAV && strcmp(mMSG->getName(), "location") == 0){
-        cout << "ELSE != 0 || 1" << endl;
-        cout << "Mensagem recebida em: " << selfID << " de: " << mMSG->getDestino();
+        cout << "Mensagem recebida em: " << selfID << " de: " << mMSG->getOrigem();
         cout << " Tipo: " << mMSG->getKind() << endl;
 
         //RESPONDENDO
         UAVMessage *uavMSG = new UAVMessage("location", RESPONSE_POSITION_UAV);
-        uavMSG->setOrigem(selfID);
         uavMSG->setDestino(mMSG->getOrigem());
+        uavMSG->setOrigem(selfID);
         uavMSG->setStatus(UAVStatus(castCoordToCoordinate(position[selfID])));
-        send(uavMSG, "out", uavMSG->getDestino());
+        if(uavMSG->getDestino() > selfID){
+            send(uavMSG, "out", uavMSG->getDestino()-1);
+        }else{
+            send(uavMSG, "out", uavMSG->getDestino());
+        }
     }else if(mMSG->getKind() == RESPONSE_POSITION_UAV){
         UAVStatus us = mMSG->getStatus();
-        cout << "[UAV"<< mMSG->getOrigem() <<"-STATUS] Status recebido: x:" << us.getLocationX();
+        cout << "[UAV"<< mMSG->getOrigem() <<"-STATUS-TO-U"<<selfID<<"] Status recebido: x:" << us.getLocationX();
         cout << " y: " << us.getLocationY();
         cout << " z: " << us.getLocationZ() << endl;
+        ModuleMessage mm = castUAVMessageToModuleMessage(*mMSG);
+        mm.setModule(2);
+
+        msgs[selfID].push_back(mm);
     }
 
     //SE MENSAGEM FOR CHECKING OU HOUVER MENSAGEM VINDA DO MOBILITY
     if(mMSG->getKind() == CHECKING_MESSAGE && strcmp(mMSG->getName(), "checking") == 0){
-        if(msgs.size() > 0 && selfID == msgs.front().getSource()){
-            TaskMessage tm = msgs.front();
-            cout << "[MxM] " << tm.getMsg() << " | " << tm.getSource() << endl;
-            if(strcmp(tm.getMsg(), "location") == 0 && tm.getCode() == REQUEST_POSITION_UAV){
-                cout << "[MM] ESTÁ QUERENDO SABER LOCATION: " << tm.getSource() << endl;
-                cout << "IF" << endl;
-                //if(selfID == 0){
-                    cout << "IF == 0" << endl;
-                    /*for (int i = 0; i < 2; i++) {
-                        cout << "FOR" << endl;
-                        //UAVMessage *uavMSG = new UAVMessage("ToU", SUBTASK_HIGH_PRIORITY);
-                        UAVMessage *uavMSG = new UAVMessage(tm.getMsg(), tm.getCode());
-                        uavMSG->setOrigem(selfID);
-                        uavMSG->setDestino(i+1);
-                        send(uavMSG, "out", uavMSG->getDestino()-1);
 
-                        cout << "Mensagem enviada para: " << i+1 << endl;
-                    }*/
-
-                    cout << "FOR" << endl;
-                    UAVMessage *uavMSG = new UAVMessage(tm.getMsg(), tm.getCode());
+        for (int i = 0; i < msgs[selfID].size() > 0; i++) {
+            ModuleMessage mm = msgs[selfID][i];
+            if(mm.getModule() == MODULE_ID){
+                cout << "[MxM] " << mm.getMsg() << " | " << mm.getSource() << endl;
+                if(strcmp(mm.getMsg(), "location") == 0 && mm.getCode() == REQUEST_POSITION_UAV){
+                    cout << "[MM] ESTÁ QUERENDO SABER LOCATION: " << mm.getSource() << endl;
+                    UAVMessage *uavMSG = new UAVMessage(mm.getMsg(), mm.getCode());
                     uavMSG->setOrigem(selfID);
                     //uavMSG->setDestino(i+1);
                     //send(uavMSG, "out", uavMSG->getDestino()-1);
 
                     enviarMensagemParaTodosOsUAVs(uavMSG);
-                /*}else{
-                    cout << "ELSE != 0 || 2" << endl;
-                    cout << "Mensagem recebida em: " << selfID << " de: " << mMSG->getOrigem();
-                    cout << " Tipo: " << mMSG->getKind() << endl;
-                }*/
+                }
+
+                msgs[selfID].pop_back();
             }
 
-            /*if(tm.getDestination() == -5){ //Sheep
-                if(selfID == 0)
-                    cout << "Terceiro if" << endl;
-                UAVMessage *sheepAlert = new UAVMessage("STOPSHEEP", SHEEP_ALERT);
-                sheepAlert->setOrigem(selfID);
-                send(sheepAlert, "out", 0);
-            }else{ //Others UAVs
-                if(selfID == 0)
-                    cout << "Else no if" << endl;
-                UAVMessage *uavMSG = new UAVMessage("ToU", SUBTASK_HIGH_PRIORITY);
-                uavMSG->setOrigem(selfID);
-                uavMSG->setDestino(tm.getDestination());
-                uavMSG->setTask(tm.getTask());
-                send(uavMSG, "out", uavMSG->getDestino());
-            }*/
-
-            msgs.pop();
         }
 
         UAVMessage *sendMSGEvt = new UAVMessage("checking", CHECKING_MESSAGE);
         sendMSGEvt->setOrigem(selfID);
         scheduleAt(simTime()+2, sendMSGEvt);
-    }/*else if(mMSG->getKind() == SUBTASK_HIGH_PRIORITY && mMSG->getDestino() == selfID){
-        ativo[selfID] = true;
-
-        Task x = mMSG->getTask();
-        int i = x.getUAV().getID();
-        tasksVector[i].push_back(x);
-        int j = tasksVector[i].size()-1;
-        tasksVector[i][j].setType(x.getType());
-        tasksVector[i][j].getUAV().setID(x.getUAV().getID());
-        waypoints[i] = tasksVector[i][j].getWaypoints();
-        if(itera[i] < 0){
-            itera[i]++;
-        }
-    }*/
+    }
 
     delete mMSG;
 }

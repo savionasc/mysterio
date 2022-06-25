@@ -22,7 +22,7 @@ bool ativo[NUMUAVS];
 int itera[NUMUAVS];
 std::vector<Task> tasksVector[NUMUAVS];
 std::vector<Coordinate> splitGoTos[NUMUAVS];
-std::queue<TaskMessage> msgs;
+std::vector<ModuleMessage> msgs[NUMUAVS];
 UAVMysCommunication uavs[NUMUAVS];
 
 int waypoints[NUMUAVS];
@@ -145,7 +145,7 @@ void UAVMobility::setTargetPosition() {
     else {
         //Se tiver tarefas para fazer
         if(tasksVector[uav.getID()].size() != itera[uav.getID()] && tasksVector[uav.getID()].size() > 0){ //if there are tasks not performed
-            std::cout << "TEM TAREFA!" << std::endl;
+            //std::cout << "TEM TAREFA!" << std::endl;
             int task = itera[uav.getID()];
             //finalizando
             if(tasksVector[uav.getID()][task].getStatus() == Task::COMPLETED){
@@ -192,11 +192,31 @@ void UAVMobility::setTargetPosition() {
                     cout << "para executar tarefa > ";
                     //TaskMessage tm("checking", 123);
 
-                    if(uav.getID() == 0){
-                        TaskMessage tm("location", 234);
-                        tm.setSource(uav.getID());
-                        msgs.push(tm);
+                    cout << "[zzz] Mensagens de: " << uav.getID() << endl;
+
+
+                    ModuleMessage mm(strdup("location"), 234, 1);
+
+                    mm.setSource(uav.getID());
+                    msgs[uav.getID()].push_back(mm);
+
+                    //verificando se há mensagem para mim...
+                    for (int i = 0; i < msgs[uav.getID()].size(); i++) {
+                        if(msgs[uav.getID()][i].getModule() == MODULE_ID){
+                            cout << "[U" << uav.getID() << "] COORDENADAS VINDAS DO UAV" << msgs[uav.getID()][i].getSource() << " PARA: " << msgs[uav.getID()][i].getDestination();
+                            UAVStatus us = msgs[uav.getID()][i].getStatus();
+                            cout << " x: " << us.getLocationX();
+                            cout << " y: " << us.getLocationY();
+                            cout << " z: " << us.getLocationZ() <<
+                            " tipo: " << msgs[uav.getID()][i].getCode() << endl;
+                            msgs[uav.getID()].pop_back();
+                            //Se entrar aqui, então eu tenho uma lista de mensagens com as distâncias.
+                            //Com isso eu crio um UAV para cada mensagem e passo a coordenada da mensagem
+                            //Verifico se há possível colisão para cada UAV
+                            //Chamo o algoritmo do consenso se houver possível colisão
+                        }
                     }
+
                     //if(verificarSeTemUAVProximo() == true)
                         //ChamarAlgoritmoDoConsenso Que lá vai chamar função de adicionarCoordenadaNoVetorParaEvitarColisao 
                     cout << "VERIFICAR SE TEM UAV PRÓXIMO! > ";
@@ -305,11 +325,11 @@ Coord UAVMobility::splittedGoTo(int j){
         }
 
         c = this->castCoordinateToCoord(splitGoTos[uav.getID()][waypoints[uav.getID()]]);
-        cout << "Split: " << waypoints[uav.getID()] << endl;
+        /*cout << "Split: " << waypoints[uav.getID()] << endl;
         cout << "QTD Splits: " << splitGoTos[uav.getID()].size() << endl;
         cout << "x: " << splitGoTos[uav.getID()][waypoints[uav.getID()]].getX();
         cout << " y: " << splitGoTos[uav.getID()][waypoints[uav.getID()]].getY();
-        cout << " z: " << splitGoTos[uav.getID()][waypoints[uav.getID()]].getZ() << endl;
+        cout << " z: " << splitGoTos[uav.getID()][waypoints[uav.getID()]].getZ() << endl;*/
         waypoints[uav.getID()]++;
     }else{
         cout << "Else do splittedGoTo > ";
