@@ -73,6 +73,8 @@ class INET_API UAVMobility : public LineSegmentsMobilityBase
     void ativarUAV(int idUAV);
     void inativarUAV(int idUAV);
     void stop();
+    void addEscapeCoordinate(Coordinate coord);
+
 
     J pegarBateria(int idUAV);
 

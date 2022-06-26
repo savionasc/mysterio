@@ -375,14 +375,16 @@ Coord UAVMobility::splittedGoTo(int j){
         if(waypoints[uav.getID()] == 0){
             //Update status
             tasksVector[uav.getID()][j].setStatus(Task::STARTED);
+        }else if(waypoints[uav.getID()] == 2){
+            addEscapeCoordinate(Coordinate(100,100,800));
         }
 
         c = this->castCoordinateToCoord(splitGoTos[uav.getID()][waypoints[uav.getID()]]);
-        /*cout << "Split: " << waypoints[uav.getID()] << endl;
+        cout << "Split: " << waypoints[uav.getID()] << endl;
         cout << "QTD Splits: " << splitGoTos[uav.getID()].size() << endl;
         cout << "x: " << splitGoTos[uav.getID()][waypoints[uav.getID()]].getX();
         cout << " y: " << splitGoTos[uav.getID()][waypoints[uav.getID()]].getY();
-        cout << " z: " << splitGoTos[uav.getID()][waypoints[uav.getID()]].getZ() << endl;*/
+        cout << " z: " << splitGoTos[uav.getID()][waypoints[uav.getID()]].getZ() << endl;
         waypoints[uav.getID()]++;
     }else{
         cout << "Else do splittedGoTo > ";
@@ -425,5 +427,11 @@ void UAVMobility::inativarUAV(int idUAV){
 }
 void UAVMobility::ativarUAV(int idUAV){
     ativo[idUAV] = true;
+}
+
+void UAVMobility::addEscapeCoordinate(Coordinate coord){
+    auto it = splitGoTos[uav.getID()].begin();
+    cout << "POSSSSS: " << waypoints[uav.getID()] << endl;
+    splitGoTos[uav.getID()].insert(it + waypoints[uav.getID()], coord);
 }
 
