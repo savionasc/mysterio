@@ -132,8 +132,6 @@ void ModuloComunicacao::enviarMensagemParaTodosOsUAVs(UAVMessage *msg){
     //Depois enviar mensagens para todos os vizinhos
     int n = gateSize("out");
 
-    cout << "UAV" << selfID << " N: " << n << endl;
-
     int id = 0;
     for (int i = 0; i < n; i++) {
 
@@ -143,7 +141,6 @@ void ModuloComunicacao::enviarMensagemParaTodosOsUAVs(UAVMessage *msg){
 
         msg->setDestino(id);
         send(msg->dup(), "out", i);
-        cout << "I: " << i << " ID: " << id << endl;
         id++;
     }
 

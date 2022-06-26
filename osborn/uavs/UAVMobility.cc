@@ -41,7 +41,7 @@ void UAVMobility::initialize(int stage) {
 
     initAuxiliarTasksVariables();
 
-    if(uav.getID() == -2){
+    if(uav.getID() == 0){
         //Variáveis para o consensus
         Coordinate uav0(0,0,25);
         Coordinate uav1(1,1,1);
@@ -62,23 +62,40 @@ void UAVMobility::initialize(int stage) {
         ConsensusAlgorithm consensus(uav0, testeUAVs);
         consensus.run();
 
-        Collision collisionWithUAV1;
+        Collision collisionWithUAV1,collisionWithUAV2;
 
         cout << "Colisões: " << consensus.getNumberOfCollisions() << endl;
         for(Collision c : consensus.getCollisions()){
             cout << "UAV a colidir: " << c.getUAV().getID() << " escapar por: " << c.getUAVCase() << endl;
             if(c.getUAV().getID() == 1)
                 collisionWithUAV1 = c;
+            else if(c.getUAV().getID() == 2)
+                collisionWithUAV2 = c;
         }
+
+        cout << "Decisão do UAV0: ANTES " << endl;
+        cout << "Minha coordenada UAV0 - X: "<< uav0.getX() << " Y: " << uav0.getY() << " Z: " << uav0.getZ() << endl;
+        Coordinate ec0 = consensus.escapeCoordinate();
+        cout << "Escape coordinate  UAV0 - X: "<< ec0.getX() << " Y: " << ec0.getY() << " Z: " << ec0.getZ() << endl;
 
         //Instanciando o consensus do outro UAV
         std::vector<UAV> testeUAVs1;
         ConsensusAlgorithm consensus1(uav1, testeUAVs1);
         cout << "Decisão do UAV1: " << endl;
         consensus1.makeDecision(collisionWithUAV1);
+        cout << "PERANTE SUGESTÃO DO UAV0: " << collisionWithUAV1.getUAVCase() << endl;
         cout << "Minha coordenada - X: "<< uav1.getX() << " Y: " << uav1.getY() << " Z: " << uav1.getZ() << endl;
-        Coordinate ec = consensus1.escapeCoordinate();
-        cout << "Escape coordinate - X: "<< ec.getX() << " Y: " << ec.getY() << " Z: " << ec.getZ() << endl;
+        Coordinate ec1 = consensus1.escapeCoordinate();
+        cout << "Escape coordinate - X: "<< ec1.getX() << " Y: " << ec1.getY() << " Z: " << ec1.getZ() << endl;
+
+        std::vector<UAV> testeUAVs2;
+        ConsensusAlgorithm consensus2(uav2, testeUAVs2);
+        cout << "Decisão do UAV2: " << endl;
+        consensus2.makeDecision(collisionWithUAV2);
+        cout << "PERANTE SUGESTÃO DO UAV0: " << collisionWithUAV1.getUAVCase() << endl;
+        cout << "Minha coordenada - X: "<< uav2.getX() << " Y: " << uav2.getY() << " Z: " << uav2.getZ() << endl;
+        Coordinate ec2 = consensus2.escapeCoordinate();
+        cout << "Escape coordinate - X: "<< ec2.getX() << " Y: " << ec2.getY() << " Z: " << ec2.getZ() << endl;
 
         //O UAV QUE VAI RECEBER A MENSAGEM COM A COLISÃO DEVE FAZER:
         //AO RECEBER A MENSAGEM DE COLISÃO, MANDAR MENSAGEM PARA TODOS OS UAVS PARA SABER SUAS POSIÇÕES
@@ -86,6 +103,23 @@ void UAVMobility::initialize(int stage) {
         //COM AS VARIÁVEIS CALCULADAS, EXCLUIR A COLISÃO OBVIA COM O UAV QUE RECEBEU A MENSAGME DE COLISÃO
         //RODAR O .MAKEDECISION(COLISAO) E RETORNAR A DECISÃO PRO UAV QUE IA COLIDIR
         //E DEPOIS GETESCAPE() PARA RECEBER A NOVA COORDENADA PARA SEGUIR...
+
+        //resposta do UAV1 para a colisão com UAV0
+        Collision collisionWithUAV0;
+        for(Collision c : consensus1.getCollisions())
+            if(c.getUAV().getID() == 0)
+                collisionWithUAV0 = c;
+
+        cout << "Z da Colisão com o UAV0 ? " << collisionWithUAV0.getCoordinate().getZ() << endl;
+
+
+        cout << "Decisão do UAV0: DEPOIS " << endl;
+        cout << "Decisão: " << consensus.getDecision() << "|" << collisionWithUAV0.getUAVCase() << endl;
+        consensus.makeDecision(collisionWithUAV0);
+        cout << "Minha coordenada UAV0 - X: "<< uav0.getX() << " Y: " << uav0.getY() << " Z: " << uav0.getZ() << endl;
+        ec0 = consensus.escapeCoordinate();
+        cout << "Escape coordinate  UAV0 - X: "<< ec0.getX() << " Y: " << ec0.getY() << " Z: " << ec0.getZ() << endl;
+
     }
 
     if (stage == INITSTAGE_LOCAL) {
@@ -200,15 +234,24 @@ void UAVMobility::setTargetPosition() {
                     mm.setSource(uav.getID());
                     msgs[uav.getID()].push_back(mm);
 
+                    std::vector<UAV> listaUAVs;
                     //verificando se há mensagem para mim...
                     for (int i = 0; i < msgs[uav.getID()].size(); i++) {
-                        if(msgs[uav.getID()][i].getModule() == MODULE_ID){
+                        if(msgs[uav.getID()][i].getModule() == MODULE_ID && this->uav.getID() == 0){
                             cout << "[U" << uav.getID() << "] COORDENADAS VINDAS DO UAV" << msgs[uav.getID()][i].getSource() << " PARA: " << msgs[uav.getID()][i].getDestination();
                             UAVStatus us = msgs[uav.getID()][i].getStatus();
                             cout << " x: " << us.getLocationX();
                             cout << " y: " << us.getLocationY();
                             cout << " z: " << us.getLocationZ() <<
                             " tipo: " << msgs[uav.getID()][i].getCode() << endl;
+
+                            if(this->uav.getID() == 0){
+                                UAV u(msgs[uav.getID()][i].getSource());
+                                u.setStatus(us);
+                                listaUAVs.push_back(u);
+                            }
+
+                            //Consensus do UAV0
                             msgs[uav.getID()].pop_back();
                             //Se entrar aqui, então eu tenho uma lista de mensagens com as distâncias.
                             //Com isso eu crio um UAV para cada mensagem e passo a coordenada da mensagem
@@ -216,6 +259,16 @@ void UAVMobility::setTargetPosition() {
                             //Chamo o algoritmo do consenso se houver possível colisão
                         }
                     }
+
+                    if(this->uav.getID() == 0){
+                        Coordinate c = castCoordToCoordinate(position[this->uav.getID()]);
+                        cout << "[CONSENSUS]: NUMERO DE UAVS PARA O CONSENSUS: " << listaUAVs.size() << endl;
+                        ConsensusAlgorithm consensus(c, listaUAVs);
+                        int resp = consensus.run();
+                        cout << "[CONSENSUS]: CONSENSUS EXECUTADO! RESPOSTA: " << resp << endl;
+
+                    }
+
 
                     //if(verificarSeTemUAVProximo() == true)
                         //ChamarAlgoritmoDoConsenso Que lá vai chamar função de adicionarCoordenadaNoVetorParaEvitarColisao 

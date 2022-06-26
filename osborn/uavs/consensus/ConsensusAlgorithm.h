@@ -16,6 +16,7 @@ public:
     Coordinate escapeCoordinate();
     int getNumberOfCollisions();
     std::vector<Collision> getCollisions();
+    int getDecision();
 
 private:
     inet::Coord castCoordinateToCoord(Coordinate co){

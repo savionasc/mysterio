@@ -82,7 +82,7 @@ void ConsensusAlgorithm::makeDecision(Collision collision){
             std::cout << "Tomamos a mesma decisão, porém eu subo pouco e você desce pouco" << std::endl;
             runned = 2;
         }else{
-            std::cout << "Tomamos a mesma decisão, porém a minha coordenada é mais perto e a sua mais longe" << std::endl;
+            std::cout << "Tomamos a mesma decisão("<< state << "|" << collision.getUAVCase() <<"), porém a minha coordenada é mais perto e a sua mais longe" << std::endl;
             runned = 2;
         }
     }else if(this->runned && state == Collision::CASE_NOT_UP_DOWN){
@@ -94,18 +94,22 @@ void ConsensusAlgorithm::makeDecision(Collision collision){
         switch (collision.UAVCase) {
             case Collision::CASE_UP_OR_DOWN:
                 std::cout << "Mesmo que não importe, vou subir, então você desce" << std::endl;
+                state = Collision::CASE_UP;
                 runned = 3;
                 break;
             case Collision::CASE_UP:
                 std::cout << "Vou descer, então você sobe" << std::endl;
+                state = Collision::CASE_DOWN;
                 runned = 3;
                 break;
             case Collision::CASE_DOWN:
                 std::cout << "Vou subir, então você desce" << std::endl;
+                state = Collision::CASE_UP;
                 runned = 3;
                 break;
             case Collision::CASE_NOT_UP_DOWN:
                 std::cout << "Vou subir de qualquer maneira, então você desce" << std::endl;
+                state = Collision::CASE_UP;
                 runned = 2;
                 break;
             default:
@@ -116,16 +120,17 @@ void ConsensusAlgorithm::makeDecision(Collision collision){
 
 }
 Coordinate ConsensusAlgorithm::escapeCoordinate(){
+    int distance = 40;
     std::cout << "state: " << state << std::endl;
     Coordinate aux = coordinate;
     if(state == Collision::CASE_DOWN && runned == 2)
-        aux.setZ(aux.getZ()-20);
+        aux.setZ(aux.getZ()-(distance/2));
     else if(state == Collision::CASE_DOWN && runned == 3)
-        aux.setZ(aux.getZ()-40);
+        aux.setZ(aux.getZ()-distance);
     else if(( state == Collision::CASE_UP || state == Collision::CASE_UP_OR_DOWN ) && runned == 2)
-        aux.setZ(aux.getZ()+20);
+        aux.setZ(aux.getZ()+(distance/2));
     else if( (state == Collision::CASE_UP || state == Collision::CASE_UP_OR_DOWN) && runned == 3)
-        aux.setZ(aux.getZ()+40);
+        aux.setZ(aux.getZ()+distance);
 
     return aux;
 }
@@ -136,6 +141,10 @@ int ConsensusAlgorithm::getNumberOfCollisions(){
 
 std::vector<Collision> ConsensusAlgorithm::getCollisions(){
     return this->colisions;
+}
+
+int ConsensusAlgorithm::getDecision(){
+    return this->state;
 }
 
 
