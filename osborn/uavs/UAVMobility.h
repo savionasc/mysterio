@@ -104,6 +104,7 @@ class INET_API UAVMobility : public LineSegmentsMobilityBase
 private:
     void initStoppedUAVs();
     void initAuxiliarTasksVariables();
+    void testeConsensus();
 };
 
 }
