@@ -183,6 +183,12 @@ void UAVMobility::setTargetPosition() {
                             //Agora eu tenho que enviar cada colisão pros UAVs lá
 
                             //inativarUAV(vecCollisions[0].getUAV().getID());
+
+                            ModuleMessage mm(strdup("collision"), 244, 1);
+                            mm.setSource(uav.getID());
+                            mm.setDestination(vecCollisions[i].getUAV().getID());
+                            mm.setCollision(vecCollisions[i]);
+                            msgs[uav.getID()].push_back(mm);
                         }
 
                     }

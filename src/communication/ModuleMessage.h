@@ -1,6 +1,7 @@
 #ifndef MYSTERIO_SRC_COMMUNICATION_MODULEMESSAGE_H_
 #define MYSTERIO_SRC_COMMUNICATION_MODULEMESSAGE_H_
 #include "Message.h"
+#include "../../osborn/uavs/consensus/Collision.h"
 
 class ModuleMessage : public Message{
 
@@ -12,10 +13,10 @@ public:
         this->setCode(code);
     }
 
-    ModuleMessage(char *msg, short int code, int module){
+    ModuleMessage(char *msg, short int code, int moduleDestination){
         strcpy(this->msg, msg);
         this->setCode(code);
-        this->setModule(module);
+        this->setModule(moduleDestination);
     }
 
     ModuleMessage(char *msg, short int code, short int src, short int dest){
@@ -55,6 +56,14 @@ public:
         this->moduleDestination = module;
     }
 
+    Collision getCollision() {
+        return collision;
+    }
+
+    void setCollision(Collision collision) {
+        this->collision = collision;
+    }
+
 private:
     //This variable must identify the request type of the message
     short int code;
@@ -64,6 +73,7 @@ private:
     UAVStatus status;
     Task task;
     int moduleDestination;
+    Collision collision;
 };
 
 #endif
