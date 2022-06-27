@@ -175,9 +175,15 @@ void UAVMobility::setTargetPosition() {
                         cout << "[CONSENSUS]: possível colisões para tratar!" << endl;
                         cout << "Colisões: " << consensus.getNumberOfCollisions() << endl;
 
-                        for (int i = 0; i < vecCollisions.size(); i++)
+                        for (int i = 0; i < vecCollisions.size(); i++){
                             cout << "UAV a colidir: " << vecCollisions[i].getUAV().getID() << " escapar por: "
                                         << vecCollisions[i].getUAVCase() << endl;
+                            inativarUAV(this->uav.getID());
+
+                            //Agora eu tenho que enviar cada colisão pros UAVs lá
+
+                            //inativarUAV(vecCollisions[0].getUAV().getID());
+                        }
 
                     }
 
