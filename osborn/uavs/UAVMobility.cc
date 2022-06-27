@@ -341,6 +341,7 @@ void UAVMobility::executeTask(int j){
 void UAVMobility::inativarUAV(int idUAV){
     ativo[idUAV] = false;
     cout << "Inativando UAV[" << idUAV << "]" << endl;
+    cout << "UAV"<< idUAV << " PAROU EM: " << position[idUAV].getX() << "|" << position[idUAV].getY() << "|" << position[idUAV].getZ() << endl;
 }
 void UAVMobility::ativarUAV(int idUAV){
     ativo[idUAV] = true;
