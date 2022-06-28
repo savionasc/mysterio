@@ -137,28 +137,63 @@ void UAVMobility::setTargetPosition() {
                 std::vector<UAV> listaUAVs;
                 //verificando se há mensagem para mim...
                 for (int i = 0; i < msgs[uav.getID()].size(); i++) {
-                    if(msgs[uav.getID()][i].getModule() == MODULE_ID && this->uav.getID() == 0){
-                        cout << "[U" << uav.getID() << "] COORDENADAS VINDAS DO UAV" << msgs[uav.getID()][i].getSource() << " PARA: " << msgs[uav.getID()][i].getDestination();
-                        UAVStatus us = msgs[uav.getID()][i].getStatus();
+                    cout << "[LISTA DE MENSAGENS] para: " << uav.getID() << "|" <<  msgs[uav.getID()][i].getDestination() << " de: " << msgs[uav.getID()][i].getSource();
+                    UAVStatus us = msgs[uav.getID()][i].getStatus();
+                    cout << " x: " << us.getLocationX();
+                    cout << " y: " << us.getLocationY();
+                    cout << " z: " << us.getLocationZ() <<
+                    " tipo: " << msgs[uav.getID()][i].getCode() << endl;
+                }
+
+                for(auto it = std::begin(msgs[uav.getID()]); it != std::end(msgs[uav.getID()]); it++) {
+                    cout << "size inicio: " << msgs[uav.getID()].size() << endl;
+                    //int i = msgs[uav.getID()].size()-1;
+                    for(auto it = std::begin(msgs[uav.getID()]); it != std::end(msgs[uav.getID()]); ++it) {
+                        std::cout << (*it).getSource() << "\n";
+                    }
+                    if((*it).getModule() == MODULE_ID
+                            && this->uav.getID() == 0
+                            && ((*it).getCode() == 235
+                                    || (*it).getCode() == 245)){ //SÓ UAV0 ESTÁ OLHANDO AS MENSAGENS... CONSEQUENTEMENTE OS OUTROS NÃO ESTÃO FAZENDO O CONSENSUS AUTOMÁTICO RODAR
+                        cout << "[U" << uav.getID() << "] COORDENADAS VINDAS DO UAV" << (*it).getSource() << " PARA: " << (*it).getDestination();
+
+                        UAVStatus us = (*it).getStatus();
                         cout << " x: " << us.getLocationX();
                         cout << " y: " << us.getLocationY();
                         cout << " z: " << us.getLocationZ() <<
-                        " tipo: " << msgs[uav.getID()][i].getCode() << endl;
+                        " tipo: " << (*it).getCode() << endl;
+
+                        cout << "[U" << uav.getID() << "] COORDENADAS REAIS UAV" << (*it).getSource() << " PARA: " << (*it).getDestination();
+                        cout << " x: " << position[(*it).getSource()].getX();
+                        cout << " y: " << position[(*it).getSource()].getY();
+                        cout << " z: " << position[(*it).getSource()].getZ() <<
+                        " tipo: " << (*it).getCode() << endl;
 
                         if(this->uav.getID() == 0){
-                            UAV u(msgs[uav.getID()][i].getSource());
+                            UAV u((*it).getSource());
                             u.setStatus(us);
                             listaUAVs.push_back(u);
                         }
 
                         //Consensus do UAV0
-                        msgs[uav.getID()].pop_back();
+                        msgs[uav.getID()].erase(it);
+                        it = it - 1;
+
                         //Se entrar aqui, então eu tenho uma lista de mensagens com as distâncias.
                         //Com isso eu crio um UAV para cada mensagem e passo a coordenada da mensagem
                         //Verifico se há possível colisão para cada UAV
                         //Chamo o algoritmo do consenso se houver possível colisão
                     }
+                    cout << "size fim: " << msgs[uav.getID()].size() << endl;
+                    for(auto it = std::begin(msgs[uav.getID()]); it != std::end(msgs[uav.getID()]); ++it) {
+                        std::cout << (*it).getSource() << " ";
+                    }
+                    cout << endl;
                 }
+
+
+
+
 
                 if(this->uav.getID() == 0){
                     Coordinate coordUAV = castCoordToCoordinate(position[this->uav.getID()]);

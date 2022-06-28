@@ -28,7 +28,9 @@ extern std::vector<ModuleMessage> msgs[NUMUAVS];
 enum codesUAV{
     CHECKING_MESSAGE = 123,
     REQUEST_POSITION_UAV = 234,
-    RESPONSE_POSITION_UAV
+    RESPONSE_POSITION_UAV,
+    REQUEST_CONSENSUS = 244,
+    RESPONSE_CONSENSUS
 };
 
 void ModuloComunicacao::initialize(){
@@ -53,12 +55,6 @@ void ModuloComunicacao::initialize(){
 void ModuloComunicacao::handleMessage(cMessage *msg){
     UAVMessage *mMSG = check_and_cast<UAVMessage*>(msg);
 
-    //if(selfID == 1 && mMSG->getOrigem() != 1){
-    if(mMSG->getKind() == 234){
-        cout << "[XXX] Mensagem recebida em: " << selfID << " de: " << mMSG->getOrigem();
-        cout << "Para: " << mMSG->getDestino() << " Tipo: " << mMSG->getKind() << endl;
-    }
-
     //SE MENSAGEM RECEBIDA POR OUTRO UAV
     if(mMSG->getKind() == REQUEST_POSITION_UAV && strcmp(mMSG->getName(), "location") == 0){
         cout << "Mensagem recebida em: " << selfID << " de: " << mMSG->getOrigem();
@@ -74,21 +70,30 @@ void ModuloComunicacao::handleMessage(cMessage *msg){
         }else{
             send(uavMSG, "out", uavMSG->getDestino());
         }
+        UAVStatus us = uavMSG->getStatus();
+        cout << "[REQUEST][UAV"<< mMSG->getOrigem() <<"-STATUS-TO-U"<<selfID<<"] Status recebido: x:" << us.getLocationX();
+        cout << " y: " << us.getLocationY();
+        cout << " z: " << us.getLocationZ() << endl;
     }else if(mMSG->getKind() == RESPONSE_POSITION_UAV){
         UAVStatus us = mMSG->getStatus();
-        cout << "[UAV"<< mMSG->getOrigem() <<"-STATUS-TO-U"<<selfID<<"] Status recebido: x:" << us.getLocationX();
+        cout << "[RESPONSE][UAV"<< mMSG->getOrigem() <<"-STATUS-TO-U"<<selfID<<"] Status recebido: x:" << us.getLocationX();
         cout << " y: " << us.getLocationY();
         cout << " z: " << us.getLocationZ() << endl;
         ModuleMessage mm = castUAVMessageToModuleMessage(*mMSG);
         mm.setModule(2);
 
         msgs[selfID].push_back(mm);
+    }else if(mMSG->getKind() == REQUEST_CONSENSUS && strcmp(mMSG->getName(), "collision") == 0){
+        cout << "SAVIOOOO" << endl;
+        cout << "UAV" << mMSG->getOrigem() << " Quer: " << mMSG->getKind();
+        cout << " nome: " << mMSG->getName() << " de: " << selfID << " mesmo que " << mMSG->getDestino() << endl;
+
     }
 
     //SE MENSAGEM FOR CHECKING OU HOUVER MENSAGEM VINDA DO MOBILITY
     if(mMSG->getKind() == CHECKING_MESSAGE && strcmp(mMSG->getName(), "checking") == 0){
 
-        for (int i = 0; i < msgs[selfID].size() > 0; i++) {
+        for (int i = 0; i < msgs[selfID].size(); i++) {
             ModuleMessage mm = msgs[selfID][i];
             if(mm.getModule() == MODULE_ID){
                 cout << "[MxM] " << mm.getMsg() << " | " << mm.getSource() << endl;
@@ -100,9 +105,38 @@ void ModuloComunicacao::handleMessage(cMessage *msg){
                     //send(uavMSG, "out", uavMSG->getDestino()-1);
 
                     enviarMensagemParaTodosOsUAVs(uavMSG);
+                }else if(strcmp(mm.getMsg(), "collision") == 0 && mm.getCode() == REQUEST_CONSENSUS){
+                    cout << "[MM] ESTÁ QUERENDO SABER CONSENSUS: " << mm.getSource() << endl;
+                    UAVMessage *uavMSG = new UAVMessage(mm.getMsg(), mm.getCode());
+                    uavMSG->setOrigem(selfID);
+                    uavMSG->setDestino(mm.getDestination());
+                    if(uavMSG->getDestino() > selfID){
+                        send(uavMSG, "out", uavMSG->getDestino()-1);
+                    }else{
+                        send(uavMSG, "out", uavMSG->getDestino());
+                    }
                 }
 
-                msgs[selfID].pop_back();
+                for (int ij = 0; ij < msgs[selfID].size(); ij++) {
+                    cout << "Antes: " << msgs[selfID][ij].getDestination() << " i: " << ij
+                            << " tipo: " << msgs[selfID][ij].getCode() << endl;
+                }
+
+                cout << "i para apagar: " << i << endl;
+
+                auto it = msgs[selfID].begin();
+                it = it + i;
+                //msgs[selfID].pop_back();
+                msgs[selfID].erase(it);
+
+                cout << "Depois: " << msgs[selfID][i].getDestination() << " i: " << i << endl;
+
+                for (int ij = 0; ij < msgs[selfID].size(); ij++) {
+                    cout << "Antes: " << msgs[selfID][ij].getDestination() << " i: " << ij
+                                                << " tipo: " << msgs[selfID][ij].getCode() << endl;
+                }
+
+                //msgs[selfID].pop_back();
             }
 
         }
@@ -129,13 +163,14 @@ void ModuloComunicacao::forwardMessage(UAVMessage *msg){
 }
 
 void ModuloComunicacao::enviarMensagemParaTodosOsUAVs(UAVMessage *msg){
+    cout << "Pra todos de: " << selfID << endl;
     //Depois enviar mensagens para todos os vizinhos
     int n = gateSize("out");
 
     int id = 0;
     for (int i = 0; i < n; i++) {
 
-        if(selfID == id){
+        if(selfID == id && n-1 > i){
             id += 1;
         }
 
