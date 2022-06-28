@@ -133,17 +133,12 @@ void UAVMobility::setTargetPosition() {
 
                 mm.setSource(uav.getID());
                 msgs[uav.getID()].push_back(mm);
+                if(consensusStage[uav.getID()] == 0){
+                    consensusStage[uav.getID()] = 1; //solicitou coordenadas
+                }
 
                 std::vector<UAV> listaUAVs;
                 //verificando se há mensagem para mim...
-                for (int i = 0; i < msgs[uav.getID()].size(); i++) {
-                    cout << "[LISTA DE MENSAGENS] para: " << uav.getID() << "|" <<  msgs[uav.getID()][i].getDestination() << " de: " << msgs[uav.getID()][i].getSource();
-                    UAVStatus us = msgs[uav.getID()][i].getStatus();
-                    cout << " x: " << us.getLocationX();
-                    cout << " y: " << us.getLocationY();
-                    cout << " z: " << us.getLocationZ() <<
-                    " tipo: " << msgs[uav.getID()][i].getCode() << endl;
-                }
 
                 for(auto it = std::begin(msgs[uav.getID()]); it != std::end(msgs[uav.getID()]); it++) {
                     cout << "size inicio: " << msgs[uav.getID()].size() << endl;
@@ -153,7 +148,7 @@ void UAVMobility::setTargetPosition() {
                     }
                     if((*it).getModule() == MODULE_ID
 
-                            && this->uav.getID() == 0 ///REMOVER ESTA LINHA DEPOIS
+                            //&& this->uav.getID() == 0 ///REMOVER ESTA LINHA DEPOIS
 
                             && ((*it).getCode() == 235
                                     || (*it).getCode() == 245)){ //SÓ UAV0 ESTÁ OLHANDO AS MENSAGENS... CONSEQUENTEMENTE OS OUTROS NÃO ESTÃO FAZENDO O CONSENSUS AUTOMÁTICO RODAR
@@ -165,17 +160,19 @@ void UAVMobility::setTargetPosition() {
                         cout << " z: " << us.getLocationZ() <<
                         " tipo: " << (*it).getCode() << endl;
 
+                        consensusStage[uav.getID()] = 2; //Atualizou coordenadas
+
                         cout << "[U" << uav.getID() << "] COORDENADAS REAIS UAV" << (*it).getSource() << " PARA: " << (*it).getDestination();
                         cout << " x: " << position[(*it).getSource()].getX();
                         cout << " y: " << position[(*it).getSource()].getY();
                         cout << " z: " << position[(*it).getSource()].getZ() <<
                         " tipo: " << (*it).getCode() << endl;
 
-                        if(this->uav.getID() == 0){
+                        //if(this->uav.getID() == 0){
                             UAV u((*it).getSource());
                             u.setStatus(us);
                             listaUAVs.push_back(u);
-                        }
+                        //}
 
                         //Consensus do UAV0
                         msgs[uav.getID()].erase(it);
@@ -197,12 +194,13 @@ void UAVMobility::setTargetPosition() {
 
 
 
-                if(this->uav.getID() == 0){
+                if(this->uav.getID() == 0 && consensusStage[uav.getID()] == 2){
                     Coordinate coordUAV = castCoordToCoordinate(position[this->uav.getID()]);
                     cout << "[CONSENSUS]: NUMERO DE UAVS PARA O CONSENSUS: " << listaUAVs.size() << endl;
                     ConsensusAlgorithm consensus(coordUAV, listaUAVs);
+                    int resp = 0;
                     if(listaUAVs.size() > 0){
-                        int resp = consensus.run();
+                        resp = consensus.run();
                         cout << "[CONSENSUS]: CONSENSUS EXECUTADO! RESPOSTA: " << resp << endl;
                     }
 
@@ -215,7 +213,31 @@ void UAVMobility::setTargetPosition() {
                         for (int i = 0; i < vecCollisions.size(); i++){
                             cout << "UAV a colidir: " << vecCollisions[i].getUAV().getID() << " escapar por: "
                                         << vecCollisions[i].getUAVCase() << endl;
-                            inativarUAV(this->uav.getID());
+                            //inativarUAV(this->uav.getID());
+                            consensusStage[uav.getID()] = 3;
+                            //addEscapeCoordinate(Coordinate(lastPosition.x, lastPosition.y, lastPosition.z+500));
+                            Coordinate ce = consensus.escapeCoordinate();
+                            addEscapeCoordinate(ce);
+                            cout << "Target position " << targetPosition << endl;
+                            cout << "Target escapeCoordinate " << castCoordinateToCoord(ce) << endl;
+
+                            int j = vecCollisions[i].getUAV().getID();
+                            cout << "[CONSENSUS]:[U" << uav.getID() << "] COORDENADAS VINDAS DO UAV" << j << " PARA: " << uav.getID();
+
+                            Coordinate us = vecCollisions[i].getCoordinate();
+                            cout << " x: " << us.getX();
+                            cout << " y: " << us.getY();
+                            cout << " z: " << us.getZ() <<
+                            " tipo: " << vecCollisions[i].getUAVCase() << endl;
+
+                            cout << "[CONSENSUS]:[U" << uav.getID() << "] COORDENADAS REAIS UAV" << j << " PARA: " << uav.getID();
+                            cout << " x: " << position[j].getX();
+                            cout << " y: " << position[j].getY();
+                            cout << " z: " << position[j].getZ() <<
+                            " tipo: " << vecCollisions[i].getUAVCase() << endl;
+
+                            //inativarUAV(j);
+
 
                             //Agora eu tenho que enviar cada colisão pros UAVs lá
 
@@ -224,7 +246,9 @@ void UAVMobility::setTargetPosition() {
                             ModuleMessage mm(strdup("collision"), 244, 1);
                             mm.setSource(uav.getID());
                             mm.setDestination(vecCollisions[i].getUAV().getID());
-                            mm.setCollision(vecCollisions[i]);
+                            Collision c(resp, this->uav);
+                            c.setCoordinate(castCoordToCoordinate(position[this->uav.getID()]));
+                            mm.setCollision(c);
                             msgs[uav.getID()].push_back(mm);
                         }
 
@@ -252,11 +276,12 @@ void UAVMobility::setTargetPosition() {
             msg.setMsg(m);
             msg.setSource(u.getSelfID());
             u.dispatchMessage(msg);
-            if(myStage++ == 1){
+            if(++myStage == 1){
                 Coord p(uniform(10, 25), uniform(10, 25), uniform(50, 80));
                 targetPosition = p;
             }else{
                 targetPosition = getRandomPosition();
+                cout << "ALEATORIA X" << myStage << endl;
             }
 
             if(u.getSelfID() == 1){
@@ -277,10 +302,8 @@ void UAVMobility::setTargetPosition() {
 //Base Method
 void UAVMobility::move() {
     if(bateria[uav.getID()] < 0.005 && ativo[uav.getID()]){
+        cout << "inativou inesperadamente!" << endl;
         inativarUAV(uav.getID());
-    }
-    if(continuoustask){
-        //analisarDistanciaOvelha();
     }
     LineSegmentsMobilityBase::move();
     raiseErrorIfOutside();
@@ -352,6 +375,7 @@ Coord UAVMobility::splittedGoTo(int j){
             //Update status
             tasksVector[uav.getID()][j].setStatus(Task::WAITING_FOR_SIGN);
             inativarUAV(uav.getID());
+            cout << "UAV "<<uav.getID()<<" ESPERANDO POR SINAL!" << endl;
         }
         else if(tasksVector[uav.getID()][j].getStatus() == Task::SIGNNED){
             waypoints[uav.getID()] = 0;
@@ -365,11 +389,13 @@ Coord UAVMobility::splittedGoTo(int j){
 //Auxiliar Method
 void UAVMobility::executeTask(int j){
     cout << "ExecuteTask" << endl;
-    if(tasksVector[uav.getID()][j].getType() == Task::GOTO){
+    if(consensusStage[uav.getID()] == 3 && lastPosition == targetPosition){
+        consensusStage[uav.getID()] = 4;
+    }else if(tasksVector[uav.getID()][j].getType() == Task::GOTO){
         if(waypoints[uav.getID()] == 0){
             TaskAssistant t;
             Coordinate coord = tasksVector[uav.getID()][j].getTarget();
-            splitGoTos[uav.getID()] = t.splitCoordinate(coord);
+            splitGoTos[uav.getID()] = t.splitCoordinate(coord, 25);
         }
 
         cout << "SPLITTEDGOTO" << endl;

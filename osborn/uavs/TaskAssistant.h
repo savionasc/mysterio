@@ -11,7 +11,7 @@ public:
     TaskAssistant();
     virtual ~TaskAssistant();
     //Coordinate* splitCoordinate(Coordinate coord);
-    std::vector<Coordinate> splitCoordinate(Coordinate coord);
+    std::vector<Coordinate> splitCoordinate(Coordinate coord, int slice);
 
 private:
     int qtyDivisions(Coordinate c, int divider);

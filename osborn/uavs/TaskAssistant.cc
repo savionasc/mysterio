@@ -8,7 +8,7 @@ TaskAssistant::TaskAssistant() {}
 
 TaskAssistant::~TaskAssistant() {}
 
-std::vector<Coordinate> TaskAssistant::splitCoordinate(Coordinate coord){
+std::vector<Coordinate> TaskAssistant::splitCoordinate(Coordinate coord, int slice){
 
     /*int size = qtyDivisions(coord, 50);
     Coordinate coords[size];
@@ -20,7 +20,7 @@ std::vector<Coordinate> TaskAssistant::splitCoordinate(Coordinate coord){
     }*/
 
     vector<Coordinate> v;
-    int size = qtyDivisions(coord, 50);
+    int size = qtyDivisions(coord, slice);
     cout << "size: " << size << endl;
     coordinatesToFollowVector(coord, &v, size);
 

@@ -9,7 +9,7 @@ ConsensusAlgorithm::~ConsensusAlgorithm() { }
 
 //Este int será um enum.. ConsensusAlgorithm::SóPodeSubir
 int ConsensusAlgorithm::run(){
-    int radius = 70;
+    int radius = 30;
     int rad2 = 2 * radius;
     state = Collision::CASE_UP_OR_DOWN;
     inet::Coord uav = castCoordinateToCoord(coordinate);
@@ -123,7 +123,9 @@ Coordinate ConsensusAlgorithm::escapeCoordinate(){
     int distance = 40;
     std::cout << "state: " << state << std::endl;
     Coordinate aux = coordinate;
-    if(state == Collision::CASE_DOWN && runned == 2)
+    if(state == Collision::CASE_UP_OR_DOWN){
+        aux.setZ(aux.getZ() + distance);
+    }else if(state == Collision::CASE_DOWN && runned == 2)
         aux.setZ(aux.getZ()-(distance/2));
     else if(state == Collision::CASE_DOWN && runned == 3)
         aux.setZ(aux.getZ()-distance);

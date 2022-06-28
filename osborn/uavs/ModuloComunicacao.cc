@@ -84,9 +84,15 @@ void ModuloComunicacao::handleMessage(cMessage *msg){
 
         msgs[selfID].push_back(mm);
     }else if(mMSG->getKind() == REQUEST_CONSENSUS && strcmp(mMSG->getName(), "collision") == 0){
+        cout << "minha coordenadas: " << position[mMSG->getOrigem()].getX() << "|" << position[mMSG->getOrigem()].getY() << "|" << position[mMSG->getOrigem()].getZ() << endl;
         cout << "SAVIOOOO" << endl;
         cout << "UAV" << mMSG->getOrigem() << " Quer: " << mMSG->getKind();
         cout << " nome: " << mMSG->getName() << " de: " << selfID << " mesmo que " << mMSG->getDestino() << endl;
+        Collision c = mMSG->getCollision();
+        cout << "Collision- UAV" << c.getUAV().getID() << " escapar por: "
+                                                << c.getUAVCase() << endl;
+        cout << "Nas coordenadas: " << c.getCoordinate().getX() << "|" << c.getCoordinate().getY() << "|" << c.getCoordinate().getZ() << endl;
+        cout << "Coordenadas reais: " << position[selfID].getX() << "|" << position[selfID].getY() << "|" << position[selfID].getZ() << endl;
         ModuleMessage mm = castUAVMessageToModuleMessage(*mMSG);
         mm.setModule(2);
 
@@ -113,6 +119,7 @@ void ModuloComunicacao::handleMessage(cMessage *msg){
                     UAVMessage *uavMSG = new UAVMessage(mm.getMsg(), mm.getCode());
                     uavMSG->setOrigem(selfID);
                     uavMSG->setDestino(mm.getDestination());
+                    uavMSG->setCollision(mm.getCollision());
                     if(uavMSG->getDestino() > selfID){
                         send(uavMSG, "out", uavMSG->getDestino()-1);
                     }else{
@@ -120,26 +127,11 @@ void ModuloComunicacao::handleMessage(cMessage *msg){
                     }
                 }
 
-                for (int ij = 0; ij < msgs[selfID].size(); ij++) {
-                    cout << "Antes: " << msgs[selfID][ij].getDestination() << " i: " << ij
-                            << " tipo: " << msgs[selfID][ij].getCode() << endl;
-                }
-
-                cout << "i para apagar: " << i << endl;
-
                 auto it = msgs[selfID].begin();
                 it = it + i;
                 //msgs[selfID].pop_back();
                 msgs[selfID].erase(it);
 
-                cout << "Depois: " << msgs[selfID][i].getDestination() << " i: " << i << endl;
-
-                for (int ij = 0; ij < msgs[selfID].size(); ij++) {
-                    cout << "Antes: " << msgs[selfID][ij].getDestination() << " i: " << ij
-                                                << " tipo: " << msgs[selfID][ij].getCode() << endl;
-                }
-
-                //msgs[selfID].pop_back();
             }
 
         }

@@ -79,7 +79,6 @@ class INET_API UAVMobility : public LineSegmentsMobilityBase
     J pegarBateria(int idUAV);
 
     UAV uav;
-    bool continuoustask = false;
     int UAVRole = ROLE_DISABLED;
 
     //0 para uav desativado
