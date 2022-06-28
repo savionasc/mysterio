@@ -141,11 +141,6 @@ void UAVMobility::setTargetPosition() {
                 //verificando se há mensagem para mim...
 
                 for(auto it = std::begin(msgs[uav.getID()]); it != std::end(msgs[uav.getID()]); it++) {
-                    cout << "size inicio: " << msgs[uav.getID()].size() << endl;
-                    //int i = msgs[uav.getID()].size()-1;
-                    for(auto it = std::begin(msgs[uav.getID()]); it != std::end(msgs[uav.getID()]); ++it) {
-                        std::cout << (*it).getSource() << " ";
-                    }
                     if((*it).getModule() == MODULE_ID
 
                             //&& this->uav.getID() == 0 ///REMOVER ESTA LINHA DEPOIS
@@ -183,10 +178,6 @@ void UAVMobility::setTargetPosition() {
                         //Verifico se há possível colisão para cada UAV
                         //Chamo o algoritmo do consenso se houver possível colisão
                     }
-                    cout << "size fim: " << msgs[uav.getID()].size() << endl;
-                    for(auto it = std::begin(msgs[uav.getID()]); it != std::end(msgs[uav.getID()]); ++it) {
-                        std::cout << (*it).getSource() << " ";
-                    }
                     cout << endl;
                 }
 
@@ -194,7 +185,7 @@ void UAVMobility::setTargetPosition() {
 
 
 
-                if(this->uav.getID() == 0 && consensusStage[uav.getID()] == 2){
+                if(consensusStage[uav.getID()] == 2){
                     Coordinate coordUAV = castCoordToCoordinate(position[this->uav.getID()]);
                     cout << "[CONSENSUS]: NUMERO DE UAVS PARA O CONSENSUS: " << listaUAVs.size() << endl;
                     ConsensusAlgorithm consensus(coordUAV, listaUAVs);

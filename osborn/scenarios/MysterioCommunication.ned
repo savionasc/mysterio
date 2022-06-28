@@ -39,4 +39,9 @@ network MysterioCommunication {
         UAV[0].in++ <-- {  delay = 10ms; } <-- UAV[6].out++;
         UAV[0].out++ --> {  delay = 10ms; } --> UAV[7].in++;
         UAV[0].in++ <-- {  delay = 10ms; } <-- UAV[7].out++;
+        UAV[1].out++ --> {  delay = 10ms; } --> UAV[2].in++;
+        UAV[1].in++ <-- {  delay = 10ms; } <-- UAV[2].out++;
+        UAV[2].in++ <-- {  delay = 10ms; } <-- UAV[1].out++;
+        UAV[2].out++ --> {  delay = 10ms; } --> UAV[1].in++;
+        
 }
