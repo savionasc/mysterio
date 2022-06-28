@@ -463,8 +463,7 @@ void UAVMobility::verificarMensagens(std::vector<UAV> *listaUAVs){
 
                 //&& this->uav.getID() == 0 ///REMOVER ESTA LINHA DEPOIS
 
-                && ((*it).getCode() == 235
-                        || (*it).getCode() == 245)){ //SÓ UAV0 ESTÁ OLHANDO AS MENSAGENS... CONSEQUENTEMENTE OS OUTROS NÃO ESTÃO FAZENDO O CONSENSUS AUTOMÁTICO RODAR
+                && (*it).getCode() == 235){ //SÓ UAV0 ESTÁ OLHANDO AS MENSAGENS... CONSEQUENTEMENTE OS OUTROS NÃO ESTÃO FAZENDO O CONSENSUS AUTOMÁTICO RODAR
             cout << "[U" << uav.getID() << "] COORDENADAS VINDAS DO UAV" << (*it).getSource() << " PARA: " << (*it).getDestination();
 
             UAVStatus us = (*it).getStatus();
@@ -495,8 +494,24 @@ void UAVMobility::verificarMensagens(std::vector<UAV> *listaUAVs){
             //Com isso eu crio um UAV para cada mensagem e passo a coordenada da mensagem
             //Verifico se há possível colisão para cada UAV
             //Chamo o algoritmo do consenso se houver possível colisão
+        }else if((*it).getModule() == MODULE_ID || (*it).getCode() == 244){
+            cout << "MENSAGEM DE COLISÃO RECEBIDA EM: " << this->uav.getID() << " DE: " <<(*it).getSource() << endl;
+            ConsensusAlgorithm consensus(castCoordToCoordinate(position[this->uav.getID()]), *listaUAVs);
+            Collision collision = (*it).getCollision();
+            cout << "Decisão do UAV1: " << endl;
+            consensus.makeDecision(collision);
+            cout << "PERANTE SUGESTÃO DO UAV0: " << collision.getUAVCase()
+                    << endl;
+            cout << "Coordenada collision: " << castCoordinateToCoord(collision.getCoordinate()) << endl;
+            cout << "Minha coordenada: " << position[this->uav.getID()] << endl;
+            Coordinate ec = consensus.escapeCoordinate();
+            cout << "Escape coordinate - X: " << ec.getX() << " Y: " << ec.getY()
+                    << " Z: " << ec.getZ() << endl;
+
+            /*addEscapeCoordinate(ec);
+            msgs[uav.getID()].erase(it);
+            it = it - 1;*/
         }
-        cout << endl;
     }
 }
 

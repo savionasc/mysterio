@@ -105,10 +105,10 @@ void listenCommunication(){
 
             }else if(!strcmp(msg.getMsg(), "square")){
                 Formation fUAVs(4);
-                fUAVs.addPosition(Coordinate(250.0,250.0,70.0));
-                fUAVs.addPosition(Coordinate(250.0,500.0,70.0));
-                fUAVs.addPosition(Coordinate(500.0,250.0,70.0));
-                fUAVs.addPosition(Coordinate(500.0,500.0,70.0));
+                fUAVs.addPosition(Coordinate(250.0,250.0,200.0));
+                fUAVs.addPosition(Coordinate(250.0,500.0,200.0));
+                fUAVs.addPosition(Coordinate(500.0,250.0,200.0));
+                fUAVs.addPosition(Coordinate(500.0,500.0,200.0));
 
                 for (int i = 0; i < fUAVs.getNumberOfUAVs(); i++) {
                     //FALTA SÓ ALTOMATIZAR ESTE FOR
