@@ -87,7 +87,10 @@ void ModuloComunicacao::handleMessage(cMessage *msg){
         cout << "SAVIOOOO" << endl;
         cout << "UAV" << mMSG->getOrigem() << " Quer: " << mMSG->getKind();
         cout << " nome: " << mMSG->getName() << " de: " << selfID << " mesmo que " << mMSG->getDestino() << endl;
+        ModuleMessage mm = castUAVMessageToModuleMessage(*mMSG);
+        mm.setModule(2);
 
+        msgs[selfID].push_back(mm);
     }
 
     //SE MENSAGEM FOR CHECKING OU HOUVER MENSAGEM VINDA DO MOBILITY

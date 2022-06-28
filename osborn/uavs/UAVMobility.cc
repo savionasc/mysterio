@@ -149,10 +149,12 @@ void UAVMobility::setTargetPosition() {
                     cout << "size inicio: " << msgs[uav.getID()].size() << endl;
                     //int i = msgs[uav.getID()].size()-1;
                     for(auto it = std::begin(msgs[uav.getID()]); it != std::end(msgs[uav.getID()]); ++it) {
-                        std::cout << (*it).getSource() << "\n";
+                        std::cout << (*it).getSource() << " ";
                     }
                     if((*it).getModule() == MODULE_ID
-                            && this->uav.getID() == 0
+
+                            && this->uav.getID() == 0 ///REMOVER ESTA LINHA DEPOIS
+
                             && ((*it).getCode() == 235
                                     || (*it).getCode() == 245)){ //SÓ UAV0 ESTÁ OLHANDO AS MENSAGENS... CONSEQUENTEMENTE OS OUTROS NÃO ESTÃO FAZENDO O CONSENSUS AUTOMÁTICO RODAR
                         cout << "[U" << uav.getID() << "] COORDENADAS VINDAS DO UAV" << (*it).getSource() << " PARA: " << (*it).getDestination();
@@ -381,8 +383,8 @@ void UAVMobility::executeTask(int j){
 
 void UAVMobility::inativarUAV(int idUAV){
     ativo[idUAV] = false;
-    cout << "Inativando UAV[" << idUAV << "]" << endl;
-    cout << "UAV"<< idUAV << " PAROU EM: " << position[idUAV].getX() << "|" << position[idUAV].getY() << "|" << position[idUAV].getZ() << endl;
+    //cout << "Inativando UAV[" << idUAV << "]" << endl;
+    //cout << "UAV"<< idUAV << " PAROU EM: " << position[idUAV].getX() << "|" << position[idUAV].getY() << "|" << position[idUAV].getZ() << endl;
 }
 void UAVMobility::ativarUAV(int idUAV){
     ativo[idUAV] = true;
