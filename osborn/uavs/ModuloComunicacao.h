@@ -1,12 +1,34 @@
-#ifndef MYSTERIO_OMNET_UAVS_MODULOCOMUNICACAO_H_
-#define MYSTERIO_OMNET_UAVS_MODULOCOMUNICACAO_H_
+#ifndef MYSTERIO_OSBORN_UAVS_MODULOCOMUNICACAO_H_
+#define MYSTERIO_OSBORN_UAVS_MODULOCOMUNICACAO_H_
 
 #include "../../osborn/uavs/UAVMessage_m.h"
 #include "../../src/communication/ModuleMessage.h"
 #include "inet/common/geometry/common/Coord.h"
 
+#include <iostream>
+#include <queue>
+
+#include "../mission/MysTask.h"
+#include "../../osborn/mission/MysTask.h"
+#include "../../osborn/uavs/UAVMobility.h"
+#include "../../src/status/UAVStatus.h"
+#include "../../src/communication/ModuleMessage.h"
+#include "../communication/uav/UAVMysCommunication.h"
+
+
 using namespace omnetpp;
 using namespace std;
+using namespace inet;
+using namespace mysterio;
+
+//shared variables
+extern Coord position[NUMUAVS];
+extern double velocidade[NUMUAVS];
+extern float bateria[NUMUAVS];
+extern double tempoVoo[NUMUAVS];
+extern UAVMysCommunication uavs[NUMUAVS];
+extern bool ativo[NUMUAVS];
+extern std::vector<ModuleMessage> msgs[NUMUAVS];
 
 namespace inet {
 
@@ -66,6 +88,15 @@ class ModuloComunicacao : public cSimpleModule {
         uMessage.setCollision(moduleMessage.getCollision());
 
         return uMessage;
+    }
+
+    int getUAVsAtivos(){
+        int qtd = 0;
+        for (int j = 0; j < NUMUAVS; j++) {
+            if(ativo[j])
+                qtd++;
+        }
+        return qtd;
     }
 
     int selfID = -2;

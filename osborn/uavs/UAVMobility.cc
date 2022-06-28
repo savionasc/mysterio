@@ -138,51 +138,7 @@ void UAVMobility::setTargetPosition() {
                 }
 
                 std::vector<UAV> listaUAVs;
-                //verificando se há mensagem para mim...
-
-                for(auto it = std::begin(msgs[uav.getID()]); it != std::end(msgs[uav.getID()]); it++) {
-                    if((*it).getModule() == MODULE_ID
-
-                            //&& this->uav.getID() == 0 ///REMOVER ESTA LINHA DEPOIS
-
-                            && ((*it).getCode() == 235
-                                    || (*it).getCode() == 245)){ //SÓ UAV0 ESTÁ OLHANDO AS MENSAGENS... CONSEQUENTEMENTE OS OUTROS NÃO ESTÃO FAZENDO O CONSENSUS AUTOMÁTICO RODAR
-                        cout << "[U" << uav.getID() << "] COORDENADAS VINDAS DO UAV" << (*it).getSource() << " PARA: " << (*it).getDestination();
-
-                        UAVStatus us = (*it).getStatus();
-                        cout << " x: " << us.getLocationX();
-                        cout << " y: " << us.getLocationY();
-                        cout << " z: " << us.getLocationZ() <<
-                        " tipo: " << (*it).getCode() << endl;
-
-                        consensusStage[uav.getID()] = 2; //Atualizou coordenadas
-
-                        cout << "[U" << uav.getID() << "] COORDENADAS REAIS UAV" << (*it).getSource() << " PARA: " << (*it).getDestination();
-                        cout << " x: " << position[(*it).getSource()].getX();
-                        cout << " y: " << position[(*it).getSource()].getY();
-                        cout << " z: " << position[(*it).getSource()].getZ() <<
-                        " tipo: " << (*it).getCode() << endl;
-
-                        //if(this->uav.getID() == 0){
-                            UAV u((*it).getSource());
-                            u.setStatus(us);
-                            listaUAVs.push_back(u);
-                        //}
-
-                        //Consensus do UAV0
-                        msgs[uav.getID()].erase(it);
-                        it = it - 1;
-
-                        //Se entrar aqui, então eu tenho uma lista de mensagens com as distâncias.
-                        //Com isso eu crio um UAV para cada mensagem e passo a coordenada da mensagem
-                        //Verifico se há possível colisão para cada UAV
-                        //Chamo o algoritmo do consenso se houver possível colisão
-                    }
-                    cout << endl;
-                }
-
-
-
+                verificarMensagens(&listaUAVs);
 
 
                 if(consensusStage[uav.getID()] == 2){
@@ -246,7 +202,6 @@ void UAVMobility::setTargetPosition() {
                     }
 
                 }
-
 
                 //if(verificarSeTemUAVProximo() == true)
                     //ChamarAlgoritmoDoConsenso Que lá vai chamar função de adicionarCoordenadaNoVetorParaEvitarColisao
@@ -336,6 +291,9 @@ J UAVMobility::pegarBateria(int idUAV){
 //Auxiliar Method
 void UAVMobility::rescueDataAndStoreVariables(){
     position[uav.getID()] = lastPosition;
+    UAVStatus us = this->uav.getStatus();
+    us.setLocation(castCoordToCoordinate(position[uav.getID()]));
+    this->uav.setStatus(us);
     velocidade[uav.getID()] = speedParameter->doubleValue();
     bateria[uav.getID()] = std::stof(pegarBateria(uav.getID()).str());
     tempoVoo[uav.getID()] = simTime().dbl();
@@ -494,6 +452,51 @@ void UAVMobility::testeConsensus() {
         ec0 = consensus.escapeCoordinate();
         cout << "Escape coordinate  UAV0 - X: " << ec0.getX() << " Y: "
                 << ec0.getY() << " Z: " << ec0.getZ() << endl;
+    }
+}
+
+void UAVMobility::verificarMensagens(std::vector<UAV> *listaUAVs){
+    //verificando se há mensagem para mim...
+
+    for(auto it = std::begin(msgs[uav.getID()]); it != std::end(msgs[uav.getID()]); it++) {
+        if((*it).getModule() == MODULE_ID
+
+                //&& this->uav.getID() == 0 ///REMOVER ESTA LINHA DEPOIS
+
+                && ((*it).getCode() == 235
+                        || (*it).getCode() == 245)){ //SÓ UAV0 ESTÁ OLHANDO AS MENSAGENS... CONSEQUENTEMENTE OS OUTROS NÃO ESTÃO FAZENDO O CONSENSUS AUTOMÁTICO RODAR
+            cout << "[U" << uav.getID() << "] COORDENADAS VINDAS DO UAV" << (*it).getSource() << " PARA: " << (*it).getDestination();
+
+            UAVStatus us = (*it).getStatus();
+            cout << " x: " << us.getLocationX();
+            cout << " y: " << us.getLocationY();
+            cout << " z: " << us.getLocationZ() <<
+            " tipo: " << (*it).getCode() << endl;
+
+            consensusStage[uav.getID()] = 2; //Atualizou coordenadas
+
+            cout << "[U" << uav.getID() << "] COORDENADAS REAIS UAV" << (*it).getSource() << " PARA: " << (*it).getDestination();
+            cout << " x: " << position[(*it).getSource()].getX();
+            cout << " y: " << position[(*it).getSource()].getY();
+            cout << " z: " << position[(*it).getSource()].getZ() <<
+            " tipo: " << (*it).getCode() << endl;
+
+            //if(this->uav.getID() == 0){
+                UAV u((*it).getSource());
+                u.setStatus(us);
+                listaUAVs->push_back(u);
+            //}
+
+            //Consensus do UAV0
+            msgs[uav.getID()].erase(it);
+            it = it - 1;
+
+            //Se entrar aqui, então eu tenho uma lista de mensagens com as distâncias.
+            //Com isso eu crio um UAV para cada mensagem e passo a coordenada da mensagem
+            //Verifico se há possível colisão para cada UAV
+            //Chamo o algoritmo do consenso se houver possível colisão
+        }
+        cout << endl;
     }
 }
 

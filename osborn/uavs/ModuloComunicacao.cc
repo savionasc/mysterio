@@ -1,29 +1,11 @@
 #include "../../osborn/uavs/ModuloComunicacao.h"
 
-#include "../mission/MysTask.h"
-#include <iostream>
-#include <queue>
-
-#include "../../osborn/mission/MysTask.h"
-#include "../../osborn/uavs/UAVMobility.h"
-#include "../../src/status/UAVStatus.h"
-#include "../../src/communication/ModuleMessage.h"
-#include "../communication/uav/UAVMysCommunication.h"
 
 using namespace omnetpp;
 using namespace inet;
 using namespace mysterio;
 
 Define_Module(ModuloComunicacao);
-
-//shared variables
-extern Coord position[NUMUAVS];
-extern double velocidade[NUMUAVS];
-extern float bateria[NUMUAVS];
-extern double tempoVoo[NUMUAVS];
-extern UAVMysCommunication uavs[NUMUAVS];
-extern bool ativo[NUMUAVS];
-extern std::vector<ModuleMessage> msgs[NUMUAVS];
 
 enum codesUAV{
     CHECKING_MESSAGE = 123,
@@ -160,8 +142,8 @@ void ModuloComunicacao::forwardMessage(UAVMessage *msg){
 void ModuloComunicacao::enviarMensagemParaTodosOsUAVs(UAVMessage *msg){
     cout << "Pra todos de: " << selfID << endl;
     //Depois enviar mensagens para todos os vizinhos
-    int n = gateSize("out");
-
+    //int n = gateSize("out");
+    int n = getUAVsAtivos();
     int id = 0;
     for (int i = 0; i < n; i++) {
 

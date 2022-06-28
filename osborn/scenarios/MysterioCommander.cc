@@ -79,9 +79,9 @@ void listenCommunication(){
                 fUAVs.addPosition(coord1);
                 fUAVs.addPosition(coord2);
                 fUAVs.addPosition(coord3);*/
-                fUAVs.addPosition(Coordinate(200.0,200.0,70.0));
-                fUAVs.addPosition(Coordinate(400.0,400.0,70.0));
-                fUAVs.addPosition(Coordinate(600.0,600.0,70.0));
+                fUAVs.addPosition(Coordinate(200.0,200.0,200.0));
+                fUAVs.addPosition(Coordinate(400.0,400.0,200.0));
+                fUAVs.addPosition(Coordinate(600.0,600.0,200.0));
                 for (int i = 0; i < fUAVs.getNumberOfUAVs(); i++) {
                     //FALTA SÓ ALTOMATIZAR ESTE FOR
 
