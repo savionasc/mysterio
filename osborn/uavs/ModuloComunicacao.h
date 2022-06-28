@@ -53,7 +53,7 @@ class ModuloComunicacao : public cSimpleModule {
         mMessage.setSource(uavMessage.getOrigem());
         mMessage.setStatus(uavMessage.getStatus());
         mMessage.setTask(uavMessage.getTask());
-
+        mMessage.setCollision(uavMessage.getCollision());
         return mMessage;
     }
 
@@ -63,6 +63,7 @@ class ModuloComunicacao : public cSimpleModule {
         uMessage.setDestino(moduleMessage.getDestination());
         uMessage.setStatus(moduleMessage.getStatus());
         uMessage.setTask(moduleMessage.getTask());
+        uMessage.setCollision(moduleMessage.getCollision());
 
         return uMessage;
     }
