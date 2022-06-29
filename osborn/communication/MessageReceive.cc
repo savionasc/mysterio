@@ -97,7 +97,6 @@ public:
             cout << "[U" << msg.getDestination() << "] Task Finished, code message: " << msg.getCode() << endl;
         }
 
-
         return true;
     }
 };

@@ -23,13 +23,14 @@ network MysterioCommunication {
             @display("t=UAV");
         }
         
-    connections allowunconnected:
-        for i = 0..numHosts-1 {
-            //node[i].port[1] <--> node[i+1].port[0];
-            UAV[i].out++ --> {  delay = 10ms; } --> UAV[i+1].in++;
-        	UAV[i].in++ <-- {  delay = 10ms; } <-- UAV[i+1].out++;
-        }
-    //connections:
+//    connections allowunconnected:
+//        for i = 0..numHosts-1 {
+//            //node[i].port[1] <--> node[i+1].port[0];
+//            UAV[i].out++ --> {  delay = 10ms; } --> UAV[i+1].in++;
+//        	UAV[i].in++ <-- {  delay = 10ms; } <-- UAV[i+1].out++;
+//        }
+        
+    connections:
         UAV[0].out++ --> {  delay = 10ms; } --> UAV[1].in++;
         UAV[0].in++ <-- {  delay = 10ms; } <-- UAV[1].out++;
         UAV[0].out++ --> {  delay = 10ms; } --> UAV[2].in++;

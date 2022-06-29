@@ -103,7 +103,7 @@ void listenCommunication(){
                     comm.sendTaskMessageToUAV(ms->getUAV(u.getID()).getNetworkConfigurations().getIdSocket(), taskMessage);
                 }
 
-            }esel if(!strcmp(msg.getMsg(), "triangle")){
+            }else if(!strcmp(msg.getMsg(), "triangle")){
                 Formation fUAVs(3);
                 /*Coordinate coord1(200.0,200.0,70.0);
                 Coordinate coord2(400.0,400.0,70.0);
