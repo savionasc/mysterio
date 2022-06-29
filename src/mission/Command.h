@@ -58,7 +58,7 @@ private:
     //Para os args,
     //Criar um toString no coordinate
     //Depois criar uma função que retorna coordinate recebendo uma string
-    //Coordinate coord; defalt -1, -1, -1
+    //Coordinate coord; default -1, -1, -1
 
     char arguments[50];
 };

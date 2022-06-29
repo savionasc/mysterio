@@ -12,7 +12,9 @@ enum codesUAV{
     REQUEST_POSITION_UAV = 234,
     RESPONSE_POSITION_UAV,
     REQUEST_CONSENSUS = 244,
-    RESPONSE_CONSENSUS
+    RESPONSE_CONSENSUS,
+    TASK_WAITTING = 345,
+    TASK_COMPLETED
 };
 
 void ModuloComunicacao::initialize(){
@@ -37,91 +39,9 @@ void ModuloComunicacao::initialize(){
 void ModuloComunicacao::handleMessage(cMessage *msg){
     UAVMessage *mMSG = check_and_cast<UAVMessage*>(msg);
 
-    //SE MENSAGEM RECEBIDA POR OUTRO UAV
-    if(mMSG->getKind() == REQUEST_POSITION_UAV && strcmp(mMSG->getName(), "location") == 0){
-        cout << "Mensagem recebida em: " << selfID << " de: " << mMSG->getOrigem();
-        cout << " Tipo: " << mMSG->getKind() << endl;
+    handleNessagesBetweenUAVs(mMSG);
 
-        //RESPONDENDO
-        UAVMessage *uavMSG = new UAVMessage("location", RESPONSE_POSITION_UAV);
-        uavMSG->setDestino(mMSG->getOrigem());
-        uavMSG->setOrigem(selfID);
-        uavMSG->setStatus(UAVStatus(castCoordToCoordinate(position[selfID])));
-        if(uavMSG->getDestino() > selfID){
-            send(uavMSG, "out", uavMSG->getDestino()-1);
-        }else{
-            send(uavMSG, "out", uavMSG->getDestino());
-        }
-        UAVStatus us = uavMSG->getStatus();
-        cout << "[REQUEST][UAV"<< mMSG->getOrigem() <<"-STATUS-TO-U"<<selfID<<"] Status recebido: x:" << us.getLocationX();
-        cout << " y: " << us.getLocationY();
-        cout << " z: " << us.getLocationZ() << endl;
-    }else if(mMSG->getKind() == RESPONSE_POSITION_UAV){
-        UAVStatus us = mMSG->getStatus();
-        cout << "[RESPONSE][UAV"<< mMSG->getOrigem() <<"-STATUS-TO-U"<<selfID<<"] Status recebido: x:" << us.getLocationX();
-        cout << " y: " << us.getLocationY();
-        cout << " z: " << us.getLocationZ() << endl;
-        ModuleMessage mm = castUAVMessageToModuleMessage(*mMSG);
-        mm.setModule(2);
-
-        msgs[selfID].push_back(mm);
-    }else if(mMSG->getKind() == REQUEST_CONSENSUS && strcmp(mMSG->getName(), "collision") == 0){
-        cout << "minha coordenadas: " << position[mMSG->getOrigem()].getX() << "|" << position[mMSG->getOrigem()].getY() << "|" << position[mMSG->getOrigem()].getZ() << endl;
-        cout << "SAVIOOOO" << endl;
-        cout << "UAV" << mMSG->getOrigem() << " Quer: " << mMSG->getKind();
-        cout << " nome: " << mMSG->getName() << " de: " << selfID << " mesmo que " << mMSG->getDestino() << endl;
-        Collision c = mMSG->getCollision();
-        cout << "Collision- UAV" << c.getUAV().getID() << " escapar por: "
-                                                << c.getUAVCase() << endl;
-        cout << "Nas coordenadas: " << c.getCoordinate().getX() << "|" << c.getCoordinate().getY() << "|" << c.getCoordinate().getZ() << endl;
-        cout << "Coordenadas reais: " << position[selfID].getX() << "|" << position[selfID].getY() << "|" << position[selfID].getZ() << endl;
-        ModuleMessage mm = castUAVMessageToModuleMessage(*mMSG);
-        mm.setModule(2);
-
-        msgs[selfID].push_back(mm);
-    }
-
-    //SE MENSAGEM FOR CHECKING OU HOUVER MENSAGEM VINDA DO MOBILITY
-    if(mMSG->getKind() == CHECKING_MESSAGE && strcmp(mMSG->getName(), "checking") == 0){
-
-        for (int i = 0; i < msgs[selfID].size(); i++) {
-            ModuleMessage mm = msgs[selfID][i];
-            if(mm.getModule() == MODULE_ID){
-                cout << "[MxM] " << mm.getMsg() << " | " << mm.getSource() << endl;
-                if(strcmp(mm.getMsg(), "location") == 0 && mm.getCode() == REQUEST_POSITION_UAV){
-                    cout << "[MM] ESTÁ QUERENDO SABER LOCATION: " << mm.getSource() << endl;
-                    UAVMessage *uavMSG = new UAVMessage(mm.getMsg(), mm.getCode());
-                    uavMSG->setOrigem(selfID);
-                    //uavMSG->setDestino(i+1);
-                    //send(uavMSG, "out", uavMSG->getDestino()-1);
-
-                    enviarMensagemParaTodosOsUAVs(uavMSG);
-                }else if(strcmp(mm.getMsg(), "collision") == 0 && mm.getCode() == REQUEST_CONSENSUS){
-                    cout << "[MM] ESTÁ QUERENDO SABER CONSENSUS: " << mm.getSource() << endl;
-                    UAVMessage *uavMSG = new UAVMessage(mm.getMsg(), mm.getCode());
-                    uavMSG->setOrigem(selfID);
-                    uavMSG->setDestino(mm.getDestination());
-                    uavMSG->setCollision(mm.getCollision());
-                    if(uavMSG->getDestino() > selfID){
-                        send(uavMSG, "out", uavMSG->getDestino()-1);
-                    }else{
-                        send(uavMSG, "out", uavMSG->getDestino());
-                    }
-                }
-
-                auto it = msgs[selfID].begin();
-                it = it + i;
-                //msgs[selfID].pop_back();
-                msgs[selfID].erase(it);
-
-            }
-
-        }
-
-        UAVMessage *sendMSGEvt = new UAVMessage("checking", CHECKING_MESSAGE);
-        sendMSGEvt->setOrigem(selfID);
-        scheduleAt(simTime()+2, sendMSGEvt);
-    }
+    handleNessagesBetweenModules(mMSG);
 
     delete mMSG;
 }
@@ -183,4 +103,94 @@ void ModuloComunicacao::enviarMensagem(double tempo, int origem, int destino, ch
     sendMSGEvt->setDestino(destino);
     sendMSGEvt->setOrigem(origem);
     scheduleAt(simTime()+tempo, sendMSGEvt);
+}
+
+void ModuloComunicacao::handleNessagesBetweenUAVs(UAVMessage *mMSG){
+    //SE MENSAGEM RECEBIDA POR OUTRO UAV
+        if(mMSG->getKind() == REQUEST_POSITION_UAV && strcmp(mMSG->getName(), "location") == 0){
+            cout << "Mensagem recebida em: " << selfID << " de: " << mMSG->getOrigem();
+            cout << " Tipo: " << mMSG->getKind() << endl;
+
+            //RESPONDENDO
+            UAVMessage *uavMSG = new UAVMessage("location", RESPONSE_POSITION_UAV);
+            uavMSG->setDestino(mMSG->getOrigem());
+            uavMSG->setOrigem(selfID);
+            uavMSG->setStatus(UAVStatus(castCoordToCoordinate(position[selfID])));
+            if(uavMSG->getDestino() > selfID){
+                send(uavMSG, "out", uavMSG->getDestino()-1);
+            }else{
+                send(uavMSG, "out", uavMSG->getDestino());
+            }
+            UAVStatus us = uavMSG->getStatus();
+            cout << "[REQUEST][UAV"<< mMSG->getOrigem() <<"-STATUS-TO-U"<<selfID<<"] Status recebido: x:" << us.getLocationX();
+            cout << " y: " << us.getLocationY();
+            cout << " z: " << us.getLocationZ() << endl;
+        }else if(mMSG->getKind() == RESPONSE_POSITION_UAV){
+            UAVStatus us = mMSG->getStatus();
+            cout << "[RESPONSE][UAV"<< mMSG->getOrigem() <<"-STATUS-TO-U"<<selfID<<"] Status recebido: x:" << us.getLocationX();
+            cout << " y: " << us.getLocationY();
+            cout << " z: " << us.getLocationZ() << endl;
+            ModuleMessage mm = castUAVMessageToModuleMessage(*mMSG);
+            mm.setModule(2);
+
+            msgs[selfID].push_back(mm);
+        }else if(mMSG->getKind() == REQUEST_CONSENSUS && strcmp(mMSG->getName(), "collision") == 0){
+            cout << "minha coordenadas: " << position[mMSG->getOrigem()].getX() << "|" << position[mMSG->getOrigem()].getY() << "|" << position[mMSG->getOrigem()].getZ() << endl;
+            cout << "SAVIOOOO" << endl;
+            cout << "UAV" << mMSG->getOrigem() << " Quer: " << mMSG->getKind();
+            cout << " nome: " << mMSG->getName() << " de: " << selfID << " mesmo que " << mMSG->getDestino() << endl;
+            Collision c = mMSG->getCollision();
+            cout << "Collision- UAV" << c.getUAV().getID() << " escapar por: "
+                                                    << c.getUAVCase() << endl;
+            cout << "Nas coordenadas: " << c.getCoordinate().getX() << "|" << c.getCoordinate().getY() << "|" << c.getCoordinate().getZ() << endl;
+            cout << "Coordenadas reais: " << position[selfID].getX() << "|" << position[selfID].getY() << "|" << position[selfID].getZ() << endl;
+            ModuleMessage mm = castUAVMessageToModuleMessage(*mMSG);
+            mm.setModule(2);
+
+            msgs[selfID].push_back(mm);
+        }
+}
+
+void ModuloComunicacao::handleNessagesBetweenModules(UAVMessage *mMSG){
+    //SE MENSAGEM FOR CHECKING OU HOUVER MENSAGEM VINDA DO MOBILITY
+        if(mMSG->getKind() == CHECKING_MESSAGE && strcmp(mMSG->getName(), "checking") == 0){
+
+            for (int i = 0; i < msgs[selfID].size(); i++) {
+                ModuleMessage mm = msgs[selfID][i];
+                if(mm.getModule() == MODULE_ID){
+                    cout << "[MxM] " << mm.getMsg() << " | " << mm.getSource() << endl;
+                    if(strcmp(mm.getMsg(), "location") == 0 && mm.getCode() == REQUEST_POSITION_UAV){
+                        cout << "[MM] ESTÁ QUERENDO SABER LOCATION: " << mm.getSource() << endl;
+                        UAVMessage *uavMSG = new UAVMessage(mm.getMsg(), mm.getCode());
+                        uavMSG->setOrigem(selfID);
+                        //uavMSG->setDestino(i+1);
+                        //send(uavMSG, "out", uavMSG->getDestino()-1);
+
+                        enviarMensagemParaTodosOsUAVs(uavMSG);
+                    }else if(strcmp(mm.getMsg(), "collision") == 0 && mm.getCode() == REQUEST_CONSENSUS){
+                        cout << "[MM] ESTÁ QUERENDO SABER CONSENSUS: " << mm.getSource() << endl;
+                        UAVMessage *uavMSG = new UAVMessage(mm.getMsg(), mm.getCode());
+                        uavMSG->setOrigem(selfID);
+                        uavMSG->setDestino(mm.getDestination());
+                        uavMSG->setCollision(mm.getCollision());
+                        if(uavMSG->getDestino() > selfID){
+                            send(uavMSG, "out", uavMSG->getDestino()-1);
+                        }else{
+                            send(uavMSG, "out", uavMSG->getDestino());
+                        }
+                    }
+
+                    auto it = msgs[selfID].begin();
+                    it = it + i;
+                    //msgs[selfID].pop_back();
+                    msgs[selfID].erase(it);
+
+                }
+
+            }
+
+            UAVMessage *sendMSGEvt = new UAVMessage("checking", CHECKING_MESSAGE);
+            sendMSGEvt->setOrigem(selfID);
+            scheduleAt(simTime()+2, sendMSGEvt);
+        }
 }
