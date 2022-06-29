@@ -7,6 +7,14 @@ Formation::Formation(int numberOfUAVs) {
 
 Formation::~Formation() { }
 
+int Formation::getLeader() {
+    return leader;
+}
+
+void Formation::setLeader(int leader) {
+    this->leader = leader;
+}
+
 int Formation::getNumberOfUAVs() {
     return numberOfUAVs;
 }

@@ -9,6 +9,8 @@ public:
     Formation(int numberOfUAVs);
     virtual ~Formation();
 
+    int getLeader();
+    void setLeader(int leader);
     int getNumberOfUAVs();
     void setNumberOfUAVs(int numberOfUAVs);
     void addPosition(Coordinate position);
@@ -16,6 +18,7 @@ public:
     std::vector<Coordinate> getAllPositions();
 
 private:
+    int leader;
     int numberOfUAVs;
     std::vector<Coordinate> positions;
 };
