@@ -22,14 +22,14 @@ public:
     }
     virtual ~Task(){}
 
-    enum statestasks{
+    enum statestasks {
         STARTED = 1,
         COMPLETED,
         WAITING_FOR_SIGN,
         SIGNNED
     };
 
-    enum typetasks{
+    enum typetasks {
         GOTO = 80,
         COMEBACK_BASESTATION,
         FLY_AROUND,
@@ -47,11 +47,11 @@ public:
         this->id = id;
     }
 
-    virtual bool isComplete(){
+    virtual bool isComplete() {
         return (this->status == COMPLETED) ? true : false; //complete
     }
 
-    void setComplete(){
+    void setComplete() {
         this->status = COMPLETED;
     }
 
@@ -67,11 +67,11 @@ public:
         return status;
     }
 
-    void setStatus(int status){
+    void setStatus(int status) {
         this->status = status;
     }
 
-    Coordinate getTarget(){
+    Coordinate getTarget() {
         return target;
     }
 
@@ -103,7 +103,7 @@ public:
         this->cmd = cmd;
     }
 
-    virtual void executeTask(){
+    virtual void executeTask() {
 
     }
 
@@ -123,7 +123,7 @@ public:
         this->priority = priority;
     }
 
-    int getAssincrono() const {
+    int getAssincrono() {
         return assincrono;
     }
 
