@@ -9,7 +9,7 @@ ConsensusAlgorithm::~ConsensusAlgorithm() { }
 
 //Este int será um enum.. ConsensusAlgorithm::SóPodeSubir
 int ConsensusAlgorithm::run(){
-    int radius = 30;
+    int radius = 35;
     int rad2 = 2 * radius;
     state = Collision::CASE_UP_OR_DOWN;
     inet::Coord uav = castCoordinateToCoord(coordinate);

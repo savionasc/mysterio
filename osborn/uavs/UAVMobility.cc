@@ -325,8 +325,18 @@ Coord UAVMobility::splittedGoTo(int j){
             tasksVector[uav.getID()][j].setStatus(Task::WAITING_FOR_SIGN);
             inativarUAV(uav.getID());
             cout << "UAV "<<uav.getID()<<" ESPERANDO POR SINAL!" << endl;
+            ModuleMessage mm(strdup("WAITTING"), 345, uav.getID(), 0);
+            mm.setTask(tasksVector[uav.getID()][j]);
+            mm.setModule(1);
+            msgs[uav.getID()].push_back(mm);
+
+            cout << "MENSAGEM DE WAITING_FOR_SIGN POR: " << uav.getID() << endl;
+
+            //SAVIO
+            //Criar mensagem para UAV Lider indicando que terminou a tarefa...
         }
         else if(tasksVector[uav.getID()][j].getStatus() == Task::SIGNNED){
+            //SAVIO AO RECEBER A RESPOSTA DO UAV LIDER, O STATUS DEVE SER ATUALIZADO COMO COMPLETED
             waypoints[uav.getID()] = 0;
             tasksVector[uav.getID()][j].setStatus(Task::COMPLETED);
         }

@@ -178,6 +178,13 @@ void ModuloComunicacao::handleNessagesBetweenModules(UAVMessage *mMSG){
                         }else{
                             send(uavMSG, "out", uavMSG->getDestino());
                         }
+                    }else if(strcmp(mm.getMsg(), "WAITTING") == 0 && mm.getCode() == TASK_WAITTING){
+                        cout << "Mensagem de " << mm.getMsg() << " CODIGO: " << mm.getCode() << " DE: " << selfID << endl;
+                        UAVMessage *uavMSG = new UAVMessage(mm.getMsg(), mm.getCode());
+                        uavMSG->setOrigem(selfID);
+                        uavMSG->setDestino(mm.getDestination());
+                        uavMSG->setTask(mm.getTask());
+                        send(uavMSG, "out", uavMSG->getDestino());
                     }
 
                     auto it = msgs[selfID].begin();
