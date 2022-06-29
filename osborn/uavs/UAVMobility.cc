@@ -325,12 +325,12 @@ Coord UAVMobility::splittedGoTo(int j){
             tasksVector[uav.getID()][j].setStatus(Task::WAITING_FOR_SIGN);
             inativarUAV(uav.getID());
             cout << "UAV "<<uav.getID()<<" ESPERANDO POR SINAL!" << endl;
-            ModuleMessage mm(strdup("WAITTING"), 345, uav.getID(), 0);
-            mm.setTask(tasksVector[uav.getID()][j]);
-            mm.setModule(1);
-            msgs[uav.getID()].push_back(mm);
-
-            cout << "MENSAGEM DE WAITING_FOR_SIGN POR: " << uav.getID() << endl;
+            if(tasksVector[uav.getID()][j].getLeader() >= 0){
+                ModuleMessage mm(strdup("WAITTING"), 345, uav.getID(), tasksVector[uav.getID()][j].getLeader());
+                mm.setTask(tasksVector[uav.getID()][j]);
+                mm.setModule(1);
+                msgs[uav.getID()].push_back(mm);
+            }
 
             //SAVIO
             //Criar mensagem para UAV Lider indicando que terminou a tarefa...
@@ -377,7 +377,6 @@ void UAVMobility::ativarUAV(int idUAV){
 
 void UAVMobility::addEscapeCoordinate(Coordinate coord){
     auto it = splitGoTos[uav.getID()].begin();
-    cout << "POSSSSS: " << waypoints[uav.getID()] << endl;
     splitGoTos[uav.getID()].insert(it + waypoints[uav.getID()], coord);
 }
 

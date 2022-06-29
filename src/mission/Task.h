@@ -123,12 +123,20 @@ public:
         this->priority = priority;
     }
 
-    int getAssincrono() {
-        return assincrono;
+    bool isSynchronous() {
+        return synchronous;
     }
 
-    void setAssincrono(int assincrono = 0) {
-        this->assincrono = assincrono;
+    void setSynchronous(bool synchronous = false) {
+        this->synchronous = synchronous;
+    }
+
+    int getLeader() {
+        return leader;
+    }
+
+    void setLeader(int leader = -1) {
+        this->leader = leader;
     }
 
 private:
@@ -147,7 +155,8 @@ private:
     int repeat = 0;
     int waypoints;
     int priority = 0;
-    int assincrono = 0;
+    bool synchronous = false;
+    int leader = -1;
     Priority pri;
 };
 

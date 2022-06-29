@@ -148,6 +148,8 @@ void ModuloComunicacao::handleNessagesBetweenUAVs(UAVMessage *mMSG){
             mm.setModule(2);
 
             msgs[selfID].push_back(mm);
+        }else if(mMSG->getKind() == TASK_WAITTING && strcmp(mMSG->getName(), "WAITTING") == 0){
+            cout << "UAV" << mMSG->getOrigem() << " se posicionou" << endl;
         }
 }
 

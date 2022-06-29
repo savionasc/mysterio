@@ -14,11 +14,6 @@ using namespace std;
 
 void assignPreprogrammedTasks(int, MysStatusManager*, MysCommunication);
 
-void testee(Message *msg){
-    cout << "Esta é a mensagem: " << msg->getMsg() << endl;
-    cout << "Destino: " << msg->getDestination() << endl;
-}
-
 void listenCommunication(){
     //Here starts the server communication
 
@@ -72,13 +67,7 @@ void listenCommunication(){
 
             cout << "Antes " << endl;
             if(!strcmp(msg.getMsg(), "three")){
-                Formation fUAVs(3);
-                /*Coordinate coord1(200.0,200.0,70.0);
-                Coordinate coord2(400.0,400.0,70.0);
-                Coordinate coord3(600.0,600.0,70.0);
-                fUAVs.addPosition(coord1);
-                fUAVs.addPosition(coord2);
-                fUAVs.addPosition(coord3);*/
+                Formation fUAVs(3, 0);
                 fUAVs.addPosition(Coordinate(200.0,200.0,200.0));
                 fUAVs.addPosition(Coordinate(400.0,400.0,200.0));
                 fUAVs.addPosition(Coordinate(600.0,600.0,200.0));
@@ -89,6 +78,8 @@ void listenCommunication(){
                     UAV u(i);
                     Task gotoc(u, fUAVs.getPosition(i));
                     gotoc.setType(Task::GOTO);
+                    gotoc.setSynchronous(true);
+                    gotoc.setLeader((fUAVs.getLeader() != i) ? fUAVs.getLeader() : 0-fUAVs.getNumberOfUAVs());
                     TaskManager t;
                     t.addTask(gotoc);
 
@@ -104,13 +95,7 @@ void listenCommunication(){
                 }
 
             }else if(!strcmp(msg.getMsg(), "triangle")){
-                Formation fUAVs(3);
-                /*Coordinate coord1(200.0,200.0,70.0);
-                Coordinate coord2(400.0,400.0,70.0);
-                Coordinate coord3(600.0,600.0,70.0);
-                fUAVs.addPosition(coord1);
-                fUAVs.addPosition(coord2);
-                fUAVs.addPosition(coord3);*/
+                Formation fUAVs(3, 0);
                 fUAVs.addPosition(Coordinate(200.0,500.0,200.0));
                 fUAVs.addPosition(Coordinate(500.0,350.0,200.0));
                 fUAVs.addPosition(Coordinate(500.0,650.0,200.0));
@@ -121,6 +106,8 @@ void listenCommunication(){
                     UAV u(i);
                     Task gotoc(u, fUAVs.getPosition(i));
                     gotoc.setType(Task::GOTO);
+                    gotoc.setSynchronous(true);
+                    gotoc.setLeader((fUAVs.getLeader() != i) ? fUAVs.getLeader() : 0-fUAVs.getNumberOfUAVs());
                     TaskManager t;
                     t.addTask(gotoc);
 
@@ -182,7 +169,6 @@ void listenCommunication(){
                 comm.sendTaskMessageToUAV(ms->getUAV(u.getID()).getNetworkConfigurations().getIdSocket(), taskMessage);
 
             }else if(!strcmp(msg.getMsg(), "pos1")){
-                testee(&msg);
                 cout << "Entrou GOTO" << endl;
                 //take off
                 Coordinate currentP(200.0,200.0,70.0);
