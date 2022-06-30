@@ -28,6 +28,7 @@ extern float bateria[NUMUAVS];
 extern double tempoVoo[NUMUAVS];
 extern UAVMysCommunication uavs[NUMUAVS];
 extern bool ativo[NUMUAVS];
+extern int itera[NUMUAVS];
 extern std::vector<ModuleMessage> msgs[NUMUAVS];
 
 namespace inet {

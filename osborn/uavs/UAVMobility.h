@@ -25,6 +25,9 @@
 #include "inet/power/storage/SimpleEpEnergyStorage.h"
 #include "../../src/utils/Coordinate.h"
 #include "../../src/utils/UAV.h"
+#include "../../osborn/uavs/UAVMessage_m.h"
+#include "../../src/communication/ModuleMessage.h"
+
 
 namespace inet {
 
@@ -53,19 +56,11 @@ class INET_API UAVMobility : public LineSegmentsMobilityBase
     /** @brief Overridden from LineSegmentsMobilityBase.*/
     virtual void setTargetPosition() override;
 
-    Coord castCoordinateToCoord(Coordinate co){
-        Coord coor(co.getX(), co.getY(), co.getZ());
-        return coor;
-    }
-
-    Coordinate castCoordToCoordinate(Coord co){
-        Coordinate coor(co.getX(), co.getY(), co.getZ());
-        return coor;
-    }
-
     /** @brief Overridden from LineSegmentsMobilityBase.*/
     virtual void move() override;
 
+
+    /*A PARTIR DAQUI COMEÇAM AS MODIFICAÇÕES FEITAS POR SÁVIO*/
     void rescueDataAndStoreVariables();
 
     void executeTask(int j);
@@ -75,9 +70,19 @@ class INET_API UAVMobility : public LineSegmentsMobilityBase
     void stop();
     void addEscapeCoordinate(Coordinate coord);
     void verificarMensagens(std::vector<UAV> *listaUAVs);
-
+    void sendMessageToModule(ModuleMessage mm);
 
     J pegarBateria(int idUAV);
+
+    Coord castCoordinateToCoord(Coordinate co){
+        Coord coor(co.getX(), co.getY(), co.getZ());
+        return coor;
+    }
+
+    Coordinate castCoordToCoordinate(Coord co){
+        Coordinate coor(co.getX(), co.getY(), co.getZ());
+        return coor;
+    }
 
     UAV uav;
     int UAVRole = ROLE_DISABLED;

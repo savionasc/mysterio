@@ -3,11 +3,12 @@
 #include <iostream>
 #include <queue>
 
-#include "../../osborn/uavs/UAVMessage_m.h"
+//#include "../../osborn/uavs/UAVMessage_m.h"
 #include "../../src/mission/DependentTask.h"
 #include "../communication/uav/UAVMysCommunication.h"
 #include "TaskAssistant.h"
 #include "consensus/ConsensusAlgorithm.h"
+//#include "../../src/communication/ModuleMessage.h"
 
 using namespace omnetpp;
 using namespace std;
@@ -132,7 +133,8 @@ void UAVMobility::setTargetPosition() {
                 ModuleMessage mm(strdup("location"), 234, 1);
 
                 mm.setSource(uav.getID());
-                msgs[uav.getID()].push_back(mm);
+                mm.setDestination(-2); //Numero qualquer, pois vai para todos
+                sendMessageToModule(mm);
                 if(consensusStage[uav.getID()] == 0){
                     consensusStage[uav.getID()] = 1; //solicitou coordenadas
                 }
@@ -196,7 +198,7 @@ void UAVMobility::setTargetPosition() {
                             Collision c(resp, this->uav);
                             c.setCoordinate(castCoordToCoordinate(position[this->uav.getID()]));
                             mm.setCollision(c);
-                            msgs[uav.getID()].push_back(mm);
+                            sendMessageToModule(mm);
                         }
 
                     }
@@ -329,7 +331,7 @@ Coord UAVMobility::splittedGoTo(int j){
                 ModuleMessage mm(strdup("WAITTING"), 345, uav.getID(), tasksVector[uav.getID()][j].getLeader());
                 mm.setTask(tasksVector[uav.getID()][j]);
                 mm.setModule(1);
-                msgs[uav.getID()].push_back(mm);
+                sendMessageToModule(mm);
             }
 
             //SAVIO
@@ -339,6 +341,8 @@ Coord UAVMobility::splittedGoTo(int j){
             //SAVIO AO RECEBER A RESPOSTA DO UAV LIDER, O STATUS DEVE SER ATUALIZADO COMO COMPLETED
             waypoints[uav.getID()] = 0;
             tasksVector[uav.getID()][j].setStatus(Task::COMPLETED);
+        }else{
+            cout << "entrou aqui" << endl;
         }
         c = lastPosition;
     }
@@ -473,21 +477,21 @@ void UAVMobility::verificarMensagens(std::vector<UAV> *listaUAVs){
                 //&& this->uav.getID() == 0 ///REMOVER ESTA LINHA DEPOIS
 
                 && (*it).getCode() == 235){ //SÓ UAV0 ESTÁ OLHANDO AS MENSAGENS... CONSEQUENTEMENTE OS OUTROS NÃO ESTÃO FAZENDO O CONSENSUS AUTOMÁTICO RODAR
-            cout << "[U" << uav.getID() << "] COORDENADAS VINDAS DO UAV" << (*it).getSource() << " PARA: " << (*it).getDestination();
+            //cout << "[U" << uav.getID() << "] COORDENADAS VINDAS DO UAV" << (*it).getSource() << " PARA: " << (*it).getDestination();
 
             UAVStatus us = (*it).getStatus();
-            cout << " x: " << us.getLocationX();
+            /*cout << " x: " << us.getLocationX();
             cout << " y: " << us.getLocationY();
             cout << " z: " << us.getLocationZ() <<
-            " tipo: " << (*it).getCode() << endl;
+            " tipo: " << (*it).getCode() << endl;*/
 
             consensusStage[uav.getID()] = 2; //Atualizou coordenadas
 
-            cout << "[U" << uav.getID() << "] COORDENADAS REAIS UAV" << (*it).getSource() << " PARA: " << (*it).getDestination();
+            /*cout << "[U" << uav.getID() << "] COORDENADAS REAIS UAV" << (*it).getSource() << " PARA: " << (*it).getDestination();
             cout << " x: " << position[(*it).getSource()].getX();
             cout << " y: " << position[(*it).getSource()].getY();
             cout << " z: " << position[(*it).getSource()].getZ() <<
-            " tipo: " << (*it).getCode() << endl;
+            " tipo: " << (*it).getCode() << endl;*/
 
             //if(this->uav.getID() == 0){
                 UAV u((*it).getSource());
@@ -504,18 +508,17 @@ void UAVMobility::verificarMensagens(std::vector<UAV> *listaUAVs){
             //Verifico se há possível colisão para cada UAV
             //Chamo o algoritmo do consenso se houver possível colisão
         }else if((*it).getModule() == MODULE_ID || (*it).getCode() == 244){
-            cout << "MENSAGEM DE COLISÃO RECEBIDA EM: " << this->uav.getID() << " DE: " <<(*it).getSource() << endl;
+            //cout << "MENSAGEM DE COLISÃO RECEBIDA EM: " << this->uav.getID() << " DE: " <<(*it).getSource() << endl;
             ConsensusAlgorithm consensus(castCoordToCoordinate(position[this->uav.getID()]), *listaUAVs);
             Collision collision = (*it).getCollision();
-            cout << "Decisão do UAV1: " << endl;
+            //cout << "Decisão do UAV1: " << endl;
             consensus.makeDecision(collision);
-            cout << "PERANTE SUGESTÃO DO UAV0: " << collision.getUAVCase()
-                    << endl;
-            cout << "Coordenada collision: " << castCoordinateToCoord(collision.getCoordinate()) << endl;
-            cout << "Minha coordenada: " << position[this->uav.getID()] << endl;
+            //cout << "PERANTE SUGESTÃO DO UAV0: " << collision.getUAVCase() << endl;
+            //cout << "Coordenada collision: " << castCoordinateToCoord(collision.getCoordinate()) << endl;
+            //cout << "Minha coordenada: " << position[this->uav.getID()] << endl;
             Coordinate ec = consensus.escapeCoordinate();
-            cout << "Escape coordinate - X: " << ec.getX() << " Y: " << ec.getY()
-                    << " Z: " << ec.getZ() << endl;
+            //cout << "Escape coordinate - X: " << ec.getX() << " Y: " << ec.getY()
+            //        << " Z: " << ec.getZ() << endl;
 
             /*addEscapeCoordinate(ec);
             msgs[uav.getID()].erase(it);
@@ -523,4 +526,19 @@ void UAVMobility::verificarMensagens(std::vector<UAV> *listaUAVs){
         }
     }
 }
+void UAVMobility::sendMessageToModule(ModuleMessage mm){
+    bool passouChecagem = true;
+    for(ModuleMessage moduleMessage : msgs[uav.getID()]){
+        if(mm.getSource() == moduleMessage.getSource()
+                && mm.getDestination() == moduleMessage.getDestination()
+                && mm.getCode() == moduleMessage.getCode()
+                && strcmp(mm.getMsg(), moduleMessage.getMsg()) == 0
+                && mm.getModule() == moduleMessage.getModule()){
+            passouChecagem = false;
+        }
+    }
 
+    if(passouChecagem){
+        msgs[uav.getID()].push_back(mm);
+    }
+}
