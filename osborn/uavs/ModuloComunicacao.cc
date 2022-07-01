@@ -59,25 +59,6 @@ void ModuloComunicacao::forwardMessage(UAVMessage *msg){
     send(msg, "out", k);
 }
 
-void ModuloComunicacao::enviarMensagemParaTodosOsUAVs(UAVMessage *msg){
-    cout << "Pra todos de: " << selfID << endl;
-    //Depois enviar mensagens para todos os vizinhos
-    //int n = gateSize("out");
-    int n = getUAVsAtivos();
-    int id = 0;
-    for (int i = 0; i < n; i++) {
-
-        if(selfID == id && n-1 > i){
-            id += 1;
-        }
-
-        msg->setDestino(id);
-        send(msg->dup(), "out", i);
-        id++;
-    }
-
-}
-
 UAVMessage *ModuloComunicacao::generateMessage(){
     int src = getIndex();
     int n = getVectorSize();
@@ -104,6 +85,50 @@ void ModuloComunicacao::enviarMensagem(double tempo, int origem, int destino, ch
     sendMSGEvt->setOrigem(origem);
     scheduleAt(simTime()+tempo, sendMSGEvt);
 }
+
+void ModuloComunicacao::enviarMensagemParaTodosOsUAVsAtivos(UAVMessage *msg){
+    cout << "ParaTodosOsUAVsAtivos de: " << selfID << endl;
+    //Depois enviar mensagens para todos os vizinhos
+    //int n = gateSize("out");
+    int n = getUAVsAtivos();
+    int id = 0;
+    for (int i = 0; i < n; i++) {
+
+        if(selfID == id && n-1 > i){
+            id += 1;
+        }
+
+        msg->setDestino(id);
+        send(msg->dup(), "out", i);
+        id++;
+    }
+
+}
+
+void ModuloComunicacao::enviarMensagemParaTodosOsUAVs(UAVMessage *msg, int size = 0){
+    cout << "ParaTodosOsUAVs de: " << selfID << endl;
+    //Depois enviar mensagens para todos os vizinhos
+    int n;
+    if(size == 0){
+        n = gateSize("out");
+    }else{
+        n = size;
+    }
+
+    int id = 0;
+    for (int i = 0; i < n; i++) {
+
+        if(selfID == id && n-1 > i){
+            id += 1;
+        }
+
+        msg->setDestino(id);
+        send(msg->dup(), "out", i);
+        id++;
+    }
+
+}
+
 
 void ModuloComunicacao::handleNessagesBetweenUAVs(UAVMessage *mMSG){
     //SE MENSAGEM RECEBIDA POR OUTRO UAV
@@ -149,9 +174,14 @@ void ModuloComunicacao::handleNessagesBetweenUAVs(UAVMessage *mMSG){
 
             msgs[selfID].push_back(mm);
         }else if(mMSG->getKind() == TASK_WAITTING && strcmp(mMSG->getName(), "WAITTING") == 0){
+            int leader = tasksVector[selfID][itera[selfID]].getLeader();
+            if(qtdFormacao == 0 && leader < 0){
+                qtdFormacao = (leader*(-1));
+                cout << "PASSOU FORMAÇÃO PARA: " << qtdFormacao << endl;
+            }
             cout << "[Ux"<<mMSG->getDestino()<<"]UAV" << mMSG->getOrigem() << " se posicionou" << endl;
             Task t = mMSG->getTask();
-            int leader = tasksVector[selfID][itera[selfID]].getLeader();
+
             cout << "[Ux"<<mMSG->getDestino()<<"]lider: "<<t.getLeader() << "passou de " << leader << "|";
             tasksVector[selfID][itera[selfID]].setLeader(leader+1);
             cout << tasksVector[selfID][itera[selfID]].getLeader() << endl;
@@ -164,14 +194,25 @@ void ModuloComunicacao::handleNessagesBetweenUAVs(UAVMessage *mMSG){
             if(tasksVector[selfID][itera[selfID]].getLeader() == -1){
                 cout << "Marquei atividade do lider como completa!" << endl;
                 //aqui se envia mensagem para todos os UAVs da tarefa
-                tasksVector[selfID][itera[selfID]].setStatus(Task::COMPLETED);
-                itera[selfID]++;
+                tasksVector[selfID][itera[selfID]].setStatus(Task::SIGNNED);
+                //itera[selfID]++;
                 ativo[selfID] = true;
-                //Task::SIGNNED
                 //QWEQWEQW
+
+                UAVMessage *uavMSG = new UAVMessage("NEXT", TASK_COMPLETED);
+                uavMSG->setOrigem(selfID);
+                enviarMensagemParaTodosOsUAVs(uavMSG, qtdFormacao-1);
+                qtdFormacao = 0;
             }
 
             //PARA O CASO DO LIDER TERMINAR DEPOIS, O UAVMOBILITY DEVE TRATAR
+        }else if(mMSG->getKind() == TASK_COMPLETED && strcmp(mMSG->getName(), "NEXT") == 0){
+            cout << selfID << " - RECEBI A MENSAGEM DE IR PARA A PROXIMA FORMAÇÃO" << endl;
+            tasksVector[selfID][itera[selfID]].setStatus(Task::SIGNNED);
+            //itera[selfID]++;
+            if(tasksVector[selfID].size() != itera[selfID]){
+                ativo[selfID] = true;
+            }
         }
 }
 
@@ -190,7 +231,7 @@ void ModuloComunicacao::handleNessagesBetweenModules(UAVMessage *mMSG){
                         //uavMSG->setDestino(i+1);
                         //send(uavMSG, "out", uavMSG->getDestino()-1);
 
-                        enviarMensagemParaTodosOsUAVs(uavMSG);
+                        enviarMensagemParaTodosOsUAVsAtivos(uavMSG);
                     }else if(strcmp(mm.getMsg(), "collision") == 0 && mm.getCode() == REQUEST_CONSENSUS){
                         //cout << "[MM] ESTÁ QUERENDO SABER CONSENSUS: " << mm.getSource() << endl;
                         UAVMessage *uavMSG = new UAVMessage(mm.getMsg(), mm.getCode());

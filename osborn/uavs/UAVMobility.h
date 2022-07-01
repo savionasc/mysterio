@@ -84,6 +84,16 @@ class INET_API UAVMobility : public LineSegmentsMobilityBase
         return coor;
     }
 
+    Coord assignCoordinate(Coord co){
+        Coord c;
+        c.setX((co.getX() < 0)? 0 : co.getX());
+        c.setY((co.getY() < 0)? 0 : co.getY());
+        c.setZ((co.getZ() < 0)? 0 : co.getZ());
+        return c;
+    }
+
+
+
     UAV uav;
     int UAVRole = ROLE_DISABLED;
 

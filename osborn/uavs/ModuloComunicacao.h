@@ -30,6 +30,7 @@ extern UAVMysCommunication uavs[NUMUAVS];
 extern bool ativo[NUMUAVS];
 extern int itera[NUMUAVS];
 extern std::vector<ModuleMessage> msgs[NUMUAVS];
+extern std::vector<Task> tasksVector[NUMUAVS];
 
 namespace inet {
 
@@ -57,7 +58,8 @@ class ModuloComunicacao : public cSimpleModule {
 
     //Auxiliary functions
     void enviarMensagem(double tempo, int origem, int destino, char const *name, int kind);
-    void enviarMensagemParaTodosOsUAVs(UAVMessage *msg);
+    void enviarMensagemParaTodosOsUAVs(UAVMessage *msg, int size);
+    void enviarMensagemParaTodosOsUAVsAtivos(UAVMessage *msg);
     void rememberCheckMessage(double seconds);
     void handleNessagesBetweenModules(UAVMessage *mMSG);
     void handleNessagesBetweenUAVs(UAVMessage *mMSG);
@@ -104,6 +106,7 @@ class ModuloComunicacao : public cSimpleModule {
 
     int selfID = -2;
     UAVMessage* sendMSGEvt;
+    int qtdFormacao = 0;
 };
 }
 

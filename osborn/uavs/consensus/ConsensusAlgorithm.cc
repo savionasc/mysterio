@@ -9,7 +9,7 @@ ConsensusAlgorithm::~ConsensusAlgorithm() { }
 
 //Este int será um enum.. ConsensusAlgorithm::SóPodeSubir
 int ConsensusAlgorithm::run(){
-    int radius = 35;
+    int radius = 30;
     int rad2 = 2 * radius;
     state = Collision::CASE_UP_OR_DOWN;
     inet::Coord uav = castCoordinateToCoord(coordinate);
@@ -66,7 +66,7 @@ int ConsensusAlgorithm::run(){
 
 void ConsensusAlgorithm::makeDecision(Collision collision){
     //Se tiver pelo menos 2 colisões o state do uav atual nunca é CASE_UP_OR_DOWN
-    if(this->runned && this->numColisions > 1){
+    if(this->runned > 0 && this->numColisions > 1){
         std::cout << "Mais de uma colisão" << std::endl;
         if(state == Collision::CASE_UP
                 && (collision.getUAVCase() == Collision::CASE_UP_OR_DOWN
@@ -85,7 +85,7 @@ void ConsensusAlgorithm::makeDecision(Collision collision){
             std::cout << "Tomamos a mesma decisão("<< state << "|" << collision.getUAVCase() <<"), porém a minha coordenada é mais perto e a sua mais longe" << std::endl;
             runned = 2;
         }
-    }else if(this->runned && state == Collision::CASE_NOT_UP_DOWN){
+    }else if(this->runned > 0 && state == Collision::CASE_NOT_UP_DOWN){
         std::cout << "O ideal é que o outro faça alguma coisa... e eu não" << std::endl;
         std::cout << "Ou subir... talvez subir menos que o outro drone" << std::endl;
         runned = 2;
@@ -94,7 +94,11 @@ void ConsensusAlgorithm::makeDecision(Collision collision){
         switch (collision.UAVCase) {
             case Collision::CASE_UP_OR_DOWN:
                 std::cout << "Mesmo que não importe, vou subir, então você desce" << std::endl;
-                state = Collision::CASE_UP;
+                if(this->runned > 0 && collision.getCoordinate().getZ() > this->coordinate.getZ()){
+                    state = Collision::CASE_DOWN;
+                }else{
+                    state = Collision::CASE_UP;
+                }
                 runned = 3;
                 break;
             case Collision::CASE_UP:
@@ -108,8 +112,13 @@ void ConsensusAlgorithm::makeDecision(Collision collision){
                 runned = 3;
                 break;
             case Collision::CASE_NOT_UP_DOWN:
-                std::cout << "Vou subir de qualquer maneira, então você desce" << std::endl;
-                state = Collision::CASE_UP;
+                std::cout << "Vou descer de qualquer maneira, então você sobe" << std::endl;
+                if(this->runned > 0 && collision.getCoordinate().getZ() > this->coordinate.getZ()){
+                    state = Collision::CASE_DOWN;
+                }else{
+                    state = Collision::CASE_UP;
+                }
+                //state = Collision::CASE_DOWN;
                 runned = 2;
                 break;
             default:

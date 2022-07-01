@@ -76,7 +76,7 @@ void UAVMobility::setTargetPosition() {
         nextChange = simTime() + waitTime;
         nextMoveIsWait = true;
 
-        targetPosition = lastPosition;
+        targetPosition = assignCoordinate(lastPosition);
     }
 
     //Caso seja lider inativo
@@ -84,7 +84,7 @@ void UAVMobility::setTargetPosition() {
         Coord inicialPosition(10, 0, 10);
 
         if(targetPosition != inicialPosition){
-            targetPosition = inicialPosition;
+            targetPosition = assignCoordinate(inicialPosition);
             double speed = speedParameter->doubleValue();
             double distance = lastPosition.distance(targetPosition);
             simtime_t travelTime = distance / speed;
@@ -99,8 +99,10 @@ void UAVMobility::setTargetPosition() {
 
     //Caso contrário
     else {
+        cout << "[u"<<uav.getID()<<"]itera: " << itera[uav.getID()] << " QTDTasks: " << tasksVector[uav.getID()].size() << endl;
         //Se tiver tarefas para fazer
         if(tasksVector[uav.getID()].size() != itera[uav.getID()] && tasksVector[uav.getID()].size() > 0){ //if there are tasks not performed
+            cout << "[u"<<uav.getID()<<"]Status da tarefa atual: " << tasksVector[uav.getID()][itera[uav.getID()]].getStatus() << endl;
             //std::cout << "TEM TAREFA!" << std::endl;
             int task = itera[uav.getID()];
             //finalizando
@@ -122,6 +124,7 @@ void UAVMobility::setTargetPosition() {
 
                 //next task
                 itera[uav.getID()]++;
+                cout << "UAV"<<uav.getID()<< " COMPLETOU TAREFA, PARTINDO PARA A PRÓXIMA!";
 
             }else{
                 cout << "para executar tarefa > ";
@@ -129,13 +132,13 @@ void UAVMobility::setTargetPosition() {
 
                 cout << "[zzz] Mensagens de: " << uav.getID() << endl;
 
+                if(consensusStage[uav.getID()] < 2){
+                    ModuleMessage mm(strdup("location"), 234, 1);
 
-                ModuleMessage mm(strdup("location"), 234, 1);
+                    mm.setSource(uav.getID());
+                    mm.setDestination(-2); //Numero qualquer, pois vai para todos
+                    sendMessageToModule(mm);
 
-                mm.setSource(uav.getID());
-                mm.setDestination(-2); //Numero qualquer, pois vai para todos
-                sendMessageToModule(mm);
-                if(consensusStage[uav.getID()] == 0){
                     consensusStage[uav.getID()] = 1; //solicitou coordenadas
                 }
 
@@ -163,7 +166,7 @@ void UAVMobility::setTargetPosition() {
                             cout << "UAV a colidir: " << vecCollisions[i].getUAV().getID() << " escapar por: "
                                         << vecCollisions[i].getUAVCase() << endl;
                             //inativarUAV(this->uav.getID());
-                            consensusStage[uav.getID()] = 3;
+                            consensusStage[uav.getID()] = 1;
                             //addEscapeCoordinate(Coordinate(lastPosition.x, lastPosition.y, lastPosition.z+500));
                             Coordinate ce = consensus.escapeCoordinate();
                             addEscapeCoordinate(ce);
@@ -226,14 +229,10 @@ void UAVMobility::setTargetPosition() {
             u.dispatchMessage(msg);
             if(++myStage == 1){
                 Coord p(uniform(10, 25), uniform(10, 25), uniform(50, 80));
-                targetPosition = p;
+                targetPosition = assignCoordinate(p);
             }else{
-                targetPosition = getRandomPosition();
+                targetPosition = assignCoordinate(getRandomPosition());
                 cout << "ALEATORIA X" << myStage << endl;
-            }
-
-            if(u.getSelfID() == 1){
-                u.disconnectBase();
             }
         }
 
@@ -341,8 +340,13 @@ Coord UAVMobility::splittedGoTo(int j){
             //SAVIO AO RECEBER A RESPOSTA DO UAV LIDER, O STATUS DEVE SER ATUALIZADO COMO COMPLETED
             waypoints[uav.getID()] = 0;
             tasksVector[uav.getID()][j].setStatus(Task::COMPLETED);
+            cout << "entrou aqui signed." << endl;
         }else{
-            cout << "entrou aqui" << endl;
+            cout << "entrou aqui else. Próxima tarefa?" << endl;
+            /*if(tasksVector[uav.getID()][j].getStatus() == Task::COMPLETED){
+                itera[uav.getID()]++;
+            }*/
+            //xczxczxc
         }
         c = lastPosition;
     }
@@ -362,9 +366,9 @@ void UAVMobility::executeTask(int j){
         }
 
         cout << "SPLITTEDGOTO" << endl;
-        targetPosition = splittedGoTo(j);
+        targetPosition = assignCoordinate(splittedGoTo(j));
     }else{
-        targetPosition = this->castCoordinateToCoord(tasksVector[uav.getID()][j].getTarget());
+        targetPosition = assignCoordinate(this->castCoordinateToCoord(tasksVector[uav.getID()][j].getTarget()));
         itera[uav.getID()]++;
         cout << "Else executeTask" << endl;
     }
@@ -510,6 +514,7 @@ void UAVMobility::verificarMensagens(std::vector<UAV> *listaUAVs){
         }else if((*it).getModule() == MODULE_ID || (*it).getCode() == 244){
             //cout << "MENSAGEM DE COLISÃO RECEBIDA EM: " << this->uav.getID() << " DE: " <<(*it).getSource() << endl;
             ConsensusAlgorithm consensus(castCoordToCoordinate(position[this->uav.getID()]), *listaUAVs);
+            //consensus.run();
             Collision collision = (*it).getCollision();
             //cout << "Decisão do UAV1: " << endl;
             consensus.makeDecision(collision);
@@ -519,7 +524,9 @@ void UAVMobility::verificarMensagens(std::vector<UAV> *listaUAVs){
             Coordinate ec = consensus.escapeCoordinate();
             //cout << "Escape coordinate - X: " << ec.getX() << " Y: " << ec.getY()
             //        << " Z: " << ec.getZ() << endl;
-
+            addEscapeCoordinate(ec);
+            msgs[uav.getID()].erase(it);
+            it = it - 1;
             /*addEscapeCoordinate(ec);
             msgs[uav.getID()].erase(it);
             it = it - 1;*/
@@ -535,6 +542,7 @@ void UAVMobility::sendMessageToModule(ModuleMessage mm){
                 && strcmp(mm.getMsg(), moduleMessage.getMsg()) == 0
                 && mm.getModule() == moduleMessage.getModule()){
             passouChecagem = false;
+            cout << "MENSAGEM REPETIDA!" << endl;
         }
     }
 
