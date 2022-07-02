@@ -148,6 +148,26 @@ void listenCommunication(){
 
                     comm.sendTaskMessageToUAV(ms->getUAV(u.getID()).getNetworkConfigurations().getIdSocket(), taskMessage);
                 }
+            }else if("grp2mid"){
+                cout << "" << endl;
+                //take off
+                Coordinate target(500.0,500.0,500.0);
+                UAV u(id);
+                Task gotoc(u, target);
+                //gotoc.setType(Task::GOTO);
+
+                gotoc.setType(Task::GOTO);
+                TaskManager t;
+                t.addTask(gotoc);
+
+                //Enviando tarefa
+                int codeMessage = Message::TASK_MESSAGE;
+                TaskMessage taskMessage(msg.getMsg(), Message::TASK_MESSAGE);
+                taskMessage.setDestination(msg.getDestination());
+                taskMessage.setTask(t.getTaskByIndex(u, t.getNumTasks(u)-1));
+
+                comm.sendTaskMessageToUAV(ms->getUAV(u.getID()).getNetworkConfigurations().getIdSocket(), taskMessage);
+
             }else if(!strcmp(msg.getMsg(), "goto")){
                 cout << "Entrou GOTO" << endl;
                 //take off
