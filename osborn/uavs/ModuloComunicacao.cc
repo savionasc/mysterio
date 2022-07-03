@@ -20,9 +20,6 @@ enum codesUAV{
 void ModuloComunicacao::initialize(){
     selfID = getIndex();
 
-    //Mudar as flags e usar assim...
-    int x = ModuloComunicacao::RESPONDER_LOCALIZACAO;
-
     uavs[selfID].setSelfID(selfID);
 
     if(!uavs[selfID].isConnected()){
@@ -213,6 +210,19 @@ void ModuloComunicacao::handleNessagesBetweenUAVs(UAVMessage *mMSG){
             if(tasksVector[selfID].size() != itera[selfID]){
                 ativo[selfID] = true;
             }
+        }else if(strcmp(mMSG->getName(), "grp2mid") == 0 && mMSG->getKind() == Message::TASK_MESSAGE){
+            cout << selfID << " - RECEBI grp2mid DE IR EM FORMAÇÃO [" << selfID << "]" << endl;
+            Task t = mMSG->getTask();
+            t.setUAV(UAV(selfID));
+            Coord posUAV = this->pegarPosicaoUAV();
+            Coord target = castCoordinateToCoord(t.getTarget()) + posUAV;
+            cout << "TARGET QUE VEIO: " << castCoordinateToCoord(t.getTarget()) << "TARGET: " << target << " MINHA POS: " << posUAV << endl;
+            t.setTarget(castCoordToCoordinate(target));
+            tasksVector[selfID].push_back(t);
+            itera[selfID]++;
+            if(tasksVector[selfID].size() != itera[selfID]){
+                ativo[selfID] = true;
+            }
         }
 }
 
@@ -224,7 +234,16 @@ void ModuloComunicacao::handleNessagesBetweenModules(UAVMessage *mMSG){
                 ModuleMessage mm = msgs[selfID][i];
                 if(mm.getModule() == MODULE_ID){
                     //cout << "[MxM] " << mm.getMsg() << " | " << mm.getSource() << endl;
-                    if(strcmp(mm.getMsg(), "location") == 0 && mm.getCode() == REQUEST_POSITION_UAV){
+                    if(strcmp(mm.getMsg(), "grp2mid") == 0 && mm.getCode() == Message::TASK_MESSAGE){
+                        UAVMessage *uavMSG = new UAVMessage(mm.getMsg(), mm.getCode());
+                        uavMSG->setOrigem(selfID);
+                        uavMSG->setTask(mm.getTask());
+                        //uavMSG->setDestino(i+1);
+                        //send(uavMSG, "out", uavMSG->getDestino()-1);
+                        cout << "LANÇOU grp2mid para outros UAVs." << endl;
+
+                        enviarMensagemParaTodosOsUAVs(uavMSG, 2);
+                    }else if(strcmp(mm.getMsg(), "location") == 0 && mm.getCode() == REQUEST_POSITION_UAV){
                         //cout << "[MM] ESTÁ QUERENDO SABER LOCATION: " << mm.getSource() << endl;
                         UAVMessage *uavMSG = new UAVMessage(mm.getMsg(), mm.getCode());
                         uavMSG->setOrigem(selfID);

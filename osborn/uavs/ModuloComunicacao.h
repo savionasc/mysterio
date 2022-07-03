@@ -104,6 +104,25 @@ class ModuloComunicacao : public cSimpleModule {
         return qtd;
     }
 
+    Coord pegarPosicaoUAV(){
+        //char uavChar[] = "uav["+this->selfID+"]";
+        //cModule *uav = getParentModule()->getParentModule()->getSubmodule("uav[0]")->getSubmodule("mobility", selfID);
+        //cModule *uav = getParentModule()->getSubmodule("UAV[1]");//->getSubmodule("mobility", 0);//->getSubmodule("uav[1]");//->getSubmodule("mobility", 0);
+        char buf[20];
+        sprintf(buf, "UAV[%d]", selfID);
+        cModule * mod = getModuleByPath(buf);
+        cModule *uav = mod->getSubmodule("mobility", 0);
+        UAVMobility *uavmob = check_and_cast<UAVMobility*>(uav);
+
+       /*for (cModule::SubmoduleIterator it(getParentModule()); !it.end(); ++it) {
+           cModule *submodule = *it;
+           cout << "1MODULO: " << submodule << endl;
+       }*/
+
+        cout << "MODULO: " << uavmob->posicaoAtual() << endl;
+        return uavmob->posicaoAtual();
+    }
+
     int selfID = -2;
     UAVMessage* sendMSGEvt;
     int qtdFormacao = 0;
