@@ -21,6 +21,16 @@ class UAVMessageReceive {
             while(esperarMensagem(param)){ }
         }
 
+        Coord castCoordinateToCoord(Coordinate co){
+            Coord coor(co.getX(), co.getY(), co.getZ());
+            return coor;
+        }
+
+        Coordinate castCoordToCoordinate(Coord co){
+            Coordinate coor(co.getX(), co.getY(), co.getZ());
+            return coor;
+        }
+
         bool esperarMensagem(int socket){
             int typeMSG;
             memset(&typeMSG, 0, sizeof(typeMSG));
@@ -139,13 +149,29 @@ class UAVMessageReceive {
                     mMsg.setDestination(tmsg.getDestination());
                     mMsg.setSource(tmsg.getSource());
                     mMsg.setTask(tmsg.getTask());
+                    //falta o setmodule
+                    //mMsg.setModule(1);
                     msgs[this->uav.getID()].push_back(mMsg);
-                    cout << "For other UAV";
+                    cout << "For other UAV" << endl;
                 }else{
-                    cout << "For this UAV";
+                    cout << "For this UAV" << endl;
                     //msg pra esse UAV
                     if(!strcmp(tmsg.getMsg(), "SUBSTITUIR")){
                         ativo[uav.getID()] = true;
+                    }
+                    if(strcmp(tmsg.getMsg(), "grp2mid") == 0){
+                        ModuleMessage mMsg(tmsg.getMsg(), tmsg.getCode());
+                        mMsg.setDestination(tmsg.getDestination());
+                        mMsg.setSource(tmsg.getSource());
+                        Task t = tmsg.getTask();
+                        Coord diference = castCoordinateToCoord(t.getTarget());
+                        cout << "UAV 0 - Coordinate: " << diference;
+                        diference = diference - position[uav.getID()];
+                        cout << " - diference: " << diference << endl;
+                        t.setTarget(castCoordToCoordinate(diference));
+                        mMsg.setTask(t);
+                        mMsg.setModule(1);
+                        msgs[this->uav.getID()].push_back(mMsg);
                     }
                     Task x = tmsg.getTask();
                     //idUAV;
