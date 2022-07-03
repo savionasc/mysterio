@@ -361,8 +361,9 @@ void UAVMobility::executeTask(int j){
     }else if(tasksVector[uav.getID()][j].getType() == Task::GOTO){
         if(waypoints[uav.getID()] == 0){
             TaskAssistant t;
-            Coordinate coord = tasksVector[uav.getID()][j].getTarget();
-            splitGoTos[uav.getID()] = t.splitCoordinate(coord, 25);
+            Coordinate target = tasksVector[uav.getID()][j].getTarget();
+            //splitGoTos[uav.getID()] = t.splitCoordinate(target, 25);
+            splitGoTos[uav.getID()] = t.splitCoordinateFormation(castCoordToCoordinate(lastPosition), target, 25);
         }
 
         cout << "SPLITTEDGOTO" << endl;
@@ -550,3 +551,8 @@ void UAVMobility::sendMessageToModule(ModuleMessage mm){
         msgs[uav.getID()].push_back(mm);
     }
 }
+
+Coord UAVMobility::posicaoAtual(){
+    return lastPosition;
+}
+
