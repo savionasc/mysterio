@@ -20,6 +20,7 @@ std::vector<Coordinate> TaskAssistant::splitCoordinateFormation(Coordinate coord
     vector<Coordinate> v;
     Coordinate diff = diference(target, coord);
     int size = qtyDivisions(diff, slice);
+    cout << "MEU SIZE: " << size << endl;
     coordinatesToFollowVectorFormation(coord, diff, &v, size);
 
     return v;
@@ -29,9 +30,9 @@ int TaskAssistant::qtyDivisions(Coordinate coord, int divider){
     int x, y, z, quotient = 0;
 
     //quotient calculation
-    x = coord.getX()/divider;
-    y = coord.getY()/divider;
-    z = coord.getZ()/divider;
+    x = ((coord.getX() > 0) ? coord.getX() : (coord.getX() * (-1)))/divider;
+    y = ((coord.getY() > 0) ? coord.getY() : (coord.getY() * (-1)))/divider;
+    z = ((coord.getZ() > 0) ? coord.getZ() : (coord.getZ() * (-1)))/divider;
 
     //returns the largest of the 3 quotient divisions
     if(x >= y && x >= z)
@@ -39,7 +40,11 @@ int TaskAssistant::qtyDivisions(Coordinate coord, int divider){
     else if(y >= x && y >= z)
         return y;
     else
-        return z;
+        /*if(z <= 0){
+
+        }else{*/
+            return z;
+       // }
 }
 
 void TaskAssistant::coordinatesToFollow(Coordinate coord, Coordinate *coords, int length){

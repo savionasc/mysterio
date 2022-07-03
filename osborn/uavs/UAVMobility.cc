@@ -130,8 +130,6 @@ void UAVMobility::setTargetPosition() {
                 cout << "para executar tarefa > ";
                 //TaskMessage tm("checking", 123);
 
-                cout << "[zzz] Mensagens de: " << uav.getID() << endl;
-
                 if(consensusStage[uav.getID()] < 2){
                     ModuleMessage mm(strdup("location"), 234, 1);
 
@@ -148,12 +146,12 @@ void UAVMobility::setTargetPosition() {
 
                 if(consensusStage[uav.getID()] == 2){
                     Coordinate coordUAV = castCoordToCoordinate(position[this->uav.getID()]);
-                    cout << "[CONSENSUS]: NUMERO DE UAVS PARA O CONSENSUS: " << listaUAVs.size() << endl;
+                    //cout << "[CONSENSUS]: NUMERO DE UAVS PARA O CONSENSUS: " << listaUAVs.size() << endl;
                     ConsensusAlgorithm consensus(coordUAV, listaUAVs);
                     int resp = 0;
                     if(listaUAVs.size() > 0){
                         resp = consensus.run();
-                        cout << "[CONSENSUS]: CONSENSUS EXECUTADO! RESPOSTA: " << resp << endl;
+                        //cout << "[CONSENSUS]: CONSENSUS EXECUTADO! RESPOSTA: " << resp << endl;
                     }
 
                     vector<Collision> vecCollisions = consensus.getCollisions();
@@ -210,7 +208,7 @@ void UAVMobility::setTargetPosition() {
 
                 //if(verificarSeTemUAVProximo() == true)
                     //ChamarAlgoritmoDoConsenso Que lá vai chamar função de adicionarCoordenadaNoVetorParaEvitarColisao
-                cout << "VERIFICAR SE TEM UAV PRÓXIMO! > ";
+                //cout << "VERIFICAR SE TEM UAV PRÓXIMO! > ";
 
                 executeTask(task);
             }
@@ -327,6 +325,7 @@ Coord UAVMobility::splittedGoTo(int j){
             inativarUAV(uav.getID());
             cout << "UAV "<<uav.getID()<<" ESPERANDO POR SINAL!" << endl;
             if(tasksVector[uav.getID()][j].getLeader() >= 0){
+                cout << "Lider: " << tasksVector[uav.getID()][j].getLeader() << endl;
                 ModuleMessage mm(strdup("WAITTING"), 345, uav.getID(), tasksVector[uav.getID()][j].getLeader());
                 mm.setTask(tasksVector[uav.getID()][j]);
                 mm.setModule(1);
@@ -342,7 +341,9 @@ Coord UAVMobility::splittedGoTo(int j){
             tasksVector[uav.getID()][j].setStatus(Task::COMPLETED);
             cout << "entrou aqui signed." << endl;
         }else{
-            cout << "entrou aqui else. Próxima tarefa?" << endl;
+            cout << "entrou aqui else. Próxima tarefa? Status da atual de 0: " << tasksVector[uav.getID()][0].getStatus() << endl;
+            cout << "entrou aqui else. Próxima tarefa? Status da atual de 1: " << tasksVector[uav.getID()][1].getStatus() << endl;
+            cout << "waypoints: " << waypoints[uav.getID()] << " de " << splitGoTos[uav.getID()].size() << endl;
             /*if(tasksVector[uav.getID()][j].getStatus() == Task::COMPLETED){
                 itera[uav.getID()]++;
             }*/
@@ -358,17 +359,25 @@ void UAVMobility::executeTask(int j){
     cout << "ExecuteTask" << endl;
     if(consensusStage[uav.getID()] == 3 && lastPosition == targetPosition){
         consensusStage[uav.getID()] = 4;
+        cout << "MUDOU CONSENSUS" << endl;
     }else if(tasksVector[uav.getID()][j].getType() == Task::GOTO){
+        cout << "MUDOU GOTO" << endl;
         if(waypoints[uav.getID()] == 0){
             TaskAssistant t;
             Coordinate target = tasksVector[uav.getID()][j].getTarget();
+            cout << "TARGET: " << castCoordinateToCoord(tasksVector[uav.getID()][j].getTarget()) << endl;
             //splitGoTos[uav.getID()] = t.splitCoordinate(target, 25);
             splitGoTos[uav.getID()] = t.splitCoordinateFormation(castCoordToCoordinate(lastPosition), target, 25);
+            cout << "target: " << castCoordinateToCoord(target) << endl;
+            cout << "lastPosition: " << lastPosition << endl;
+
+            cout << "split size: " << splitGoTos[uav.getID()].size() << endl;
         }
 
-        cout << "SPLITTEDGOTO" << endl;
+        //cout << "SPLITTEDGOTO" << endl;
         targetPosition = assignCoordinate(splittedGoTo(j));
     }else{
+        cout << "MUDOU OUTRO" << endl;
         targetPosition = assignCoordinate(this->castCoordinateToCoord(tasksVector[uav.getID()][j].getTarget()));
         itera[uav.getID()]++;
         cout << "Else executeTask" << endl;

@@ -219,7 +219,7 @@ void ModuloComunicacao::handleNessagesBetweenUAVs(UAVMessage *mMSG){
             cout << "TARGET QUE VEIO: " << castCoordinateToCoord(t.getTarget()) << "TARGET: " << target << " MINHA POS: " << posUAV << endl;
             t.setTarget(castCoordToCoordinate(target));
             tasksVector[selfID].push_back(t);
-            itera[selfID]++;
+            //itera[selfID]++;
             if(tasksVector[selfID].size() != itera[selfID]){
                 ativo[selfID] = true;
             }
