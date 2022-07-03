@@ -109,6 +109,7 @@ class INET_API UAVMobility : public LineSegmentsMobilityBase
     const int MODULE_ID = 2;
     UAVMobility();
     virtual double getMaxSpeed() const override;
+    Coord posicaoAtual();
 
     enum ROLES{
         ROLE_DISABLED = 0,
