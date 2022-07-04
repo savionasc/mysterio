@@ -168,9 +168,7 @@ class UAVMessageReceive {
                         Task t = tmsg.getTask();
                         t.setLeader(uav.getID());
                         Coord diference = castCoordinateToCoord(t.getTarget());
-                        cout << "UAV 0 - Coordinate: " << diference;
                         diference = diference - position[uav.getID()];
-                        cout << " - diference: " << diference << endl;
                         t.setTarget(castCoordToCoordinate(diference));
                         mMsg.setTask(t);
                         mMsg.setModule(1);

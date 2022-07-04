@@ -119,7 +119,6 @@ class ModuloComunicacao : public cSimpleModule {
            cout << "1MODULO: " << submodule << endl;
        }*/
 
-        cout << "MODULO: " << uavmob->posicaoAtual() << endl;
         return uavmob->posicaoAtual();
     }
 

@@ -39,8 +39,8 @@ private:
     //flag
     int runned = 0;
 
-    //0 para run não executado
-    //1 para run executado
+    //0 para runned não executado
+    //1 para runned executado
     //2 para makeDecision com decisão curta
     //3 para makeDecision com decisão longa
 };
