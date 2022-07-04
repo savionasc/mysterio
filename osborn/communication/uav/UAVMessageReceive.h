@@ -159,7 +159,9 @@ class UAVMessageReceive {
                     if(!strcmp(tmsg.getMsg(), "SUBSTITUIR")){
                         ativo[uav.getID()] = true;
                     }
-                    if(strcmp(tmsg.getMsg(), "grp2mid") == 0){
+                    if(strcmp(tmsg.getMsg(), "grp2down") == 0 
+                        || strcmp(tmsg.getMsg(), "grp2mid") == 0
+                        || strcmp(tmsg.getMsg(), "grp2up") == 0){
                         ModuleMessage mMsg(tmsg.getMsg(), tmsg.getCode());
                         mMsg.setDestination(tmsg.getDestination());
                         mMsg.setSource(tmsg.getSource());

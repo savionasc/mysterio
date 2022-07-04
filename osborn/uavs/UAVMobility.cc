@@ -229,8 +229,9 @@ void UAVMobility::setTargetPosition() {
                 Coord p(uniform(10, 25), uniform(10, 25), uniform(50, 80));
                 targetPosition = assignCoordinate(p);
             }else{
-                targetPosition = assignCoordinate(getRandomPosition());
+                //targetPosition = assignCoordinate(getRandomPosition());
                 cout << "ALEATORIA X" << myStage << endl;
+                ativo[uav.getID()] = false;
             }
         }
 
@@ -323,13 +324,34 @@ Coord UAVMobility::splittedGoTo(int j){
             //Update status
             tasksVector[uav.getID()][j].setStatus(Task::WAITING_FOR_SIGN);
             inativarUAV(uav.getID());
-            cout << "UAV "<<uav.getID()<<" ESPERANDO POR SINAL!" << endl;
+            cout << " UAV "<<uav.getID()<<" ESPERANDO POR SINAL! itera: " << j << endl;
             if(tasksVector[uav.getID()][j].getLeader() >= 0){
                 cout << "Lider: " << tasksVector[uav.getID()][j].getLeader() << endl;
                 ModuleMessage mm(strdup("WAITTING"), 345, uav.getID(), tasksVector[uav.getID()][j].getLeader());
                 mm.setTask(tasksVector[uav.getID()][j]);
                 mm.setModule(1);
                 sendMessageToModule(mm);
+            }else{
+                cout << "ELSE COM LIDER: " << tasksVector[uav.getID()][itera[uav.getID()]].getLeader() << endl;
+                if(tasksVector[uav.getID()][j].getStatus() == Task::WAITING_FOR_SIGN
+                                    && tasksVector[uav.getID()][itera[uav.getID()]].getLeader() == -1){
+                                cout << "Marquei atividade do lider como completa!" << endl;
+                    //aqui se envia mensagem para todos os UAVs da tarefa
+                    tasksVector[uav.getID()][itera[uav.getID()]].setStatus(Task::SIGNNED);
+                    //itera[selfID]++;
+                    //waypoints[selfID] = 0;
+                    //ativo[selfID] = true;
+                    //QWEQWEQW
+
+                    //UAVMessage *uavMSG = new UAVMessage("NEXT", TASK_COMPLETED);
+                    //uavMSG->setOrigem(selfID);
+                    //enviarMensagemParaTodosOsUAVs(uavMSG, qtdFormacao-1);
+                    //qtdFormacao = 0;
+
+                    /*if(tasksVector[selfID].size() != itera[selfID]+1){
+                        ativo[selfID] = true;
+                    }*/
+                }
             }
 
             //SAVIO
@@ -339,8 +361,10 @@ Coord UAVMobility::splittedGoTo(int j){
             //SAVIO AO RECEBER A RESPOSTA DO UAV LIDER, O STATUS DEVE SER ATUALIZADO COMO COMPLETED
             waypoints[uav.getID()] = 0;
             tasksVector[uav.getID()][j].setStatus(Task::COMPLETED);
-            cout << "entrou aqui signed." << endl;
+            ativo[uav.getID()] = true;
+            cout << "entrou aqui signed. " << uav.getID() << endl;
         }else{
+
             cout << "entrou aqui else. Próxima tarefa? Status da atual de 0: " << tasksVector[uav.getID()][0].getStatus() << endl;
             cout << "entrou aqui else. Próxima tarefa? Status da atual de 1: " << tasksVector[uav.getID()][1].getStatus() << endl;
             cout << "waypoints: " << waypoints[uav.getID()] << " de " << splitGoTos[uav.getID()].size() << endl;
