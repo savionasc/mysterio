@@ -156,6 +156,7 @@ void listenCommunication(){
                 gotoc.setType(Task::GOTO);
                 gotoc.setSynchronous(true);
                 gotoc.setLeader(0-numOfUAVs);
+                cout << "LEADER: " << gotoc.getLeader() << endl;
                 TaskManager t;
                 t.addTask(gotoc);
 

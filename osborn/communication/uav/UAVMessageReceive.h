@@ -166,7 +166,7 @@ class UAVMessageReceive {
                         mMsg.setDestination(tmsg.getDestination());
                         mMsg.setSource(tmsg.getSource());
                         Task t = tmsg.getTask();
-                        t.setLeader(uav.getID());
+                        //t.setLeader(uav.getID());
                         Coord diference = castCoordinateToCoord(t.getTarget());
                         diference = diference - position[uav.getID()];
                         t.setTarget(castCoordToCoordinate(diference));
