@@ -125,6 +125,43 @@ void listenCommunication(){
                     comm.sendTaskMessageToUAV(ms->getUAV(u.getID()).getNetworkConfigurations().getIdSocket(), taskMessage);
                 }
 
+            }else if(!strcmp(msg.getMsg(), "ten")){
+                Formation fUAVs(10, 0);
+                fUAVs.addPosition(Coordinate(200.0,200.0,200.0));
+                fUAVs.addPosition(Coordinate(200.0,400.0,200.0));
+                fUAVs.addPosition(Coordinate(200.0,600.0,200.0));
+                fUAVs.addPosition(Coordinate(200.0,800.0,200.0));
+
+                fUAVs.addPosition(Coordinate(400.0,300.0,200.0));
+                fUAVs.addPosition(Coordinate(400.0,700.0,200.0));
+
+
+                fUAVs.addPosition(Coordinate(600.0,200.0,200.0));
+                fUAVs.addPosition(Coordinate(600.0,400.0,200.0));
+                fUAVs.addPosition(Coordinate(600.0,600.0,200.0));
+                fUAVs.addPosition(Coordinate(600.0,800.0,200.0));
+                for (int i = 0; i < fUAVs.getNumberOfUAVs(); i++) {
+                    //FALTA SÓ ALTOMATIZAR ESTE FOR
+
+                    UAV u(i);
+                    Task gotoc(u, fUAVs.getPosition(i));
+                    gotoc.setType(Task::GOTO);
+                    gotoc.setSynchronous(true);
+                    gotoc.setLeader((fUAVs.getLeader() != i) ? fUAVs.getLeader() : 0-fUAVs.getNumberOfUAVs());
+                    TaskManager t;
+                    t.addTask(gotoc);
+
+
+                    //OU AUTOMATIZAR ESTE ENVIO DE MENSAGENS QUE ESTÁ REPETITIVO DEMAIS...
+                    //Enviando tarefa
+                    int codeMessage = Message::TASK_MESSAGE;
+                    TaskMessage taskMessage(msg.getMsg(), Message::TASK_MESSAGE);
+                    taskMessage.setDestination(i);
+                    taskMessage.setTask(t.getTaskByIndex(u, t.getNumTasks(u)-1));
+
+                    comm.sendTaskMessageToUAV(ms->getUAV(u.getID()).getNetworkConfigurations().getIdSocket(), taskMessage);
+                }
+
             }else if(!strcmp(msg.getMsg(), "grp2down")){
                 cout << "" << endl;
                 //take off
