@@ -17,7 +17,7 @@ void assignPreprogrammedTasks(int, MysStatusManager*, MysCommunication);
 void listenCommunication(){
     //Here starts the server communication
 
-    int numeroDeUAVsEsperados = 5;
+    int numeroDeUAVsEsperados = 10;
     MysStatusManager *ms;
 
     MysCommunication comm;
