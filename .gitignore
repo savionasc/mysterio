@@ -6,3 +6,4 @@
 *.log
 UAVMessage_m.cc
 UAVMessage_m.h
+marko/scenarios/results
