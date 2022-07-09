@@ -46,6 +46,7 @@ public:
             v.push_back(chars_array);
             chars_array = strtok(NULL, "|");
         }
+        return chars_array;
     }
 
 private:
