@@ -87,7 +87,8 @@ void UAVMobility::setTargetPosition() {
         }
 
     } else {
-        if(tasksVector[uav.getID()].size() != itera[uav.getID()] && tasksVector[uav.getID()].size() > 0){ //if there are tasks not performed
+        //if there are tasks not performed
+        if(tasksVector[uav.getID()].size() != itera[uav.getID()] && tasksVector[uav.getID()].size() > 0){
             int task = itera[uav.getID()];
             //finalizando
             if(tasksVector[uav.getID()][task].getStatus() == 2){
