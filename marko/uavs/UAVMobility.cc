@@ -324,8 +324,6 @@ Coord UAVMobility::flyAround(int j){
             msg.setSource(uav.getID());
             tasksVector[uav.getID()][itera[uav.getID()]].setWaypoints(waypoints[uav.getID()]+1);
             msg.setTask(tasksVector[uav.getID()][itera[uav.getID()]]);
-            //targetPosition = getPosit(10, 5, 10);
-            //cout << "GASTOU!" << endl;
             msg.setCoord(this->castCoordToCoordinate(c));
             uavs[uav.getID()].dispatchTaskMessage(msg);
         }
@@ -340,7 +338,7 @@ Coord UAVMobility::flyAround(int j){
             ativo[uav.getID()] = false;
         }
 
-        //Próxima coordenada
+        //Next Coordinate
         c = this->castCoordinateToCoord(tasksVector[uav.getID()][j].getTarget());
 
     }
@@ -351,7 +349,7 @@ Coord UAVMobility::flyAround(int j){
 Coord UAVMobility::flyAroundSquare(int j){
     Coord c;
     if(waypoints[uav.getID()] == 0 || waypoints[uav.getID()] == 4){
-        //Finalizando task
+        //Finishing task
         if(waypoints[uav.getID()] == 4){
             tasksVector[uav.getID()][j].setStatus(2);
             if(uav.getID() == 1){
