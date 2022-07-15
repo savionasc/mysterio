@@ -2,23 +2,21 @@
 #define MYSTERIO_OMNET_EXCOMM1_COMMUNICATION_UAVCOMMUNICATIONSOCKET_H_
 #include <thread>
 #include <iostream>
-#include <queue>
 #include <string>
 #include <sys/socket.h>
 #include <netdb.h>
 #include <arpa/inet.h>
 #include <netinet/in.h>
 
-#include "../../osborn/communication/MysCommunication.h"
-#include "../../osborn/mission/MysTask.h"
-#include "../../src/communication/Message.h"
-#include "../../src/communication/StatusMessage.h"
-#include "../../src/communication/TaskMessage.h"
-#include "../../src/communication/UAVCommunication.h"
-#include "../../src/utils/Utils.h"
+#include "../../../src/communication/Message.h"
+#include "../../../src/communication/StatusMessage.h"
+#include "../../../src/communication/TaskMessage.h"
+#include "../../../src/communication/UAVCommunication.h"
 #include "inet/common/geometry/common/Coord.h"
 #include "inet/power/base/EpEnergyStorageBase.h"
 #include "inet/power/storage/SimpleEpEnergyStorage.h"
+#include "../../mission/GoTo.h"
+#include "../MysCommunication.h"
 
 using namespace inet;
 using namespace std;
@@ -31,7 +29,7 @@ extern int waypoints[NUMUAVS];
 extern std::vector<Task> tasksVector[NUMUAVS]; //Task
 extern bool ativo[NUMUAVS];
 extern int itera[NUMUAVS];
-extern std::queue<TaskMessage> msgs;
+extern int lowbattery[NUMUAVS];
 
 namespace mysterio {
 

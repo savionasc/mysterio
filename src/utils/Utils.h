@@ -1,1 +1,1 @@
-#define NUMUAVS 8
+#define NUMUAVS 5

@@ -33,9 +33,9 @@ public:
         STRUCTSTATUS = 11
     };
 
-    char* getMsg() { return msg; }
+    virtual char* getMsg() { return msg; }
 
-    void setMsg(char* msg) { strcpy(this->msg, msg); }
+    virtual void setMsg(char* msg) { strcpy(this->msg, msg); }
 
     short int getCode() const { return code; }
 

@@ -5,7 +5,7 @@
 #include <iostream>
 #include <queue>
 
-#include "../communication/UAVMysCommunication.h"
+#include "../communication/uav/UAVMysCommunication.h"
 #include "../../src/status/UAVStatus.h"
 
 using namespace omnetpp;
@@ -56,7 +56,7 @@ void ModuloComunicacao::handleMessage(cMessage *msg){
                 sheepAlert->setOrigem(selfID);
                 send(sheepAlert, "out", 0);
             }else{ //Others UAVs
-                UAVMessage *uavMSG = new UAVMessage("ToU", SUBTASK_HIGH_PRIORITY);
+                UAVMessage *uavMSG = new UAVMessage("CommandToYou", SUBTASK_HIGH_PRIORITY);
                 uavMSG->setOrigem(selfID);
                 uavMSG->setDestino(tm.getDestination());
                 uavMSG->setTask(tm.getTask());

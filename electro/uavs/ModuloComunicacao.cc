@@ -4,7 +4,7 @@
 #include "UAVMobility.h"
 #include <iostream>
 
-#include "../communication/UAVMysCommunication.h"
+#include "../communication/uav/UAVMysCommunication.h"
 #include "../../src/status/UAVStatus.h"
 
 using namespace omnetpp;

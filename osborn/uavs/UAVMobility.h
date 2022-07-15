@@ -25,6 +25,9 @@
 #include "inet/power/storage/SimpleEpEnergyStorage.h"
 #include "../../src/utils/Coordinate.h"
 #include "../../src/utils/UAV.h"
+#include "../../osborn/uavs/UAVMessage_m.h"
+#include "../../src/communication/ModuleMessage.h"
+
 
 namespace inet {
 
@@ -53,6 +56,24 @@ class INET_API UAVMobility : public LineSegmentsMobilityBase
     /** @brief Overridden from LineSegmentsMobilityBase.*/
     virtual void setTargetPosition() override;
 
+    /** @brief Overridden from LineSegmentsMobilityBase.*/
+    virtual void move() override;
+
+
+    /*A PARTIR DAQUI COMEÇAM AS MODIFICAÇÕES FEITAS POR SÁVIO*/
+    void rescueDataAndStoreVariables();
+
+    void executeTask(int j);
+    Coord splittedGoTo(int j);
+    void ativarUAV(int idUAV);
+    void inativarUAV(int idUAV);
+    void stop();
+    void addEscapeCoordinate(Coordinate coord);
+    void verificarMensagens(std::vector<UAV> *listaUAVs);
+    void sendMessageToModule(ModuleMessage mm);
+
+    J pegarBateria(int idUAV);
+
     Coord castCoordinateToCoord(Coordinate co){
         Coord coor(co.getX(), co.getY(), co.getZ());
         return coor;
@@ -63,21 +84,17 @@ class INET_API UAVMobility : public LineSegmentsMobilityBase
         return coor;
     }
 
-    /** @brief Overridden from LineSegmentsMobilityBase.*/
-    virtual void move() override;
+    Coord assignCoordinate(Coord co){
+        Coord c;
+        c.setX((co.getX() < 0)? 0 : co.getX());
+        c.setY((co.getY() < 0)? 0 : co.getY());
+        c.setZ((co.getZ() < 0)? 0 : co.getZ());
+        return c;
+    }
 
-    void rescueDataAndStoreVariables();
 
-    void executeTask(int j);
-    Coord splittedGoTo(int j);
-    void ativarUAV(int idUAV);
-    void inativarUAV(int idUAV);
-    void stop();
-
-    J pegarBateria(int idUAV);
 
     UAV uav;
-    bool continuoustask = false;
     int UAVRole = ROLE_DISABLED;
 
     //0 para uav desativado
@@ -85,9 +102,14 @@ class INET_API UAVMobility : public LineSegmentsMobilityBase
     //2 para uav subordinado
     //3 para uav leader
 
+    //campo
+    int height = 20;
+    int radius = 50;
   public:
+    const int MODULE_ID = 2;
     UAVMobility();
     virtual double getMaxSpeed() const override;
+    Coord posicaoAtual();
 
     enum ROLES{
         ROLE_DISABLED = 0,
@@ -98,6 +120,7 @@ class INET_API UAVMobility : public LineSegmentsMobilityBase
 private:
     void initStoppedUAVs();
     void initAuxiliarTasksVariables();
+    void testeConsensus();
 };
 
 }

@@ -3,7 +3,7 @@
 #include <netinet/in.h>
 #include <string.h>
 
-#include "../../osborn/communication/MessageSender.cc"
+#include "MessageSender.cc"
 #include "../../src/communication/Message.h"
 #include "../../src/communication/StatusMessage.h"
 #include "../../src/communication/TaskMessage.h"
@@ -96,7 +96,6 @@ public:
             recv(socket, (Message*)&msg, sizeof(msg), 0);
             cout << "[U" << msg.getDestination() << "] Task Finished, code message: " << msg.getCode() << endl;
         }
-
 
         return true;
     }

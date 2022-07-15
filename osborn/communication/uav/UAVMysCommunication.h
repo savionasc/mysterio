@@ -9,16 +9,17 @@
 #include <arpa/inet.h>
 #include <netinet/in.h>
 
-#include "../../src/communication/Message.h"
-#include "../../src/communication/StatusMessage.h"
-#include "../../src/communication/TaskMessage.h"
-#include "../../src/communication/UAVCommunication.h"
-#include "../../src/utils/Utils.h"
+#include "../MysCommunication.h"
+#include "../../mission/MysTask.h"
+#include "../../../src/communication/Message.h"
+#include "../../../src/communication/ModuleMessage.h"
+#include "../../../src/communication/StatusMessage.h"
+#include "../../../src/communication/TaskMessage.h"
+#include "../../../src/communication/UAVCommunication.h"
+#include "../../../src/utils/Utils.h"
 #include "inet/common/geometry/common/Coord.h"
 #include "inet/power/base/EpEnergyStorageBase.h"
 #include "inet/power/storage/SimpleEpEnergyStorage.h"
-#include "../mission/MysTask.h"
-#include "MysCommunication.h"
 
 using namespace inet;
 using namespace std;
@@ -31,8 +32,7 @@ extern int waypoints[NUMUAVS];
 extern std::vector<Task> tasksVector[NUMUAVS]; //Task
 extern bool ativo[NUMUAVS];
 extern int itera[NUMUAVS];
-extern int lowbattery[NUMUAVS];
-extern std::queue<TaskMessage> msgs;
+extern std::vector<ModuleMessage> msgs[NUMUAVS];
 
 namespace mysterio {
 
