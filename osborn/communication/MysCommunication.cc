@@ -8,7 +8,6 @@
 #include "../../src/communication/TaskMessage.h"
 
 using namespace std;
-//Enviar mensagens Unicast, Broadcast e Multicast
 
 int MysCommunication::configureSocketServer(int portServer){
     //return Communication::configureSocketServer(port);
@@ -61,10 +60,6 @@ void MysCommunication::sendTaskMessageToUAV(int idSocket, TaskMessage tmsg){
     enviar.detach();
 }
 
-//status->subscribe(newUAV);?
-/*void CommunicationSocket::listenSocket(){
-    Communication::listenSocket();
-}*/
 
 int* MysCommunication::getActiveConnections(){
     //Communication::conexoes; //conexoes;
@@ -75,8 +70,6 @@ void MysCommunication::ReceiveMessageFromUAV(Communicable *source, Communicable 
     getActiveConnections();
     if(msg.getCode() == 11)
         dest->onMessageReceive(msg);
-
-    //SpecificClass* s = dynamic_cast<SpecificClass*>(dest);
 }
 
 thread MysCommunication::listenForNewConnections(){

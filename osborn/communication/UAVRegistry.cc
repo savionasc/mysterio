@@ -15,10 +15,10 @@ using namespace std;
 class UAVRegistry{
 public:
     void operator()(int param){
-        while(conectarNovoUAV(param)){ }
+        while(connectNewUAV(param)){ }
     }
 
-    bool conectarNovoUAV(int serverSocket){
+    bool connectNewUAV(int serverSocket){
         sockaddr_in newSockAddr;
         socklen_t newSockAddrSistdze = sizeof(newSockAddr);
         int idSocket = accept(serverSocket, (sockaddr *)&newSockAddr, &newSockAddrSistdze);
