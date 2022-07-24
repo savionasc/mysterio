@@ -23,10 +23,8 @@ void MysStatusManager::onMessageReceive(Message msg){
     switch (mMSG->getCode()) {
         case StatusManager::LOCATION_STATUS_REQUEST:{
             Coordinate cc = this->getUAVLocation(1);
-            cout << "Posicao Geografica recuperada pelo banco." << endl;
+            cout << "Position recovered by database." << endl;
             cout << "X: " << cc.getX() << " Y: " << cc.getY() << " Z: " << cc.getZ() << endl;
-
-            //Aqui eu devo enviar para alguém...
             break;
         }
         case StatusManager::LOCATION_STATUS_RESPONSE:{
@@ -35,7 +33,7 @@ void MysStatusManager::onMessageReceive(Message msg){
             break;
         }
         case StatusManager::VELOCITY_STATUS_REQUEST:{
-            cout << "Velocidade recuperada pelo banco: " << this->getUAVVelocity(mMSG->getSource()) << endl;
+            cout << "Velocity recovered by database: " << this->getUAVVelocity(mMSG->getSource()) << endl;
             break;
         }
         case StatusManager::VELOCITY_STATUS_RESPONSE:{
@@ -43,7 +41,7 @@ void MysStatusManager::onMessageReceive(Message msg){
             break;
         }
         case StatusManager::BATTERY_STATUS_REQUEST:{
-            cout << "Bateria recuperada pelo banco: " << this->getBattery(mMSG->getSource()) << endl;
+            cout << "Battery recovered by database: " << this->getBattery(mMSG->getSource()) << endl;
             break;
         }
         case StatusManager::BATTERY_STATUS_RESPONSE:{
@@ -51,7 +49,7 @@ void MysStatusManager::onMessageReceive(Message msg){
             break;
         }
         case StatusManager::FLIGHTTIME_STATUS_REQUEST:{
-            cout << "Tempo de voo recuperado pelo banco: " << this->getFlightTime(mMSG->getSource()) << endl;
+            cout << "Flight time recovered by database: " << this->getFlightTime(mMSG->getSource()) << endl;
             break;
         }
         case StatusManager::FLIGHTTIME_STATUS_RESPONSE:{
@@ -68,10 +66,8 @@ void MysStatusManager::onDroneStatusMessageReceive(StatusMessage msg){
     switch (msg.getCode()) {
         case StatusManager::LOCATION_STATUS_REQUEST:{
             Coordinate cc = this->getUAVLocation(1);
-            cout << "Posicao Geografica recuperada pelo banco." << endl;
+            cout << "Position recovered by database." << endl;
             cout << "X: " << cc.getX() << " Y: " << cc.getY() << " Z: " << cc.getZ() << endl;
-
-            //Aqui eu devo enviar para alguém...
             break;
         }
         case StatusManager::LOCATION_STATUS_RESPONSE:{
@@ -80,7 +76,7 @@ void MysStatusManager::onDroneStatusMessageReceive(StatusMessage msg){
             break;
         }
         case StatusManager::VELOCITY_STATUS_REQUEST:{
-            cout << "Velocidade recuperada pelo banco: " << this->getUAVVelocity(msg.getSource()) << endl;
+            cout << "Velocity recovered by database: " << this->getUAVVelocity(msg.getSource()) << endl;
             break;
         }
         case StatusManager::VELOCITY_STATUS_RESPONSE:{
@@ -88,7 +84,7 @@ void MysStatusManager::onDroneStatusMessageReceive(StatusMessage msg){
             break;
         }
         case StatusManager::BATTERY_STATUS_REQUEST:{
-            cout << "Bateria recuperada pelo banco: " << this->getBattery(msg.getSource()) << endl;
+            cout << "Battery recovered by database: " << this->getBattery(msg.getSource()) << endl;
             break;
         }
         case StatusManager::BATTERY_STATUS_RESPONSE:{
@@ -96,7 +92,7 @@ void MysStatusManager::onDroneStatusMessageReceive(StatusMessage msg){
             break;
         }
         case StatusManager::FLIGHTTIME_STATUS_REQUEST:{
-            cout << "Tempo de voo recuperado pelo banco: " << this->getFlightTime(msg.getSource()) << endl;
+            cout << "Flight time recovered by database: " << this->getFlightTime(msg.getSource()) << endl;
             break;
         }
         case StatusManager::FLIGHTTIME_STATUS_RESPONSE:{
@@ -112,9 +108,7 @@ int MysStatusManager::CountActiveUAVs(){
     return numeroDeUAVs;
 }
 
-//Getters and updaters
 Coordinate MysStatusManager::getUAVLocation(int idUAV){
-    //Request?
     UAV s = pegarUAV(idUAV);
     Coordinate c(s.getStatus().getLocationX(), s.getStatus().getLocationY(), s.getStatus().getLocationZ());
 
