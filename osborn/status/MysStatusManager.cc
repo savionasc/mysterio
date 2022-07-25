@@ -1,6 +1,4 @@
-#include "../communication/MysCommunication.h"
 #include "../../osborn/status/MysStatusManager.h"
-
 #include "../../osborn/communication/MysCommunication.h"
 
 using namespace std;
@@ -105,92 +103,84 @@ void MysStatusManager::onDroneStatusMessageReceive(StatusMessage msg){
 }
 
 int MysStatusManager::CountActiveUAVs(){
-    return numeroDeUAVs;
+    return numberOfUAVs;
 }
 
 Coordinate MysStatusManager::getUAVLocation(int idUAV){
-    UAV s = pegarUAV(idUAV);
+    UAV s = getUAV(idUAV);
     Coordinate c(s.getStatus().getLocationX(), s.getStatus().getLocationY(), s.getStatus().getLocationZ());
 
-    cout << "Pegando localização do Banco de Dados!" << endl;
+    cout << "Position recovered by database!" << endl;
 
     this->r.requestUAVLocation(idUAV);
     return c;
 }
 
-void MysStatusManager::updateUAVLocation(Coordinate coord, int idUAV){ //saveUAVCurrentPosition?
-    //Não usar aqui Essa responsabilidade é para que tipo de classe? /ok
-    UAV s = pegarUAV(idUAV);
+void MysStatusManager::updateUAVLocation(Coordinate coord, int idUAV){
+    UAV s = getUAV(idUAV);
     UAVStatus us = s.getStatus();
     us.setLocation(coord.getX(), coord.getY(), coord.getZ());
     s.setStatus(us);
-    //Substituir
     this->uavs[idUAV] = s;
     this->r.saveUAVLocation(1, coord);
 }
 
 double MysStatusManager::getUAVVelocity(int idUAV){
-    UAV s = pegarUAV(idUAV);
+    UAV s = getUAV(idUAV);
     this->r.getVelocity(idUAV);
     return s.getStatus().getVelocity();
 }
 
 void MysStatusManager::updateUAVVelocity(double velocity, int idUAV){
-    UAV s = pegarUAV(idUAV);
+    UAV s = getUAV(idUAV);
     UAVStatus us = s.getStatus();
     us.setVelocity(velocity);
     s.setStatus(us);
-    //Substituir
     this->uavs[idUAV] = s;
     this->r.setVelocity(idUAV, velocity);
 }
 
 int MysStatusManager::getFlightTime(int idUAV){
-    UAV s = pegarUAV(idUAV);
+    UAV s = getUAV(idUAV);
     this->r.getFlightTime(idUAV);
     return s.getStatus().getFlightTime();
 }
 
 void MysStatusManager::updateFlightTime(int time, int idUAV){
-    //Não usar aqui Essa responsabilidade é para que tipo de classe? /ok
-    UAV s = pegarUAV(idUAV);
+    UAV s = getUAV(idUAV);
     UAVStatus us = s.getStatus();
     us.setFlightTime(time);
     s.setStatus(us);
-    //Substituir
     this->uavs[idUAV] = s;
     this->r.setFlightTime(idUAV, time);
 }
 
 float MysStatusManager::getBattery(int idUAV){
-    UAV s = pegarUAV(idUAV);
+    UAV s = getUAV(idUAV);
     this->r.getBattery(idUAV);
     return s.getStatus().getBattery();
 }
 
 void MysStatusManager::updateBattery(float level, int idUAV){
-    //Não usar aqui Essa responsabilidade é para que tipo de classe? /ok
-    UAV s = pegarUAV(idUAV);
+    UAV s = getUAV(idUAV);
     UAVStatus us = s.getStatus();
     us.setBattery(level);
     s.setStatus(us);
-    //Substituir
     this->uavs[idUAV] = s;
     this->r.setBattery(1, level);
 }
 
 bool MysStatusManager::isAvailable(int idUAV){
-    UAV u = pegarUAV(idUAV);
+    UAV u = getUAV(idUAV);
     this->r.isAvailable(idUAV);
     return u.getStatus().isAvailable();
 }
 
 void MysStatusManager::updateAvailable(bool available, int idUAV){
-    UAV u = pegarUAV(idUAV);
+    UAV u = getUAV(idUAV);
     UAVStatus us = u.getStatus();
     us.setAvailable(available);
     u.setStatus(us);
-    //Substituir
     this->uavs[idUAV] = u;
     this->r.setAvailable(idUAV, available);
 }
