@@ -14,7 +14,7 @@ public:
     }
 
     void operator()(int param, TaskMessage param2){
-        enviarTarefa(param, param2);
+        sendTask(param, param2);
     }
 
     bool sendMessage(int idUAVSocket, Message message){
