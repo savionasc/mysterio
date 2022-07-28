@@ -42,7 +42,6 @@ public:
 
 protected:
     int idUAV;
-    //int idSocket;
 
     Competence competence;
 
@@ -51,7 +50,6 @@ protected:
     HardwareInformation hardwareInformation;
 
     NetworkConfigurations networkConfigurations;
-    //status de disponibilidade
 };
 
 #endif
