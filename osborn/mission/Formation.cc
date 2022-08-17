@@ -5,7 +5,20 @@ Formation::Formation(int numberOfUAVs) {
     this->numberOfUAVs = numberOfUAVs;
 }
 
+Formation::Formation(int numberOfUAVs, int leader) {
+    this->numberOfUAVs = numberOfUAVs;
+    this->leader = leader;
+}
+
 Formation::~Formation() { }
+
+int Formation::getLeader() {
+    return leader;
+}
+
+void Formation::setLeader(int leader) {
+    this->leader = leader;
+}
 
 int Formation::getNumberOfUAVs() {
     return numberOfUAVs;

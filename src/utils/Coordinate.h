@@ -1,6 +1,8 @@
 #ifndef MYSTERIO_SRC_UTILS_COORDINATE_H_
 #define MYSTERIO_SRC_UTILS_COORDINATE_H_
 
+#include <math.h>
+
 class Coordinate {
 public:
     Coordinate(){ }

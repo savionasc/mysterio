@@ -1,8 +1,8 @@
 #ifndef MYSTERIO_OMNET_COMMUNICATION_UAVMESSAGERECEIVE_H_
 #define MYSTERIO_OMNET_COMMUNICATION_UAVMESSAGERECEIVE_H_
-#include "../../osborn/communication/UAVMysCommunication.h"
-#include "../../osborn/uavs/UAVMobility.h"
-#include "../../src/utils/UAV.h"
+#include "UAVMysCommunication.h"
+#include "../../uavs/UAVMobility.h"
+#include "../../../src/utils/UAV.h"
 
 using namespace std;
 
@@ -19,6 +19,16 @@ class UAVMessageReceive {
             this->uav.setNetworkConfigurations(ntc);
             //this->uav.setIdSocket(param3);
             while(esperarMensagem(param)){ }
+        }
+
+        Coord castCoordinateToCoord(Coordinate co){
+            Coord coor(co.getX(), co.getY(), co.getZ());
+            return coor;
+        }
+
+        Coordinate castCoordToCoordinate(Coord co){
+            Coordinate coor(co.getX(), co.getY(), co.getZ());
+            return coor;
         }
 
         bool esperarMensagem(int socket){
@@ -135,13 +145,34 @@ class UAVMessageReceive {
 
                 //if ao receber mensagem destinada a outros UAVs
                 if(tmsg.getDestination() != this->uav.getID()){
-                    msgs.push(tmsg);
-                    cout << "For other UAV";
+                    ModuleMessage mMsg(tmsg.getMsg(), tmsg.getCode());
+                    mMsg.setDestination(tmsg.getDestination());
+                    mMsg.setSource(tmsg.getSource());
+                    mMsg.setTask(tmsg.getTask());
+                    //falta o setmodule
+                    //mMsg.setModule(1);
+                    msgs[this->uav.getID()].push_back(mMsg);
+                    cout << "For other UAV" << endl;
                 }else{
-                    cout << "For this UAV";
+                    cout << "For this UAV" << endl;
                     //msg pra esse UAV
                     if(!strcmp(tmsg.getMsg(), "SUBSTITUIR")){
                         ativo[uav.getID()] = true;
+                    }
+                    if(strcmp(tmsg.getMsg(), "grp2down") == 0 
+                        || strcmp(tmsg.getMsg(), "grp2mid") == 0
+                        || strcmp(tmsg.getMsg(), "grp2up") == 0){
+                        ModuleMessage mMsg(tmsg.getMsg(), tmsg.getCode());
+                        mMsg.setDestination(tmsg.getDestination());
+                        mMsg.setSource(tmsg.getSource());
+                        Task t = tmsg.getTask();
+                        //t.setLeader(uav.getID());
+                        Coord diference = castCoordinateToCoord(t.getTarget());
+                        diference = diference - position[uav.getID()];
+                        t.setTarget(castCoordToCoordinate(diference));
+                        mMsg.setTask(t);
+                        mMsg.setModule(1);
+                        msgs[this->uav.getID()].push_back(mMsg);
                     }
                     Task x = tmsg.getTask();
                     //idUAV;

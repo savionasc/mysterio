@@ -7,8 +7,11 @@ class Formation {
 public:
     Formation();
     Formation(int numberOfUAVs);
+    Formation(int numberOfUAVs, int leader);
     virtual ~Formation();
 
+    int getLeader();
+    void setLeader(int leader);
     int getNumberOfUAVs();
     void setNumberOfUAVs(int numberOfUAVs);
     void addPosition(Coordinate position);
@@ -16,6 +19,7 @@ public:
     std::vector<Coordinate> getAllPositions();
 
 private:
+    int leader = -1;
     int numberOfUAVs;
     std::vector<Coordinate> positions;
 };

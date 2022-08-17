@@ -21,12 +21,14 @@ public:
         int codeMessage = Message::MESSAGE;
         send(idUAVSocket, (int*)&codeMessage, sizeof(codeMessage), 0);
         send(idUAVSocket, (Message*)&message, sizeof(message), 0);
+        return true;
     }
 
     bool enviarTarefa(int idUAVSocket, TaskMessage message){
         int codeMessage = Message::TASK_MESSAGE;
         send(idUAVSocket, (int*)&codeMessage, sizeof(codeMessage), 0);
         send(idUAVSocket, (TaskMessage*)&message, sizeof(message), 0);
+        return true;
     }
 };
 

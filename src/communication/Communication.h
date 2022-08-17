@@ -20,7 +20,7 @@ public:
 
     virtual int configureConnection(int connection) = 0;
 
-    virtual int configureSocketServer(int portServer){ }
+    virtual int configureSocketServer(int portServer){ return true; }
 
     virtual void sendMessageToUAV(int idUAV, Message msg) = 0;
 
