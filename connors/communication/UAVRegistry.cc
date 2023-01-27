@@ -12,6 +12,7 @@
 
 using namespace std;
 
+/* This class is responsible for listening UAVs trying to connect to the Mysterio Framework */
 class UAVRegistry{
 public:
     void operator()(int param){
