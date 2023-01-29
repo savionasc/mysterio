@@ -14,7 +14,6 @@ public:
         this->idSocket = idSocket;
     }
 
-private:
     int idSocket;
 };
 
