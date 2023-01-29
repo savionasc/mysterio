@@ -30,7 +30,7 @@ public:
             cout << "<SM>message: " << msg.getMsg() << endl;
             if(strcmp(msg.getMsg(), "velocity") == 0){
                 MysStatusManager* status = MysStatusManager::GetInstance();
-                cout << "Number of UAVs on singleton: " << status->getNumberOfUAVs() << endl;
+                cout << "Number of UAVs on singleton: " << status->numeroUAVs() << endl;
                 cout << "MensagemStatus: " << msg.getCode() << " - " << msg.getStatus().getVelocity() << " - " << msg.getMsg() << endl;
             }
 
@@ -83,7 +83,7 @@ public:
                 msg.setTask(t.getTaskByIndex(uav, t.getNumTasks(uav)-1));
                 MessageSender msgSender;
                 UAV uavLeader = ms->getUAV(msg.getSource());
-                msgSender.sendTask(uavLeader.getNetworkConfigurations().getIdSocket(), msg);
+                msgSender.enviarTarefa(uavLeader.getNetworkConfigurations().getIdSocket(), msg);
             }
         }else if(typeMSG == Message::TASK_COMPLETED_MESSAGE){
             Message msg;

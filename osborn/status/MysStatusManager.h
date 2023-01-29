@@ -42,16 +42,16 @@ public:
     void operator=(const MysStatusManager &) = delete;
 
 
-    int getNumberOfUAVs(){
-        return numberOfUAVs;
+    int numeroUAVs(){
+        return numeroDeUAVs;
     }
 
-    void setNumberOfUAVs(int number){
-        this->numberOfUAVs = number;
+    void setNumeroDeUAVs(int numero){
+        this->numeroDeUAVs = numero;
     }
 
     void addUAV(){
-        numberOfUAVs++;
+        numeroDeUAVs++;
     }
 
     void addUAV(UAV u){
@@ -63,11 +63,11 @@ public:
     }
 
     UAV getUAV(int idUAV){
-        return this->accesshUAV(idUAV);
+        return this->pegarUAV(idUAV);
     }
 
     int getIDSocket(int idUAV){
-        return this->accesshUAV(idUAV).getNetworkConfigurations().getIdSocket();
+        return this->pegarUAV(idUAV).getNetworkConfigurations().getIdSocket();
     }
 
     void setUAV(UAV u){
@@ -75,18 +75,19 @@ public:
     }
 
 protected:
-    MysStatusManager(){ setNumberOfUAVs(2); r.disablePrints(); }
-    int numberOfUAVs;
+    MysStatusManager(){ setNumeroDeUAVs(2); r.disablePrints(); }
+    int numeroDeUAVs;
 
 private:
-    int operatingTime;
+    //do sistema ou do UAV
+    int tempoDeFuncionamento;
 
     //singleton
     static MysStatusManager * mpinstance_;
     static std::mutex mutex_;
     static std::map<int,UAV> uavs;
 
-    UAV accesshUAV(int idUAV){
+    UAV pegarUAV(int idUAV){
         UAV u;
         u.setID(-1);
         for (std::map<int, UAV>::iterator it=uavs.begin(); it!=uavs.end(); ++it)
@@ -95,6 +96,7 @@ private:
         return u;
     }
 
+    //Deixar de solicitar diretamente pro banco para pedir pro UAV
     RepositoryBase r;
 };
 
