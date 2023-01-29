@@ -6,7 +6,7 @@
 
 #include "../../src/communication/Message.h"
 #include "../../src/status/UAVStatus.h"
-#include "../communication/UAV/UAVMysCommunication.h"
+#include "../communication/uav/UAVDispatcher.h"
 
 using namespace omnetpp;
 using namespace inet;
@@ -15,7 +15,7 @@ Define_Module(ModuloComunicacao);
 
 //shared variables
 using namespace mysterio;
-extern UAVMysCommunication uavs[NUMUAVS];
+extern UAVDispatcher uavs[NUMUAVS];
 extern Coord position[NUMUAVS];
 extern double velocidade[NUMUAVS];
 extern float bateria[NUMUAVS];

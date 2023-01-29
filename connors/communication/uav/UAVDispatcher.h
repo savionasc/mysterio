@@ -32,7 +32,7 @@ extern int itera[NUMUAVS];
 
 namespace mysterio {
 
-class UAVMysCommunication : public UAVCommunication {
+class UAVDispatcher: public UAVCommunication {
     friend class SocketMessageReceive;
 public:
     //UAVCommunication

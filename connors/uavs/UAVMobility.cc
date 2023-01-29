@@ -2,7 +2,7 @@
 #include <iostream>
 
 #include "../../src/mission/DependentTask.h"
-#include "../communication/UAV/UAVMysCommunication.h"
+#include "../communication/uav/UAVDispatcher.h"
 #include "../scenarios/MysterioCommander.h"
 
 using namespace omnetpp;
@@ -17,7 +17,7 @@ double tempoVoo[NUMUAVS];
 bool ativo[NUMUAVS];
 int itera[NUMUAVS];
 std::vector<Task> tasksVector[NUMUAVS];
-UAVMysCommunication uavs[NUMUAVS];
+UAVDispatcher uavs[NUMUAVS];
 int step = 0; //this variable forces terminate current "task" of uav
 //1 - Tarefa: decolar (idUAV, altura)
 //2 - Tarefa: goto (idUAV, positionTarget)
@@ -70,7 +70,7 @@ void UAVMobility::setTargetPosition() {
                 NetworkConfigurations ntc;
                 ntc.setIdSocket(uavs[uav.getID()].getSocketCode());
                 this->uav.setNetworkConfigurations(ntc);
-                UAVMysCommunication u;
+                UAVDispatcher u;
                 u.setSocketCode(this->uav.getNetworkConfigurations().getIdSocket());
                 u.setSelfID(this->uav.getID());
                 TaskMessage msg;
@@ -86,7 +86,7 @@ void UAVMobility::setTargetPosition() {
                 executeTask(task);
             }
         }else{
-            UAVMysCommunication u;
+            UAVDispatcher u;
             u.setSocketCode(this->uav.getNetworkConfigurations().getIdSocket());
             u.setSelfID(this->uav.getID());
             Message msg;
