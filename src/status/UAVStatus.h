@@ -72,13 +72,13 @@ public:
     }
 
 private:
-    double locationX;
-    double locationY;
-    double locationZ;
-    double velocity;
-    float battery;
-    int flightTime;
-    bool available;
+    double locationX = 0.0;
+    double locationY = 0.0;
+    double locationZ = 0.0;
+    double velocity = 0.0;
+    float battery = 0;
+    int flightTime = 0;
+    bool available = false;
 };
 
 #endif

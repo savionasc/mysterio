@@ -3,7 +3,7 @@
 #include "../status/UAVStatus.h"
 #include "Message.h"
 
-class StatusMessage : public Message{
+class StatusMessage : public Message {
 public:
     StatusMessage(){}
 
