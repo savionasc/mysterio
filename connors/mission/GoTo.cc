@@ -11,8 +11,8 @@ GoTo::GoTo(int idUAV, Coordinate targetPosition) {
 GoTo::~GoTo() { }
 
 bool GoTo::isComplete(Coordinate currentPosition){
-    //if(currentPosition == this->target)
-    if(currentPosition.getX() == this->target.getX())
+    if(currentPosition.getX() == this->target.getX()
+        && currentPosition.getX() == this->target.getY())
         return true;
     return false;
 }
