@@ -70,6 +70,17 @@ class INET_API UAVMobility : public LineSegmentsMobilityBase
     void stop();
 
     J pegarBateria(int idUAV);
+
+    Coord castCoordinateToCoord(Coordinate co){
+        Coord coor(co.getX(), co.getY(), co.getZ());
+        return coor;
+    }
+
+    Coordinate castCoordToCoordinate(Coord co){
+        Coordinate coor(co.getX(), co.getY(), co.getZ());
+        return coor;
+    }
+
   public:
     UAVMobility();
     virtual double getMaxSpeed() const override;

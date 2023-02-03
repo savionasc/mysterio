@@ -39,13 +39,13 @@ class UAVDispatcher: public UAVCommunication {
 public:
     //UAVCommunication
     UAVDispatcher(){}
-    UAVDispatcher(std::vector<Task> *uavTasks){
-        this->uavTasks = uavTasks;
+    UAVDispatcher(UAV *u, std::vector<Task> *uavTasks){
+        this->setUAV(u);
+        this->setUAVTaskList(uavTasks);
     }
 
     void setUAVTaskList(std::vector<Task> *uavTasks){
         this->uavTasks = uavTasks;
-        std::cout << "Tarefas setadas!" << std::endl;
     }
 
     int getCabrito(){
@@ -93,8 +93,12 @@ public:
     void setConnected();
     void setDisconnected();
     void setSocketCode(int socketCode);
-    int  getSelfID();
-    void setSelfID(int selfID);
+    //int  getSelfID();
+    //void setSelfID(int selfID);
+    UAV* getUAV();
+    void setUAV(UAV *uav);
+
+
     int identificacao = 4;
 
 protected:
@@ -102,7 +106,8 @@ protected:
 private:
     bool connected = false;
     int socketCode = -1;
-    int selfID = -1;
+    UAV *uav;
+    //int selfID = -1;
     int *cabrito;
     std::vector<Task> *uavTasks;
 };

@@ -16,16 +16,13 @@ float bateria[NUMUAVS];
 double tempoVoo[NUMUAVS];
 bool ativo[NUMUAVS];
 int itera[NUMUAVS];
-//std::vector<Task> tasksVector[NUMUAVS];
-//UAVDispatcher uavs[NUMUAVS];
+
 int step = 0; //this variable forces terminate current "task" of uav
 //1 - Tarefa: decolar (idUAV, altura)
 //2 - Tarefa: goto (idUAV, positionTarget)
 //3 - Tarefa: dar uma volta sobre (idUAV, positionTarget, distanciaSobre)
 //4 - Tarefa: retornar a base (idUAV, basePosition)
 //5 - Tarefa: pousar (idUAV, chao)
-int UAVLeader = -1;
-int UAVDestino = -1;
 int waypoints[NUMUAVS];
 
 using namespace power;
@@ -47,7 +44,7 @@ void UAVMobility::initialize(int stage) {
     cout << "SAVIOOOOO" << x << endl;*/
     if(stage == 0){
         uav.setID(getParentModule()->getIndex());
-        connUAV.setSelfID(uav.getID());
+        connUAV.setUAV(&uav);
         connUAV.setCabrito(&cabron);
         connUAV.identificacao = 15;
         connUAV.setUAVTaskList(&tasks);
@@ -118,10 +115,10 @@ void UAVMobility::setTargetPosition() {
                 this->uav.setNetworkConfigurations(ntc);
                 UAVDispatcher u;
                 u.setSocketCode(this->uav.getNetworkConfigurations().getIdSocket());
-                u.setSelfID(this->uav.getID());
+                u.setUAV(&uav);
                 TaskMessage msg;
                 msg.setCode(273);
-                msg.setSource(u.getSelfID());
+                msg.setSource(u.getUAV()->getID());
                 // VELHA
                 //msg.setTask(tasksVector[uav.getID()][task]);
                 msg.setTask(tasks[task]);
@@ -136,15 +133,15 @@ void UAVMobility::setTargetPosition() {
         }else{
             UAVDispatcher u;
             u.setSocketCode(this->uav.getNetworkConfigurations().getIdSocket());
-            u.setSelfID(this->uav.getID());
+            u.setUAV(&uav);
             Message msg;
             msg.setCode(123);
             char m[] = "No scheduled tasks!";
             msg.setMsg(m);
-            msg.setSource(u.getSelfID());
+            msg.setSource(u.getUAV()->getID());
             u.dispatchMessage(msg);
             targetPosition = getRandomPosition();
-            if(u.getSelfID() == 1){
+            if(u.getUAV()->getID() == 1){
                 u.disconnectBase();
             }
         }
@@ -220,10 +217,13 @@ J UAVMobility::pegarBateria(int idUAV){
 }
 
 void UAVMobility::rescueDataAndStoreVariables(){
-    position[uav.getID()] = lastPosition;
+    UAVStatus status;
+    status.setLocation(this->castCoordToCoordinate(lastPosition));
+    //position[uav.getID()] = lastPosition;
     velocidade[uav.getID()] = speedParameter->doubleValue();
     bateria[uav.getID()] = std::stof(pegarBateria(uav.getID()).str());
     tempoVoo[uav.getID()] = simTime().dbl();
+    this->uav.setStatus(status);
 }
 
 Coord UAVMobility::flyAround(int j){

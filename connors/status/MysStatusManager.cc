@@ -124,7 +124,6 @@ Coordinate MysStatusManager::getUAVLocation(int idUAV){
     return c;
 }
 
-//saveUAVCurrentPosition?
 void MysStatusManager::updateUAVLocation(Coordinate coord, int idUAV){
     //Não usar aqui Essa responsabilidade é para que tipo de classe? /ok
     UAV u = pegarUAV(idUAV);

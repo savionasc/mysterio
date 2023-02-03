@@ -59,7 +59,7 @@ void UAVDispatcher::connectBase(){
                 cout << "LISTONA SIZE: " << this->uavTasks->size() << endl;
             }
 
-            thread receber(UAVMessageReceive(), this->socketCode, this->selfID, this->socketCode, identificacao, this->uavTasks);//, this->identificacao);
+            thread receber(UAVMessageReceive(), this->socketCode, this->uav, this->socketCode, identificacao, this->uavTasks);//, this->identificacao);
             receber.detach();
         }
     }
@@ -85,12 +85,12 @@ void UAVDispatcher::setSocketCode(int socketCode) {
     this->socketCode = socketCode;
 }
 
-int UAVDispatcher::getSelfID(){
-    return this->selfID;
+UAV* UAVDispatcher::getUAV(){
+    return this->uav;
 }
 
-void UAVDispatcher::setSelfID(int selfID){
-    this->selfID = selfID;
+void UAVDispatcher::setUAV(UAV *uav){
+    this->uav = uav;
 }
 
 void UAVDispatcher::disconnectBase(){
