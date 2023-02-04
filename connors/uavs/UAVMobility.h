@@ -84,12 +84,10 @@ class INET_API UAVMobility : public LineSegmentsMobilityBase
   public:
     UAVMobility();
     virtual double getMaxSpeed() const override;
-    mysterio::UAVDispatcher connUAV;
-    UAV uav;
 
-    int cabron = 3;
+    UAV uav;
+    mysterio::UAVDispatcher connUAV;
     std::vector<Task> tasks;
-    //ModuloComunicacao2* comunicacao;
 };
 
 }

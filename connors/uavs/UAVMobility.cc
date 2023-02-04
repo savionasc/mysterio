@@ -44,18 +44,9 @@ void UAVMobility::initialize(int stage) {
     if(stage == 0){
         uav.setID(getParentModule()->getIndex());
         connUAV.setUAV(&uav);
-        connUAV.setCabrito(&cabron);
-        connUAV.identificacao = 15;
         connUAV.setUAVTaskList(&tasks);
         cout << "UAV-"<< getParentModule()->getIndex() << "stage: " << stage << endl;
         connUAV.connectBase();
-        if(uav.getID() == 0){
-            cabron = 45;
-        }
-
-        if(uav.getID() == 1){
-            cabron = 13;
-        }
     }
 
     /*UAVStatus ss = getParentModule()->par("ombus").set;
