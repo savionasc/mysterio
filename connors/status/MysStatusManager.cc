@@ -111,7 +111,6 @@ int MysStatusManager::CountActiveUAVs(){
     return numeroDeUAVs;
 }
 
-//Request?
 Coordinate MysStatusManager::getUAVLocation(int idUAV){
     //Getters and updaters
     UAV u = pegarUAV(idUAV);

@@ -65,31 +65,18 @@ class UAVMessageReceive {
 
 
                 }else if(!strcmp(msg.getMsg(), "location")){
-                    //Mudar isso aqui e chamar o OnMessageReceve
                     std::cout << "[U" << this->uav->getID() << "] Sending status " << std::endl;
-                    //Coord coor = position[this->uav->getID()];
-                    Coordinate coor = this->uav->getStatus().getCoordinate();
+                    Coordinate coord = this->uav->getStatus().getCoordinate();
 
                     UAVDispatcher u;
                     u.setSocketCode(this->uav->getNetworkConfigurations().getIdSocket());
                     u.setUAV(uav);
-                    //u.setSelfID(this->uav->getID());
 
-                    //MUDAR AQUI???
                     StatusMessage m(msg.getMsg(), LOCATION_STATUS_RESPONSE, this->uav->getID(), -1);
                     m.setSource(u.getUAV()->getID());
                     UAVStatus d = m.getStatus();
-                    //d.setLocation(coor.x, coor.y, coor.z);
-                    d.setLocation(coor);
+                    d.setLocation(coord);
                     m.setStatus(d);
-
-                    //Nao usado mais
-                    char snd[1500];
-                    std::string txt = "MSG - Coordenates (" + to_string(coor.getX());
-                    txt += "," + to_string(coor.getY());
-                    txt += "," + to_string(coor.getZ()) + ")";
-                    strcpy(snd, txt.c_str());
-                    cout << "TXT: " << snd << endl;
 
                     cout << "MSG: " << m.getStatus().getLocationX() << "|" << m.getStatus().getLocationY() << "|" << m.getStatus().getLocationZ() << endl;
                     u.dispatchStatusMessage(m);

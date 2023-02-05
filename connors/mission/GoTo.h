@@ -8,7 +8,7 @@ public:
     GoTo(int idUAV, Coordinate currentPosition);
     virtual ~GoTo();
     bool isComplete();
-    bool isComplete(Coordinate current);
+    bool isComplete(Coordinate currentPosition);
     Coordinate getTask();
     void assignTask();
     void assignTask(UAV uav, Coordinate target);

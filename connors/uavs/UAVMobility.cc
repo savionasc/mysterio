@@ -10,7 +10,6 @@ using namespace std;
 using namespace inet;
 using namespace mysterio;
 
-Coord position[NUMUAVS];
 double velocidade[NUMUAVS];
 float bateria[NUMUAVS];
 double tempoVoo[NUMUAVS];
@@ -219,7 +218,6 @@ J UAVMobility::pegarBateria(int idUAV){
 void UAVMobility::rescueDataAndStoreVariables(){
     UAVStatus status;
     status.setLocation(this->castCoordToCoordinate(lastPosition));
-    //position[uav.getID()] = lastPosition;
     velocidade[uav.getID()] = speedParameter->doubleValue();
     bateria[uav.getID()] = std::stof(pegarBateria(uav.getID()).str());
     tempoVoo[uav.getID()] = simTime().dbl();
