@@ -57,7 +57,7 @@ void UAVMobility::initialize(int stage) {
     //getParentModule()->
     for (int i = 0; i < NUMUAVS; i++) {
         itera[i] = -1;
-        waypoints[NUMUAVS] = 0;
+        waypoints[i] = 0;
     }
 
     if (stage == INITSTAGE_LOCAL) {

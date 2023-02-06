@@ -27,7 +27,6 @@ extern double velocidade[NUMUAVS];
 extern float bateria[NUMUAVS];
 extern double tempoVoo[NUMUAVS];
 //Tasks
-//extern std::vector<Task> tasksVector[NUMUAVS];
 extern bool ativo[NUMUAVS];
 extern int itera[NUMUAVS];
 
@@ -36,7 +35,6 @@ namespace mysterio {
 class UAVDispatcher: public UAVCommunication {
     friend class SocketMessageReceive;
 public:
-    //UAVCommunication
     UAVDispatcher(){}
     UAVDispatcher(UAV *u, std::vector<Task> *uavTasks){
         this->setUAV(u);
@@ -45,21 +43,6 @@ public:
 
     void setUAVTaskList(std::vector<Task> *uavTasks){
         this->uavTasks = uavTasks;
-    }
-
-    int getCabrito(){
-        return *cabrito;
-    }
-
-
-    void setCabrito(int *value){
-        cabrito = value;
-    }
-
-    int changeCabrito(){
-        int random = 1+(rand() % 100);
-        *cabrito = random;
-        return *cabrito;
     }
 
     void printTask(int id){
@@ -92,13 +75,8 @@ public:
     void setConnected();
     void setDisconnected();
     void setSocketCode(int socketCode);
-    //int  getSelfID();
-    //void setSelfID(int selfID);
     UAV* getUAV();
     void setUAV(UAV *uav);
-
-
-    int identificacao = 4;
 
 protected:
     thread receber;
@@ -106,8 +84,6 @@ private:
     bool connected = false;
     int socketCode = -1;
     UAV *uav;
-    //int selfID = -1;
-    int *cabrito;
     std::vector<Task> *uavTasks;
 };
 }
