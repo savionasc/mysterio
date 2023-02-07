@@ -45,10 +45,6 @@ public:
         this->uavTasks = uavTasks;
     }
 
-    void printTask(int id){
-        std::cout << "conn-Tarefa-uav: " << uavTasks->at(id).getUAV().getID() << " tipo: " << uavTasks->at(id).getType() << " coordY? " << uavTasks->at(id).getTarget().getY() << std::endl;
-    }
-
     void addNewTask(Task tarefa){
         uavTasks->push_back(tarefa);
     }
