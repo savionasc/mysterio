@@ -17,7 +17,7 @@ void assignPreprogrammedTasks(int, MysStatusManager*, MysCommunication);
 void listenCommunication(){
     //Here starts the server communication
 
-    int numeroDeUAVsEsperados = 5;
+    int numeroDeUAVsEsperados = 10;
     MysStatusManager *ms;
 
     MysCommunication comm;
@@ -49,7 +49,7 @@ void listenCommunication(){
             std::cin >> m;
             Message msg(m, Task::GOTO, -1, id);
 
-            //Tratando mensagens ao digitar
+            //Handling messages
             if(!strcmp(msg.getMsg(), "task")){
                 TaskManager t;
                 UAV u(0);
@@ -68,15 +68,12 @@ void listenCommunication(){
                 }
             }
 
-            cout << "Antes " << endl;
             if(!strcmp(msg.getMsg(), "three")){
                 Formation fUAVs(3, 0);
                 fUAVs.addPosition(Coordinate(200.0,200.0,200.0));
                 fUAVs.addPosition(Coordinate(400.0,400.0,200.0));
                 fUAVs.addPosition(Coordinate(600.0,600.0,200.0));
                 for (int i = 0; i < fUAVs.getNumberOfUAVs(); i++) {
-                    //FALTA SÓ ALTOMATIZAR ESTE FOR
-
 
                     UAV u(i);
                     Task gotoc(u, fUAVs.getPosition(i));
@@ -87,8 +84,7 @@ void listenCommunication(){
                     t.addTask(gotoc);
 
 
-                    //OU AUTOMATIZAR ESTE ENVIO DE MENSAGENS QUE ESTÁ REPETITIVO DEMAIS...
-                    //Enviando tarefa
+                    //Sending task...
                     int codeMessage = Message::TASK_MESSAGE;
                     TaskMessage taskMessage(msg.getMsg(), Message::TASK_MESSAGE);
                     taskMessage.setDestination(i);
@@ -103,8 +99,6 @@ void listenCommunication(){
                 fUAVs.addPosition(Coordinate(500.0,350.0,200.0));
                 fUAVs.addPosition(Coordinate(500.0,650.0,200.0));
                 for (int i = 0; i < fUAVs.getNumberOfUAVs(); i++) {
-                    //FALTA SÓ ALTOMATIZAR ESTE FOR
-
 
                     UAV u(i);
                     Task gotoc(u, fUAVs.getPosition(i));
@@ -114,9 +108,43 @@ void listenCommunication(){
                     TaskManager t;
                     t.addTask(gotoc);
 
+                    //Sending task...
+                    int codeMessage = Message::TASK_MESSAGE;
+                    TaskMessage taskMessage(msg.getMsg(), Message::TASK_MESSAGE);
+                    taskMessage.setDestination(i);
+                    taskMessage.setTask(t.getTaskByIndex(u, t.getNumTasks(u)-1));
 
-                    //OU AUTOMATIZAR ESTE ENVIO DE MENSAGENS QUE ESTÁ REPETITIVO DEMAIS...
-                    //Enviando tarefa
+                    comm.sendTaskMessageToUAV(ms->getUAV(u.getID()).getNetworkConfigurations().getIdSocket(), taskMessage);
+                }
+
+            }else if(!strcmp(msg.getMsg(), "circle")){
+                Formation fUAVs(10, 0);
+                fUAVs.addPosition(Coordinate(300.0,440.0,200.0)); //XY
+                fUAVs.addPosition(Coordinate(300.0,560.0,200.0)); //XY
+
+                fUAVs.addPosition(Coordinate(450.0,320.0,200.0)); //XY
+                fUAVs.addPosition(Coordinate(450.0,680.0,200.0)); //XY
+
+                fUAVs.addPosition(Coordinate(600.0,200.0,200.0)); //XY
+                fUAVs.addPosition(Coordinate(600.0,800.0,200.0)); //XY
+
+
+                fUAVs.addPosition(Coordinate(750.0,320.0,200.0)); //XY
+                fUAVs.addPosition(Coordinate(750.0,680.0,200.0)); //XY
+
+                fUAVs.addPosition(Coordinate(900.0,440.0,200.0)); //XY
+                fUAVs.addPosition(Coordinate(900.0,560.0,200.0)); //XY
+                for (int i = 0; i < fUAVs.getNumberOfUAVs(); i++) {
+
+                    UAV u(i);
+                    Task gotoc(u, fUAVs.getPosition(i));
+                    gotoc.setType(Task::GOTO);
+                    gotoc.setSynchronous(true);
+                    gotoc.setLeader((fUAVs.getLeader() != i) ? fUAVs.getLeader() : 0-fUAVs.getNumberOfUAVs());
+                    TaskManager t;
+                    t.addTask(gotoc);
+
+                    //Sending task...
                     int codeMessage = Message::TASK_MESSAGE;
                     TaskMessage taskMessage(msg.getMsg(), Message::TASK_MESSAGE);
                     taskMessage.setDestination(i);
@@ -141,7 +169,6 @@ void listenCommunication(){
                 fUAVs.addPosition(Coordinate(600.0,600.0,200.0));
                 fUAVs.addPosition(Coordinate(600.0,800.0,200.0));
                 for (int i = 0; i < fUAVs.getNumberOfUAVs(); i++) {
-                    //FALTA SÓ ALTOMATIZAR ESTE FOR
 
                     UAV u(i);
                     Task gotoc(u, fUAVs.getPosition(i));
@@ -151,9 +178,7 @@ void listenCommunication(){
                     TaskManager t;
                     t.addTask(gotoc);
 
-
-                    //OU AUTOMATIZAR ESTE ENVIO DE MENSAGENS QUE ESTÁ REPETITIVO DEMAIS...
-                    //Enviando tarefa
+                    //Sending task...
                     int codeMessage = Message::TASK_MESSAGE;
                     TaskMessage taskMessage(msg.getMsg(), Message::TASK_MESSAGE);
                     taskMessage.setDestination(i);
@@ -168,14 +193,13 @@ void listenCommunication(){
                 Coordinate target(150.0,150.0,150.0);
                 UAV u(id);
                 Task gotoc(u, target);
-                //gotoc.setType(Task::GOTO);
                 gotoc.setType(Task::GOTO);
                 gotoc.setSynchronous(true);
                 gotoc.setLeader(0-numOfUAVs);
                 TaskManager t;
                 t.addTask(gotoc);
 
-                //Enviando tarefa
+                //Sending task...
                 int codeMessage = Message::TASK_MESSAGE;
                 TaskMessage taskMessage(msg.getMsg(), Message::TASK_MESSAGE);
                 taskMessage.setDestination(msg.getDestination());
@@ -189,7 +213,6 @@ void listenCommunication(){
                 Coordinate target(600.0,600.0,600.0);
                 UAV u(id);
                 Task gotoc(u, target);
-                //gotoc.setType(Task::GOTO);
                 gotoc.setType(Task::GOTO);
                 gotoc.setSynchronous(true);
                 gotoc.setLeader(0-numOfUAVs);
@@ -197,7 +220,7 @@ void listenCommunication(){
                 TaskManager t;
                 t.addTask(gotoc);
 
-                //Enviando tarefa
+                //Sending task...
                 int codeMessage = Message::TASK_MESSAGE;
                 TaskMessage taskMessage(msg.getMsg(), Message::TASK_MESSAGE);
                 taskMessage.setDestination(msg.getDestination());
@@ -211,14 +234,13 @@ void listenCommunication(){
                 Coordinate target(800.0,800.0,800.0);
                 UAV u(id);
                 Task gotoc(u, target);
-                //gotoc.setType(Task::GOTO);
                 gotoc.setType(Task::GOTO);
                 gotoc.setSynchronous(true);
                 gotoc.setLeader(0-numOfUAVs);
                 TaskManager t;
                 t.addTask(gotoc);
 
-                //Enviando tarefa
+                //Sending task...
                 int codeMessage = Message::TASK_MESSAGE;
                 TaskMessage taskMessage(msg.getMsg(), Message::TASK_MESSAGE);
                 taskMessage.setDestination(msg.getDestination());
@@ -234,17 +256,13 @@ void listenCommunication(){
                 fUAVs.addPosition(Coordinate(500.0,500.0,200.0));
 
                 for (int i = 0; i < fUAVs.getNumberOfUAVs(); i++) {
-                    //FALTA SÓ ALTOMATIZAR ESTE FOR
-
                     UAV u(i);
                     Task gotoc(u, fUAVs.getPosition(i));
                     gotoc.setType(Task::GOTO);
                     TaskManager t;
                     t.addTask(gotoc);
 
-
-                    //OU AUTOMATIZAR ESTE ENVIO DE MENSAGENS QUE ESTÁ REPETITIVO DEMAIS...
-                    //Enviando tarefa
+                    //Sending task...
                     int codeMessage = Message::TASK_MESSAGE;
                     TaskMessage taskMessage(msg.getMsg(), Message::TASK_MESSAGE);
                     taskMessage.setDestination(i);
@@ -284,36 +302,15 @@ void listenCommunication(){
 }
 
 void assignPreprogrammedTasks(int n, MysStatusManager *ms, MysCommunication comm){
-    //Instanciar o planner juntamente com as tarefas
-    //Atribuir as tarefas pros drones que ele quer (por meio do planner)
-    //começar a missão
-    //Pegar cada tarefa predefinida e dar um assync pra cada uma
 
     TaskManager t;
-    //Building find sheep task
-    /*cout << "Assigned task: Find sheep!" << endl;
-    Coordinate initialPoint(500.0,500.0,600.0);
-    UAV u(0);
-    Task findsheep(u, Task::FIND_SHEEP, initialPoint);
-
-
-    t.addTask(findsheep);*/
-
-
-    //MissionPlanner *mp;
-    //mp->assignAllTasks();
-
-    //Enviando para os UAVs
-
     char assuntoMSG[10] = "New Task!";
 
     for (int itUAV = 0; itUAV < n; itUAV++) {
         UAV u = ms->getUAV(itUAV);
         int codeMessage = Message::TASK_MESSAGE;
         for (int itTask = 0; itTask < t.getNumTasks(u); itTask++) {
-            //Enviando tarefa
             TaskMessage taskMessage(assuntoMSG, Message::TASK_MESSAGE);
-            //taskMessage.setTask(t.getTaskByIndex(u, t.getNumTasks(u)-1));
             taskMessage.setTask(t.getTaskByIndex(u, itTask));
             comm.sendTaskMessageToUAV(u.getNetworkConfigurations().getIdSocket(), taskMessage);
             cout << "ID of assigned task: " << itTask << endl;
@@ -331,6 +328,6 @@ int main(int argc, char const *argv[]){
 
     listenCommunication();
 
-    std::cout << "Fim da execução" << std::endl;
+    std::cout << "End..." << std::endl;
     return 0;
 }

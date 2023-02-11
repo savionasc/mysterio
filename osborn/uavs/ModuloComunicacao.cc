@@ -86,10 +86,9 @@ void ModuloComunicacao::enviarMensagem(double tempo, int origem, int destino, ch
 void ModuloComunicacao::enviarMensagemParaTodosOsUAVsAtivos(UAVMessage *msg){
     cout << "ParaTodosOsUAVsAtivos de: " << selfID << endl;
     //Depois enviar mensagens para todos os vizinhos
-    //int n = gateSize("out");
     int n = getUAVsAtivos();
     int id = 0;
-    for (int i = 0; i < n; i++) {
+    for (int i = 0; i < n-1; i++) {
 
         if(selfID == id && n-1 > i){
             id += 1;

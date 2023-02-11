@@ -15,10 +15,10 @@ using namespace std;
 class MessageReceive{
 public:
     void operator()(int param){
-        while(esperarMensagem(param)){ }
+        while(waitMessage(param)){ }
     }
 
-    bool esperarMensagem(int socket){
+    bool waitMessage(int socket){
         int typeMSG;
         memset(&typeMSG, 0, sizeof(typeMSG));
         recv(socket, (int*)&typeMSG, sizeof(typeMSG), 0);
@@ -45,13 +45,10 @@ public:
                 std::cout << "UAV has quit the session" << std::endl;
                 return false;
             }
-            //else if(!strcmp(msg.msg, "status")){ //Mudar isso aqui e chamar o OnMessageReceve
             else if(msg.getCode() > 10 && msg.getCode() < 21){
-                //Ideia de definir tipos por intervalos
                 MysStatusManager* status = MysStatusManager::GetInstance();
                 status->onDroneStatusMessageReceive(msg);
             }else {
-                //MysStatus *status;
                 MysStatusManager* status = MysStatusManager::GetInstance();
                 status->onDroneStatusMessageReceive(msg);
             }
@@ -77,11 +74,10 @@ public:
                 Coordinate targetPosition(msg.getCoord());
                 UAV uav = ms->getUAV(msg.getDestination());
                 Task subtask(uav, Task::SURROUND_SHEEP, targetPosition);
-                //Mudar esse código
                 subtask.setPriority(5);
 
-                char conteudo[12] = "URGENTE!";
-                msg.setMsg(conteudo);
+                char content[12] = "URGENTE!";
+                msg.setMsg(content);
                 t.assignTask(subtask, uav);
                 t.addTask(subtask);
                 msg.setTask(t.getTaskByIndex(uav, t.getNumTasks(uav)-1));
@@ -89,7 +85,6 @@ public:
                 UAV uavLeader = ms->getUAV(msg.getSource());
                 msgSender.enviarTarefa(uavLeader.getNetworkConfigurations().getIdSocket(), msg);
             }
-            //t.setTask(msg.getTask());
         }else if(typeMSG == Message::TASK_COMPLETED_MESSAGE){
             Message msg;
             memset(&msg, 0, sizeof(msg));
