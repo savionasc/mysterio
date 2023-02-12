@@ -197,20 +197,19 @@ double UAVMobility::getMaxSpeed() const {
     return speedParameter->isExpression() ? NaN : speedParameter->doubleValue();
 }
 
-J UAVMobility::pegarBateria(int idUAV){
-    cModule *a = getParentModule()->getParentModule()->getSubmodule("UAV", idUAV)->getSubmodule("energyStorage", 0);
+J UAVMobility::getBattery(){
+    cModule *a = getParentModule()->getParentModule()->getSubmodule("UAV", uav.getID())->getSubmodule("energyStorage", 0);
     SimpleEpEnergyStorage *energySto = check_and_cast<SimpleEpEnergyStorage*>(a);
     return energySto->getResidualEnergyCapacity();
 }
 
 void UAVMobility::rescueDataAndStoreVariables(){
-    UAVStatus status;
-    status.setLocation(this->castCoordToCoordinate(lastPosition));
-    UAVStatus us = this->uav.getStatus();
-    us.setVelocity(speedParameter->doubleValue());
-    bateria[uav.getID()] = std::stof(pegarBateria(uav.getID()).str());
+    UAVStatus uavStatus = this->uav.getStatus();
+    uavStatus.setLocation(this->castCoordToCoordinate(lastPosition));
+    uavStatus.setVelocity(speedParameter->doubleValue());
+    uavStatus.setBattery(std::stof(getBattery().str()));
     tempoVoo[uav.getID()] = simTime().dbl();
-    this->uav.setStatus(status);
+    this->uav.setStatus(uavStatus);
 }
 
 Coord UAVMobility::flyAround(int j){

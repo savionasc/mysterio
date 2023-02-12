@@ -69,7 +69,7 @@ class INET_API UAVMobility : public LineSegmentsMobilityBase
 
     void stop();
 
-    J pegarBateria(int idUAV);
+    J getBattery();
 
     Coord castCoordinateToCoord(Coordinate co){
         Coord coor(co.getX(), co.getY(), co.getZ());
