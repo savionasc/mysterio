@@ -10,7 +10,6 @@ using namespace std;
 using namespace inet;
 using namespace mysterio;
 
-float bateria[NUMUAVS];
 double tempoVoo[NUMUAVS];
 bool ativo[NUMUAVS];
 int itera[NUMUAVS];

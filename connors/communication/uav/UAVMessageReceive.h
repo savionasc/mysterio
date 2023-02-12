@@ -98,10 +98,10 @@ class UAVMessageReceive {
                     u.setUAV(this->uav);
 
                     char snd[150];
-                    std::string txt = "MSG battery[" + to_string(this->uav->getID()) + "]: " + to_string(bateria[this->uav->getID()]);
+                    std::string txt = "MSG battery[" + to_string(this->uav->getID()) + "]: " + to_string(this->uav->getStatus().getBattery());
                     strcpy(snd, txt.c_str());
                     StatusMessage m(snd, BATTERY_STATUS_RESPONSE, this->uav->getID(), -1);
-                    m.getStatus().setBattery(bateria[this->uav->getID()]);
+                    m.getStatus().setBattery(this->uav->getStatus().getBattery());
                     cout << txt << endl;
                     u.dispatchStatusMessage(m);
                 }else if(!strcmp(msg.getMsg(), "flight-time")){
