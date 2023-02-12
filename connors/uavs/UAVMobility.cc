@@ -10,13 +10,11 @@ using namespace std;
 using namespace inet;
 using namespace mysterio;
 
-double velocidade[NUMUAVS];
 float bateria[NUMUAVS];
 double tempoVoo[NUMUAVS];
 bool ativo[NUMUAVS];
 int itera[NUMUAVS];
 
-int step = 0; //this variable forces terminate current "task" of uav
 //1 - Tarefa: decolar (idUAV, altura)
 //2 - Tarefa: goto (idUAV, positionTarget)
 //3 - Tarefa: dar uma volta sobre (idUAV, positionTarget, distanciaSobre)
@@ -64,7 +62,8 @@ void UAVMobility::initialize(int stage) {
         waitTimeParameter = &par("waitTime");
         hasWaitTime = waitTimeParameter->isExpression() || waitTimeParameter->doubleValue() != 0;
         speedParameter = &par("speed");
-        velocidade[uav.getID()] = par("speed").operator double();
+        UAVStatus us = this->uav.getStatus();
+        us.setVelocity(par("speed").operator double());
         stationary = !speedParameter->isExpression() && speedParameter->doubleValue() == 0;
     }
     this->rescueDataAndStoreVariables();
@@ -189,8 +188,6 @@ void UAVMobility::move() {
         cout << "mob-size: " << tasks.size() << endl;
         cout << "conn-size: " << connUAV.listSize() << endl;
     }*/
-    if(step == 1)
-        this->stop();
     LineSegmentsMobilityBase::move();
     raiseErrorIfOutside();
     this->rescueDataAndStoreVariables();
@@ -209,7 +206,8 @@ J UAVMobility::pegarBateria(int idUAV){
 void UAVMobility::rescueDataAndStoreVariables(){
     UAVStatus status;
     status.setLocation(this->castCoordToCoordinate(lastPosition));
-    velocidade[uav.getID()] = speedParameter->doubleValue();
+    UAVStatus us = this->uav.getStatus();
+    us.setVelocity(speedParameter->doubleValue());
     bateria[uav.getID()] = std::stof(pegarBateria(uav.getID()).str());
     tempoVoo[uav.getID()] = simTime().dbl();
     this->uav.setStatus(status);
@@ -297,12 +295,4 @@ void UAVMobility::executeTask(int j){
         targetPosition = this->CoordinateToCoord(tasks[j].getTarget());
         itera[uav.getID()]++;
     }
-}
-
-void UAVMobility::stop(){
-    //Finaliza a atividade no Omnet
-    nextMoveIsWait = true;
-    nextChange = simTime() + 0.1;
-    cout << "step" << endl;
-    step++;
 }

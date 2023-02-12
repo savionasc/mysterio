@@ -23,7 +23,6 @@ using namespace inet;
 using namespace std;
 
 //extern em um vetor de UAV
-extern double velocidade[NUMUAVS];
 extern float bateria[NUMUAVS];
 extern double tempoVoo[NUMUAVS];
 //Tasks

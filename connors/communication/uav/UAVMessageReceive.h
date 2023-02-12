@@ -9,7 +9,6 @@ using namespace inet;
 using namespace mysterio;
 using namespace std;
 
-extern int step;
 namespace mysterio {
 
 enum codes{
@@ -77,7 +76,6 @@ class UAVMessageReceive {
                 }else if(!strcmp(msg.getMsg(), "velocity")){
                     //Mudar isso aqui e chamar o OnMessageReceve
                     std::cout << "[U" << this->uav->getID() << "] Sending status " << std::endl;
-                    double vel = velocidade[this->uav->getID()];
 
                     UAVDispatcher u;
                     u.setSocketCode(this->uav->getNetworkConfigurations().getIdSocket());
@@ -86,7 +84,7 @@ class UAVMessageReceive {
                     //MUDAR AQUI???
                     StatusMessage m(msg.getMsg(), VELOCITY_STATUS_RESPONSE, this->uav->getID(), -1);
                     UAVStatus d = m.getStatus();
-                    d.setVelocity(vel);
+                    d.setVelocity(this->uav->getStatus().getVelocity());
                     m.setStatus(d);
                     m.setSource(u.getUAV()->getID());
 
@@ -133,8 +131,6 @@ class UAVMessageReceive {
                     for (int i = 0; i < uavTaskList->size(); i++) {
                         cout << "Status: " << uavTaskList->at(i).getStatus() << endl;
                     }
-                }else if(!strcmp(msg.getMsg(), "nextStep")){
-                    step = 1;
                 }else{
                     std::cout << "Received Message["<< this->uav->getID() <<"]: " << msg.getMsg() << std::endl;
                 }
