@@ -22,10 +22,6 @@
 using namespace inet;
 using namespace std;
 
-//extern em um vetor de UAV
-//Tasks
-//extern int itera[NUMUAVS];
-
 namespace mysterio {
 
 class UAVDispatcher: public UAVCommunication {

@@ -121,7 +121,6 @@ class UAVMessageReceive {
                     cout << txt << endl;
                     u.dispatchStatusMessage(m);
                 }else if(!strcmp(msg.getMsg(), "task")){
-                    //cout << "Current Task: " << //itera[this->uav->getID()] << endl;
                     cout << "Current Task: " << currentTask << endl;
                 }else if(!strcmp(msg.getMsg(), "d")){
                     for (int i = 0; i < uavTaskList->size(); i++) {
@@ -133,16 +132,10 @@ class UAVMessageReceive {
             }else if(typeMSG == Message::TASK_MESSAGE){
                 cout << "Task Message received" << endl;
                 //Aqui deve converter toda e qualquer mensagem e repassar pra this.OnMessageReceve
-                //TaskMessage tmsg;
                 TaskMessage tmsg;
                 memset(&tmsg, 0, sizeof(tmsg));
-                //recv(socket, (TaskMessage*)&tmsg, sizeof(tmsg), 0);
                 recv(socket, (TaskMessage*)&tmsg, sizeof(tmsg), 0);
                 Task x = tmsg.getTask();
-                // TaskMessage tmsg2;
-                // memset(&tmsg2, 0, sizeof(tmsg2));
-                // recv(socket, (TaskMessage*)&tmsg2, sizeof(tmsg2), 0);
-                // cout << "Mensagem recebida2: tipo: " << tmsg2.task.type << " idUAV: " << tmsg2.task.uav->getID() << endl;
 
                 int i = x.getUAV().getID();
 
@@ -150,12 +143,8 @@ class UAVMessageReceive {
                 uavTaskList->at(uavTaskList->size()-1).setType(x.getType()); //Redundante?
                 uavTaskList->at(uavTaskList->size()-1).getUAV().setID(x.getUAV().getID()); //Redundante?
 
-                /*//if(itera[i] < 0){
-                    //itera[i]++;
-                }*/
                 int checkSize = *(int*)currentTask;
                 if(checkSize < 0){
-                //if(*currentTask < 0){
                     currentTask++;
                 }
             }
