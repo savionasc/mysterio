@@ -2,6 +2,7 @@
 #define MYSTERIO_OMNET_EXCOMM1_COMMUNICATION_UAVCOMMUNICATIONSOCKET_H_
 #include <thread>
 #include <iostream>
+#include <vector>
 #include <string>
 #include <sys/socket.h>
 #include <netdb.h>
@@ -21,12 +22,13 @@
 using namespace inet;
 using namespace std;
 
+//extern em um vetor de UAV
 extern Coord position[NUMUAVS];
 extern double velocidade[NUMUAVS];
 extern float bateria[NUMUAVS];
 extern double tempoVoo[NUMUAVS];
 //Tasks
-extern std::vector<Task> tasksVector[NUMUAVS];
+//extern std::vector<Task> tasksVector[NUMUAVS];
 extern bool ativo[NUMUAVS];
 extern int itera[NUMUAVS];
 
@@ -36,6 +38,47 @@ class UAVDispatcher: public UAVCommunication {
     friend class SocketMessageReceive;
 public:
     //UAVCommunication
+    UAVDispatcher(){}
+    UAVDispatcher(std::vector<Task> *uavTasks){
+        this->uavTasks = uavTasks;
+    }
+
+    void setUAVTaskList(std::vector<Task> *uavTasks){
+        this->uavTasks = uavTasks;
+        std::cout << "Tarefas setadas!" << std::endl;
+    }
+
+    int getCabrito(){
+        return *cabrito;
+    }
+
+
+    void setCabrito(int *value){
+        cabrito = value;
+    }
+
+    int changeCabrito(){
+        int random = 1+(rand() % 100);
+        *cabrito = random;
+        return *cabrito;
+    }
+
+    void printTask(int id){
+        std::cout << "conn-Tarefa-uav: " << uavTasks->at(id).getUAV().getID() << " tipo: " << uavTasks->at(id).getType() << " coordY? " << uavTasks->at(id).getTarget().getY() << std::endl;
+    }
+
+    void addNewTask(Task tarefa){
+        uavTasks->push_back(tarefa);
+    }
+
+    void removeLastTask(){
+        uavTasks->pop_back();
+    }
+
+    int listSize(){
+        return uavTasks->size();
+    }
+
     void connectBase();
     void dispatchTaskMessage(TaskMessage msg);
     void dispatchStatusMessage(StatusMessage msg);
@@ -47,16 +90,21 @@ public:
     int  conexao();
     int  getSocketCode();
     bool isConnected();
-    void setConnected(bool connected);
+    void setConnected();
+    void setDisconnected();
     void setSocketCode(int socketCode);
     int  getSelfID();
     void setSelfID(int selfID);
+    int identificacao = 4;
+
 protected:
     thread receber;
 private:
     bool connected = false;
     int socketCode = -1;
     int selfID = -1;
+    int *cabrito;
+    std::vector<Task> *uavTasks;
 };
 }
 

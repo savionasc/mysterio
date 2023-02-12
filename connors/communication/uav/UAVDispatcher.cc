@@ -47,13 +47,19 @@ void UAVDispatcher::connectBase(){
                              (sockaddr*) &sendSockAddr, sizeof(sendSockAddr));
         if(status < 0){
             std::cout<<"Error connecting to socket!"<<std::endl;
-            this->connected = false;
+            this->setDisconnected();
+            //this->connected = false;
         }else{
             std::cout << "Connected to the server!" << std::endl;
-            this->connected = true;
+            this->setConnected();
+            //this->connected = true;
             this->socketCode = clientSd;
+            cout << "identificação: " << this->identificacao << endl;
+            if(identificacao == 15){
+                cout << "LISTONA SIZE: " << this->uavTasks->size() << endl;
+            }
 
-            thread receber(UAVMessageReceive(), this->socketCode, this->selfID, this->socketCode);
+            thread receber(UAVMessageReceive(), this->socketCode, this->selfID, this->socketCode, identificacao, this->uavTasks);//, this->identificacao);
             receber.detach();
         }
     }
@@ -67,8 +73,12 @@ bool UAVDispatcher::isConnected() {
     return connected;
 }
 
-void UAVDispatcher::setConnected(bool connected) {
-    this->connected = connected;
+void UAVDispatcher::setConnected() {
+    this->connected = true;
+}
+
+void UAVDispatcher::setDisconnected() {
+    this->connected = false;
 }
 
 void UAVDispatcher::setSocketCode(int socketCode) {
