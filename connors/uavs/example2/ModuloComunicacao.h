@@ -2,6 +2,7 @@
 #define MYSTERIO_OMNET_UAVS_MODULOCOMUNICACAO_H_
 
 #include "../UAVMessage_m.h"
+#include "../UAVMobility.h"
 
 using namespace omnetpp;
 using namespace std;
@@ -9,7 +10,7 @@ using namespace std;
 
 namespace inet {
 
-class ModuloComunicacao2 : public cSimpleModule {
+class ModuloComunicacao : public cSimpleModule {
   public:
     enum TipoMensagem {
         SOLICITAR_LOCALIZACAO = 10,
@@ -23,6 +24,7 @@ class ModuloComunicacao2 : public cSimpleModule {
         GOTOTASK,
         TASKCOMPLETED
     };
+    int mulambo = 3;
   protected:
     virtual UAVMessage *generateMessage();
     virtual void forwardMessage(UAVMessage *msg);
@@ -36,6 +38,10 @@ class ModuloComunicacao2 : public cSimpleModule {
 
     int selfID = -2;
     UAVMessage* sendMSGEvt;
+    UAVMobility* getMobility();
+
+  private:
+    UAVMobility *mobility;
 };
 }
 

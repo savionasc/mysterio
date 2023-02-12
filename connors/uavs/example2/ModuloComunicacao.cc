@@ -1,4 +1,4 @@
-#include "ModuloComunicacao2.h"
+#include "ModuloComunicacao.h"
 
 #include "../../mission/GoTo.h"
 #include "../UAVMobility.h"
@@ -11,29 +11,72 @@ using namespace omnetpp;
 using namespace inet;
 using namespace mysterio;
 
-Define_Module(ModuloComunicacao2);
+Define_Module(ModuloComunicacao);
 
 //shared variables
 extern Coord position[NUMUAVS];
 extern double velocidade[NUMUAVS];
 extern float bateria[NUMUAVS];
 extern double tempoVoo[NUMUAVS];
-extern UAVDispatcher uavs[NUMUAVS];
+//extern UAVDispatcher uavs[NUMUAVS];
 extern int UAVDestino;
 extern int UAVLeader;
 
-void ModuloComunicacao2::initialize(){
+void ModuloComunicacao::initialize(){
     selfID = getIndex();
+    mobility = getMobility();
+    mulambo = 67+selfID;
 
-    uavs[selfID].setSelfID(selfID);
+    /*mobility->connUAV.setSelfID(selfID);*/
 
-    if(!uavs[selfID].isConnected()){
-        uavs[selfID].connectBase();
-    }
+    //uavs[selfID].setSelfID(selfID);
+
+//    if(!uavs[selfID].isConnected()){
+//        uavs[selfID].connectBase();
+//    }
+
+    /*if(!mobility->connUAV.isConnected()){
+        mobility->connUAV.connectBase();
+    }*/
     bubble("INICIANDO, Iniciando!");
+    sendMSGEvt = new UAVMessage("Opa", 0);
+    sendMSGEvt->setDestino(selfID);
+    sendMSGEvt->setOrigem(selfID);
+    scheduleAt(simTime()+1, sendMSGEvt);
 }
 
-void ModuloComunicacao2::handleMessage(cMessage *msg){
+void ModuloComunicacao::handleMessage(cMessage *msg){
+    /*if(selfID == 1){
+        cSimulation *currentSimulation = getSimulation();
+        inet::UAVMobility *mob = nullptr;
+        //inet::UAVMobility*
+        mob = check_and_cast<UAVMobility *>(currentSimulation->getModuleByPath("MysterioCommunication1.UAV[0].mobility"));
+        cout << mob->getModuleType() << endl;
+        //(omnetpp::cDynamicModuleType)mysterio.connors.uavs.UAVMobility
+        cout << "[comunicacao-uav-"<< selfID <<"] Pegou cabron de: " << mob->uav.getID() << " Cabron: " << mob->cabron << endl;
+
+        ModuloComunicacao2 *com = check_and_cast<ModuloComunicacao2 *>(currentSimulation->getModuleByPath("MysterioCommunication1.UAV[0]"));
+        cout << com->getModuleType() << endl;
+        //(omnetpp::cDynamicModuleType)mysterio.connors.uavs.UAVMobility
+        cout << "[comunicacao-uav-"<< selfID <<"] Pegou cabron de: " << com->selfID << " mulambo: " << com->mulambo << endl;
+    }*/
+
+
+        ///AQUIIIIII
+        /*int x = par("savio");
+       int random = 1+(rand() % 100);
+       cout << "Savio: " << random << endl;
+       par("savio").setIntValue(random);
+       sendMSGEvt = new UAVMessage("Opa", 0);
+       sendMSGEvt->setDestino(selfID);
+       sendMSGEvt->setOrigem(selfID);
+       scheduleAt(simTime()+3, sendMSGEvt);*/
+
+
+
+
+
+
     // UAVMessage *mMSG = check_and    _cast<UAVMessage*>(msg);
     // cout << "[U2U] Executando ação: " << msg->getFullName() << endl;
 
@@ -116,7 +159,7 @@ void ModuloComunicacao2::handleMessage(cMessage *msg){
 //Acho que sprintf(msgname, "msg-%d-para-%d", src, dest); mostra na tela um texto na mensagem
 //Depois usar bubble("CHEGOU, gostei do recebido!"); que ele mostra na interface gráfica que chegou a mensagem!
 
-void ModuloComunicacao2::forwardMessage(UAVMessage *msg){
+void ModuloComunicacao::forwardMessage(UAVMessage *msg){
     //Depois enviar mensagens para todos os vizinhos
     int n = gateSize("out");
     int k = intuniform(0, (n-1));
@@ -125,7 +168,7 @@ void ModuloComunicacao2::forwardMessage(UAVMessage *msg){
     send(msg, "out", k);
 }
 
-UAVMessage *ModuloComunicacao2::generateMessage(){
+UAVMessage *ModuloComunicacao::generateMessage(){
     int src = getIndex();
     int n = getVectorSize();
     int dest = intuniform(0, n-2);
@@ -145,14 +188,14 @@ UAVMessage *ModuloComunicacao2::generateMessage(){
 //Para usar com a mensagem //sprintf(msgname, "msg-%d-para-%d", src, dest);
 
 //Auxiliary functions
-void ModuloComunicacao2::enviarMensagem(double tempo, int origem, int destino, char const *name, int kind){
+void ModuloComunicacao::enviarMensagem(double tempo, int origem, int destino, char const *name, int kind){
     sendMSGEvt = new UAVMessage(name, kind);
     sendMSGEvt->setDestino(destino);
     sendMSGEvt->setOrigem(origem);
     scheduleAt(simTime()+tempo, sendMSGEvt);
 }
 
-void ModuloComunicacao2::solicitarStatusDoUAVVizinho(){
+void ModuloComunicacao::solicitarStatusDoUAVVizinho(){
     // UAVDestino = -1;
     // //Call in the first moments of the application to select a UAV
     // if (selfID == 0) {
@@ -223,4 +266,26 @@ void ModuloComunicacao2::solicitarStatusDoUAVVizinho(){
     //         //no else escalonar uma mensagem para lembrar de perguntar alguma coisa...
     //     }
     // }
+}
+
+UAVMobility* ModuloComunicacao::getMobility(){
+    cSimulation *currentSimulation = getSimulation();
+    UAVMobility *mob = nullptr;
+    string str = "MysterioCommunication.UAV["+to_string(getIndex())+"].mobility";
+    cout << "Opa" << endl;
+    cout << str << endl;
+    char path[str.length()+1];
+    strcpy(path, str.c_str());
+    //mob = check_and_cast<UAVMobility *>(currentSimulation->getModuleByPath("MysterioCommunication.UAV[0].mobility"));
+    mob = check_and_cast<UAVMobility *>(currentSimulation->getModuleByPath(path));
+
+    //cout << mob->getModuleType() << endl;
+    //(omnetpp::cDynamicModuleType)mysterio.connors.uavs.UAVMobility
+    //cout << "[comunicacao-uav-"<< selfID <<"] Pegou cabron de: " << mob->uav.getID() << " Cabron: " << mob->cabron << endl;
+
+    //ModuloComunicacao2 *com = check_and_cast<ModuloComunicacao2 *>(currentSimulation->getModuleByPath("MysterioCommunication1.UAV[0]"));
+    //cout << com->getModuleType() << endl;
+    //(omnetpp::cDynamicModuleType)mysterio.connors.uavs.UAVMobility
+    //cout << "[comunicacao-uav-"<< selfID <<"] Pegou cabron de: " << com->selfID << " mulambo: " << com->mulambo << endl;
+    return mob;
 }
