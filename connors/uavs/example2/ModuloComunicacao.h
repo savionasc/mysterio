@@ -11,20 +11,6 @@ using namespace std;
 namespace inet {
 
 class ModuloComunicacao : public cSimpleModule {
-  public:
-    enum TipoMensagem {
-        SOLICITAR_LOCALIZACAO = 10,
-        RESPONDER_LOCALIZACAO,
-        SOLICITAR_VELOCIDADE,
-        RESPONDER_VELOCIDADE,
-        SOLICITAR_BATERIA,
-        RESPONDER_BATERIA,
-        SOLICITAR_TEMPOVOO,
-        RESPONDER_TEMPOVOO,
-        GOTOTASK,
-        TASKCOMPLETED
-    };
-    int mulambo = 3;
   protected:
     virtual UAVMessage *generateMessage();
     virtual void forwardMessage(UAVMessage *msg);

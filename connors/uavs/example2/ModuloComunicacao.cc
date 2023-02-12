@@ -14,7 +14,6 @@ using namespace mysterio;
 Define_Module(ModuloComunicacao);
 
 //shared variables
-extern double velocidade[NUMUAVS];
 extern float bateria[NUMUAVS];
 extern double tempoVoo[NUMUAVS];
 
