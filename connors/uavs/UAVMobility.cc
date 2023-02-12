@@ -10,8 +10,6 @@ using namespace std;
 using namespace inet;
 using namespace mysterio;
 
-double tempoVoo[NUMUAVS];
-bool ativo[NUMUAVS];
 int itera[NUMUAVS];
 
 //1 - Tarefa: decolar (idUAV, altura)
@@ -207,7 +205,7 @@ void UAVMobility::rescueDataAndStoreVariables(){
     uavStatus.setLocation(this->castCoordToCoordinate(lastPosition));
     uavStatus.setVelocity(speedParameter->doubleValue());
     uavStatus.setBattery(std::stof(getBattery().str()));
-    tempoVoo[uav.getID()] = simTime().dbl();
+    uavStatus.setFlightTime(simTime().dbl());
     this->uav.setStatus(uavStatus);
 }
 

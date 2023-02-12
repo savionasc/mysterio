@@ -23,9 +23,7 @@ using namespace inet;
 using namespace std;
 
 //extern em um vetor de UAV
-extern double tempoVoo[NUMUAVS];
 //Tasks
-extern bool ativo[NUMUAVS];
 extern int itera[NUMUAVS];
 
 namespace mysterio {

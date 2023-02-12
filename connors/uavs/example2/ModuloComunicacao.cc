@@ -13,9 +13,6 @@ using namespace mysterio;
 
 Define_Module(ModuloComunicacao);
 
-//shared variables
-extern double tempoVoo[NUMUAVS];
-
 void ModuloComunicacao::initialize(){
     selfID = getIndex();
     mobility = getMobility();

@@ -17,9 +17,9 @@ public:
         //UpdateData(Status data){ }
         //Location extends Status{ }
         //uav.UpdateData(location);
-        //uav.UpdateData(bateria);
-        //uav.UpdateData(velocidade);
-        //uav.UpdateData(tempoDeVoo);
+        //uav.UpdateData(battery);
+        //uav.UpdateData(velocity);
+        //uav.UpdateData(flighttime);
     //Ou o UAV só se comunica por UAVCommunication.dispatchMessage(msg)
 };
 

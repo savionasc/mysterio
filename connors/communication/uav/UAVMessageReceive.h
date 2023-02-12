@@ -113,18 +113,12 @@ class UAVMessageReceive {
                     u.setUAV(this->uav);
 
                     char snd[150];
-                    std::string txt = "MSG flight time[" + to_string(this->uav->getID()) + "]: " + to_string(tempoVoo[this->uav->getID()]);
+                    std::string txt = "MSG flight time[" + to_string(this->uav->getID()) + "]: " + to_string(this->uav->getStatus().getFlightTime());
                     strcpy(snd, txt.c_str());
                     StatusMessage m(snd, FLIGHTTIME_STATUS_RESPONSE, this->uav->getID(), -1);
-                    m.getStatus().setFlightTime((int) tempoVoo[this->uav->getID()]);
+                    m.getStatus().setFlightTime((int) this->uav->getStatus().getFlightTime());
                     cout << txt << endl;
                     u.dispatchStatusMessage(m);
-                }else if(!strcmp(msg.getMsg(), "start")){
-                    ativo[msg.getDestination()] = true;
-                    cout << msg.getMsg() << ":" << msg.getDestination() << endl;
-                }else if(!strcmp(msg.getMsg(), "stop")){
-                    ativo[msg.getDestination()] = false;
-                    cout << msg.getMsg() << ":" << msg.getDestination() << endl;
                 }else if(!strcmp(msg.getMsg(), "task")){
                     cout << "Current Task: " << itera[this->uav->getID()] << endl;
                 }else if(!strcmp(msg.getMsg(), "d")){
