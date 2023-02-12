@@ -24,7 +24,7 @@ using namespace std;
 
 //extern em um vetor de UAV
 //Tasks
-extern int itera[NUMUAVS];
+//extern int itera[NUMUAVS];
 
 namespace mysterio {
 
@@ -69,6 +69,8 @@ public:
     void setSocketCode(int socketCode);
     UAV* getUAV();
     void setUAV(UAV *uav);
+    int* getCurrentTask();
+    void setCurrentTask(int *current);
 
 protected:
     thread receber;
@@ -77,6 +79,7 @@ private:
     int socketCode = -1;
     UAV *uav;
     std::vector<Task> *uavTasks;
+    int *currentTask;
 };
 }
 

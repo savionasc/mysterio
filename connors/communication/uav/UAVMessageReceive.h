@@ -23,12 +23,13 @@ class UAVMessageReceive {
         UAVMessageReceive(){}
         virtual ~UAVMessageReceive(){}
 
-        void operator()(int param, UAV *u, int param3, std::vector<Task> *param4){
+        void operator()(int param, UAV *u, int param3, std::vector<Task> *param4, int *param5){
             this->setUAV(u);
             NetworkConfigurations ntc = this->uav->getNetworkConfigurations();
             ntc.setIdSocket(param3);
             this->uav->setNetworkConfigurations(ntc);
             this->setTaskList(param4);
+            this->currentTask = param5;
             while(waitMessage(param)){ }
         }
 
@@ -120,7 +121,8 @@ class UAVMessageReceive {
                     cout << txt << endl;
                     u.dispatchStatusMessage(m);
                 }else if(!strcmp(msg.getMsg(), "task")){
-                    cout << "Current Task: " << itera[this->uav->getID()] << endl;
+                    //cout << "Current Task: " << //itera[this->uav->getID()] << endl;
+                    cout << "Current Task: " << currentTask << endl;
                 }else if(!strcmp(msg.getMsg(), "d")){
                     for (int i = 0; i < uavTaskList->size(); i++) {
                         cout << "Status: " << uavTaskList->at(i).getStatus() << endl;
@@ -148,8 +150,13 @@ class UAVMessageReceive {
                 uavTaskList->at(uavTaskList->size()-1).setType(x.getType()); //Redundante?
                 uavTaskList->at(uavTaskList->size()-1).getUAV().setID(x.getUAV().getID()); //Redundante?
 
-                if(itera[i] < 0){
-                    itera[i]++;
+                /*//if(itera[i] < 0){
+                    //itera[i]++;
+                }*/
+                int checkSize = *(int*)currentTask;
+                if(checkSize < 0){
+                //if(*currentTask < 0){
+                    currentTask++;
                 }
             }
             return true;
@@ -165,6 +172,7 @@ class UAVMessageReceive {
     private:
         UAV *uav;
         std::vector<Task> *uavTaskList;
+        int *currentTask;
 };
 
 }

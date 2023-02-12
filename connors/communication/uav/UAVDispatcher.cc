@@ -53,7 +53,7 @@ void UAVDispatcher::connectBase(){
             this->setConnected();
             this->socketCode = clientSd;
 
-            thread receber(UAVMessageReceive(), this->socketCode, this->uav, this->socketCode, this->uavTasks);
+            thread receber(UAVMessageReceive(), this->socketCode, this->uav, this->socketCode, this->uavTasks, this->currentTask);
             receber.detach();
         }
     }
@@ -86,6 +86,15 @@ UAV* UAVDispatcher::getUAV(){
 void UAVDispatcher::setUAV(UAV *uav){
     this->uav = uav;
 }
+
+int* UAVDispatcher::getCurrentTask(){
+    return this->currentTask;
+}
+
+void UAVDispatcher::setCurrentTask(int *current){
+    this->currentTask = current;
+}
+
 
 void UAVDispatcher::disconnectBase(){
     close(getSocketCode());

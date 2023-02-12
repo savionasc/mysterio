@@ -10,7 +10,7 @@ using namespace std;
 using namespace inet;
 using namespace mysterio;
 
-int itera[NUMUAVS];
+//int itera[NUMUAVS];
 
 //1 - Tarefa: decolar (idUAV, altura)
 //2 - Tarefa: goto (idUAV, positionTarget)
@@ -32,14 +32,14 @@ UAVMobility::UAVMobility(){ nextMoveIsWait = false; }
 void UAVMobility::initialize(int stage) {
     LineSegmentsMobilityBase::initialize(stage);
     /*int x = getParentModule()->par("savio");
-    cout << "SAVIOOOOO" << x << endl;
     getParentModule()->par("savio").setIntValue(9);
-    x = getParentModule()->par("savio");
-    cout << "SAVIOOOOO" << x << endl;*/
+    x = getParentModule()->par("savio");*/
     if(stage == 0){
         uav.setID(getParentModule()->getIndex());
+        this->currentTask = 0;
         connUAV.setUAV(&uav);
         connUAV.setUAVTaskList(&tasks);
+        connUAV.setCurrentTask(&currentTask);
         cout << "UAV-"<< getParentModule()->getIndex() << "stage: " << stage << endl;
         connUAV.connectBase();
     }
@@ -51,7 +51,8 @@ void UAVMobility::initialize(int stage) {
 
     //getParentModule()->
     for (int i = 0; i < NUMUAVS; i++) {
-        itera[i] = -1;
+        //itera[i] = -1;
+        currentTask = -1;
         waypoints[i] = 0;
     }
 
@@ -82,9 +83,11 @@ void UAVMobility::setTargetPosition() {
         nextMoveIsWait = false;
     } else {
 // VELHA
-//        if(tasksVector[uav.getID()].size() != itera[uav.getID()] && tasksVector[uav.getID()].size() > 0){ //if there are tasks not performed
-        if( tasks.size() != itera[uav.getID()] && tasks.size() > 0){ //if there are tasks not performed
-            int task = itera[uav.getID()];
+        //if(tasksVector[uav.getID()].size() != itera[uav.getID()] && tasksVector[uav.getID()].size() > 0){ //if there are tasks not performed
+        if( tasks.size() != currentTask && tasks.size() > 0){ //if there are tasks not performed        
+        //if( tasks.size() != itera[uav.getID()] && tasks.size() > 0){ //if there are tasks not performed
+            //int task = itera[uav.getID()];
+            int task = currentTask;
 // VELHA
 //            if(tasksVector[uav.getID()][task].getStatus() == 2){ //finalizando
 //                tasksVector[uav.getID()][task].setComplete();
@@ -111,7 +114,8 @@ void UAVMobility::setTargetPosition() {
                 u.dispatchTaskMessage(msg);
 
                 //next task
-                itera[uav.getID()]++;
+                currentTask++;
+                //itera[uav.getID()]++;
 
             }else{
                 executeTask(task);
@@ -289,6 +293,7 @@ void UAVMobility::executeTask(int j){
     }else{
 //        targetPosition = this->CoordinateToCoord(tasksVector[uav.getID()][j].getTarget());
         targetPosition = this->CoordinateToCoord(tasks[j].getTarget());
-        itera[uav.getID()]++;
+        currentTask++;
+        //itera[uav.getID()]++;
     }
 }

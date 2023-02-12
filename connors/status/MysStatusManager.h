@@ -76,11 +76,16 @@ public:
     }
 
     UAV getUAV(int idUAV){
-        return this->pegarUAV(idUAV);
+        UAV u;
+        u.setID(-1);
+        for (std::map<int, UAV>::iterator it=uavs.begin(); it!=uavs.end(); ++it)
+            if(it->first == idUAV)
+                return it->second;
+        return u;
     }
 
     int getIDSocket(int idUAV){
-        return this->pegarUAV(idUAV).getNetworkConfigurations().getIdSocket();
+        return this->getUAV(idUAV).getNetworkConfigurations().getIdSocket();
     }
 
     void setUAV(UAV u){
@@ -99,15 +104,6 @@ private:
     static MysStatusManager * mpinstance_;
     static std::mutex mutex_;
     static std::map<int,UAV> uavs;
-
-    UAV pegarUAV(int idUAV){
-        UAV u;
-        u.setID(-1);
-        for (std::map<int, UAV>::iterator it=uavs.begin(); it!=uavs.end(); ++it)
-            if(it->first == idUAV)
-                return it->second;
-        return u;
-    }
 
     //Deixar de solicitar diretamente pro banco para pedir pro UAV
     RepositoryBase r;

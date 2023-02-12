@@ -88,6 +88,7 @@ class INET_API UAVMobility : public LineSegmentsMobilityBase
     UAV uav;
     mysterio::UAVDispatcher connUAV;
     std::vector<Task> tasks;
+    int currentTask;
 };
 
 }
