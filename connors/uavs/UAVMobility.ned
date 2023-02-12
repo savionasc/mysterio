@@ -52,6 +52,6 @@ simple UAVMobility extends MovingMobilityBase {
         volatile double rotationAxisAngle @unit(deg) = default(0deg); // defines a vector in the plane perpendicular to the velocity, where 0 deg means the Z axis when bank is zero (can be random)
         volatile double speed @unit(mps) = default(mps); // speed (can be random, updated every changeInterval)
         @class(UAVMobility);
-        int numeroDrones = default(0);
+        int numUAVs = default(0);
 }
 

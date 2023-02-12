@@ -23,6 +23,7 @@
 #include "inet/mobility/base/LineSegmentsMobilityBase.h"
 #include "inet/power/base/EpEnergyStorageBase.h"
 #include "inet/power/storage/SimpleEpEnergyStorage.h"
+#include "../communication/uav/UAVDispatcher.h"
 #include "../../src/utils/Coordinate.h"
 #include "../../src/utils/UAV.h"
 
@@ -69,12 +70,15 @@ class INET_API UAVMobility : public LineSegmentsMobilityBase
     void stop();
 
     J pegarBateria(int idUAV);
-
-    UAV uav;
-
   public:
     UAVMobility();
     virtual double getMaxSpeed() const override;
+    mysterio::UAVDispatcher connUAV;
+    UAV uav;
+
+    int cabron = 3;
+    std::vector<Task> tasks;
+    //ModuloComunicacao2* comunicacao;
 };
 
 }
