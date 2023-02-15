@@ -1,8 +1,8 @@
 #ifndef MYSTERIO_OMNET_COMMUNICATION_UAVMESSAGERECEIVE_H_
 #define MYSTERIO_OMNET_COMMUNICATION_UAVMESSAGERECEIVE_H_
 #include "../../../src/utils/UAV.h"
-#include "UAVMysCommunication.h"
 #include "../../uavs/UAVMobility.h"
+#include "UAVDispatcher.h"
 
 using namespace std;
 
@@ -57,7 +57,7 @@ class UAVMessageReceive {
                     std::cout << "[U" << this->uav.getID() << "] Sending status " << std::endl;
                     Coord coor = position[this->uav.getID()];
 
-                    UAVMysCommunication u;
+                    UAVDispatcher u;
                     u.setSocketCode(this->uav.getNetworkConfigurations().getIdSocket());
                     u.setSelfID(this->uav.getID());
 
@@ -82,7 +82,7 @@ class UAVMessageReceive {
                     std::cout << "[U" << this->uav.getID() << "] Sending status " << std::endl;
                     double vel = velocidade[this->uav.getID()];
 
-                    UAVMysCommunication u;
+                    UAVDispatcher u;
                     u.setSocketCode(this->uav.getNetworkConfigurations().getIdSocket());
                     u.setSelfID(this->uav.getID());
 
@@ -97,7 +97,7 @@ class UAVMessageReceive {
                     //Mudar isso aqui e chamar o OnMessageReceve
                     std::cout << " Battery status " << std::endl;
 
-                    UAVMysCommunication u;
+                    UAVDispatcher u;
                     u.setSocketCode(this->uav.getNetworkConfigurations().getIdSocket());
                     u.setSelfID(this->uav.getID());
 
@@ -112,7 +112,7 @@ class UAVMessageReceive {
                     //Mudar isso aqui e chamar o OnMessageReceve
                     std::cout << " Flight Time Status " << std::endl;
 
-                    UAVMysCommunication u;
+                    UAVDispatcher u;
                     u.setSocketCode(this->uav.getNetworkConfigurations().getIdSocket());
                     u.setSelfID(this->uav.getID());
 
