@@ -25,6 +25,7 @@
 #include "inet/power/storage/SimpleEpEnergyStorage.h"
 #include "../../src/utils/Coordinate.h"
 #include "../../src/utils/UAV.h"
+#include "../communication/uav/UAVDispatcher.h"
 
 namespace inet {
 
@@ -53,16 +54,6 @@ class INET_API UAVMobility : public LineSegmentsMobilityBase
     /** @brief Overridden from LineSegmentsMobilityBase.*/
     virtual void setTargetPosition() override;
 
-    Coord castCoordinateToCoord(Coordinate co){
-        Coord coor(co.getX(), co.getY(), co.getZ());
-        return coor;
-    }
-
-    Coordinate castCoordToCoordinate(Coord co){
-        Coordinate coor(co.getX(), co.getY(), co.getZ());
-        return coor;
-    }
-
     /** @brief Overridden from LineSegmentsMobilityBase.*/
     virtual void move() override;
 
@@ -74,14 +65,27 @@ class INET_API UAVMobility : public LineSegmentsMobilityBase
 
     void stop();
 
+    Coord castCoordinateToCoord(Coordinate co){
+        Coord coor(co.getX(), co.getY(), co.getZ());
+        return coor;
+    }
+
+    Coordinate castCoordToCoordinate(Coord co){
+        Coordinate coor(co.getX(), co.getY(), co.getZ());
+        return coor;
+    }
+
     J pegarBateria(int idUAV);
 
     UAV uav;
 
-
   public:
     UAVMobility();
     virtual double getMaxSpeed() const override;
+
+    mysterio::UAVDispatcher connUAV;
+    int currentTask;
+    //int waypoints;
 };
 
 }

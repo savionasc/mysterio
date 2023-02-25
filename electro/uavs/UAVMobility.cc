@@ -17,7 +17,6 @@ double tempoVoo[NUMUAVS];
 bool ativo[NUMUAVS];
 int itera[NUMUAVS];
 std::vector<Task> tasksVector[NUMUAVS];
-UAVDispatcher uavs[NUMUAVS];
 int step = 0;
 //this variable forces terminate current "task" of uav
 //1 - Tarefa: decolar (idUAV, altura)
@@ -37,7 +36,17 @@ UAVMobility::UAVMobility(){ nextMoveIsWait = false; }
 
 void UAVMobility::initialize(int stage) {
     LineSegmentsMobilityBase::initialize(stage);
-    uav.setID(getParentModule()->getIndex());
+    if(stage == 0){
+        uav.setID(getParentModule()->getIndex());
+        this->currentTask = 0;
+        //connUAV.setUAV(&uav);
+        connUAV.setSelfID(uav.getID());
+        //connUAV.setUAVTaskList(&tasks);
+        //connUAV.setCurrentTask(&currentTask);
+        cout << "UAV-" << getParentModule()->getIndex() << "stage: " << stage << endl;
+        connUAV.connectBase();
+    }
+
     if(uav.getID() != 1){
         ativo[uav.getID()] = true;
     }else{
@@ -46,7 +55,7 @@ void UAVMobility::initialize(int stage) {
 
     for (int i = 0; i < NUMUAVS; i++) {
         itera[i] = -1;
-        waypoints[NUMUAVS] = 0;
+        waypoints[i] = 0;
     }
 
     if (stage == INITSTAGE_LOCAL) {
@@ -92,7 +101,7 @@ void UAVMobility::setTargetPosition() {
                 //enviando mensagem de finalizada
 
                 NetworkConfigurations ntc;
-                ntc.setIdSocket(uavs[uav.getID()].getSocketCode());
+                ntc.setIdSocket(connUAV.getSocketCode());
                 this->uav.setNetworkConfigurations(ntc);
                 UAVDispatcher u;
                 u.setSocketCode(this->uav.getNetworkConfigurations().getIdSocket());
@@ -168,7 +177,7 @@ void UAVMobility::move() {
         }else{
             msg.setCoord(tasksVector[uav.getID()][itera[uav.getID()]].getTarget());
         }
-        uavs[uav.getID()].dispatchTaskMessage(msg);
+        connUAV.dispatchTaskMessage(msg);
     }
     if(bateria[uav.getID()] < 0.005 && ativo[uav.getID()]){
         ativo[uav.getID()] = false;
@@ -231,7 +240,7 @@ Coord UAVMobility::flyAround(int j){
             //targetPosition = getPosit(10, 5, 10);
             //cout << "GASTOU!" << endl;
             msg.setCoord(this->castCoordToCoordinate(c));
-            uavs[uav.getID()].dispatchTaskMessage(msg);
+            connUAV.dispatchTaskMessage(msg);
         }
     }else if(waypoints[uav.getID()] == 3){
         c = this->castCoordinateToCoord(tasksVector[uav.getID()][j].getTarget());
