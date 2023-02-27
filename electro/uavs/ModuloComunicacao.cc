@@ -18,18 +18,17 @@ extern Coord position[NUMUAVS];
 extern double velocidade[NUMUAVS];
 extern float bateria[NUMUAVS];
 extern double tempoVoo[NUMUAVS];
-extern UAVDispatcher uavs[NUMUAVS];
 extern int UAVDestino;
 extern int UAVLeader;
 
 void ModuloComunicacao::initialize(){
     selfID = getIndex();
 
-    uavs[selfID].setSelfID(selfID);
+    /*//uavs[selfID].setSelfID(selfID);
 
-    if(!uavs[selfID].isConnected()){
-        uavs[selfID].connectBase();
-    }
+    //if(!uavs[selfID].isConnected()){
+    //    uavs[selfID].connectBase();
+    /}*/
     bubble("INICIANDO, Iniciando!");
 }
 
@@ -73,5 +72,13 @@ void ModuloComunicacao::enviarMensagem(double tempo, int origem, int destino, ch
     scheduleAt(simTime()+tempo, sendMSGEvt);
 }
 
-void ModuloComunicacao::solicitarStatusDoUAVVizinho(){
+UAVMobility* ModuloComunicacao::getMobility(){
+    cSimulation *currentSimulation = getSimulation();
+    UAVMobility *mob = nullptr;
+    string str = "MysterioCommunication.UAV["+to_string(getIndex())+"].mobility";
+    char path[str.length()+1];
+    strcpy(path, str.c_str());
+    mob = check_and_cast<UAVMobility *>(currentSimulation->getModuleByPath(path));
+
+    return mob;
 }

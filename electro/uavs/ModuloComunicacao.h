@@ -2,6 +2,7 @@
 #define MYSTERIO_ELECTRO_UAVS_MODULOCOMUNICACAO_H_
 
 #include "UAVMessage_m.h"
+#include "UAVMobility.h"
 
 using namespace omnetpp;
 using namespace std;
@@ -32,10 +33,12 @@ class ModuloComunicacao : public cSimpleModule {
     //Auxiliary functions
     void enviarMensagem(double tempo, int origem, int destino, char const *name, int kind);
     void rememberCheckMessage(double seconds);
-    void solicitarStatusDoUAVVizinho();
 
     int selfID = -2;
     UAVMessage* sendMSGEvt;
+    UAVMobility* getMobility();
+  private:
+    UAVMobility *mobility;
 };
 }
 
