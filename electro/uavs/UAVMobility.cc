@@ -17,7 +17,7 @@ double tempoVoo[NUMUAVS];
 bool ativo[NUMUAVS];
 int itera[NUMUAVS];
 std::vector<Task> tasksVector[NUMUAVS];
-int step = 0;
+
 //this variable forces terminate current "task" of uav
 //1 - Tarefa: decolar (idUAV, altura)
 //2 - Tarefa: goto (idUAV, positionTarget)
@@ -182,8 +182,7 @@ void UAVMobility::move() {
     if(bateria[uav.getID()] < 0.005 && ativo[uav.getID()]){
         ativo[uav.getID()] = false;
     }
-    if(step == 1)
-        this->stop();
+
     LineSegmentsMobilityBase::move();
     raiseErrorIfOutside();
     this->rescueDataAndStoreVariables();
@@ -301,12 +300,4 @@ void UAVMobility::executeTask(int j){
         itera[uav.getID()]++;
     }
 
-}
-
-void UAVMobility::stop(){
-    //Finaliza a atividade no Omnet
-    nextMoveIsWait = true;
-    nextChange = simTime() + 0.1;
-    cout << "step" << endl;
-    step++;
 }

@@ -63,8 +63,6 @@ class INET_API UAVMobility : public LineSegmentsMobilityBase
     Coord flyAround(int j);
     Coord flyAroundSquare(int j);
 
-    void stop();
-
     Coord castCoordinateToCoord(Coordinate co){
         Coord coor(co.getX(), co.getY(), co.getZ());
         return coor;
