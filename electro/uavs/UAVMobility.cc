@@ -193,23 +193,16 @@ double UAVMobility::getMaxSpeed() const {
     return speedParameter->isExpression() ? NaN : speedParameter->doubleValue();
 }
 
-J UAVMobility::pegarBateria(int idUAV){
-    cModule *a = getParentModule()->getParentModule()->getSubmodule("UAV", idUAV)->getSubmodule("energyStorage", 0);
+J UAVMobility::getBattery(){
+    cModule *a = getParentModule()->getParentModule()->getSubmodule("UAV", uav.getID())->getSubmodule("energyStorage", 0);
     SimpleEpEnergyStorage *energySto = check_and_cast<SimpleEpEnergyStorage*>(a);
-
-    //Calculando porcentagem da bateria:
-    //float aaa = std::stof(energySto->getResidualEnergyCapacity().str());
-    //float bbb = std::stof(energySto->getNominalEnergyCapacity().str());
-    //float xa = (aaa / bbb);
-    //float res = xa * 100;
-    //cout << energySto->getResidualEnergyCapacity() << "/" << energySto->getNominalEnergyCapacity() << "-" << res << endl;
     return energySto->getResidualEnergyCapacity();
 }
 
 void UAVMobility::rescueDataAndStoreVariables(){
     position[uav.getID()] = lastPosition;
     velocidade[uav.getID()] = speedParameter->doubleValue();
-    bateria[uav.getID()] = std::stof(pegarBateria(uav.getID()).str());
+    bateria[uav.getID()] = std::stof(getBattery().str());
     tempoVoo[uav.getID()] = simTime().dbl();
 }
 

@@ -73,7 +73,7 @@ class INET_API UAVMobility : public LineSegmentsMobilityBase
         return coor;
     }
 
-    J pegarBateria(int idUAV);
+    J getBattery();
 
     UAV uav;
 
