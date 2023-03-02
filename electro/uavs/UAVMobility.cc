@@ -24,8 +24,6 @@ std::vector<Task> tasksVector[NUMUAVS];
 //3 - Tarefa: dar uma volta sobre (idUAV, positionTarget, distanciaSobre)
 //4 - Tarefa: retornar a base (idUAV, basePosition)
 //5 - Tarefa: pousar (idUAV, chao)
-int UAVLeader = -1;
-int UAVDestino = -1;
 int waypoints[NUMUAVS];
 int lowbattery[NUMUAVS];
 using namespace power;
@@ -133,7 +131,6 @@ void UAVMobility::setTargetPosition() {
                 p.x = uniform(10, 25);
                 p.y = uniform(10, 25);
                 p.z = uniform(50, 80);
-                //Coord c(10, 10, 150);
                 targetPosition = p;
             }else{
                 targetPosition = getRandomPosition();
@@ -167,10 +164,7 @@ void UAVMobility::move() {
         tasksVector[uav.getID()][itera[uav.getID()]].setWaypoints(waypoints[uav.getID()]);
         cout << "MEU WAYPOINT: " << tasksVector[uav.getID()][itera[uav.getID()]].getWaypoints() << endl;
         msg.setTask(tasksVector[uav.getID()][itera[uav.getID()]]);
-        //targetPosition = getPosit(10, 5, 10);
 
-        //aqui
-        //msg.setCoord(this->castCoordToCoordinate(position[uav.getID()]));
         if(tasksVector[uav.getID()][itera[uav.getID()]].getType() == Task::FLY_AROUND_SQUARE){
             waypoints[uav.getID()]--;
             msg.setCoord(castCoordToCoordinate(flyAroundSquare(itera[uav.getID()])));
@@ -229,8 +223,6 @@ Coord UAVMobility::flyAround(int j){
             msg.setSource(uav.getID());
             tasksVector[uav.getID()][itera[uav.getID()]].setWaypoints(waypoints[uav.getID()]+1);
             msg.setTask(tasksVector[uav.getID()][itera[uav.getID()]]);
-            //targetPosition = getPosit(10, 5, 10);
-            //cout << "GASTOU!" << endl;
             msg.setCoord(this->castCoordToCoordinate(c));
             connUAV.dispatchTaskMessage(msg);
         }
