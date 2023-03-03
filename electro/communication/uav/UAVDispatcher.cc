@@ -83,6 +83,14 @@ void UAVDispatcher::setSelfID(int selfID){
     this->selfID = selfID;
 }
 
+UAV* UAVDispatcher::getUAV(){
+    return this->uav;
+}
+
+void UAVDispatcher::setUAV(UAV *uav){
+    this->uav = uav;
+}
+
 void UAVDispatcher::disconnectBase(){
     close(getSocketCode());
 }
