@@ -36,6 +36,10 @@ namespace mysterio {
 class UAVDispatcher : public UAVCommunication {
     friend class SocketMessageReceive;
 public:
+    UAVDispatcher(){}
+    UAVDispatcher(UAV *u){
+        this->setUAV(u);
+    }
     //UAVCommunication
     void connectBase();
     void dispatchTaskMessage(TaskMessage msg);
