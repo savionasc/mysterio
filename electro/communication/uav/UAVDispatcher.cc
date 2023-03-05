@@ -53,7 +53,7 @@ void UAVDispatcher::connectBase(){
             this->connected = true;
             this->socketCode = clientSd;
 
-            thread receber(UAVMessageReceive(), this->socketCode, this->selfID, this->socketCode);
+            thread receber(UAVMessageReceive(), this->socketCode, this->uav, this->selfID, this->socketCode);
             receber.detach();
         }
     }

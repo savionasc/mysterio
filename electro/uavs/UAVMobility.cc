@@ -37,7 +37,7 @@ void UAVMobility::initialize(int stage) {
     if(stage == 0){
         uav.setID(getParentModule()->getIndex());
         this->currentTask = 0;
-        //connUAV.setUAV(&uav);
+        connUAV.setUAV(&uav);
         connUAV.setSelfID(uav.getID());
         //connUAV.setUAVTaskList(&tasks);
         //connUAV.setCurrentTask(&currentTask);
