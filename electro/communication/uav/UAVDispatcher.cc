@@ -53,7 +53,7 @@ void UAVDispatcher::connectBase(){
             this->connected = true;
             this->socketCode = clientSd;
 
-            thread receber(UAVMessageReceive(), this->socketCode, this->uav, this->selfID, this->socketCode);
+            thread receber(UAVMessageReceive(), this->socketCode, this->uav, this->socketCode);
             receber.detach();
         }
     }
@@ -73,14 +73,6 @@ void UAVDispatcher::setConnected(bool connected) {
 
 void UAVDispatcher::setSocketCode(int socketCode) {
     this->socketCode = socketCode;
-}
-
-int UAVDispatcher::getSelfID(){
-    return this->selfID;
-}
-
-void UAVDispatcher::setSelfID(int selfID){
-    this->selfID = selfID;
 }
 
 UAV* UAVDispatcher::getUAV(){

@@ -54,8 +54,6 @@ public:
     bool isConnected();
     void setConnected(bool connected);
     void setSocketCode(int socketCode);
-    int  getSelfID();
-    void setSelfID(int selfID);
     UAV* getUAV();
     void setUAV(UAV *uav);
 protected:
@@ -63,7 +61,6 @@ protected:
 private:
     bool connected = false;
     int socketCode = -1;
-    int selfID = -1;
     UAV *uav;
 };
 }
