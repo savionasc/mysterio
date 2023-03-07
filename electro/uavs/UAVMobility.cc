@@ -38,7 +38,6 @@ void UAVMobility::initialize(int stage) {
         uav.setID(getParentModule()->getIndex());
         this->currentTask = 0;
         connUAV.setUAV(&uav);
-        connUAV.setSelfID(uav.getID());
         //connUAV.setUAVTaskList(&tasks);
         //connUAV.setCurrentTask(&currentTask);
         cout << "UAV-" << getParentModule()->getIndex() << "stage: " << stage << endl;
@@ -103,10 +102,10 @@ void UAVMobility::setTargetPosition() {
                 this->uav.setNetworkConfigurations(ntc);
                 UAVDispatcher u;
                 u.setSocketCode(this->uav.getNetworkConfigurations().getIdSocket());
-                u.setSelfID(this->uav.getID());
+                u.setUAV(&uav);
                 TaskMessage msg;
                 msg.setCode(273);
-                msg.setSource(u.getSelfID());
+                msg.setSource(u.getUAV()->getID());
                 msg.setTask(tasksVector[uav.getID()][task]);
                 u.dispatchTaskMessage(msg);
 
@@ -119,12 +118,12 @@ void UAVMobility::setTargetPosition() {
         }else{
             UAVDispatcher u;
             u.setSocketCode(this->uav.getNetworkConfigurations().getIdSocket());
-            u.setSelfID(this->uav.getID());
+            u.setUAV(&uav);
             Message msg;
             msg.setCode(123);
             char m[] = "No scheduled tasks!";
             msg.setMsg(m);
-            msg.setSource(u.getSelfID());
+            msg.setSource(u.getUAV()->getID());
             u.dispatchMessage(msg);
             if(myStage++ == 0){
                 Coord p;
@@ -136,7 +135,7 @@ void UAVMobility::setTargetPosition() {
                 targetPosition = getRandomPosition();
             }
 
-            if(u.getSelfID() == 1){
+            if(u.getUAV()->getID() == 1){
                 u.disconnectBase();
             }
         }
