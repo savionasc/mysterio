@@ -13,11 +13,10 @@ class UAVMessageReceive {
     public:
         UAVMessageReceive(){}
         virtual ~UAVMessageReceive(){}
-        void operator()(int param, UAV *u, int param3, int param4){
+        void operator()(int param, UAV *u, int param3){
             this->setUAV(u);
-            this->uav->setID(param3);
             NetworkConfigurations ntc = this->uav->getNetworkConfigurations();
-            ntc.setIdSocket(param4);
+            ntc.setIdSocket(param3);
             this->uav->setNetworkConfigurations(ntc);
             //this->uav->setIdSocket(param3);
             while(waitMessage(param)){ }
@@ -42,10 +41,10 @@ class UAVMessageReceive {
 
                     UAVDispatcher u;
                     u.setSocketCode(this->uav->getNetworkConfigurations().getIdSocket());
-                    u.setSelfID(this->uav->getID());
+                    u.setUAV(this->uav);
 
                     StatusMessage m(msg.getMsg(), LOCATION_STATUS_RESPONSE, this->uav->getID(), -1);   //MUDAR AQUI???
-                    m.setSource(u.getSelfID());
+                    m.setSource(u.getUAV()->getID());
                     UAVStatus d = m.getStatus();
                     d.setLocation(coor.x, coor.y, coor.z);
                     m.setStatus(d);
@@ -67,13 +66,13 @@ class UAVMessageReceive {
 
                     UAVDispatcher u;
                     u.setSocketCode(this->uav->getNetworkConfigurations().getIdSocket());
-                    u.setSelfID(this->uav->getID());
+                    u.setUAV(this->uav);
 
                     StatusMessage m(msg.getMsg(), VELOCITY_STATUS_RESPONSE, this->uav->getID(), -1); //MUDAR AQUI???
                     UAVStatus d = m.getStatus();
                     d.setVelocity(vel);
                     m.setStatus(d);
-                    m.setSource(u.getSelfID());
+                    m.setSource(u.getUAV()->getID());
 
                     u.dispatchStatusMessage(m);
                 }else if(!strcmp(msg.getMsg(), "battery")){
@@ -82,7 +81,7 @@ class UAVMessageReceive {
 
                     UAVDispatcher u;
                     u.setSocketCode(this->uav->getNetworkConfigurations().getIdSocket());
-                    u.setSelfID(this->uav->getID());
+                    u.setUAV(this->uav);
 
                     char snd[150];
                     std::string txt = "MSG battery[" + to_string(this->uav->getID()) + "]: " + to_string(bateria[this->uav->getID()]);
@@ -97,7 +96,7 @@ class UAVMessageReceive {
 
                     UAVDispatcher u;
                     u.setSocketCode(this->uav->getNetworkConfigurations().getIdSocket());
-                    u.setSelfID(this->uav->getID());
+                    u.setUAV(this->uav);
 
                     char snd[150];
                     std::string txt = "MSG flight time[" + to_string(this->uav->getID()) + "]: " + to_string(tempoVoo[this->uav->getID()]);
