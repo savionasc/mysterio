@@ -6,7 +6,6 @@
 
 using namespace std;
 
-extern int step;
 namespace mysterio {
 
 class UAVMessageReceive {
@@ -117,8 +116,6 @@ class UAVMessageReceive {
                     for (int i = 0; i < tasksVector[this->uav->getID()].size(); i++) {
                         cout << "Status: " << tasksVector[0][i].getStatus() << endl;
                     }
-                }else if(!strcmp(msg.getMsg(), "nextStep")){
-                    step = 1;
                 }else if(!strcmp(msg.getMsg(), "drenar")){
                     lowbattery[uav->getID()] = 1;
                 }else{
