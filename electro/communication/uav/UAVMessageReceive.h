@@ -42,7 +42,7 @@ class UAVMessageReceive {
                     u.setSocketCode(this->uav->getNetworkConfigurations().getIdSocket());
                     u.setUAV(this->uav);
 
-                    StatusMessage m(msg.getMsg(), LOCATION_STATUS_RESPONSE, this->uav->getID(), -1);   //MUDAR AQUI???
+                    StatusMessage m(msg.getMsg(), MysStatusManager::LOCATION_STATUS_RESPONSE, this->uav->getID(), -1);
                     m.setSource(u.getUAV()->getID());
                     UAVStatus d = m.getStatus();
                     d.setLocation(coor.x, coor.y, coor.z);
@@ -67,7 +67,7 @@ class UAVMessageReceive {
                     u.setSocketCode(this->uav->getNetworkConfigurations().getIdSocket());
                     u.setUAV(this->uav);
 
-                    StatusMessage m(msg.getMsg(), VELOCITY_STATUS_RESPONSE, this->uav->getID(), -1); //MUDAR AQUI???
+                    StatusMessage m(msg.getMsg(), MysStatusManager::VELOCITY_STATUS_RESPONSE, this->uav->getID(), -1);
                     UAVStatus d = m.getStatus();
                     d.setVelocity(vel);
                     m.setStatus(d);
@@ -85,7 +85,7 @@ class UAVMessageReceive {
                     char snd[150];
                     std::string txt = "MSG battery[" + to_string(this->uav->getID()) + "]: " + to_string(bateria[this->uav->getID()]);
                     strcpy(snd, txt.c_str());
-                    StatusMessage m(snd, BATTERY_STATUS_RESPONSE, this->uav->getID(), -1);
+                    StatusMessage m(snd, MysStatusManager::BATTERY_STATUS_RESPONSE, this->uav->getID(), -1);
                     m.getStatus().setBattery(bateria[this->uav->getID()]);
                     cout << txt << endl;
                     u.dispatchStatusMessage(m);
@@ -100,7 +100,7 @@ class UAVMessageReceive {
                     char snd[150];
                     std::string txt = "MSG flight time[" + to_string(this->uav->getID()) + "]: " + to_string(tempoVoo[this->uav->getID()]);
                     strcpy(snd, txt.c_str());
-                    StatusMessage m(snd, FLIGHTTIME_STATUS_RESPONSE, this->uav->getID(), -1);
+                    StatusMessage m(snd, MysStatusManager::FLIGHTTIME_STATUS_RESPONSE, this->uav->getID(), -1);
                     m.getStatus().setFlightTime((int) tempoVoo[this->uav->getID()]);
                     cout << txt << endl;
                     u.dispatchStatusMessage(m);
