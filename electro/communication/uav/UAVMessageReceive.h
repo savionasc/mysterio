@@ -12,12 +12,13 @@ class UAVMessageReceive {
     public:
         UAVMessageReceive(){}
         virtual ~UAVMessageReceive(){}
-        void operator()(int param, UAV *u, int param3){
+        void operator()(int param, UAV *u, int param3, int *param4){
             this->setUAV(u);
             NetworkConfigurations ntc = this->uav->getNetworkConfigurations();
             ntc.setIdSocket(param3);
             this->uav->setNetworkConfigurations(ntc);
             //this->uav->setIdSocket(param3);
+            this->currentTask = param4;
             while(waitMessage(param)){ }
         }
 
@@ -149,6 +150,7 @@ class UAVMessageReceive {
 
     private:
         UAV *uav;
+        int *currentTask;
 };
 }
 

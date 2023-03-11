@@ -83,6 +83,14 @@ void UAVDispatcher::setUAV(UAV *uav){
     this->uav = uav;
 }
 
+int* UAVDispatcher::getCurrentTask(){
+    return this->currentTask;
+}
+
+void UAVDispatcher::setCurrentTask(int *current){
+    this->currentTask = current;
+}
+
 void UAVDispatcher::disconnectBase(){
     close(getSocketCode());
 }

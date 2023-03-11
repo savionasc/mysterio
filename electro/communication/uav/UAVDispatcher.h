@@ -56,12 +56,15 @@ public:
     void setSocketCode(int socketCode);
     UAV* getUAV();
     void setUAV(UAV *uav);
+    int* getCurrentTask();
+    void setCurrentTask(int *current);
 protected:
     thread receber;
 private:
     bool connected = false;
     int socketCode = -1;
     UAV *uav;
+    int *currentTask;
 };
 }
 
