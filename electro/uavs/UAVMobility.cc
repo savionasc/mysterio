@@ -39,7 +39,7 @@ void UAVMobility::initialize(int stage) {
         this->currentTask = 0;
         connUAV.setUAV(&uav);
         //connUAV.setUAVTaskList(&tasks);
-        //connUAV.setCurrentTask(&currentTask);
+        connUAV.setCurrentTask(&currentTask);
         cout << "UAV-" << getParentModule()->getIndex() << "stage: " << stage << endl;
         connUAV.connectBase();
     }
