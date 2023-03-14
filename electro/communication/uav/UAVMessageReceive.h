@@ -112,7 +112,7 @@ class UAVMessageReceive {
                     ativo[msg.getDestination()] = false;
                     cout << msg.getMsg() << ":" << msg.getDestination() << endl;
                 }else if(!strcmp(msg.getMsg(), "task")){
-                    cout << "Current Task: " << itera[this->uav->getID()] << endl;
+                    cout << "Current Task: " << currentTask << endl;
                 }else if(!strcmp(msg.getMsg(), "d")){
                     for (int i = 0; i < tasksVector[this->uav->getID()].size(); i++) {
                         cout << "Status: " << tasksVector[0][i].getStatus() << endl;
@@ -137,8 +137,10 @@ class UAVMessageReceive {
                 tasksVector[i][j].setType(x.getType());
                 tasksVector[i][j].getUAV().setID(x.getUAV().getID());
                 waypoints[i] = tasksVector[i][j].getWaypoints();
-                if(itera[i] < 0){
-                    itera[i]++;
+
+                int checkSize = *(int*)currentTask;
+                if(checkSize < 0){
+                    currentTask++;
                 }
             }
             return true;
