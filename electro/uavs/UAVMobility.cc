@@ -15,7 +15,6 @@ double velocidade[NUMUAVS];
 float bateria[NUMUAVS];
 double tempoVoo[NUMUAVS];
 bool ativo[NUMUAVS];
-int itera[NUMUAVS];
 std::vector<Task> tasksVector[NUMUAVS];
 
 //this variable forces terminate current "task" of uav
@@ -50,8 +49,8 @@ void UAVMobility::initialize(int stage) {
         ativo[uav.getID()] = false;
     }
 
+    currentTask = -1;
     for (int i = 0; i < NUMUAVS; i++) {
-        itera[i] = -1;
         waypoints[i] = 0;
     }
 
@@ -87,9 +86,9 @@ void UAVMobility::setTargetPosition() {
         }
 
     } else {
-        if(tasksVector[uav.getID()].size() != itera[uav.getID()] && tasksVector[uav.getID()].size() > 0){
+        if(tasksVector[uav.getID()].size() != currentTask && tasksVector[uav.getID()].size() > 0){
             //if there are tasks not performed
-            int task = itera[uav.getID()];
+            int task = currentTask;
 
             if(tasksVector[uav.getID()][task].getStatus() == 2){
                 //finalizando
@@ -110,7 +109,7 @@ void UAVMobility::setTargetPosition() {
                 u.dispatchTaskMessage(msg);
 
                 //next task
-                itera[uav.getID()]++;
+                currentTask++;
 
             }else{
                 executeTask(task);
@@ -157,18 +156,19 @@ void UAVMobility::move() {
         energySto->consumir();
         lowbattery[uav.getID()] = 2;
 
+        int task = currentTask;
         TaskMessage msg;
         msg.setCode(Message::TASK_EMERGENCY_BATTERY_LOW);
         msg.setSource(uav.getID());
-        tasksVector[uav.getID()][itera[uav.getID()]].setWaypoints(waypoints[uav.getID()]);
-        cout << "MEU WAYPOINT: " << tasksVector[uav.getID()][itera[uav.getID()]].getWaypoints() << endl;
-        msg.setTask(tasksVector[uav.getID()][itera[uav.getID()]]);
+        tasksVector[uav.getID()][task].setWaypoints(waypoints[uav.getID()]);
+        cout << "MEU WAYPOINT: " << tasksVector[uav.getID()][task].getWaypoints() << endl;
+        msg.setTask(tasksVector[uav.getID()][task]);
 
-        if(tasksVector[uav.getID()][itera[uav.getID()]].getType() == Task::FLY_AROUND_SQUARE){
+        if(tasksVector[uav.getID()][task].getType() == Task::FLY_AROUND_SQUARE){
             waypoints[uav.getID()]--;
-            msg.setCoord(castCoordToCoordinate(flyAroundSquare(itera[uav.getID()])));
+            msg.setCoord(castCoordToCoordinate(flyAroundSquare(task)));
         }else{
-            msg.setCoord(tasksVector[uav.getID()][itera[uav.getID()]].getTarget());
+            msg.setCoord(tasksVector[uav.getID()][task].getTarget());
         }
         connUAV.dispatchTaskMessage(msg);
     }
@@ -217,11 +217,12 @@ Coord UAVMobility::flyAround(int j){
             cModule *a = getParentModule()->getParentModule()->getSubmodule("UAV", uav.getID())->getSubmodule("energyStorage", 0);
             SimpleEpEnergyStorage *energySto = check_and_cast<SimpleEpEnergyStorage*>(a);
             energySto->consumir();
+            int task = currentTask;
             TaskMessage msg;
             msg.setCode(Message::TASK_EMERGENCY_BATTERY_LOW);
             msg.setSource(uav.getID());
-            tasksVector[uav.getID()][itera[uav.getID()]].setWaypoints(waypoints[uav.getID()]+1);
-            msg.setTask(tasksVector[uav.getID()][itera[uav.getID()]]);
+            tasksVector[uav.getID()][task].setWaypoints(waypoints[uav.getID()]+1);
+            msg.setTask(tasksVector[uav.getID()][task]);
             msg.setCoord(this->castCoordToCoordinate(c));
             connUAV.dispatchTaskMessage(msg);
         }
@@ -281,7 +282,7 @@ void UAVMobility::executeTask(int j){
         targetPosition = flyAroundSquare(j);
     }else{
         targetPosition = this->castCoordinateToCoord(tasksVector[uav.getID()][j].getTarget());
-        itera[uav.getID()]++;
+        currentTask++;
     }
 
 }
