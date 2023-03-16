@@ -172,9 +172,7 @@ void UAVMobility::move() {
         }
         connUAV.dispatchTaskMessage(msg);
     }
-    if(bateria[uav.getID()] < 0.005 && ativo[uav.getID()]){
-        ativo[uav.getID()] = false;
-    }
+    checkEnergy();
 
     LineSegmentsMobilityBase::move();
     raiseErrorIfOutside();
@@ -284,5 +282,11 @@ void UAVMobility::executeTask(int j){
         targetPosition = this->castCoordinateToCoord(tasksVector[uav.getID()][j].getTarget());
         currentTask++;
     }
-
 }
+
+void UAVMobility::checkEnergy() {
+    if (bateria[uav.getID()] < 0.005 && ativo[uav.getID()]) {
+        ativo[uav.getID()] = false;
+    }
+}
+

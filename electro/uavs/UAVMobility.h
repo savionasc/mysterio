@@ -84,6 +84,9 @@ class INET_API UAVMobility : public LineSegmentsMobilityBase
     mysterio::UAVDispatcher connUAV;
     int currentTask;
     //int waypoints;
+
+  private:
+    void checkEnergy();
 };
 
 }
