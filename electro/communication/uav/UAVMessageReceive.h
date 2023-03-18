@@ -12,12 +12,13 @@ class UAVMessageReceive {
     public:
         UAVMessageReceive(){}
         virtual ~UAVMessageReceive(){}
-        void operator()(int param, UAV *u, int param3, int *task){
+        void operator()(int param, UAV *u, int param3, std::vector<Task> *taskList, int *task){
             this->setUAV(u);
             NetworkConfigurations ntc = this->uav->getNetworkConfigurations();
             ntc.setIdSocket(param3);
             this->uav->setNetworkConfigurations(ntc);
             //this->uav->setIdSocket(param3);
+            this->setTaskList(taskList);
             this->currentTask = task;
             while(waitMessage(param)){ }
         }
@@ -114,8 +115,8 @@ class UAVMessageReceive {
                 }else if(!strcmp(msg.getMsg(), "task")){
                     cout << "Current Task: " << currentTask << endl;
                 }else if(!strcmp(msg.getMsg(), "d")){
-                    for (int i = 0; i < tasksVector[this->uav->getID()].size(); i++) {
-                        cout << "Status: " << tasksVector[0][i].getStatus() << endl;
+                    for (int i = 0; i < uavTaskList->size(); i++) {
+                        cout << "Status: " << uavTaskList->at(0).getStatus() << endl;
                     }
                 }else if(!strcmp(msg.getMsg(), "drenar")){
                     lowbattery[uav->getID()] = 1;
@@ -131,12 +132,12 @@ class UAVMessageReceive {
                     ativo[uav->getID()] = true;
                 }
                 Task x = tmsg.getTask();
+                uavTaskList->push_back(x);
+                int j = uavTaskList->size()-1;
+                uavTaskList->at(j).setType(x.getType());
+                uavTaskList->at(j).getUAV().setID(x.getUAV().getID());
                 int i = x.getUAV().getID();
-                tasksVector[i].push_back(x);
-                int j = tasksVector[i].size()-1;
-                tasksVector[i][j].setType(x.getType());
-                tasksVector[i][j].getUAV().setID(x.getUAV().getID());
-                waypoints[i] = tasksVector[i][j].getWaypoints();
+                waypoints[i] = uavTaskList->at(j).getWaypoints();
 
                 int checkSize = *(int*)currentTask;
                 if(checkSize < 0){
@@ -146,12 +147,17 @@ class UAVMessageReceive {
             return true;
         }
 
+        void setTaskList(std::vector<Task> *taskList){
+            this->uavTaskList = taskList;
+        }
+
         void setUAV(UAV *u){
             this->uav = u;
         }
 
     private:
         UAV *uav;
+        std::vector<Task> *uavTaskList;
         int *currentTask;
 };
 }

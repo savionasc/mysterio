@@ -26,7 +26,6 @@ extern double velocidade[NUMUAVS];
 extern float bateria[NUMUAVS];
 extern double tempoVoo[NUMUAVS];
 extern int waypoints[NUMUAVS];
-extern std::vector<Task> tasksVector[NUMUAVS]; //Task
 extern bool ativo[NUMUAVS];
 extern int lowbattery[NUMUAVS];
 
@@ -36,9 +35,27 @@ class UAVDispatcher : public UAVCommunication {
     friend class SocketMessageReceive;
 public:
     UAVDispatcher(){}
-    UAVDispatcher(UAV *u){
+    UAVDispatcher(UAV *u, std::vector<Task> *uavTasks){
         this->setUAV(u);
+        this->setUAVTaskList(uavTasks);
     }
+
+    void setUAVTaskList(std::vector<Task> *uavTasks){
+        this->uavTasks = uavTasks;
+    }
+
+    void addNewTask(Task tarefa){
+        uavTasks->push_back(tarefa);
+    }
+
+    void removeLastTask(){
+        uavTasks->pop_back();
+    }
+
+    int listSize(){
+        return uavTasks->size();
+    }
+
     //UAVCommunication
     void connectBase();
     void dispatchTaskMessage(TaskMessage msg);
@@ -63,6 +80,7 @@ private:
     bool connected = false;
     int socketCode = -1;
     UAV *uav;
+    std::vector<Task> *uavTasks;
     int *currentTask;
 };
 }
