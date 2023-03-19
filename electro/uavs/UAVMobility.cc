@@ -12,7 +12,6 @@ using namespace mysterio;
 
 Coord position[NUMUAVS];
 double velocidade[NUMUAVS];
-float bateria[NUMUAVS];
 double tempoVoo[NUMUAVS];
 bool ativo[NUMUAVS];
 
@@ -190,10 +189,12 @@ J UAVMobility::getBattery(){
 }
 
 void UAVMobility::rescueDataAndStoreVariables(){
+    UAVStatus uavStatus = this->uav.getStatus();
     position[uav.getID()] = lastPosition;
     velocidade[uav.getID()] = speedParameter->doubleValue();
-    bateria[uav.getID()] = std::stof(getBattery().str());
+    uavStatus.setBattery(std::stof(getBattery().str()));
     tempoVoo[uav.getID()] = simTime().dbl();
+    this->uav.setStatus(uavStatus);
 }
 
 Coord UAVMobility::flyAround(int j){
@@ -284,7 +285,7 @@ void UAVMobility::executeTask(int j){
 }
 
 void UAVMobility::checkEnergy() {
-    if (bateria[uav.getID()] < 0.005 && ativo[uav.getID()]) {
+    if (uav.getStatus().getBattery() < 0.005 && ativo[uav.getID()]) {
         ativo[uav.getID()] = false;
     }
 }
