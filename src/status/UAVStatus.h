@@ -71,6 +71,14 @@ public:
         this->available = available;
     }
 
+    bool isWorking() {
+        return working;
+    }
+
+    void setWorking(bool working) {
+        this->working = working;
+    }
+
 private:
     double locationX = 0.0;
     double locationY = 0.0;
@@ -79,6 +87,8 @@ private:
     float battery = 0;
     int flightTime = 0;
     bool available = false;
+    bool working;
+
 };
 
 #endif
