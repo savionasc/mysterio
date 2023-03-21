@@ -26,7 +26,6 @@ extern double velocidade[NUMUAVS];
 extern double tempoVoo[NUMUAVS];
 extern int waypoints[NUMUAVS];
 extern bool ativo[NUMUAVS];
-extern int lowbattery[NUMUAVS];
 
 namespace mysterio {
 
