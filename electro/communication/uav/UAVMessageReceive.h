@@ -119,7 +119,9 @@ class UAVMessageReceive {
                         cout << "Status: " << uavTaskList->at(0).getStatus() << endl;
                     }
                 }else if(!strcmp(msg.getMsg(), "drenar")){
-                    lowbattery[uav->getID()] = 1;
+                    UAVStatus us = this->uav->getStatus();
+                    us.setBattery(0.05f);
+                    this->uav->setStatus(us);
                 }else{
                     std::cout << "Received Message["<< this->uav->getID() <<"]: " << msg.getMsg() << std::endl;
                 }
