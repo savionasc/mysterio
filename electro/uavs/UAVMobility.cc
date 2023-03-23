@@ -22,7 +22,6 @@ bool ativo[NUMUAVS];
 //4 - Tarefa: retornar a base (idUAV, basePosition)
 //5 - Tarefa: pousar (idUAV, chao)
 int waypoints[NUMUAVS];
-int lowbattery[NUMUAVS];
 using namespace power;
 
 Define_Module(UAVMobility);
@@ -58,6 +57,9 @@ void UAVMobility::initialize(int stage) {
         speedParameter = &par("speed");
         velocidade[uav.getID()] = par("speed").operator double();
         stationary = !speedParameter->isExpression() && speedParameter->doubleValue() == 0;
+        UAVStatus us = uav.getStatus();
+        us.setAvailable(true);
+        uav.setStatus(us);
     }
     this->rescueDataAndStoreVariables();
 }
@@ -146,13 +148,16 @@ void UAVMobility::setTargetPosition() {
 }
 
 void UAVMobility::move() {
-    if(lowbattery[uav.getID()] == 1){
+    if(this->uav.getStatus().getBattery() < 0.01f && this->uav.getStatus().isAvailable()){
         //Drenando bateria e repassando tarefa
         cout << "Drenou" << endl;
         cModule *a = getParentModule()->getParentModule()->getSubmodule("UAV", uav.getID())->getSubmodule("energyStorage", 0);
         SimpleEpEnergyStorage *energySto = check_and_cast<SimpleEpEnergyStorage*>(a);
         energySto->consumir();
-        lowbattery[uav.getID()] = 2;
+        UAVStatus us = this->uav.getStatus();
+        us.setWorking(false);
+        us.setAvailable(false);
+        this->uav.setStatus(us);
 
         int task = currentTask;
         TaskMessage msg;
