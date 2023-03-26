@@ -12,7 +12,6 @@ using namespace mysterio;
 
 Coord position[NUMUAVS];
 double velocidade[NUMUAVS];
-double tempoVoo[NUMUAVS];
 bool ativo[NUMUAVS];
 
 //this variable forces terminate current "task" of uav
@@ -198,7 +197,7 @@ void UAVMobility::rescueDataAndStoreVariables(){
     position[uav.getID()] = lastPosition;
     velocidade[uav.getID()] = speedParameter->doubleValue();
     uavStatus.setBattery(std::stof(getBattery().str()));
-    tempoVoo[uav.getID()] = simTime().dbl();
+    uavStatus.setFlightTime(simTime().dbl());
     this->uav.setStatus(uavStatus);
 }
 
