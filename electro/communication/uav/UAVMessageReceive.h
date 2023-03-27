@@ -100,10 +100,10 @@ class UAVMessageReceive {
                     u.setUAV(this->uav);
 
                     char snd[150];
-                    std::string txt = "MSG flight time[" + to_string(this->uav->getID()) + "]: " + to_string(tempoVoo[this->uav->getID()]);
+                    std::string txt = "MSG flight time[" + to_string(this->uav->getID()) + "]: " + to_string(uav->getStatus().getFlightTime());
                     strcpy(snd, txt.c_str());
                     StatusMessage m(snd, MysStatusManager::FLIGHTTIME_STATUS_RESPONSE, this->uav->getID(), -1);
-                    m.getStatus().setFlightTime((int) tempoVoo[this->uav->getID()]);
+                    m.getStatus().setFlightTime((int) uav->getStatus().getFlightTime());
                     cout << txt << endl;
                     u.dispatchStatusMessage(m);
                 }else if(!strcmp(msg.getMsg(), "start")){
