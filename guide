@@ -26,6 +26,6 @@ Two ways of configuring simulation files in OMNeT++:
 
 In omnet, it is possible to configure files in two ways: unified files and separate files.
 
-Here is an application example simulating two UAVs using unified files: https://...
+Here is an application example simulating two UAVs using unified files: https://github.com/savionasc/mysterio/tree/main/quentin/uavs/unified
 
-Here is an application example simulating two UAVs using separate files: https://...
+Here is an application example simulating two UAVs using separate files: https://github.com/savionasc/mysterio/tree/main/quentin/uavs/divided
