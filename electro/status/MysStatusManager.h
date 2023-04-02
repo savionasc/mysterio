@@ -1,5 +1,5 @@
-#ifndef MYSTERIO_OMNET_STATUS_MYSSTATUSMANAGER_H_
-#define MYSTERIO_OMNET_STATUS_MYSSTATUSMANAGER_H_
+#ifndef MYSTERIO_ELECTRO_STATUS_MYSSTATUSMANAGER_H_
+#define MYSTERIO_ELECTRO_STATUS_MYSSTATUSMANAGER_H_
 #include "../../src/communication/Communicable.h"
 #include "../../src/database/RepositoryBase.h"
 #include <iostream>
