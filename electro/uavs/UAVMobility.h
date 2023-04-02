@@ -16,8 +16,8 @@
 // along with this program; if not, see <http://www.gnu.org/licenses/>.
 //
 
-#ifndef __MYSTERIO_UAVMOBILITY_H
-#define __MYSTERIO_UAVMOBILITY_H
+#ifndef MYSTERIO_ELECTRO_UAVS_UAVMOBILITY_H_
+#define MYSTERIO_ELECTRO_UAVS_UAVMOBILITY_H_
 
 #include "inet/common/INETDefs.h"
 #include "inet/mobility/base/LineSegmentsMobilityBase.h"
