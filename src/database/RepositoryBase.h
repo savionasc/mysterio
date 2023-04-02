@@ -1,5 +1,5 @@
-#ifndef MYSTERIO_OMNET_DATABASE_REPOSITORYMYSQL_H_
-#define MYSTERIO_OMNET_DATABASE_REPOSITORYMYSQL_H_
+#ifndef MYSTERIO_SRC_DATABASE_REPOSITORYBASE_H_
+#define MYSTERIO_SRC_DATABASE_REPOSITORYBASE_H_
 #include <mysql/mysql.h>
 #include <string>
 #include "../../src/status/UAVStatus.h"
