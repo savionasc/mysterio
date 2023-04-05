@@ -22,7 +22,6 @@ using namespace inet;
 using namespace std;
 
 extern Coord position[NUMUAVS];
-extern double velocidade[NUMUAVS];
 extern int waypoints[NUMUAVS];
 extern bool ativo[NUMUAVS];
 
