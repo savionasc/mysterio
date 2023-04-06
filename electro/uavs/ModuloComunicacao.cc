@@ -15,7 +15,6 @@ Define_Module(ModuloComunicacao);
 
 //shared variables
 extern Coord position[NUMUAVS];
-extern double velocidade[NUMUAVS];
 
 void ModuloComunicacao::initialize(){
     selfID = getIndex();
