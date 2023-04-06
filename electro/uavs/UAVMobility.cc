@@ -11,7 +11,6 @@ using namespace inet;
 using namespace mysterio;
 
 Coord position[NUMUAVS];
-double velocidade[NUMUAVS];
 bool ativo[NUMUAVS];
 
 //this variable forces terminate current "task" of uav
@@ -54,11 +53,11 @@ void UAVMobility::initialize(int stage) {
         waitTimeParameter = &par("waitTime");
         hasWaitTime = waitTimeParameter->isExpression() || waitTimeParameter->doubleValue() != 0;
         speedParameter = &par("speed");
-        velocidade[uav.getID()] = par("speed").operator double();
         stationary = !speedParameter->isExpression() && speedParameter->doubleValue() == 0;
-        UAVStatus us = uav.getStatus();
+        UAVStatus us = this->uav.getStatus();
         us.setAvailable(true);
-        uav.setStatus(us);
+        us.setVelocity(par("speed").operator double());
+        this->uav.setStatus(us);
     }
     this->rescueDataAndStoreVariables();
 }
@@ -195,7 +194,7 @@ J UAVMobility::getBattery(){
 void UAVMobility::rescueDataAndStoreVariables(){
     UAVStatus uavStatus = this->uav.getStatus();
     position[uav.getID()] = lastPosition;
-    velocidade[uav.getID()] = speedParameter->doubleValue();
+    uavStatus.setVelocity(speedParameter->doubleValue());
     uavStatus.setBattery(std::stof(getBattery().str()));
     uavStatus.setFlightTime(simTime().dbl());
     this->uav.setStatus(uavStatus);
