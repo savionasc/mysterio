@@ -63,8 +63,8 @@ class UAVMessageReceive {
                 }else if(!strcmp(msg.getMsg(), "velocity")){
                     //Mudar isso aqui e chamar o OnMessageReceve
                     std::cout << "[U" << this->uav->getID() << "] Sending status " << std::endl;
-                    double vel = velocidade[this->uav->getID()];
-
+                    double vel = this->uav->getStatus().getVelocity();
+                    cout << "MSG-velocity: " << vel << endl;
                     UAVDispatcher u;
                     u.setSocketCode(this->uav->getNetworkConfigurations().getIdSocket());
                     u.setUAV(this->uav);
