@@ -13,9 +13,6 @@ using namespace mysterio;
 
 Define_Module(ModuloComunicacao);
 
-//shared variables
-extern Coord position[NUMUAVS];
-
 void ModuloComunicacao::initialize(){
     selfID = getIndex();
 
