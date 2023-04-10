@@ -10,7 +10,6 @@ using namespace std;
 using namespace inet;
 using namespace mysterio;
 
-Coord position[NUMUAVS];
 bool ativo[NUMUAVS];
 
 //this variable forces terminate current "task" of uav
@@ -193,7 +192,7 @@ J UAVMobility::getBattery(){
 
 void UAVMobility::rescueDataAndStoreVariables(){
     UAVStatus uavStatus = this->uav.getStatus();
-    position[uav.getID()] = lastPosition;
+    uavStatus.setLocation(castCoordToCoordinate(lastPosition));
     uavStatus.setVelocity(speedParameter->doubleValue());
     uavStatus.setBattery(std::stof(getBattery().str()));
     uavStatus.setFlightTime(simTime().dbl());
