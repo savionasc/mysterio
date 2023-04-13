@@ -1,6 +1,5 @@
 #include "ModuloComunicacao.h"
 
-#include "../mission/GoTo.h"
 #include "UAVMobility.h"
 #include <iostream>
 

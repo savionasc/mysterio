@@ -15,7 +15,6 @@
 #include "inet/common/geometry/common/Coord.h"
 #include "inet/power/base/EpEnergyStorageBase.h"
 #include "inet/power/storage/SimpleEpEnergyStorage.h"
-#include "../../mission/GoTo.h"
 #include "../MysCommunication.h"
 
 using namespace inet;
