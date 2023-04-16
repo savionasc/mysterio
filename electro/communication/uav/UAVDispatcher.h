@@ -20,7 +20,6 @@
 using namespace inet;
 using namespace std;
 
-extern int waypoints[NUMUAVS];
 extern bool ativo[NUMUAVS];
 
 namespace mysterio {
