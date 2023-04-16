@@ -138,8 +138,6 @@ class UAVMessageReceive {
                 int j = uavTaskList->size()-1;
                 uavTaskList->at(j).setType(x.getType());
                 uavTaskList->at(j).getUAV().setID(x.getUAV().getID());
-                int i = x.getUAV().getID();
-                waypoints[i] = uavTaskList->at(j).getWaypoints();
 
                 int checkSize = *(int*)currentTask;
                 if(checkSize < 0){
