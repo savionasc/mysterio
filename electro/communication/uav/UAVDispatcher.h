@@ -20,8 +20,6 @@
 using namespace inet;
 using namespace std;
 
-extern bool ativo[NUMUAVS];
-
 namespace mysterio {
 
 class UAVDispatcher : public UAVCommunication {
