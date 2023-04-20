@@ -107,10 +107,14 @@ class UAVMessageReceive {
                     cout << txt << endl;
                     u.dispatchStatusMessage(m);
                 }else if(!strcmp(msg.getMsg(), "start")){
-                    ativo[msg.getDestination()] = true;
+                    UAVStatus us = this->uav->getStatus();
+                    us.setWorking(true);
+                    this->uav->setStatus(us);
                     cout << msg.getMsg() << ":" << msg.getDestination() << endl;
                 }else if(!strcmp(msg.getMsg(), "stop")){
-                    ativo[msg.getDestination()] = false;
+                    UAVStatus us = this->uav->getStatus();
+                    us.setWorking(false);
+                    this->uav->setStatus(us);
                     cout << msg.getMsg() << ":" << msg.getDestination() << endl;
                 }else if(!strcmp(msg.getMsg(), "task")){
                     cout << "Current Task: " << currentTask << endl;
@@ -131,7 +135,9 @@ class UAVMessageReceive {
                 memset(&tmsg, 0, sizeof(tmsg));
                 recv(socket, (TaskMessage*)&tmsg, sizeof(tmsg), 0);
                 if(!strcmp(tmsg.getMsg(), "SUBSTITUIR")){
-                    ativo[uav->getID()] = true;
+                    UAVStatus us = this->uav->getStatus();
+                    us.setWorking(true);
+                    this->uav->setStatus(us);
                 }
                 Task x = tmsg.getTask();
                 uavTaskList->push_back(x);
