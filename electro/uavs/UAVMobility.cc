@@ -10,8 +10,6 @@ using namespace std;
 using namespace inet;
 using namespace mysterio;
 
-bool ativo[NUMUAVS];
-
 //this variable forces terminate current "task" of uav
 //1 - Tarefa: decolar (idUAV, altura)
 //2 - Tarefa: goto (idUAV, positionTarget)
@@ -36,11 +34,13 @@ void UAVMobility::initialize(int stage) {
         connUAV.connectBase();
     }
 
+    UAVStatus us = uav.getStatus();
     if(uav.getID() != 1){
-        ativo[uav.getID()] = true;
+        us.setWorking(true);
     }else{
-        ativo[uav.getID()] = false;
+        us.setWorking(false);
     }
+    uav.setStatus(us);
 
     currentTask = -1;
 
@@ -62,7 +62,7 @@ void UAVMobility::setTargetPosition() {
         simtime_t waitTime = waitTimeParameter->doubleValue()+3;
         nextChange = simTime() + waitTime;
         nextMoveIsWait = false;
-    } else if(!ativo[uav.getID()]) {
+    } else if(!this->uav.getStatus().isWorking()) {
         Coord c(10, 5, 10);
 
         if(targetPosition != c){
@@ -229,7 +229,9 @@ Coord UAVMobility::flyAround(int j){
         //Finalizando task
         tasks[j].setStatus(2);
         if(uav.getID() == 1){
-            ativo[uav.getID()] = false;
+            UAVStatus us = uav.getStatus();
+            us.setWorking(false);
+            this->uav.setStatus(us);
         }
 
         //Próxima coordenada
@@ -248,7 +250,9 @@ Coord UAVMobility::flyAroundSquare(int j){
         if(tasks[uav.getID()].getWaypoints() == 4){
             tasks[j].setStatus(2);
             if(uav.getID() == 1){
-                ativo[uav.getID()] = false;
+                UAVStatus us = uav.getStatus();
+                us.setWorking(false);
+                this->uav.setStatus(us);
             }
         }
         c = this->castCoordinateToCoord(tasks[j].getTarget());
@@ -284,8 +288,10 @@ void UAVMobility::executeTask(int j){
 }
 
 void UAVMobility::checkEnergy() {
-    if (uav.getStatus().getBattery() < 0.005 && ativo[uav.getID()]) {
-        ativo[uav.getID()] = false;
+    if (uav.getStatus().getBattery() < 0.005 && this->uav.getStatus().isWorking()) {
+        UAVStatus us = uav.getStatus();
+        us.setWorking(false);
+        this->uav.setStatus(us);
     }
 }
 
